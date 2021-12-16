@@ -5,6 +5,44 @@ const findAgent = (username) => {
   return query(sql);
 };
 
+const createAgent = (username, password, displayname, agenttype, agentid) => {
+  const sql = `INSERT INTO agents (username, password,display_name,agent_type,agent_id) VALUES ("${username}","${password}","${displayname}","${agenttype}","${agentid}",) `;
+  return query(sql);
+};
+const addAgentdetials = (balance, contactnumber, agentid, timestamp) => {
+  const sql = `INSERT INTO agents (balance, contact_number,agent_id,timestamp) VALUES ("${balance}","${contactnumber}","${agentid}","${timestamp}",)`;
+  return query(sql);
+};
+const addPriceDetails = (
+  licenseType,
+  monthly,
+  quarterly,
+  halfyearly,
+  yearly,
+  onetime,
+  agentid,
+  timestamp
+) => {
+  const sql = `INSERT INTO agents (license_type, monthly,quarterly,half_yearly,yearly,onetime,agentid,timestamp) VALUES ("${licenseType}","${monthly}","${quarterly}","${halfyearly}","${yearly}","${onetime}","${agentid}","${timestamp}",)`;
+  return query(sql);
+};
+const createLicense = (
+  licenseType,
+  expiry,
+  transactiondetails,
+  transactionamount,
+  companyid,
+  userid,
+  timestamp
+) => {
+  const sql = `INSERT INTO agents (license_type, monthly,quarterly,half_yearly,yearly,onetime,agentid,timestamp) VALUES ("${licenseType}","${expiry}","${transactiondetails}","${transactionamount}","${companyid}",""${userid}","${timestamp}",)`;
+
+  return query(sql);
+};
 module.exports = {
   findAgent,
+  createAgent,
+  addAgentdetials,
+  addPriceDetails,
+  createLicense,
 };
