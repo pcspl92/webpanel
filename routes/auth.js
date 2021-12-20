@@ -92,40 +92,6 @@ router.post('/logout', (req, res) => {
   return res.status(200).send('logged out');
 });
 
-router.post('/createagent', async (req, res) => {
-  const newAgent = await createAgent(
-    req.body.username,
-    req.body.password,
-    req.body.display_name,
-    req.body.agent_type,
-    req.body.agent_id
-  );
-  const adddetials = await addAgentdetials(
-    req.body.balance,
-    req.body.contact_number,
-    req.body.agent_id,
-    req.body.timestamp
-  );
-  const addPrice = await addPriceDetails(
-    req.body.license_type,
-    req.body.monthly,
-    req.body.quarterly,
-    req.body.half_yearly,
-    req.body.yearly,
-    req.body.one_time,
-    req.body.agent_id,
-    req.body.timestamp
-  );
-});
-router.post('/createlicense', async (req, res) => {
-  const newLicense = await createLicense(
-    req.body.license_type,
-    req.body.expiry,
-    req.body.trasnsationDetails,
-    req.body.transactionamount,
-    req.body.companyid,
-    req.body.userid,
-    req.body.timestamp
-  );
-});
+
+
 module.exports = router;
