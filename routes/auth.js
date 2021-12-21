@@ -1,16 +1,11 @@
 const express = require('express');
 const _ = require('lodash');
 
-const {
-  findAgent,
-  createAgent,
-  addAgentdetials,
-  addPriceDetails,
-  createLicense,
-} = require('../queries/agent');
+
 const { findCompany } = require('../queries/company');
 const genToken = require('../utils/genToken');
 const { comparePassword } = require('../utils/bcrypt');
+const { findAgent } = require('../queries/agent');
 
 const router = express.Router();
 

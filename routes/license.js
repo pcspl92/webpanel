@@ -1,19 +1,19 @@
 const express = require('express');
+const guard = require('express-jwt-permissions')();
 const agentSubAgentCheck = require('../guard/agentSubAgent');
 
 const router = express.Router();
 
+
 // @route   GET api/license/
 // @desc    Testing route
 // @access  Public
-const {
-createLicense
 
+const {
+createLicense,
 } = require('../queries/license');
-router.get('/', (req, res) => {
-  const user = 'hello';
-  return res.status(200).json({ test: user });
-});
+
+
 router.post('/',    guard.check([['agent'], ['subagent']]),
 agentSubAgentCheck,
  async (req, res) => {
