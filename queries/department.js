@@ -5,7 +5,12 @@ const findDeptByUsername = (username) => {
   return query(sql);
 };
 
-const createDept = ({ username, password, displayName, companyId }) => {
+const createDept = ({
+  username,
+  password,
+  display_name: displayName,
+  companyId,
+}) => {
   const sql = `INSERT INTO departments 
                (username, password, display_name, company_id) 
                VALUES ('${username}', '${password}', '${displayName}', ${companyId});`;

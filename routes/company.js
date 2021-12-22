@@ -24,7 +24,7 @@ router.post(
 
     const password = await hashPassword(req.body.password);
     const data = {
-      ..._.pick(req.body, ['username', 'displayName', 'contactNumber']),
+      ..._.pick(req.body, ['username', 'display_name', 'contact_number']),
       password,
       agentId: req.user.id,
     };
