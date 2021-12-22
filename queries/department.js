@@ -11,8 +11,13 @@ const createDept = ({ username, password, displayName, companyId }) => {
                VALUES ('${username}', '${password}', '${displayName}', ${companyId});`;
   return query(sql);
 };
+const updatedepartment=()=>{
+const sql = ``;
+return query(sql);
 
+}
 module.exports = {
   findDeptByUsername,
   createDept,
+  updatedepartment
 };

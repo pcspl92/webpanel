@@ -22,9 +22,17 @@ const createCompany = ({
                VALUES ('${username}', '${password}', '${displayName}', '${contactNumber}', ${agentId});`;
   return query(sql);
 };
-
+const findCompanies = (username) => {
+  const sql = `SELECT  username,display_name,contact_number,timestamp`;
+  return query(sql);
+};
+const ModifyCompanies = (username) => {
+  const sql = `UPDATE  companies`;
+  return query(sql);
+};
 module.exports = {
   findCompany,
   findCompanyByUsername,
   createCompany,
+  findCompanies
 };

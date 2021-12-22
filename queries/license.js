@@ -13,10 +13,13 @@ const createLicense = (
    return query(sql);
   };
 
-  const findLicense = (username) => {
-    const sql = `SELECT FROM license WHERE username="${username}"`;
+  const findLicense = () => {
+    const sql = ` SELECT licenses.license_type,license_expiry,features.grp_call,features.enc,features.live_gps,features.geo_fence,features.chat,
+     FROM licenses
+     INNER JOIN features ON licenses.id = features.license_id;`;
     return query(sql);
   };
+
   module.exports = {
     createLicense,
  findLicense
