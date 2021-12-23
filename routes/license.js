@@ -2,8 +2,11 @@ const express = require('express');
 const guard = require('express-jwt-permissions')();
 
 const agentSubAgentCheck = require('../guard/agentSubAgent');
-const { createLicense } = require('../queries/license');
-
+const {
+  createLicense,findLicense
+  } = require('../queries/license');
+  const { route } = require('./company');
+  
 const router = express.Router();
 
 // @route   GET api/license/
@@ -26,11 +29,6 @@ router.post(
   }
 );
 
-<<<<<<< HEAD
-const {
-createLicense,findLicense
-} = require('../queries/license');
-const { route } = require('./company');
 
 
 router.post('/',    guard.check([['agent'], ['subagent']]),
@@ -53,6 +51,5 @@ agentSubAgentCheck,
  const licenselist = await findLicense();
   return res.status(201).send(licenselist);
 });
-=======
->>>>>>> 7de2e131fa1264f91610f4fd4f8c44372ef91252
+
 module.exports = router;

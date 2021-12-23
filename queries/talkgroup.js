@@ -1,8 +1,10 @@
+
 const query = require('../utils/queryTemplate');
 
 const findTGByName = (tgName) => {
   const sql = `SELECT id FROM talkgroups WHERE talkgroup_name='${tgName}'`;
   return query(sql);
+
 };
 
 const createTG = ({ tgName, companyId }) => {

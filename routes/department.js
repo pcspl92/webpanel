@@ -21,7 +21,7 @@ router.post('/', guard.check('company'), companyCheck, async (req, res) => {
 
   const password = await hashPassword(req.body.password);
   const data = {
-    ..._.pick(req.body, ['username', 'display_name']),
+    ..._.pick(req.body, ['username', 'displayName']),
     password,
     companyId: req.user.id,
   };
@@ -30,11 +30,7 @@ router.post('/', guard.check('company'), companyCheck, async (req, res) => {
   return res.status(201).send('created');
 });
 route.put('/', guard.check('company'), companyCheck, async (req, res) => {
-  
-
- 
-
-  await updatedepartment(req.body.newname,req.body.newpassword);
+   await updatedepartment(req.body.newname,req.body.newpassword);
   return res.status(201).send('department updated');
 });
 module.exports = router;
