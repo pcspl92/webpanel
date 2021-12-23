@@ -10,8 +10,9 @@ const router = express.Router();
 // @access  Public
 
 const {
-createLicense,
+createLicense,findLicense
 } = require('../queries/license');
+const { route } = require('./company');
 
 
 router.post('/',    guard.check([['agent'], ['subagent']]),
@@ -27,5 +28,11 @@ agentSubAgentCheck,
     req.body.timestamp
   );
   return res.status(201).send('created');
+});
+route.get('/',    guard.check([['agent'], ['subagent']]),
+agentSubAgentCheck,
+ async (req, res) => {
+ const licenselist = await findLicense();
+  return res.status(201).send(licenselist);
 });
 module.exports = router;

@@ -11,8 +11,8 @@ const createDept = ({ username, password, displayName, companyId }) => {
                VALUES ('${username}', '${password}', '${displayName}', ${companyId});`;
   return query(sql);
 };
-const updatedepartment=()=>{
-const sql = ``;
+const updatedepartment=(newname,newpassword)=>{
+const sql = `UPDATE departments SET display_name='${newname}','${newpassword}'` ;
 return query(sql);
 
 }

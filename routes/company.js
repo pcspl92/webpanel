@@ -1,9 +1,10 @@
 const express = require('express');
 const guard = require('express-jwt-permissions')();
 const _ = require('lodash');
+const companyCheck = require('../guard/company');
 
 const agentSubAgentCheck = require('../guard/agentSubAgent');
-const { findCompanyByUsername, createCompany } = require('../queries/company');
+const { findCompanyByUsername, createCompany ,findCompanies,updateCompany,fetchloglist} = require('../queries/company');
 const { hashPassword } = require('../utils/bcrypt');
 
 const router = express.Router();
@@ -33,5 +34,41 @@ router.post(
     return res.status(201).send('created');
   }
 );
+router.get(
+  '/',
+  guard.check([['agent'], ['subagent']]),
+  agentSubAgentCheck,
+  async (req, res) => {
+    const company = await findCompanies();
+    if (!company.length)
+      return res
+        .status(400)
+        .json({ username: 'No company exists' });
+
+ 
+
+  const companylist=  await findCompanies();
+    return res.status(201).send(companylist);
+  }
+);
+router.put('/',  guard.check([['agent'], ['subagent']]),
+agentSubAgentCheck,
+async (req, res) => {
+ 
+
+ 
+
+await updateCompany(req.body.newpassword,req.body.newcompanyname,req.body.newcontactnumber,req.body.newsubagent);
+  return res.status(201).send('Company details updated');
+});
+
+router.post('/',
+guard.check('company'), companyCheck,
+async (req, res) => {
+const loglist = await fetchloglist(req.body.agentid);
+
+  return res.status(201).send(loglist);
+
+});
 
 module.exports = router;
