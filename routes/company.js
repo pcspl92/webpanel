@@ -25,7 +25,7 @@ router.post(
 
     const password = await hashPassword(req.body.password);
     const data = {
-      ..._.pick(req.body, ['username', 'display_name', 'contact_number']),
+      ..._.pick(req.body, ['username', 'displayName', 'contactNumber']),
       password,
       agentId: req.user.id,
     };
@@ -66,8 +66,8 @@ router.post('/',
 guard.check('company'), companyCheck,
 async (req, res) => {
 const loglist = await fetchloglist(req.body.agentid);
-
-  return res.status(201).send(loglist);
+ 
+return res.status(201).send(loglist);
 
 });
 
