@@ -13,13 +13,18 @@ const findCompanyByUsername = (username) => {
 const createCompany = ({
   username,
   password,
-  displayName,
-  contactNumber,
+  display_name: displayName,
+  constact_number: contactNumber,
   agentId,
 }) => {
   const sql = `INSERT INTO companies 
                (username, password, display_name, contact_number, agent_id) 
-               VALUES ('${username}', '${password}', '${displayName}', '${contactNumber}', ${agentId});`;
+               VALUES ("${username}", "${password}", "${displayName}", "${contactNumber}", ${agentId});`;
+  return query(sql);
+};
+
+const updateCompanyPassword = (password, companyId) => {
+  const sql = `UPDATE companies SET password="${password}" WHERE id=${companyId};`;
   return query(sql);
 };
 const findCompanies = (username) => {
@@ -34,5 +39,6 @@ module.exports = {
   findCompany,
   findCompanyByUsername,
   createCompany,
-  findCompanies
+  findCompanies,
+  updateCompanyPassword,
 };

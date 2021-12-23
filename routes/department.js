@@ -21,7 +21,7 @@ router.post('/', guard.check('company'), companyCheck, async (req, res) => {
 
   const password = await hashPassword(req.body.password);
   const data = {
-    ..._.pick(req.body, ['username', 'displayName']),
+    ..._.pick(req.body, ['username', 'display_name']),
     password,
     companyId: req.user.id,
   };
