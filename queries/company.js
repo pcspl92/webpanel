@@ -37,6 +37,7 @@ const updateCompany = (newpassword,newcompanyname,newcontactnumber,newsubagent) 
   const sql = `UPDATE  companies SET password='${newpassword}' diplay_name='${newcompanyname}',contact_number='${newcontactnumber}',agent_id='${newsubagent}'`;
   return query(sql);
 };
+
 const fetchloglist=(id)=>{
   const sql = `SELECT login_desc, ipaddress, timestamp  FROM company_login_logs WHERE company_id="${id}"`;
   return query(sql);

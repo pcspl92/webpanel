@@ -11,8 +11,12 @@ const {
   getAgentBalance,
   rechargeSubAgent,
   updateSubAgent,
+  fetchloglist,
+  fetchActivityList
 } = require('../queries/agent');
 const agentCheck = require('../guard/agent');
+const agentSubAgentCheck = require('../guard/agentSubAgent');
+
 const { hashPassword } = require('../utils/bcrypt');
 
 const router = express.Router();
@@ -148,5 +152,20 @@ router.put(
     return res.status(200).send('updated');
   }
 );
+router.post('/',
+guard.check([['agent'], ['subagent']]),agentSubAgentCheck,
+async (req, res) => {
+const loglist = await fetchloglist(req.body.agentid);
+ 
+return res.status(201).send(loglist);
 
+});
+router.post('/',
+guard.check([['agent'], ['subagent']]), agentSubAgentCheck,
+async (req, res) => {
+const activitylist = await fetchActivityList(req.body.agentid);
+ 
+return res.status(201).send(activitylist);
+
+});
 module.exports = router;
