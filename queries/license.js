@@ -1,15 +1,30 @@
 const query = require('../utils/queryTemplate');
 
-const createLicense = (
+const createFeatures = ({
+  grp_call: grpCall,
+  enc,
+  priv_call: privCall,
+  live_gps: liveGps,
+  geo_fence: geoFence,
+  chat,
+}) => {
+  const sql = `INSERT INTO features (grp_call, enc, priv_call, live_gps, geo_fence, chat) VALUES (${grpCall}, ${enc}, ${privCall}, ${liveGps}, ${geoFence}, ${chat});`;
+  return query(sql);
+};
+
+const createOrder = (
   licenseType,
-  expiry,
-  transactiondetails,
-  transactionamount,
-  companyid,
-  userid,
-  timestamp
+  licenseExpiry,
+  companyId,
+  featureId,
+  agentId
 ) => {
-  const sql = `INSERT INTO agents (license_type, monthly,quarterly,half_yearly,yearly,onetime,agentid,timestamp) VALUES ("${licenseType}","${expiry}","${transactiondetails}","${transactionamount}","${companyid}",""${userid}","${timestamp}",)`;
+  const sql = `INSERT INTO orders (license_type, license_expiry, company_id, feature_id, agent_id) VALUES ("${licenseType}", "${licenseExpiry}", ${companyId}, ${featureId}, ${agentId});`;
+  return query(sql);
+};
+
+const createLicense = (orderId, qty) => {
+  const sql = `CALL create_licenses(${orderId}, ${qty});`;
   return query(sql);
 };
 
@@ -22,5 +37,7 @@ const findLicense = () => {
 
 module.exports = {
   createLicense,
+  createFeatures,
+  createOrder,
   findLicense,
 };
