@@ -73,6 +73,7 @@ router.post(
       expiryDate,
       req.body.company_id,
       featureRes.insertId,
+      req.body.renewal,
       req.user.id
     );
     await createLicense(orderRes.insertId, req.body.qty);
@@ -120,6 +121,7 @@ router.put(
       order[0].license_expiry,
       order[0].company_id,
       featureRes.insertId,
+      order[0].renewal,
       order[0].agent_id
     );
     await updateOrderId(
@@ -173,6 +175,7 @@ router.put(
       expiryDate,
       order[0].company_id,
       order[0].feature_id,
+      req.body.renewal,
       order[0].agent_id
     );
     await updateOrderId(
@@ -229,6 +232,7 @@ router.put(
       order[0].license_expiry,
       req.body.company_id,
       order[0].feature_id,
+      order[0].renewal,
       order[0].agent_id
     );
     const result = await getLicenseIds(req.params.orderId, req.body.qty);
