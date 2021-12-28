@@ -18,10 +18,11 @@ const createOrder = (
   licenseExpiry,
   companyId,
   featureId,
+  renewal,
   agentId
 ) => {
-  const sql = `INSERT INTO orders (license_type, license_expiry, company_id, feature_id, agent_id) 
-               VALUES ("${licenseType}", "${licenseExpiry}", ${companyId}, ${featureId}, ${agentId});`;
+  const sql = `INSERT INTO orders (license_type, license_expiry, company_id, feature_id, renewal, agent_id) 
+               VALUES ("${licenseType}", "${licenseExpiry}", ${companyId}, ${featureId}, ${renewal}, ${agentId});`;
   return query(sql);
 };
 
