@@ -3,7 +3,11 @@ const guard = require('express-jwt-permissions')();
 const _ = require('lodash');
 
 const companyCheck = require('../guard/company');
-const { findDeptByUsername, createDept,updatedepartment } = require('../queries/department');
+const {
+  findDeptByUsername,
+  createDept,
+  updatedepartment,
+} = require('../queries/department');
 const { hashPassword } = require('../utils/bcrypt');
 const { route } = require('./company');
 
@@ -29,8 +33,8 @@ router.post('/', guard.check('company'), companyCheck, async (req, res) => {
   await createDept(data);
   return res.status(201).send('created');
 });
-route.put('/', guard.check('company'), companyCheck, async (req, res) => {
-   await updatedepartment(req.body.newname,req.body.newpassword);
+router.put('/', guard.check('company'), companyCheck, async (req, res) => {
+  await updatedepartment(req.body.newname, req.body.newpassword);
   return res.status(201).send('department updated');
 });
 module.exports = router;

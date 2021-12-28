@@ -4,6 +4,6 @@ module.exports = () => {
   });
 
   process.on('uncaughtException', (err) => {
-    console.log('Error:', err.message);
+    console.log('Error:', err);
   });
 };

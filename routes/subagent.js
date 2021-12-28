@@ -109,7 +109,9 @@ router.put(
         amount: `Your available balance is ${balance}, please choose amount below ${balance}`,
       });
 
-    await Promise.all(rechargeSubAgent(req.params.id, req.body.amount));
+    await Promise.all(
+      rechargeSubAgent(req.params.id, req.user.id, req.body.amount)
+    );
     return res.status(200).send('updated');
   }
 );
