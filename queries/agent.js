@@ -104,13 +104,24 @@ const fetchActivityList = (id) => {
   return query(sql);
 };
 
-const getAgentUnitPrice = (agentId, licenseType, renewal) => {
-  const sql = `SELECT ${renewal} AS unitPrice FROM prices WHERE (agent_id=${agentId} AND license_type="${licenseType}")`;
+const getAgentUnitPrice = (agentId, licenseType, renewal, type) => {
+  let sql = `SELECT ${renewal} AS unitPrice FROM prices WHERE (agent_id=${agentId} AND license_type="${licenseType}")`;
+  if (type === 'subagent') {
+    sql = `SELECT ${renewal} AS agentUnitPrice FROM prices WHERE (agent_id=(SELECT agent_id FROM agents WHERE id=${agentId}) AND license_type="${licenseType}")`;
+  }
   return query(sql);
 };
 
 const deductBalance = (amount, agentId) => {
   const sql = `UPDATE agents_add_data SET balance=balance-${amount} WHERE agent_id=${agentId};`;
+  return query(sql);
+};
+
+const addProfit = (profit, subAgentId) => {
+  const sql = `UPDATE agents_add_data SET balance=balance+${profit}
+  WHERE agent_id = (
+    SELECT agent_id FROM agents WHERE id=${subAgentId}
+  );`;
   return query(sql);
 };
 
@@ -129,4 +140,5 @@ module.exports = {
   updateAgentPassword,
   fetchloglist,
   fetchActivityList,
+  addProfit,
 };
