@@ -1,20 +1,55 @@
 const moment = require('moment');
 
-const getExpiryDate = (renewal) => {
+const getExpiryDate = (renewal, number, oldDate) => {
+  let expiryDate;
+  let date;
+
   switch (renewal) {
     case 'monthly':
-      return moment().utc().add(1, 'M').format('YYYY-MM-DD HH:mm:ss');
+      date = oldDate
+        ? moment(oldDate).add(number, 'M').format('YYYY-MM-DD HH:mm:ss')
+        : moment().utc().add(number, 'M').format('YYYY-MM-DD HH:mm:ss');
+      expiryDate = moment(date).isAfter('2038-01-19 03:14:07')
+        ? '2038-01-19 03:14:07'
+        : date;
+      break;
     case 'quarterly':
-      return moment().utc().add(1, 'Q').format('YYYY-MM-DD HH:mm:ss');
+      date = oldDate
+        ? moment(oldDate).add(number, 'Q').format('YYYY-MM-DD HH:mm:ss')
+        : moment().utc().add(number, 'Q').format('YYYY-MM-DD HH:mm:ss');
+      expiryDate = moment(date).isAfter('2038-01-19 03:14:07')
+        ? '2038-01-19 03:14:07'
+        : date;
+      break;
     case 'half_yearly':
-      return moment().utc().add(2, 'Q').format('YYYY-MM-DD HH:mm:ss');
+      date = oldDate
+        ? moment(oldDate)
+            .add(2 * number, 'Q')
+            .format('YYYY-MM-DD HH:mm:ss')
+        : moment()
+            .utc()
+            .add(2 * number, 'Q')
+            .format('YYYY-MM-DD HH:mm:ss');
+      expiryDate = moment(date).isAfter('2038-01-19 03:14:07')
+        ? '2038-01-19 03:14:07'
+        : date;
+      break;
     case 'yearly':
-      return moment().utc().add(1, 'y').format('YYYY-MM-DD HH:mm:ss');
+      date = oldDate
+        ? moment(oldDate).add(number, 'y').format('YYYY-MM-DD HH:mm:ss')
+        : moment().utc().add(number, 'y').format('YYYY-MM-DD HH:mm:ss');
+      expiryDate = moment(date).isAfter('2038-01-19 03:14:07')
+        ? '2038-01-19 03:14:07'
+        : date;
+      break;
     case 'one_time':
-      return '2038-01-19 03:14:07';
+      expiryDate = '2038-01-19 03:14:07';
+      break;
     default:
-      return null;
+      break;
   }
+
+  return expiryDate;
 };
 
 module.exports = getExpiryDate;
