@@ -10,6 +10,11 @@ const findAgentById = (agentId) => {
   return query(sql);
 };
 
+const getSubAgents = (agentId) => {
+  const sql = `SELECT s.id FROM agents s JOIN agents a ON s.agent_id = a.id WHERE a.id=${agentId};`;
+  return query(sql);
+};
+
 const createAgent = (username, password, displayname, agenttype, agentid) => {
   const sql = `INSERT INTO agents (username, password,display_name,agent_type,agent_id) VALUES ("${username}","${password}","${displayname}","${agenttype}","${agentid}";) `;
   return query(sql);
@@ -128,6 +133,7 @@ const addProfit = (profit, subAgentId) => {
 module.exports = {
   findAgent,
   findAgentById,
+  getSubAgents,
   deductBalance,
   createAgent,
   addAgentdetials,

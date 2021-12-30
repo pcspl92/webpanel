@@ -1,5 +1,20 @@
 const query = require('../utils/queryTemplate');
 
+const getOrders = (subAgents) => {
+  const sql = `SELECT o.id AS order_id, o.timestamp AS order_date, license_type, license_expiry AS expiry_date, renewal AS renewal_type,
+               a.display_name AS agent_name, c.display_name AS company_name,
+               f.grp_call, f.enc, f.priv_call, f.live_gps, f.geo_fence, f.chat, 
+               COUNT(l.id) - COUNT(l.user_id) AS available, COUNT(l.user_id) AS active
+               FROM orders o
+               JOIN agents a ON o.agent_id = a.id
+               JOIN features f ON o.feature_id = f.id
+               JOIN companies c ON o.company_id = c.id
+               JOIN licenses l ON l.order_id = o.id
+               WHERE o.agent_id IN (${subAgents})
+               GROUP BY o.id;`;
+  return query(sql);
+};
+
 const createFeatures = ({
   grp_call: grpCall,
   enc,
@@ -21,8 +36,8 @@ const createOrder = (
   renewal,
   agentId
 ) => {
-  const sql = `INSERT INTO orders (license_type, license_expiry, company_id, feature_id, renewal, agent_id) 
-               VALUES ("${licenseType}", "${licenseExpiry}", ${companyId}, ${featureId}, ${renewal}, ${agentId});`;
+  const sql = `INSERT INTO orders (license_type, license_expiry, renewal, company_id, feature_id, agent_id) 
+               VALUES ("${licenseType}", "${licenseExpiry}", "${renewal}", ${companyId}, ${featureId}, ${agentId});`;
   return query(sql);
 };
 
@@ -54,6 +69,7 @@ const getLicenseCount = (orderId) => {
 };
 
 module.exports = {
+  getOrders,
   createLicense,
   createFeatures,
   createOrder,
