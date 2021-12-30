@@ -54,12 +54,10 @@ router.post('/login/agent', async (req, res) => {
   const user = await findAgent(req.body.username);
 
   if (!user.length)
-    return res
-      .status(400)
-      .json({ username: 'No agent with given username exists' });
+    return res.status(400).json({ auth: 'Wrong credential combination' });
 
   if (!(await comparePassword(req.body.password, user[0].password)))
-    return res.status(400).json({ password: 'Wrong credentials' });
+    return res.status(400).json({ auth: 'Wrong credential combination' });
 
   res.cookie(
     'auth',
@@ -85,12 +83,10 @@ router.post('/login/company', async (req, res) => {
   const company = await findCompany(req.body.username);
 
   if (!company.length)
-    return res
-      .status(400)
-      .json({ username: 'No company with given username exists' });
+    return res.status(400).json({ auth: 'Wrong credential combination' });
 
   if (!(await comparePassword(req.body.password, company[0].password)))
-    return res.status(400).json({ password: 'Wrong credentials' });
+    return res.status(400).json({ auth: 'Wrong credential combination' });
 
   res.cookie(
     'auth',

@@ -5,6 +5,7 @@ const _ = require('lodash');
 const agentSubAgentCheck = require('../guard/agentSubAgent');
 const getExpiryDate = require('../utils/licenseExpiryDate');
 const {
+  getOrders,
   findOrder,
   createFeatures,
   createOrder,
@@ -12,17 +13,36 @@ const {
   updateOrderId,
   getLicenseIds,
   getLicenseCount,
-} = require('../queries/license');
+} = require('../queries/order');
 const {
   getAgentUnitPrice,
   deductBalance,
   getAgentBalance,
   addProfit,
+  getSubAgents,
 } = require('../queries/agent');
 
 const router = express.Router();
 
-// @route   GET api/license/:orderId/count
+// @route   GET api/order/
+// @desc    Agent-Subagent orders fetching route
+// @access  Private(Agent|Subagent)
+router.get('/', async (req, res) => {
+  if (req.user.permissions.includes('agent')) {
+    const result = await getSubAgents(req.user.id);
+    const subagents = result.reduce(
+      (acc, sub) => [...acc, sub.id],
+      [req.user.id]
+    );
+    const agentOrders = await getOrders(subagents);
+    return res.status(200).json(agentOrders);
+  }
+
+  const subAgentOrders = await getOrders([req.user.id]);
+  return res.status(200).json(subAgentOrders);
+});
+
+// @route   GET api/order/:orderId/count
 // @desc    Available license count providing route
 // @access  Private(Agent|Subagent)
 router.get('/:orderId/count', async (req, res) => {
@@ -36,8 +56,8 @@ router.get('/:orderId/count', async (req, res) => {
   return res.status(200).json({ licenseCount });
 });
 
-// @route   POST api/license/
-// @desc    License creation route
+// @route   POST api/order/
+// @desc    Order creation route
 // @access  Private(Agent|Subagent)
 router.post(
   '/',
@@ -79,7 +99,7 @@ router.post(
     await createLicense(orderRes.insertId, req.body.qty);
 
     await deductBalance(unitPrice * req.body.qty, req.user.id);
-    if (req.user.permissions.include('subagent')) {
+    if (req.user.permissions.includes('subagent')) {
       const [{ agentUnitPrice }] = await getAgentUnitPrice(
         req.user.id,
         req.body.license_type,
@@ -92,7 +112,7 @@ router.post(
   }
 );
 
-// @route   PUT api/license/:orderId/features
+// @route   PUT api/order/:orderId/features
 // @desc    Order update features route
 // @access  Private(Agent|Subagent)
 router.put(
@@ -135,7 +155,7 @@ router.put(
   }
 );
 
-// @route   PUT api/license/:orderId/renewal
+// @route   PUT api/order/:orderId/renewal
 // @desc    Order renewal route
 // @access  Private(Agent|Subagent)
 router.put(
@@ -189,7 +209,7 @@ router.put(
       unitPrice * req.body.period * licenseCount,
       req.user.id
     );
-    if (req.user.permissions.include('subagent')) {
+    if (req.user.permissions.includes('subagent')) {
       const [{ agentUnitPrice }] = await getAgentUnitPrice(
         req.user.id,
         order[0].license_type,
@@ -206,7 +226,7 @@ router.put(
   }
 );
 
-// @route   PUT api/license/:orderId/transfer
+// @route   PUT api/order/:orderId/transfer
 // @desc    Order transfer route
 // @access  Private(Agent|Subagent)
 router.put(
