@@ -6,8 +6,7 @@ const genToken = require('../utils/genToken');
 const { comparePassword, hashPassword } = require('../utils/bcrypt');
 const { findCompany, updateCompanyPassword } = require('../queries/company');
 const { findAgent, updateAgentPassword } = require('../queries/agent');
-const agentSubAgentCheck = require('../guard/agentSubAgent');
-const companyCheck = require('../guard/company');
+const { agentSubAgentCheck, companyCheck } = require('../guard');
 
 const router = express.Router();
 

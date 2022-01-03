@@ -1,7 +1,7 @@
 const express = require('express');
 const guard = require('express-jwt-permissions')();
 
-const companyCheck = require('../guard/company');
+const { companyCheck } = require('../guard');
 const { findTGByName, createTG } = require('../queries/talkgroup');
 
 const router = express.Router();
