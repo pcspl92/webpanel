@@ -14,7 +14,7 @@ const {
   fetchloglist,
   fetchActivityList,
 } = require('../queries/agent');
-const { agentCheck } = require('../guard');
+const { agentCheck, agentSubAgentCheck } = require('../guard');
 const { hashPassword } = require('../utils/bcrypt');
 
 const router = express.Router();
@@ -152,6 +152,7 @@ router.put(
     return res.status(200).send('updated');
   }
 );
+
 router.post(
   '/',
   guard.check([['agent'], ['subagent']]),
@@ -162,6 +163,7 @@ router.post(
     return res.status(201).send(loglist);
   }
 );
+
 router.post(
   '/',
   guard.check([['agent'], ['subagent']]),
@@ -172,4 +174,5 @@ router.post(
     return res.status(201).send(activitylist);
   }
 );
+
 module.exports = router;
