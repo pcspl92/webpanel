@@ -10,6 +10,11 @@ const findAgentById = (agentId) => {
   return query(sql);
 };
 
+const getSubAgents = (agentId) => {
+  const sql = `SELECT s.id FROM agents s JOIN agents a ON s.agent_id = a.id WHERE a.id=${agentId};`;
+  return query(sql);
+};
+
 const createAgent = (username, password, displayname, agenttype, agentid) => {
   const sql = `INSERT INTO agents (username, password,display_name,agent_type,agent_id) VALUES ("${username}","${password}","${displayname}","${agenttype}","${agentid}";) `;
   return query(sql);
@@ -104,8 +109,11 @@ const fetchActivityList = (id) => {
   return query(sql);
 };
 
-const getAgentUnitPrice = (agentId, licenseType, renewal) => {
-  const sql = `SELECT ${renewal} AS unitPrice FROM prices WHERE (agent_id=${agentId} AND license_type="${licenseType}")`;
+const getAgentUnitPrice = (agentId, licenseType, renewal, type) => {
+  let sql = `SELECT ${renewal} AS unitPrice FROM prices WHERE (agent_id=${agentId} AND license_type="${licenseType}")`;
+  if (type === 'subagent') {
+    sql = `SELECT ${renewal} AS agentUnitPrice FROM prices WHERE (agent_id=(SELECT agent_id FROM agents WHERE id=${agentId}) AND license_type="${licenseType}")`;
+  }
   return query(sql);
 };
 
@@ -114,9 +122,18 @@ const deductBalance = (amount, agentId) => {
   return query(sql);
 };
 
+const addProfit = (profit, subAgentId) => {
+  const sql = `UPDATE agents_add_data SET balance=balance+${profit}
+  WHERE agent_id = (
+    SELECT agent_id FROM agents WHERE id=${subAgentId}
+  );`;
+  return query(sql);
+};
+
 module.exports = {
   findAgent,
   findAgentById,
+  getSubAgents,
   deductBalance,
   createAgent,
   addAgentdetials,
@@ -129,4 +146,5 @@ module.exports = {
   updateAgentPassword,
   fetchloglist,
   fetchActivityList,
+  addProfit,
 };

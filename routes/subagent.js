@@ -37,7 +37,7 @@ router.post('/', guard.check('agent'), agentCheck, async (req, res) => {
     req.body.username,
     password,
     req.body.display_name,
-    'sub-agent',
+    'subagent',
     req.user.id
   );
   await addAgentdetials(
