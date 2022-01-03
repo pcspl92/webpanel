@@ -12,7 +12,7 @@ const {
   rechargeSubAgent,
   updateSubAgent,
 } = require('../queries/agent');
-const agentCheck = require('../guard/agent');
+const { agentCheck } = require('../guard');
 const { hashPassword } = require('../utils/bcrypt');
 
 const router = express.Router();
