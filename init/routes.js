@@ -8,6 +8,7 @@ const tg = require('../routes/talkgroup');
 const order = require('../routes/order');
 const subagent = require('../routes/subagent');
 const user = require('../routes/user');
+const cl = require('../routes/contactList');
 
 module.exports = (app) => {
   app.use(express.json());
@@ -20,5 +21,6 @@ module.exports = (app) => {
   app.use('/api/subagent', subagent);
   app.use('/api/order', order);
   app.use('/api/user', user);
+  app.use('/api/contactlist', cl);
   app.use('*', (req, res) => res.status(400).send('Invalid Route'));
 };

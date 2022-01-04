@@ -2,7 +2,7 @@ const express = require('express');
 const guard = require('express-jwt-permissions')();
 const _ = require('lodash');
 
-const agentSubAgentCheck = require('../guard/agentSubAgent');
+const { agentSubAgentCheck } = require('../guard');
 const getExpiryDate = require('../utils/licenseExpiryDate');
 const {
   getOrders,

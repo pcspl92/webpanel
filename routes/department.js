@@ -2,14 +2,13 @@ const express = require('express');
 const guard = require('express-jwt-permissions')();
 const _ = require('lodash');
 
-const companyCheck = require('../guard/company');
+const { companyCheck } = require('../guard');
 const {
   findDeptByUsername,
   createDept,
   updatedepartment,
 } = require('../queries/department');
 const { hashPassword } = require('../utils/bcrypt');
-const { route } = require('./company');
 
 const router = express.Router();
 
