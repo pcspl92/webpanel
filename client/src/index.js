@@ -1,7 +1,13 @@
 import './global.css';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 
-import App from '../src/pages/app';
+import App from './components/index';
+import AuthProvider from './hooks/useAuth';
 
-ReactDOM.render(<App />, document.querySelector('#root'));
+render(
+  <AuthProvider>
+    <App />
+  </AuthProvider>,
+  document.querySelector('#root')
+);

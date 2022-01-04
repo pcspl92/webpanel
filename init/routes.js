@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 
 const auth = require('../routes/auth');
 const company = require('../routes/company');
@@ -14,6 +15,13 @@ module.exports = (app) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(morgan('tiny'));
+  app.use(
+    cors({
+      origin: 'http://localhost:3000',
+      methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
+      credentials: true,
+    })
+  );
   app.use('/api/auth', auth);
   app.use('/api/company', company);
   app.use('/api/department', dept);

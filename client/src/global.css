@@ -10,5 +10,29 @@
 }
 
 :root {
-  --primary: #21fd0d;
+  --primary: #3b78c6;
+}
+
+.centerAlign {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.fw-500 {
+  font-weight: 500;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+.fw-700 {
+  font-weight: 700;
+}
+
+.layout-login {
+  height: 400px;
+  width: 600px;
+  background-color: var(--primary);
 }

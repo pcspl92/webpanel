@@ -14,7 +14,13 @@ const router = express.Router();
 // @desc    Gives the status of user whether logged-in or not
 // @access  Public(all)
 router.get('/status', (req, res) => {
-  if (req.user) return res.status(200).json(req.user);
+  if (req.user)
+    return res
+      .status(200)
+      .json({
+        ..._.omit(req.user, ['iat', 'permissions']),
+        type: req.user.permissions[0],
+      });
   return res.status(200).send(false);
 });
 
@@ -61,7 +67,7 @@ router.post('/login/agent', async (req, res) => {
   res.cookie(
     'auth',
     genToken({
-      ..._.omit(user[0], ['password']),
+      ..._.omit(user[0], ['password', 'agent_type']),
       permissions: [user[0].agent_type],
     }),
     {
