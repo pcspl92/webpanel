@@ -63,7 +63,7 @@ export default function Navbar() {
               className={({ isActive }) =>
                 `link ${isActive ? 'activesubheadings' : 'subheadings'}`
               }
-              to="/SetPrices"
+              to="/subagent/setprices"
             >
               &nbsp; Set Prices for Sub_Agents
             </NavLink>
@@ -74,7 +74,7 @@ export default function Navbar() {
               className={({ isActive }) =>
                 `link ${isActive ? 'activesubheadings' : 'subheadings'}`
               }
-              to="/RechargeSubAgents"
+              to="/subagent/recharge"
             >
               &nbsp; Recharge Sub-Agents
             </NavLink>
@@ -85,7 +85,7 @@ export default function Navbar() {
               className={({ isActive }) =>
                 `link ${isActive ? 'activesubheadings' : 'subheadings'}`
               }
-              to="/ModifySubAgents"
+              to="/subagent/modify"
             >
               &nbsp; Modify Sub-Agents
             </NavLink>

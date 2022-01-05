@@ -6,6 +6,9 @@ import Login from '../pages/login';
 import Comp from '../pages/privComp';
 import CreateSubAgent from '../pages/subAgentCreate';
 import ViewAgent from '../pages/subAgentView';
+import SetPrices from '../pages/subAgentSetprices';
+import RechargeAgent from '../pages/subAgentRecharge';
+import ModifyAgent from '../pages/subAgentModify';
 import Dashboard from '../pages/dashboard';
 import NotFound from '../pages/404';
 import PrivateRoute from '../utils/privateRoute';
@@ -32,6 +35,9 @@ export default function App() {
      <Route path="/subagent">
           <Route path="create" element={<CreateSubAgent />} />
           <Route path="view" element={<ViewAgent />} />
+          <Route path="setprices" element={<SetPrices/>} />
+          <Route path="recharge" element={<RechargeAgent/>} /> 
+          <Route path="modify" element={<ModifyAgent/>} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -16,7 +16,7 @@ const ViewAgent=()=>{
 return (
 <div className='viewback'>
 <div style={{fontWeight
-:"bolder",fontSize:"4vh"}}>View Sub-Agents</div>
+:"bolder",fontSize:"4vh"}}>VIEW SUB-AGENTS</div>
  
         <br/>
 <div className='filter' >

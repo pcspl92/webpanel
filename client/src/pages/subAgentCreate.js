@@ -120,7 +120,7 @@ const AddAgent = () => {
           style={{
             display: 'flex',
             flexDirection: 'row',
-            marginLeft: '17vw',
+            marginLeft: '14vw',
             position: 'absolute',
           }}
         >
@@ -190,8 +190,8 @@ const AddAgent = () => {
               marginLeft: '2.2vw',
             }}
           >
-            <span style={{ fontSize: '2vh' }}>
-              Dispatcher Account Price : &nbsp;
+            <span style={{ fontSize: '2vh' ,marginLeft:"0.3vw" }}>
+               Dispatcher Account Price : &nbsp; 
             </span>
             <input
               type="text"
@@ -237,7 +237,7 @@ const AddAgent = () => {
               marginLeft: '0.4vw',
             }}
           >
-            <span style={{ fontSize: '2vh' }}>
+            <span style={{ fontSize: '2vh' ,marginLeft:"0.3vw"}}>
               Control Station Account Price : &nbsp;
             </span>
             <input
