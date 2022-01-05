@@ -130,6 +130,17 @@ const addProfit = (profit, subAgentId) => {
   return query(sql);
 };
 
+const viewSubAgentData = (subAgentIds) => {
+  const sql = `SELECT COUNT(o.id) - COUNT(l.user_id) AS available, COUNT(l.user_id) AS active, COUNT(DISTINCT o.id) AS orders,
+               a.username AS account_name, a.display_name AS agent_name, a.id
+               FROM orders o 
+               JOIN licenses l ON l.order_id = o.id
+               JOIN agents a ON a.id = o.agent_id
+               WHERE o.agent_id IN (${subAgentIds})
+               GROUP BY o.agent_id;`;
+  return query(sql);
+};
+
 module.exports = {
   findAgent,
   findAgentById,
@@ -147,4 +158,5 @@ module.exports = {
   fetchloglist,
   fetchActivityList,
   addProfit,
+  viewSubAgentData,
 };

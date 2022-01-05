@@ -12,12 +12,25 @@ const {
   rechargeSubAgent,
   updateSubAgent,
   fetchloglist,
+  viewSubAgentData,
+  getSubAgents,
   fetchActivityList,
 } = require('../queries/agent');
 const { agentCheck, agentSubAgentCheck } = require('../guard');
 const { hashPassword } = require('../utils/bcrypt');
 
 const router = express.Router();
+
+// @route   POST api/subagent/
+// @desc    Subagent fetching route
+// @access  Private(Agent)
+router.get('/', guard.check('agent'), agentCheck, async (req, res) => {
+  const result = await getSubAgents(req.user.id);
+  const subagents = result.reduce((acc, sub) => [...acc, sub.id], []);
+
+  const data = await viewSubAgentData(subagents);
+  return res.status(200).json(data);
+});
 
 // @route   POST api/subagent/
 // @desc    Subagent creation route
