@@ -13,7 +13,7 @@
   --primary: #3b78c6;
 }
 
-.centerAlign {
+.form-login {
   height: 100vh;
   display: grid;
   place-items: center;
@@ -31,12 +31,33 @@
   font-weight: 700;
 }
 
+.mr-3rem {
+  margin-right: 3rem;
+}
+
+.mt-3rem {
+  margin-top: 3rem;
+}
+
 .layout-login {
   height: 400px;
   width: 600px;
   background-color: var(--primary);
+  border-radius: 10px;
 }
-.mainback
-{
+
+.mainback {
   background-color: #3b78c6;
+}
+
+.form-input {
+  border-color: transparent;
+  border-radius: 5px;
+}
+
+.captcha {
+  display: flex;
+  justify-content: end;
+  margin-top: 2rem;
+  margin-bottom: 2.5rem;
 }
