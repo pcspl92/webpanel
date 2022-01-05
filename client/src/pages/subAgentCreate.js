@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import "./AddAgent.css";
-import Axios from "axios";
+import React, { useState } from 'react';
+import '../css/AddAgent.css';
+import Axios from 'axios';
 
 const AddAgent = () => {
   let parentagentid = 1;
-  const [username, setusername] = useState("");
-  const [password, setpassword] = useState("");
-  const [subagentname, setsubagentname] = useState("");
-  const [contactnum, setcontact] = useState("");
+  const [username, setusername] = useState('');
+  const [password, setpassword] = useState('');
+  const [subagentname, setsubagentname] = useState('');
+  const [contactnum, setcontact] = useState('');
   //Setting PTT User Price
   const [monthlyptt, setmonthlyppt] = useState(0);
   const [quarterlyptt, setquarterlyppt] = useState(0);
@@ -27,32 +27,30 @@ const AddAgent = () => {
   const [yearlycsap, setyearlycsap] = useState(0);
   const [onetimecsap, setonetimecsap] = useState(0);
   const addagent = () => {
-    Axios.post("https://localhost:3002/createagent", {
-   
-    }).then(() => {
-      console.log("success");
+    Axios.post('https://localhost:3002/createagent', {}).then(() => {
+      console.log('success');
     });
   };
   return (
     <form
       style={{
-        display: "flex",
-        flexDirection: "column",
+        display: 'flex',
+        flexDirection: 'column',
 
-        height: "90vh",
-        width: "79vw",
-        justifyContent: "center",
-        alignItems: "center",
+        height: '90vh',
+        width: '79vw',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
       <h3>CREATE NEW SUB AGENT</h3>
 
       <div
         style={{
-          width: "40vw",
-          textAlign: "end",
-          alignSelf: "end",
-          marginRight: "35vw",
+          width: '40vw',
+          textAlign: 'end',
+          alignSelf: 'end',
+          marginRight: '35vw',
         }}
       >
         <span>
@@ -108,7 +106,7 @@ const AddAgent = () => {
         />
       </div>
       <br />
-      <div style={{ marginLeft: "40vw" }}>
+      <div style={{ marginLeft: '40vw' }}>
         <i>
           (Prices have to be greater than or equal to the Base Price of Parent
           Agent)
@@ -116,13 +114,13 @@ const AddAgent = () => {
       </div>
       <br />
       <br />
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
-            marginLeft: "17vw",
-            position: "absolute",
+            display: 'flex',
+            flexDirection: 'row',
+            marginLeft: '17vw',
+            position: 'absolute',
           }}
         >
           <div className="subformelements">Monthly License</div>
@@ -134,18 +132,18 @@ const AddAgent = () => {
         <br />
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
           <div
             style={{
-              display: "flex",
-              flexDirection: "row",
-              marginLeft: "6.8vw",
+              display: 'flex',
+              flexDirection: 'row',
+              marginLeft: '6.8vw',
             }}
           >
-            <span style={{ fontSize: "2vh" }}>PTT User Price : &nbsp;</span>
+            <span style={{ fontSize: '2vh' }}>PTT User Price : &nbsp;</span>
             <input
               type="text"
               className="subformelements"
@@ -186,12 +184,12 @@ const AddAgent = () => {
 
           <div
             style={{
-              display: "flex",
-              flexDirection: "row",
-              marginLeft: "2.2vw",
+              display: 'flex',
+              flexDirection: 'row',
+              marginLeft: '2.2vw',
             }}
           >
-            <span style={{ fontSize: "2vh" }}>
+            <span style={{ fontSize: '2vh' }}>
               Dispatcher Account Price : &nbsp;
             </span>
             <input
@@ -233,12 +231,12 @@ const AddAgent = () => {
           <br />
           <div
             style={{
-              display: "flex",
-              flexDirection: "row",
-              marginLeft: "0.4vw",
+              display: 'flex',
+              flexDirection: 'row',
+              marginLeft: '0.4vw',
             }}
           >
-            <span style={{ fontSize: "2vh" }}>
+            <span style={{ fontSize: '2vh' }}>
               Control Station Account Price : &nbsp;
             </span>
             <input
@@ -280,7 +278,7 @@ const AddAgent = () => {
         </div>
       </div>
       <br />
-      <button style={{ width: "15vw" }} onClick={addagent}>
+      <button style={{ width: '15vw' }} onClick={addagent}>
         Save
       </button>
     </form>

@@ -1,4 +1,4 @@
-import './global.css';
+import './css/global.css';
 import React from 'react';
 import { render } from 'react-dom';
 
