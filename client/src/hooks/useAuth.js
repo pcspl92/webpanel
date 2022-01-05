@@ -10,7 +10,7 @@ export const useAuth = () => {
 
 export default function Auth({ children }) {
   const [user, setUser] = useState({ auth: false });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
