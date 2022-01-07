@@ -34,66 +34,66 @@ export default function Navbar() {
 
       <div className="headings">+ License Management</div>
 
-        <div className="headings" onClick={dropdownagent}>
-          + Sub-Agent Management
-        </div>
-        {agentdrop && (
-          <div style={{ marginTop: '1.5vh', marginLeft: '2vw' }}>
-            <NavLink
-              to="/subagent/create"
-              className={({ isActive }) =>
-                `link ${isActive ? 'activesubheadings' : 'subheadings'}`
-              }
-            >
-              &nbsp; Create New Sub-Agent{' '}
-            </NavLink>
-
-            <br />
-
-            <NavLink
-              className={({ isActive }) =>
-                `link ${isActive ? 'activesubheadings' : 'subheadings'}`
-              }
-              to="/subagent/view"
-            >
-              &nbsp; Views Sub-Agents
-            </NavLink>
-
-            <br />
-
-            <NavLink
-              className={({ isActive }) =>
-                `link ${isActive ? 'activesubheadings' : 'subheadings'}`
-              }
-              to="/subagent/setprices"
-            >
-              &nbsp; Set Prices for Sub_Agents
-            </NavLink>
-
-            <br />
-
-            <NavLink
-              className={({ isActive }) =>
-                `link ${isActive ? 'activesubheadings' : 'subheadings'}`
-              }
-              to="/subagent/recharge"
-            >
-              &nbsp; Recharge Sub-Agents
-            </NavLink>
-
-            <br />
-
-            <NavLink
-              className={({ isActive }) =>
-                `link ${isActive ? 'activesubheadings' : 'subheadings'}`
-              }
-              to="/subagent/modify"
-            >
-              &nbsp; Modify Sub-Agents
-            </NavLink>
-          </div>
-        )}
-        <div className="headings">+ Personal Center</div>
+      <div className="headings" onClick={dropdownagent}>
+        + Sub-Agent Management
       </div>
+      {agentdrop && (
+        <div style={{ marginTop: '1.5vh', marginLeft: '2vw' }}>
+          <NavLink
+            to="/subagent/create"
+            className={({ isActive }) =>
+              `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+            }
+          >
+            &nbsp; Create New Sub-Agent{' '}
+          </NavLink>
+
+          <br />
+
+          <NavLink
+            className={({ isActive }) =>
+              `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+            }
+            to="/subagent/view"
+          >
+            &nbsp; Views Sub-Agents
+          </NavLink>
+
+          <br />
+
+          <NavLink
+            className={({ isActive }) =>
+              `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+            }
+            to="/subagent/setprices"
+          >
+            &nbsp; Set Prices for Sub_Agents
+          </NavLink>
+
+          <br />
+
+          <NavLink
+            className={({ isActive }) =>
+              `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+            }
+            to="/subagent/recharge"
+          >
+            &nbsp; Recharge Sub-Agents
+          </NavLink>
+
+          <br />
+
+          <NavLink
+            className={({ isActive }) =>
+              `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+            }
+            to="/subagent/modify"
+          >
+            &nbsp; Modify Sub-Agents
+          </NavLink>
+        </div>
+      )}
+      <div className="headings">+ Personal Center</div>
+    </div>
   );
 }

@@ -15,9 +15,9 @@
 
 .form-login {
   height: 100vh;
+  width: 100vw;
   display: grid;
   place-items: center;
-  background-color: aquamarine;
 }
 
 .fw-500 {
@@ -61,4 +61,19 @@
   justify-content: end;
   margin-top: 2rem;
   margin-bottom: 2.5rem;
+}
+
+.header-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.header-options div {
+  cursor: pointer;
+}
+.header-options div:first-child {
+  margin-right: 2rem;
 }

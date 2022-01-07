@@ -19,4 +19,10 @@ const companyCheck = (err, req, res, next) => {
   return next();
 };
 
-module.exports = { agentCheck, agentSubAgentCheck, companyCheck };
+const isLoggedIn = (req, res, next) => {
+  if (!req.user) return res.status(400).send('Please Login First');
+
+  return next();
+};
+
+module.exports = { agentCheck, agentSubAgentCheck, companyCheck, isLoggedIn };

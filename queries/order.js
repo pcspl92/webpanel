@@ -42,7 +42,9 @@ const createOrder = (
 };
 
 const createLicense = (orderId, qty) => {
-  const sql = `CALL create_licenses(${orderId}, ${qty});`;
+  const sql = Array(qty)
+    .fill(`VALUES (${orderId}) `)
+    .reduce((acc, val) => acc + val, `INSERT INTO licenses (order_id) `);
   return query(sql);
 };
 

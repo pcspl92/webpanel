@@ -18,30 +18,28 @@ import Navbar from './navbar';
 export default function App() {
   return (
     <BrowserRouter>
-    <div className='mainback'>
-       <Header/> 
-    <div className='bottompart'>
-<Navbar/>
-    <div className="routearea">
-      <Routes>
-        <Route index element={<Index />} />
-        <Route path="/login" element={<LoginRoute component={<Login />} />} />
-        <Route path="/comp" element={<PrivateRoute component={<Comp />} />} />
-        <Route
-          path="/dashboard"
-          element={<PrivateRoute component={<Dashboard />} />}
-        />
-     <Route path="/subagent">
-          <Route path="create" element={<CreateSubAgent />} />
-          <Route path="view" element={<ViewAgent />} />
-          <Route path="setprices" element={<SetPrices/>} />
-          <Route path="recharge" element={<RechargeAgent/>} /> 
-          <Route path="modify" element={<ModifyAgent/>} />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      </div>
-    </div>
+      <div className="mainback">
+        <Header />
+        <div className="bottompart">
+          <Navbar />
+          <div className="routearea">
+            <Routes>
+              <Route path="/" element={<LoginRoute component={<Login />} />} />
+              <Route
+                path="/dashboard"
+                element={<PrivateRoute component={<Dashboard />} />}
+              />
+              <Route path="/subagent">
+                <Route path="create" element={<CreateSubAgent />} />
+                <Route path="view" element={<ViewAgent />} />
+                <Route path="setprices" element={<SetPrices />} />
+                <Route path="recharge" element={<RechargeAgent />} />
+                <Route path="modify" element={<ModifyAgent />} />
+              </Route>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        </div>
       </div>
     </BrowserRouter>
   );

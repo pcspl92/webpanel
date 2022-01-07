@@ -1,7 +1,7 @@
 const express = require('express');
 const guard = require('express-jwt-permissions')();
 
-const { agentSubAgentCheck } = require('../guard');
+const { agentSubAgentCheck, isLoggedIn } = require('../guard');
 
 const router = express.Router();
 
@@ -10,6 +10,7 @@ const router = express.Router();
 // @access  Private(Agent|Subagent)
 router.get(
   '/',
+  isLoggedIn,
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
   async (req, res) => {

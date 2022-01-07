@@ -15,13 +15,20 @@ const getSubAgents = (agentId) => {
   return query(sql);
 };
 
-const createAgent = (username, password, displayname, agenttype, agentid) => {
-  const sql = `INSERT INTO agents (username, password,display_name,agent_type,agent_id) VALUES ("${username}","${password}","${displayname}","${agenttype}","${agentid}";) `;
+const getSubAgentNames = (agentId) => {
+  const sql = `SELECT display_name, a.id, ad.balance FROM agents a
+               JOIN agents_add_data ad ON a.id = ad.agent_id
+               WHERE a.agent_id=${agentId};`;
   return query(sql);
 };
 
-const addAgentdetials = (balance, contactnumber, agentid) => {
-  const sql = `INSERT INTO agents_add_data (balance, contact_number, agent_id) VALUES ("${balance}","${contactnumber}",${agentid})`;
+const createAgent = (username, password, displayname, agenttype, agentid) => {
+  const sql = `INSERT INTO agents (username, password, display_name, agent_type, agent_id) VALUES ("${username}","${password}","${displayname}","${agenttype}",${agentid}); `;
+  return query(sql);
+};
+
+const addAgentDetials = (contactnumber, agentid) => {
+  const sql = `INSERT INTO agents_add_data (contact_number, agent_id) VALUES ("${contactnumber}",${agentid})`;
   return query(sql);
 };
 
@@ -145,9 +152,10 @@ module.exports = {
   findAgent,
   findAgentById,
   getSubAgents,
+  getSubAgentNames,
   deductBalance,
   createAgent,
-  addAgentdetials,
+  addAgentDetials,
   addPriceDetails,
   updatePriceDetails,
   rechargeSubAgent,

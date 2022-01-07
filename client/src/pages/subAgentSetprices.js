@@ -1,61 +1,122 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/SetPrices.css';
-import Axios from 'axios';
-const SetPrices=()=>{
-  
-  
+import axios from '../utils/axios';
+const SetPrices = () => {
+  const [agentid, setagentid] = useState(0);
+  const [agentlist, setagentlist] = useState([]);
+  //Setting PTT User Price
+  const [monthlyptt, setmonthlyppt] = useState(0);
+  const [quarterlyptt, setquarterlyppt] = useState(0);
+  const [halfylyptt, sethalfylyppt] = useState(0);
+  const [yearlyptt, setyearlyppt] = useState(0);
+  const [onetimeptt, setonetimeppt] = useState(0);
+  //Setting Dispatcher Account Price
+  const [monthlydap, setmonthlydap] = useState(0);
+  const [quarterlydap, setquarterlydap] = useState(0);
+  const [halfylydap, sethalfylydap] = useState(0);
+  const [yearlydap, setyearlydap] = useState(0);
+  const [onetimedap, setonetimedap] = useState(0);
+  //Setting Control Station Account Price
+  const [monthlycsap, setmonthlycsap] = useState(0);
+  const [quarterlycsap, setquarterlycsap] = useState(0);
+  const [halfylycsap, sethalfylycsap] = useState(0);
+  const [yearlycsap, setyearlycsap] = useState(0);
+  const [onetimecsap, setonetimecsap] = useState(0);
+  const [disabled, setDisabled] = useState(false);
 
-    const [agentname, setagentname] = useState('');
-    const [agentlist, setagentlist] = useState([]);
-    //Setting PTT User Price
-    const [monthlyptt, setmonthlyppt] = useState(0);
-    const [quarterlyptt, setquarterlyppt] = useState(0);
-    const [halfylyptt, sethalfylyppt] = useState(0);
-    const [yearlyptt, setyearlyppt] = useState(0);
-    const [onetimeptt, setonetimeppt] = useState(0);
-    //Setting Dispatcher Account Price
-    const [monthlydap, setmonthlydap] = useState(0);
-    const [quarterlydap, setquarterlydap] = useState(0);
-    const [halfylydap, sethalfylydap] = useState(0);
-    const [yearlydap, setyearlydap] = useState(0);
-    const [onetimedap, setonetimedap] = useState(0);
-    //Setting Control Station Account Price
-    const [monthlycsap, setmonthlycsap] = useState(0);
-    const [quarterlycsap, setquarterlycsap] = useState(0);
-    const [halfylycsap, sethalfylycsap] = useState(0);
-    const [yearlycsap, setyearlycsap] = useState(0);
-    const [onetimecsap, setonetimecsap] = useState(0);
-return (
-<div className='setpricesback'>
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get('/subagent/names');
+      setagentlist(data);
+    })();
+  }, []);
 
-<div style={{fontWeight
-:"bolder",fontSize:"4vh"}}>SET PRICES FOR SUB-AGENTS</div>
-<br/>
-<br/>
-<div>
-      <span>
-          <label for="id1">Select Sub-Agent : </label>
+  const reset = () => {
+    setagentid(0);
+    setmonthlyppt(0);
+    setquarterlyppt(0);
+    sethalfylyppt(0);
+    setyearlyppt(0);
+    setonetimeppt(0);
+    setmonthlydap(0);
+    setquarterlydap(0);
+    sethalfylydap(0);
+    setyearlydap(0);
+    setonetimedap(0);
+    setmonthlycsap(0);
+    setquarterlycsap(0);
+    sethalfylycsap(0);
+    setyearlycsap(0);
+    setonetimecsap(0);
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setDisabled(true);
+
+    const data = {
+      ptt: {
+        monthly: monthlyptt,
+        quarterly: quarterlyptt,
+        half_yearly: halfylyptt,
+        yearly: yearlyptt,
+        one_time: onetimeptt,
+      },
+      dispatcher: {
+        monthly: monthlydap,
+        quarterly: quarterlydap,
+        half_yearly: halfylydap,
+        yearly: yearlydap,
+        one_time: onetimedap,
+      },
+      control: {
+        monthly: monthlycsap,
+        quarterly: quarterlycsap,
+        half_yearly: halfylycsap,
+        yearly: yearlycsap,
+        one_time: onetimecsap,
+      },
+    };
+
+    try {
+      await axios.put(`/subagent/${agentid}/prices`, data);
+      reset();
+      setDisabled(false);
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  };
+
+  return (
+    <form className="setpricesback" onSubmit={onSubmit}>
+      <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
+        SET PRICES FOR SUB-AGENTS
+      </div>
+      <br />
+      <br />
+      <div>
+        <span>
+          <label htmlFor="id1">Select Sub-Agent : </label>
         </span>
         <select
           id="id1"
           onChange={(event) => {
-            setagentname(event.target.value);
+            setagentid(event.target.value);
           }}
           required
         >
-                          <option>Select a Option</option> 
+          <option>Select a Option</option>
 
-        {
-            agentlist.map((val,key)=>{
-                return(
-                       
-           <option>{val.agent_name}</option>
-         )
-           } )
-        }
-    </select>
-        </div>
-        <br />
+          {agentlist.map((val) => {
+            return (
+              <option key={val.id} value={val.id}>
+                {val.display_name}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      <br />
       <div style={{ marginLeft: '40vw' }}>
         <i>
           (Prices have to be greater than or equal to the Base Price of Parent
@@ -139,8 +200,8 @@ return (
               marginLeft: '2.2vw',
             }}
           >
-            <span style={{ fontSize: '2vh' ,marginLeft:"0.3vw" }}>
-               Dispatcher Account Price : &nbsp; 
+            <span style={{ fontSize: '2vh', marginLeft: '0.3vw' }}>
+              Dispatcher Account Price : &nbsp;
             </span>
             <input
               type="text"
@@ -186,7 +247,7 @@ return (
               marginLeft: '0.4vw',
             }}
           >
-            <span style={{ fontSize: '2vh' ,marginLeft:"0.3vw"}}>
+            <span style={{ fontSize: '2vh', marginLeft: '0.3vw' }}>
               Control Station Account Price : &nbsp;
             </span>
             <input
@@ -228,9 +289,10 @@ return (
         </div>
       </div>
       <br />
-      <button style={{ width: '15vw' }}>
+      <button style={{ width: '15vw' }} type="submit" disabled={disabled}>
         UPDATE
       </button>
-</div>
-)}
+    </form>
+  );
+};
 export default SetPrices;

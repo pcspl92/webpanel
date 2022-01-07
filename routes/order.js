@@ -2,7 +2,7 @@ const express = require('express');
 const guard = require('express-jwt-permissions')();
 const _ = require('lodash');
 
-const { agentSubAgentCheck } = require('../guard');
+const { agentSubAgentCheck, isLoggedIn } = require('../guard');
 const getExpiryDate = require('../utils/licenseExpiryDate');
 const {
   getOrders,
@@ -27,7 +27,7 @@ const router = express.Router();
 // @route   GET api/order/
 // @desc    Agent-Subagent orders fetching route
 // @access  Private(Agent|Subagent)
-router.get('/', async (req, res) => {
+router.get('/', isLoggedIn, async (req, res) => {
   if (req.user.permissions.includes('agent')) {
     const result = await getSubAgents(req.user.id);
     const subagents = result.reduce(
@@ -45,7 +45,7 @@ router.get('/', async (req, res) => {
 // @route   GET api/order/:orderId/count
 // @desc    Available license count providing route
 // @access  Private(Agent|Subagent)
-router.get('/:orderId/count', async (req, res) => {
+router.get('/:orderId/count', isLoggedIn, async (req, res) => {
   const order = await findOrder(req.params.orderId);
   if (!order.length)
     return res
@@ -61,6 +61,7 @@ router.get('/:orderId/count', async (req, res) => {
 // @access  Private(Agent|Subagent)
 router.post(
   '/',
+  isLoggedIn,
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
   async (req, res) => {
@@ -117,6 +118,7 @@ router.post(
 // @access  Private(Agent|Subagent)
 router.put(
   '/:orderId/features',
+  isLoggedIn,
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
   async (req, res) => {
@@ -160,6 +162,7 @@ router.put(
 // @access  Private(Agent|Subagent)
 router.put(
   '/:orderId/renewal',
+  isLoggedIn,
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
   async (req, res) => {
@@ -231,6 +234,7 @@ router.put(
 // @access  Private(Agent|Subagent)
 router.put(
   '/:orderId/transfer',
+  isLoggedIn,
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
   async (req, res) => {

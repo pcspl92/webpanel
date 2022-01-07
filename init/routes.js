@@ -9,7 +9,7 @@ const tg = require('../routes/talkgroup');
 const order = require('../routes/order');
 const subagent = require('../routes/subagent');
 const user = require('../routes/user');
-const cl = require('../routes/contactList');
+const cl = require('../routes/contactlist');
 
 module.exports = (app) => {
   app.use(express.json());

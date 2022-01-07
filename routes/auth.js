@@ -5,22 +5,28 @@ const guard = require('express-jwt-permissions')();
 const genToken = require('../utils/genToken');
 const { comparePassword, hashPassword } = require('../utils/bcrypt');
 const { findCompany, updateCompanyPassword } = require('../queries/company');
-const { findAgent, updateAgentPassword } = require('../queries/agent');
-const { agentSubAgentCheck, companyCheck } = require('../guard');
+const {
+  findAgent,
+  updateAgentPassword,
+  getAgentBalance,
+} = require('../queries/agent');
+const { agentSubAgentCheck, companyCheck, isLoggedIn } = require('../guard');
 
 const router = express.Router();
 
 // @route   GET api/auth/login/status/
 // @desc    Gives the status of user whether logged-in or not
 // @access  Public(all)
-router.get('/status', (req, res) => {
-  if (req.user)
-    return res
-      .status(200)
-      .json({
-        ..._.omit(req.user, ['iat', 'permissions']),
-        type: req.user.permissions[0],
-      });
+router.get('/status', async (req, res) => {
+  if (req.user) {
+    const [{ balance }] = await getAgentBalance(req.user.id);
+
+    return res.status(200).json({
+      ..._.omit(req.user, ['iat', 'permissions']),
+      type: req.user.permissions[0],
+      balance,
+    });
+  }
   return res.status(200).send(false);
 });
 
@@ -29,6 +35,7 @@ router.get('/status', (req, res) => {
 // @access  Private(Agent|Subagent)
 router.put(
   '/changepassword/agent',
+  isLoggedIn,
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
   async (req, res) => {
@@ -43,6 +50,7 @@ router.put(
 // @access  Private(Company)
 router.put(
   '/changepassword/company',
+  isLoggedIn,
   guard.check('company'),
   companyCheck,
   async (req, res) => {
@@ -110,7 +118,7 @@ router.post('/login/company', async (req, res) => {
 // @route   POST api/auth/logout
 // @desc    Logout route
 // @access  Private(Agent|Subagent|Company)
-router.post('/logout', (req, res) => {
+router.post('/logout', isLoggedIn, (req, res) => {
   res.cookie('auth', '', {
     maxAge: -1,
     path: '/',

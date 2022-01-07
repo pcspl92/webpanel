@@ -2,8 +2,15 @@ const express = require('express');
 const guard = require('express-jwt-permissions')();
 const _ = require('lodash');
 
-const {companyCheck, agentSubAgentCheck } = require('../guard');
-const { findCompanyByUsername, createCompany ,findCompanies,updateCompany,fetchloglist,fetchActivityList} = require('../queries/company');
+const { companyCheck, agentSubAgentCheck, isLoggedIn } = require('../guard');
+const {
+  findCompanyByUsername,
+  createCompany,
+  findCompanies,
+  updateCompany,
+  fetchloglist,
+  fetchActivityList,
+} = require('../queries/company');
 const { hashPassword } = require('../utils/bcrypt');
 
 const router = express.Router();
@@ -13,6 +20,7 @@ const router = express.Router();
 // @access  Private(Agent|Subagent)
 router.post(
   '/',
+  isLoggedIn,
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
   async (req, res) => {
@@ -35,46 +43,54 @@ router.post(
 );
 router.get(
   '/',
+  isLoggedIn,
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
   async (req, res) => {
     const company = await findCompanies();
     if (!company.length)
-      return res
-        .status(400)
-        .json({ username: 'No company exists' });
+      return res.status(400).json({ username: 'No company exists' });
 
- 
-
-  const companylist=  await findCompanies();
+    const companylist = await findCompanies();
     return res.status(201).send(companylist);
   }
 );
-router.put('/',  guard.check([['agent'], ['subagent']]),
-agentSubAgentCheck,
-async (req, res) => {
- 
+router.put(
+  '/',
+  isLoggedIn,
+  guard.check([['agent'], ['subagent']]),
+  agentSubAgentCheck,
+  async (req, res) => {
+    await updateCompany(
+      req.body.newpassword,
+      req.body.newcompanyname,
+      req.body.newcontactnumber,
+      req.body.newsubagent
+    );
+    return res.status(201).send('Company details updated');
+  }
+);
 
- 
+router.post(
+  '/',
+  isLoggedIn,
+  guard.check('company'),
+  companyCheck,
+  async (req, res) => {
+    const loglist = await fetchloglist(req.body.companyid);
 
-await updateCompany(req.body.newpassword,req.body.newcompanyname,req.body.newcontactnumber,req.body.newsubagent);
-  return res.status(201).send('Company details updated');
-});
+    return res.status(201).send(loglist);
+  }
+);
+router.post(
+  '/',
+  isLoggedIn,
+  guard.check('company'),
+  companyCheck,
+  async (req, res) => {
+    const activitylist = await fetchActivityList(req.body.companyid);
 
-router.post('/',
-guard.check('company'), companyCheck,
-async (req, res) => {
-const loglist = await fetchloglist(req.body.companyid);
- 
-return res.status(201).send(loglist);
-
-});
-router.post('/',
-guard.check('company'), companyCheck,
-async (req, res) => {
-const activitylist = await fetchActivityList(req.body.companyid);
- 
-return res.status(201).send(activitylist);
-
-});
+    return res.status(201).send(activitylist);
+  }
+);
 module.exports = router;
