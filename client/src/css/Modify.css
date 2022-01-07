@@ -6,3 +6,32 @@
   height: 90vh;
   width: 82vw;
 }
+.modifyform {
+  display: flex;
+  width: 40vw;
+  margin-right: 25vw;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+.activeclass {
+  height: 1vh;
+  width: 3vw;
+  background-color: chartreuse;
+  font-size: 2vh;
+  padding: 1vh 0.7vw 1vh 0.7vw;
+  font-weight: bolder;
+}
+.inactiveclass {
+  height: 1vh;
+  width: 3vw;
+  background-color: gray;
+  font-size: 2vh;
+  padding: 1vh 0.7vw 1vh 0.7vw;
+
+  font-weight: bolder;
+}
+.activeclass:hover,
+.inactiveclass:hover {
+  cursor: pointer;
+}
