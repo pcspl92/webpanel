@@ -7,8 +7,7 @@ export default function PrivateRoute({ component }) {
   const { user } = useAuth();
   const location = useLocation();
 
-  if (!user.auth)
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  if (!user.auth) return <Navigate to="/" state={{ from: location }} replace />;
 
   return component;
 }

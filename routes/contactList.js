@@ -9,7 +9,7 @@ const {
   createContactList,
   updateContactList,
   deleteContactList,
-} = require('../queries/contactList');
+} = require('../queries/contactlist');
 
 const router = express.Router();
 

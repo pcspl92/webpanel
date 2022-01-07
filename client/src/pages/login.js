@@ -96,7 +96,9 @@ export default function Login() {
           >
             Login
           </button>
-          {Object.keys(errors).length ? <div>{errors.auth}</div> : null}
+          {Object.keys(errors).length ? (
+            <div className="text-white fw-600">{errors.auth}</div>
+          ) : null}
         </div>
       </form>
     );

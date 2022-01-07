@@ -1,73 +1,72 @@
-.mainback{
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
+.mainback {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
 }
-.toppart{
-    background-color:  #8cb3d9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 10vh;
-    width: 100vw;
-    font-weight: bold;
-    font-size: 4vh;
+.toppart {
+  background-color: #8cb3d9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+  width: 100vw;
+  font-weight: bold;
+  font-size: 4vh;
 }
-.agentdetails
-{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: auto;
-    position: absolute;
-    margin-left: 75vw;
-    font-size: 3vh;
-    font-weight: lighter;
-
+.agentdetails {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: auto;
+  position: absolute;
+  margin-left: 75vw;
+  font-size: 3vh;
+  font-weight: lighter;
 }
-.bottompart
-{
-    display: flex;
-    height:90vh ;
-    width: 100vw;
-background-color: white;
+.bottompart {
+  display: flex;
+  height: 90vh;
+  width: 100vw;
+  background-color: white;
 }
-.navbar{
-width: 18vw;
-height: 90vh;
-background-color:  #204161;
-display: flex;
-flex-direction: column;
-justify-content: flex-start;
-align-items: flex-start;
-color: white;
-padding: 2vh 1.5vw 2vh 1.5vw;
-font-weight: bolder;
-font-size: 1vw;
+.navbar {
+  width: 18vw;
+  height: 90vh;
+  background-color: #204161;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  color: white;
+  padding: 2vh 1.5vw 2vh 1.5vw;
+  font-weight: bolder;
+  font-size: 1vw;
 }
-.headings{
-color: white;
-margin-top: 3vh;
-padding: 0%;
-
+.headings {
+  color: white;
+  margin-top: 3vh;
+  padding: 0%;
 }
-.headings:hover{
-color: yellow;
-cursor: pointer;
+.headings:hover {
+  color: yellow;
+  cursor: pointer;
 }
 .subheadings {
-    text-decoration: none;
-    color: white;
-  
-    font-size: 1.8vh;
-  }
-  .subheadings:hover,
-  .activesubheadings {
-    text-decoration: none;
-    font-size: 1.7vh;
-  
-    color: yellow;
-  }
+  text-decoration: none;
+  color: white;
+
+  font-size: 1.8vh;
+}
+.subheadings:hover,
+.activesubheadings {
+  text-decoration: none;
+  font-size: 1.8vh;
+
+  color: yellow;
+}
+.activesubheadings:hover {
+  color: yellow;
+}
