@@ -1,9 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import '../css/index.css';
-import Index from '../pages';
+
 import Login from '../pages/login';
-import Comp from '../pages/privComp';
 import CreateSubAgent from '../pages/subAgentCreate';
 import ViewAgent from '../pages/subAgentView';
 import SetPrices from '../pages/subAgentSetprices';

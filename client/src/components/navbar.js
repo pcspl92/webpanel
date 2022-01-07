@@ -1,36 +1,38 @@
 import React, { useState } from 'react';
 import '../css/index.css';
-import { Routes, Route, NavLink } from 'react-router-dom';
+import { Routes, Route, NavLink, useLocation } from 'react-router-dom';
 export default function Navbar() {
-    const [companydrop, setcompanydrop] = useState(false);
-    function dropdowncompany() {
-      setcompanydrop(!companydrop);
-    }
-    const [userdrop, setuserdrop] = useState(false);
-    function dropdownuser() {
-      setuserdrop(!userdrop);
-    }
-    const [licdrop, setlicdrop] = useState(false);
-    function dropdownlic() {
-      setlicdrop(!licdrop);
-    }
-    const [agentdrop, setagentdrop] = useState(false);
-    function dropdownagent() {
-      setagentdrop(!agentdrop);
-    }
-    const [perdrop, setperdrop] = useState(false);
-    function dropdownper() {
-      setperdrop(!perdrop);
-    }
-    return (
-        <div className="navbar">
-        <div className="headings">&nbsp; &nbsp; Dashboard</div>
+  const [companydrop, setcompanydrop] = useState(false);
+  const location = useLocation();
+  function dropdowncompany() {
+    setcompanydrop(!companydrop);
+  }
+  const [userdrop, setuserdrop] = useState(false);
+  function dropdownuser() {
+    setuserdrop(!userdrop);
+  }
+  const [licdrop, setlicdrop] = useState(false);
+  function dropdownlic() {
+    setlicdrop(!licdrop);
+  }
+  const [agentdrop, setagentdrop] = useState(false);
+  function dropdownagent() {
+    setagentdrop(!agentdrop);
+  }
+  const [perdrop, setperdrop] = useState(false);
+  function dropdownper() {
+    setperdrop(!perdrop);
+  }
+  if (location.pathname === '/') return null;
+  return (
+    <div className="navbar">
+      <div className="headings">&nbsp; &nbsp; Dashboard</div>
 
-        <div className="headings">+ Company Management</div>
+      <div className="headings">+ Company Management</div>
 
-        <div className="headings"> + User Management</div>
+      <div className="headings"> + User Management</div>
 
-        <div className="headings">+ License Management</div>
+      <div className="headings">+ License Management</div>
 
         <div className="headings" onClick={dropdownagent}>
           + Sub-Agent Management
@@ -93,6 +95,5 @@ export default function Navbar() {
         )}
         <div className="headings">+ Personal Center</div>
       </div>
-       
-    );
-  }
+  );
+}
