@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 
 const auth = require('../routes/auth');
+const agent = require('../routes/agent');
 const company = require('../routes/company');
 const dept = require('../routes/department');
 const tg = require('../routes/talkgroup');
@@ -10,6 +11,7 @@ const order = require('../routes/order');
 const subagent = require('../routes/subagent');
 const user = require('../routes/user');
 const cl = require('../routes/contactlist');
+const dashboard = require('../routes/dashboard');
 
 module.exports = (app) => {
   app.use(express.json());
@@ -23,7 +25,9 @@ module.exports = (app) => {
     })
   );
   app.use('/api/auth', auth);
+  app.use('/api/agent', agent);
   app.use('/api/company', company);
+  app.use('/api/dashboard', dashboard);
   app.use('/api/department', dept);
   app.use('/api/talkgroup', tg);
   app.use('/api/subagent', subagent);

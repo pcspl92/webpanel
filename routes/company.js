@@ -2,18 +2,31 @@ const express = require('express');
 const guard = require('express-jwt-permissions')();
 const _ = require('lodash');
 
-const { companyCheck, agentSubAgentCheck, isLoggedIn } = require('../guard');
+const { agentSubAgentCheck, companyCheck, isLoggedIn } = require('../guard');
 const {
   findCompanyByUsername,
   createCompany,
   findCompanies,
   updateCompany,
-  fetchloglist,
-  fetchActivityList,
+  getCompanyActivityLogs,
 } = require('../queries/company');
 const { hashPassword } = require('../utils/bcrypt');
 
 const router = express.Router();
+
+// @route   GET api/company/activity-logs
+// @desc    Company activity logs fetching route
+// @access  Private(Company)
+router.get(
+  '/activity-logs',
+  isLoggedIn,
+  guard.check('company'),
+  companyCheck,
+  async (req, res) => {
+    const data = await getCompanyActivityLogs(req.user.id);
+    return res.status(200).json(data);
+  }
+);
 
 // @route   POST api/company/
 // @desc    Company creation route
@@ -32,7 +45,7 @@ router.post(
 
     const password = await hashPassword(req.body.password);
     const data = {
-      ..._.pick(req.body, ['username', 'displayName', 'contactNumber']),
+      ..._.pick(req.body, ['username', 'display_name', 'contact_number']),
       password,
       agentId: req.user.id,
     };
@@ -71,26 +84,4 @@ router.put(
   }
 );
 
-router.post(
-  '/',
-  isLoggedIn,
-  guard.check('company'),
-  companyCheck,
-  async (req, res) => {
-    const loglist = await fetchloglist(req.body.companyid);
-
-    return res.status(201).send(loglist);
-  }
-);
-router.post(
-  '/',
-  isLoggedIn,
-  guard.check('company'),
-  companyCheck,
-  async (req, res) => {
-    const activitylist = await fetchActivityList(req.body.companyid);
-
-    return res.status(201).send(activitylist);
-  }
-);
 module.exports = router;

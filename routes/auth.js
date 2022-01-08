@@ -2,39 +2,85 @@ const express = require('express');
 const _ = require('lodash');
 const guard = require('express-jwt-permissions')();
 
+const getIP = require('../utils/getIPAddress');
 const genToken = require('../utils/genToken');
 const { comparePassword, hashPassword } = require('../utils/bcrypt');
-const { findCompany, updateCompanyPassword } = require('../queries/company');
+const {
+  findCompany,
+  updateCompanyPassword,
+  createCompanyAuthLog,
+  getCompanyLoginLogs,
+} = require('../queries/company');
 const {
   findAgent,
   updateAgentPassword,
   getAgentBalance,
+  createAgentAuthLog,
+  getAgentLoginLogs,
 } = require('../queries/agent');
 const { agentSubAgentCheck, companyCheck, isLoggedIn } = require('../guard');
 
 const router = express.Router();
 
-// @route   GET api/auth/login/status/
+// @route   GET api/auth/status/
 // @desc    Gives the status of user whether logged-in or not
 // @access  Public(all)
 router.get('/status', async (req, res) => {
   if (req.user) {
-    const [{ balance }] = await getAgentBalance(req.user.id);
+    if (
+      req.user.permissions[0] === 'agent' ||
+      req.user.permissions[0] === 'subagent'
+    ) {
+      const [{ balance }] = await getAgentBalance(req.user.id);
+      return res.status(200).json({
+        ..._.omit(req.user, ['iat', 'permissions']),
+        type: req.user.permissions[0],
+        balance,
+      });
+    }
 
     return res.status(200).json({
       ..._.omit(req.user, ['iat', 'permissions']),
       type: req.user.permissions[0],
-      balance,
     });
   }
+
   return res.status(200).send(false);
 });
 
-// @route   PUT api/auth/changepassword/agent
+// @route   GET api/auth/logs/agent
+// @desc    Agent and Subagent login logs fetching route
+// @access  Private(Agent|Subagent)
+router.get(
+  '/logs/agent',
+  isLoggedIn,
+  guard.check([['agent'], ['subagent']]),
+  agentSubAgentCheck,
+  async (req, res) => {
+    const data = await getAgentLoginLogs(req.user.id);
+    return res.status(200).json(data);
+  }
+);
+
+// @route   GET api/auth/logs/company
+// @desc    Company login logs fetching route
+// @access  Private(Company)
+router.get(
+  '/logs/company',
+  isLoggedIn,
+  guard.check('company'),
+  companyCheck,
+  async (req, res) => {
+    const data = await getCompanyLoginLogs(req.user.id);
+    return res.status(200).json(data);
+  }
+);
+
+// @route   PUT api/auth/password/agent
 // @desc    Agent and Subagent password change route
 // @access  Private(Agent|Subagent)
 router.put(
-  '/changepassword/agent',
+  '/password/agent',
   isLoggedIn,
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
@@ -45,11 +91,11 @@ router.put(
   }
 );
 
-// @route   PUT api/auth/changepassword/company
+// @route   PUT api/auth/password/company
 // @desc    Company password change route
 // @access  Private(Company)
 router.put(
-  '/changepassword/company',
+  '/password/company',
   isLoggedIn,
   guard.check('company'),
   companyCheck,
@@ -71,6 +117,9 @@ router.post('/login/agent', async (req, res) => {
 
   if (!(await comparePassword(req.body.password, user[0].password)))
     return res.status(400).json({ auth: 'Wrong credential combination' });
+
+  // const ip = await getIP();
+  // await createAgentAuthLog('Logged In', ip, user[0].id);
 
   res.cookie(
     'auth',
@@ -101,6 +150,9 @@ router.post('/login/company', async (req, res) => {
   if (!(await comparePassword(req.body.password, company[0].password)))
     return res.status(400).json({ auth: 'Wrong credential combination' });
 
+  // const ip = await getIP();
+  // await createCompanyAuthLog('Logged In', ip, company[0].id);
+
   res.cookie(
     'auth',
     genToken({ ..._.omit(company[0], ['password']), permissions: ['company'] }),
@@ -118,7 +170,14 @@ router.post('/login/company', async (req, res) => {
 // @route   POST api/auth/logout
 // @desc    Logout route
 // @access  Private(Agent|Subagent|Company)
-router.post('/logout', isLoggedIn, (req, res) => {
+router.post('/logout', isLoggedIn, async (req, res) => {
+  // const ip = await getIP();
+  // if (
+  //   req.user.permissions[0] === 'agent' ||
+  //   req.user.permissions[0] === 'subagent'
+  // )
+  //   await createAgentAuthLog('Logged Out', ip, req.user.id);
+  // else await createCompanyAuthLog('Logged Out', ip, req.user.id);
   res.cookie('auth', '', {
     maxAge: -1,
     path: '/',

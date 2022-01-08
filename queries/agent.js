@@ -15,6 +15,11 @@ const getSubAgents = (agentId) => {
   return query(sql);
 };
 
+const getTotalCompanyCount = (agentIds) => {
+  const sql = `SELECT COUNT(id) AS total_companies FROM companies WHERE agent_id IN (${agentIds});`;
+  return query(sql);
+};
+
 const getSubAgentNames = (agentId) => {
   const sql = `SELECT display_name, a.id, ad.balance FROM agents a
                JOIN agents_add_data ad ON a.id = ad.agent_id
@@ -106,13 +111,23 @@ const updateAgentPassword = (password, agentId) => {
   return query(sql);
 };
 
-const fetchloglist = (id) => {
-  const sql = `SELECT login_desc, ipaddress, timestamp  FROM agent_login_logs WHERE agent_id="${id}"`;
+const createAgentAuthLog = (desc, ip, agentId) => {
+  const sql = `INSERT INTO agent_login_logs (login_desc, ipaddress, agent_id) VALUES ("${desc}", "${ip}", ${agentId});`;
   return query(sql);
 };
 
-const fetchActivityList = (id) => {
-  const sql = `SELECT login_desc, ipaddress, timestamp  FROM agent_login_logs WHERE agent_id="${id}"`;
+const createAgentActivityLog = (desc, agentId) => {
+  const sql = `INSERT INTO agent_activity_logs (activity_desc, agent_id) VALUES ("${desc}", ${agentId});`;
+  return query(sql);
+};
+
+const getAgentLoginLogs = (id) => {
+  const sql = `SELECT * FROM agent_login_logs WHERE agent_id=${id};`;
+  return query(sql);
+};
+
+const getAgentActivityLogs = (id) => {
+  const sql = `SELECT * FROM agent_activity_logs WHERE agent_id=${id};`;
   return query(sql);
 };
 
@@ -148,6 +163,19 @@ const viewSubAgentData = (subAgentIds) => {
   return query(sql);
 };
 
+const getDashboardData = (agentIds, currDate) => {
+  const sql = `SELECT COUNT(case when o.license_expiry > '${currDate}' then o.id else null end) - COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS available, 
+               COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS active, 
+               COUNT(case when o.license_expiry <= '${currDate}' then o.id else null end) AS expired, 
+               COUNT(o.id) AS total,
+               o.license_type
+               FROM orders o 
+               JOIN licenses l ON l.order_id = o.id
+               WHERE o.agent_id IN (${agentIds}) 
+               GROUP BY o.license_type;`;
+  return query(sql);
+};
+
 module.exports = {
   findAgent,
   findAgentById,
@@ -158,13 +186,17 @@ module.exports = {
   addAgentDetials,
   addPriceDetails,
   updatePriceDetails,
+  getTotalCompanyCount,
   rechargeSubAgent,
   getAgentBalance,
   getAgentUnitPrice,
   updateSubAgent,
   updateAgentPassword,
-  fetchloglist,
-  fetchActivityList,
+  getAgentLoginLogs,
+  getAgentActivityLogs,
   addProfit,
   viewSubAgentData,
+  getDashboardData,
+  createAgentAuthLog,
+  createAgentActivityLog,
 };

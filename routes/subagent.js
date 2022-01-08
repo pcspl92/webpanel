@@ -11,13 +11,11 @@ const {
   getAgentBalance,
   rechargeSubAgent,
   updateSubAgent,
-  fetchloglist,
   viewSubAgentData,
   getSubAgents,
   getSubAgentNames,
-  fetchActivityList,
 } = require('../queries/agent');
-const { agentCheck, agentSubAgentCheck, isLoggedIn } = require('../guard');
+const { agentCheck, isLoggedIn } = require('../guard');
 const { hashPassword } = require('../utils/bcrypt');
 
 const router = express.Router();
@@ -194,30 +192,6 @@ router.put(
     );
 
     return res.status(200).send('updated');
-  }
-);
-
-router.post(
-  '/',
-  isLoggedIn,
-  guard.check([['agent'], ['subagent']]),
-  agentSubAgentCheck,
-  async (req, res) => {
-    const loglist = await fetchloglist(req.body.agentid);
-
-    return res.status(201).send(loglist);
-  }
-);
-
-router.post(
-  '/',
-  isLoggedIn,
-  guard.check([['agent'], ['subagent']]),
-  agentSubAgentCheck,
-  async (req, res) => {
-    const activitylist = await fetchActivityList(req.body.agentid);
-
-    return res.status(201).send(activitylist);
   }
 );
 
