@@ -8,6 +8,9 @@ import ViewAgent from '../pages/subAgentView';
 import SetPrices from '../pages/subAgentSetprices';
 import RechargeAgent from '../pages/subAgentRecharge';
 import ModifyAgent from '../pages/subAgentModify';
+import ChangePassword from '../pages/personalCenterChangePassword';
+import ViewActivity from '../pages/personalCenterViewUserActivity';
+import ViewLogin from '../pages/personalCenterLoginRec';
 import Dashboard from '../pages/dashboard';
 import NotFound from '../pages/404';
 import PrivateRoute from '../utils/privateRoute';
@@ -30,11 +33,17 @@ export default function App() {
                 element={<PrivateRoute component={<Dashboard />} />}
               />
               <Route path="/subagent">
-                <Route path="create" element={<CreateSubAgent />} />
+                <Route path="create" element={<PrivateRoute component={<CreateSubAgent />}/>} />
                 <Route path="view" element={<ViewAgent />} />
                 <Route path="setprices" element={<SetPrices />} />
                 <Route path="recharge" element={<RechargeAgent />} />
                 <Route path="modify" element={<ModifyAgent />} />
+              </Route>
+              <Route path="/personal-center">
+                <Route path="change-password" element={<PrivateRoute component={<ChangePassword/>}/>} />
+                <Route path="activity" element={<PrivateRoute component={<ViewActivity/>}/>}  />
+                <Route path="loginrecord" element={<PrivateRoute component={<ViewLogin/>}/>} />
+            
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>

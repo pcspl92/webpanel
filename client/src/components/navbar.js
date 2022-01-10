@@ -93,7 +93,45 @@ export default function Navbar() {
           </NavLink>
         </div>
       )}
-      <div className="headings">+ Personal Center</div>
+      <div className="headings" onClick={dropdownper}>+ Personal Center</div>
+      {perdrop&&(
+    <div style={{ marginTop: '1.5vh', marginLeft: '2vw' }}>
+         <NavLink
+            to="/personal-center/change-password"
+            className={({ isActive }) =>
+              `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+            }
+          >
+            &nbsp; Change Password{' '}
+          </NavLink>
+
+          <br />
+          <NavLink
+            to="/personal-center/activity"
+            className={({ isActive }) =>
+              `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+            }
+          >
+            &nbsp;&nbsp;View User Activity Log {' '}
+          </NavLink>
+
+
+          <br />
+          <NavLink
+            to="/personal-center/loginrecord"
+            className={({ isActive }) =>
+              `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+            }
+          >
+            &nbsp; Login Record{' '}
+          </NavLink>
+
+          <br />
+
+
+      </div>
+
+      )}
     </div>
   );
 }

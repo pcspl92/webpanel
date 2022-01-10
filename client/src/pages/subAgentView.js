@@ -72,10 +72,11 @@ const ViewAgent = () => {
           <th>Total Active Orders</th>
           <th>Total Accounts Available</th>
         </tr>
-        {agentlist.map((val, key) => {
+        {agentlist.map((val, index) => {
+index++;
           return (
             <tr>
-              <th>{val.id}</th>
+              <th>{index}</th>
               <th>{val.agent_name}</th>
               <th>{val.account_name}</th>
               <th>{val.orders}</th>
