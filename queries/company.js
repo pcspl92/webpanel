@@ -78,7 +78,8 @@ const getCompanyLoginLogs = (id) => {
 };
 
 const getCompanyActivityLogs = (id) => {
-  const sql = `SELECT * FROM company_activity_logs WHERE company_id=${id};`;
+  const sql = `SELECT cal.activity_desc, cal.id, cal.timestamp, c.display_name FROM company_activity_logs cal 
+               JOIN companies c ON cal.company_id = c.id WHERE cal.company_id=${id};`;
   return query(sql);
 };
 
