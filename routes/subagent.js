@@ -14,6 +14,7 @@ const {
   viewSubAgentData,
   getSubAgents,
   getSubAgentNames,
+  createAgentActivityLog,
 } = require('../queries/agent');
 const { agentCheck, isLoggedIn } = require('../guard');
 const { hashPassword } = require('../utils/bcrypt');
@@ -94,6 +95,7 @@ router.post(
       req.body.control.one_time,
       result.insertId
     );
+    await createAgentActivityLog('Subagent create', req.user.id);
 
     return res.status(201).send('created');
   }
@@ -123,6 +125,8 @@ router.put(
         req.params.id
       )
     );
+    await createAgentActivityLog('Subagent modify', req.user.id);
+
     return res.status(200).send('updated');
   }
 );
@@ -151,6 +155,8 @@ router.put(
     await Promise.all(
       rechargeSubAgent(req.params.id, req.user.id, req.body.amount)
     );
+    await createAgentActivityLog('Subagent modify', req.user.id);
+
     return res.status(200).send('updated');
   }
 );
@@ -190,6 +196,7 @@ router.put(
         req.params.id
       )
     );
+    await createAgentActivityLog('Subagent modify', req.user.id);
 
     return res.status(200).send('updated');
   }
