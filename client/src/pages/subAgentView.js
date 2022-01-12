@@ -14,15 +14,25 @@ const ViewAgent = () => {
       setupdatedlist(data);
     })();
   }, []);
-const filter=()=>{
-setupdatedlist(agentlist.filter((val)=>{return val.agent_name.toLowerCase().includes(agentname.toLowerCase())||val.account_name.toLowerCase().includes(agentaccname.toLowerCase())}))
-}
-const unfilter=()=>{
-  setupdatedlist(agentlist)
-}
+
+  const filter = () => {
+    setupdatedlist(
+      agentlist.filter((val) => {
+        return (
+          val.agent_name.toLowerCase().includes(agentname.toLowerCase()) ||
+          val.account_name.toLowerCase().includes(agentaccname.toLowerCase())
+        );
+      })
+    );
+  };
+
+  const unfilter = () => {
+    setupdatedlist(agentlist);
+  };
+
   return (
     <div className="viewback">
-      <div style={{ fontWeight: 'bolder', fontSize: '4vh' , marginTop:"3vh"}}>
+      <div style={{ fontWeight: 'bolder', fontSize: '4vh', marginTop: '3vh' }}>
         VIEW SUB-AGENTS
       </div>
 
@@ -61,11 +71,16 @@ const unfilter=()=>{
         <button
           className="p-1 me-5 font-weight-bold"
           style={{ fontSize: '1vw' }}
-      onClick={filter}  >
+          onClick={filter}
+        >
           Search
         </button>
 
-        <button className="p-1 font-weight-bold" style={{ fontSize: '1vw' }} onClick={unfilter}>
+        <button
+          className="p-1 font-weight-bold"
+          style={{ fontSize: '1vw' }}
+          onClick={unfilter}
+        >
           {' '}
           View All
         </button>
@@ -80,7 +95,7 @@ const unfilter=()=>{
           <th>Total Accounts Available</th>
         </tr>
         {updatedlist.map((val, index) => {
-index++;
+          index++;
           return (
             <tr>
               <th>{index}</th>
