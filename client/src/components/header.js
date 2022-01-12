@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../css/index.css';
-import { Routes, Route, NavLink, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { useAuth } from '../hooks/useAuth';
 
