@@ -147,20 +147,20 @@ const deductBalance = (amount, agentId) => {
 
 const addProfit = (profit, subAgentId) => {
   const sql = `UPDATE agents_add_data SET balance=balance+${profit}
-  WHERE agent_id = (
-    SELECT agent_id FROM agents WHERE id=${subAgentId}
-  );`;
+               WHERE agent_id = (
+                 SELECT agent_id FROM agents WHERE id=${subAgentId}
+               );`;
   return query(sql);
 };
 
 const viewSubAgentData = (subAgentIds) => {
   const sql = `SELECT COUNT(o.id) - COUNT(l.user_id) AS available, COUNT(l.user_id) AS active, COUNT(DISTINCT o.id) AS orders,
                a.username AS account_name, a.display_name AS agent_name, a.id
-               FROM orders o 
-               JOIN licenses l ON l.order_id = o.id
-               JOIN agents a ON a.id = o.agent_id
-               WHERE o.agent_id IN (${subAgentIds})
-               GROUP BY o.agent_id;`;
+               FROM agents a 
+               LEFT JOIN orders o ON o.agent_id = a.id
+               LEFT JOIN licenses l ON o.id = l.order_id
+               GROUP BY a.id
+               HAVING a.id IN (${subAgentIds});`;
   return query(sql);
 };
 
