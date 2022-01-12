@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../css/personalCenterviewUseract.css';
 import axios from '../utils/axios';
+import moment from 'moment';
 const ViewActivity = () => {
   const [fromdate, setfromdate] = useState();
   const [todate, settodate] = useState();
@@ -10,7 +11,8 @@ const ViewActivity = () => {
     (async () => {
       const { data } = await axios.get('/agent/activity-logs');
       setagentactlist(data);
-    })();
+    })(console.log(agentactlist));
+    console.log(agentactlist);
   }, []);
 
   return (
@@ -76,10 +78,10 @@ const ViewActivity = () => {
           return (
             <tr>
               <th>{index}</th>
-              <th>{val.date}</th>
-              <th>{val.time}</th>
+              <th>{moment(val.timestamp).format('DD-MM-YYYY')}</th>
+              <th>{moment(val.timestamp).format('HH:mm')}</th>
               <th>{val.agent_name}</th>
-              <th>{val.ViewActivity}</th>
+              <th>{val.activity_desc}</th>
             </tr>
           );
         })}

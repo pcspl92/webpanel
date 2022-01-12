@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../css/personalCenterLoginRecord.css';
 import axios from '../utils/axios';
+import moment from 'moment';
 const ViewLogin = () => {
   const [fromdate, setfromdate] = useState();
   const [todate, settodate] = useState();
@@ -71,12 +72,13 @@ const ViewLogin = () => {
         </tr>
         {agentloglist.map((val, index) => {
           index = index + 1;
+
           return (
             <tr>
               <th>{index}</th>
-              <th>{val.date}</th>
-              <th>{val.time}</th>
-              <th>{val.activity}</th>
+              <th>{moment(val.timestamp).format('DD-MM-YYYY')}</th>
+              <th>{moment(val.timestamp).format('HH:mm')}</th>
+              <th>{val.login_desc}</th>
               <th>{val.ipaddress}</th>
             </tr>
           );
