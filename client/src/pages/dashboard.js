@@ -1,87 +1,98 @@
 import React, { useEffect, useState } from 'react';
 import '../css/dashboard.css';
 import axios from '../utils/axios';
+import { useAuth } from '../hooks/useAuth';
 
 export default function Dashboard() {
   const [dashData, setDashData] = useState({});
-  const [totalbalance, settotalbalance] = useState();
-  const [tabledata, settabledata] = useState([]);
-  const [totalcompanies, settotalcompanies] = useState();
-  const [totalsubagents, settotalsubagents] = useState();
+  const { user } = useAuth();
 
-console.log(dashData)
   useEffect(() => {
     (async () => {
-      const result= await axios.get('/dashboard/agent');
-      setDashData(result.data);
-      console.log(dashData)
+      const { data } = await axios.get('/dashboard/agent');
+      setDashData(data);
+      console.log(data);
     })();
   }, []);
 
+  if (!dashData.data) return <div>Loading...</div>;
+
   return (
     <div className="viewback">
-   
-
       <br />
-   
-        <div>
-          <span>
-            Total Balance : 
-          </span>
-         {totalbalance}
-        </div>
-       
-        
-     
+
+      <div>
+        <span>Total Balance :</span>
+        {user.balance}
+      </div>
+
       <table className="mt-3">
         <tr className="tableheading">
-          <th style={{backgroundColor:"white",width:"18vw",border:"none"}}> </th>
+          <th
+            style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
+          >
+            {' '}
+          </th>
           <th>Total</th>
           <th>Active</th>
           <th>Available</th>
           <th>Expired</th>
-        
         </tr>
- 
-        
-            <tr>
-            <th style={{backgroundColor:"white",width:"18vw",border:"none"}}> Total PPT User Accounts : </th>
-              <th>{dashData.data.ptt.total}</th>
-              <th>{dashData.data.ptt.active}</th> 
-              <th>{dashData.data.ptt.available}</th>
-               <th>{dashData.data.ptt.expired}</th>
-         
-            </tr>
-            <tr>
-            <th style={{backgroundColor:"white",width:"18vw",border:"none"}}> Total Dispatcher Accounts : </th>
-              <th>{dashData.data.dispatcher.total}</th>
-              <th>{dashData.data.dispatcher.active}</th> 
-              <th>{dashData.data.dispatcher.available}</th>
-               <th>{dashData.data.dispatcher.expired}</th>
-          </tr> <tr>
-            <th style={{backgroundColor:"white",width:"18vw",border:"none"}}> Total Control Station Accounts : </th>
-              <th>{dashData.data.control.total}</th>
-              <th>{dashData.data.control.active}</th> 
-              <th>{dashData.data.control.available}</th>
-               <th>{dashData.data.control.expired}</th>
-         
-            </tr>
-    
+        <tr>
+          <th
+            style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
+          >
+            {' '}
+            Total PPT User Accounts :{' '}
+          </th>
+          <th>{dashData.data.ptt ? dashData.data.ptt.total : 0}</th>
+          <th>{dashData.data.ptt ? dashData.data.ptt.active : 0}</th>
+          <th>{dashData.data.ptt ? dashData.data.ptt.available : 0}</th>
+          <th>{dashData.data.ptt ? dashData.data.ptt.expired : 0}</th>
+        </tr>
+        <tr>
+          <th
+            style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
+          >
+            {' '}
+            Total Dispatcher Accounts :{' '}
+          </th>
+          <th>
+            {dashData.data.dispatcher ? dashData.data.dispatcher.total : 0}
+          </th>
+          <th>
+            {dashData.data.dispatcher ? dashData.data.dispatcher.active : 0}
+          </th>
+          <th>
+            {dashData.data.dispatcher ? dashData.data.dispatcher.available : 0}
+          </th>
+          <th>
+            {dashData.data.dispatcher ? dashData.data.dispatcher.expired : 0}
+          </th>
+        </tr>{' '}
+        <tr>
+          <th
+            style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
+          >
+            {' '}
+            Total Control Station Accounts :{' '}
+          </th>
+          <th>{dashData.data.control ? dashData.data.control.total : 0}</th>
+          <th>{dashData.data.control ? dashData.data.control.active : 0}</th>
+          <th>{dashData.data.control ? dashData.data.control.available : 0}</th>
+          <th>{dashData.data.control ? dashData.data.control.expired : 0}</th>
+        </tr>
       </table>
       <br />
       <div>
-          <span>
-            Total Sub - Agents : 
-          </span>
-         {dashData.total_subagents}
-        </div> 
-       <br/>
-        <div>
-          <span>
-            Total Companies : 
-          </span>
-         {dashData.total_companies}
-        </div>
+        <span>Total Sub - Agents :</span>
+        {dashData.total_subagents}
+      </div>
+      <br />
+      <div>
+        <span>Total Companies :</span>
+        {dashData.total_companies}
+      </div>
     </div>
   );
 }

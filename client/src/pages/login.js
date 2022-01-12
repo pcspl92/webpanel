@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { loadReCaptcha, ReCaptcha } from 'react-recaptcha-google';
+import axios from 'axios';
 
 import { useAuth } from '../hooks/useAuth';
 
@@ -33,7 +34,19 @@ export default function Login() {
 
   const onLoadRecaptcha = () => captcha.current.reset();
 
-  const verifyCallback = (token) => {
+  const verifyCallback = async (token) => {
+    // const { data } = await axios.post(
+    //   'https://www.google.com/recaptcha/api/siteverify',
+    //   {
+    //     secret: process.env.REACT_APP_CAPTCHA_SECRET_KEY,
+    //     response: token,
+    //   },
+    //   {
+    //     headers: {
+    //       'Access-Control-Allow-Origin': '*',
+    //     },
+    //   }
+    // );
     if (token) setDisabled(false);
   };
 
