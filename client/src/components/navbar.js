@@ -26,7 +26,9 @@ export default function Navbar() {
   if (location.pathname === '/') return null;
   return (
     <div className="navbar">
-      <div className="headings">&nbsp; &nbsp; Dashboard</div>
+      <NavLink   className={({ isActive }) =>
+         `link ${isActive ? 'activeheadings' : 'headings'}`
+       } to="/dashboard">&nbsp; &nbsp; Dashboard</NavLink>
 
       <div className="headings">+ Company Management</div>
 

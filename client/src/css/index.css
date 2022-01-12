@@ -49,10 +49,12 @@
   color: white;
   margin-top: 3vh;
   padding: 0%;
+  text-decoration: none;
 }
 .headings:hover {
   color: yellow;
   cursor: pointer;
+  text-decoration: none;
 }
 .subheadings {
   text-decoration: none;
@@ -67,6 +69,13 @@
 
   color: yellow;
 }
-.activesubheadings:hover {
+.activeheadings {
+  color: yellow;
+  text-decoration: none;
+  margin-top: 3vh;
+  padding: 0%;
+}
+.activesubheadings:hover,
+.activeheadings:hover {
   color: yellow;
 }
