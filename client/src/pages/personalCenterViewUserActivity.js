@@ -35,7 +35,7 @@ const ViewActivity = () => {
           />
         </div>
         <br />
-        <br />
+
         <div>
           <span>
             <label for="id2">To Date : &nbsp;</label>
@@ -71,10 +71,11 @@ const ViewActivity = () => {
           <th>Agent Name</th>
           <th>User Activity Description</th>
         </tr>
-        {agentactlist.map((val, key) => {
+        {agentactlist.map((val, index) => {
+          index++;
           return (
             <tr>
-              <th>{val.id}</th>
+              <th>{index}</th>
               <th>{val.date}</th>
               <th>{val.time}</th>
               <th>{val.agent_name}</th>

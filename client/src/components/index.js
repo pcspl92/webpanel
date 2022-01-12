@@ -11,6 +11,7 @@ import ModifyAgent from '../pages/subAgentModify';
 import ChangePassword from '../pages/personalCenterChangePassword';
 import ViewActivity from '../pages/personalCenterViewUserActivity';
 import ViewLogin from '../pages/personalCenterLoginRec';
+import ViewUsers from '../pages/usersView';
 import Dashboard from '../pages/dashboard';
 import NotFound from '../pages/404';
 import PrivateRoute from '../utils/privateRoute';
@@ -32,6 +33,11 @@ export default function App() {
                 path="/dashboard"
                 element={<PrivateRoute component={<Dashboard />} />}
               />
+                 <Route path="/users">
+                <Route path="view" element={<PrivateRoute component={<ViewUsers/>}/>} />
+             
+            
+              </Route>
               <Route path="/subagent">
                 <Route path="create" element={<PrivateRoute component={<CreateSubAgent />}/>} />
                 <Route path="view" element={<ViewAgent />} />

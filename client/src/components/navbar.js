@@ -30,8 +30,22 @@ export default function Navbar() {
 
       <div className="headings">+ Company Management</div>
 
-      <div className="headings"> + User Management</div>
+      <div className="headings" onClick={dropdownuser}> + User Management</div>
+{userdrop&&(
+     <div style={{ marginTop: '1.5vh', marginLeft: '2vw' }}>
+     <NavLink
+       to="/users/view"
+       className={({ isActive }) =>
+         `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+       }
+     >
+       &nbsp; View User Accounts{' '}
+     </NavLink>
 
+     <br />
+     </div>
+
+)}
       <div className="headings">+ License Management</div>
 
       <div className="headings" onClick={dropdownagent}>

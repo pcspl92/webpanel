@@ -33,7 +33,7 @@ const ViewLogin = () => {
           />
         </div>
         <br />
-        <br />
+
         <div>
           <span>
             <label for="id2">To Date : &nbsp;</label>
