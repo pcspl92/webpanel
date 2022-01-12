@@ -14,6 +14,7 @@ console.log(dashData)
     (async () => {
       const result= await axios.get('/dashboard/agent');
       setDashData(result.data);
+      console.log(dashData)
     })();
   }, []);
 
