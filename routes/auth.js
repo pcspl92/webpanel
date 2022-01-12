@@ -1,6 +1,7 @@
 const express = require('express');
 const _ = require('lodash');
 const guard = require('express-jwt-permissions')();
+const axios = require('axios');
 
 const getIP = require('../utils/getIPAddress');
 const genToken = require('../utils/genToken');
@@ -183,6 +184,19 @@ router.post('/logout', isLoggedIn, async (req, res) => {
     path: '/',
   });
   return res.status(200).send('logged out');
+});
+
+// @route   POST api/auth/verify-captcha
+// @desc    Captcha verify route
+// @access  Public(all)
+router.post('/verify-captcha', async (req, res) => {
+  const { data } = await axios.post(
+    `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.CAPTCHA_SECRET_KEY}&response=${req.body.token}`
+  );
+
+  if (!data.success)
+    return res.status(400).send('Incorrect Captcha Token Used');
+  return res.status(200).send('Verified');
 });
 
 module.exports = router;
