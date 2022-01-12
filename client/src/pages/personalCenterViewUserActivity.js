@@ -6,15 +6,26 @@ const ViewActivity = () => {
   const [fromdate, setfromdate] = useState();
   const [todate, settodate] = useState();
   const [agentactlist, setagentactlist] = useState([]);
+  const [updatedactlist, setupdatedactlist] = useState([]);
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/agent/activity-logs');
       setagentactlist(data);
+      setupdatedactlist(data);
     })(console.log(agentactlist));
     console.log(agentactlist);
   }, []);
+  const filterlist=()=>{
+   
+    setupdatedactlist(agentactlist.filter((val)=>{return moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrAfter(fromdate) && moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrBefore(todate)}))
+ 
+}
+const unfilterlist=()=>{
+ 
+  setupdatedactlist(agentactlist);
 
+}
   return (
     <div className="viewback">
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
@@ -56,11 +67,11 @@ const ViewActivity = () => {
         <button
           className="p-1 me-5 font-weight-bold"
           style={{ fontSize: '1vw' }}
-        >
+        onClick={filterlist}>
           Search
         </button>
 
-        <button className="p-1 font-weight-bold" style={{ fontSize: '1vw' }}>
+        <button className="p-1 font-weight-bold" style={{ fontSize: '1vw' }}  onClick={unfilterlist}>
           {' '}
           View All
         </button>
@@ -73,7 +84,7 @@ const ViewActivity = () => {
           <th>Agent Name</th>
           <th>User Activity Description</th>
         </tr>
-        {agentactlist.map((val, index) => {
+        {updatedactlist.map((val, index) => {
           index++;
           return (
             <tr>

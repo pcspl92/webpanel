@@ -5,17 +5,24 @@ const ViewAgent = () => {
   const [agentname, setagentname] = useState('');
   const [agentaccname, setagentaccname] = useState('');
   const [agentlist, setagentlist] = useState([]);
+  const [updatedlist, setupdatedlist] = useState([]);
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/subagent/');
       setagentlist(data);
+      setupdatedlist(data);
     })();
   }, []);
-
+const filter=()=>{
+setupdatedlist(agentlist.filter((val)=>{return val.agent_name.toLowerCase().includes(agentname.toLowerCase())||val.account_name.toLowerCase().includes(agentaccname.toLowerCase())}))
+}
+const unfilter=()=>{
+  setupdatedlist(agentlist)
+}
   return (
     <div className="viewback">
-      <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
+      <div style={{ fontWeight: 'bolder', fontSize: '4vh' , marginTop:"3vh"}}>
         VIEW SUB-AGENTS
       </div>
 
@@ -54,11 +61,11 @@ const ViewAgent = () => {
         <button
           className="p-1 me-5 font-weight-bold"
           style={{ fontSize: '1vw' }}
-        >
+      onClick={filter}  >
           Search
         </button>
 
-        <button className="p-1 font-weight-bold" style={{ fontSize: '1vw' }}>
+        <button className="p-1 font-weight-bold" style={{ fontSize: '1vw' }} onClick={unfilter}>
           {' '}
           View All
         </button>
@@ -72,7 +79,7 @@ const ViewAgent = () => {
           <th>Total Active Orders</th>
           <th>Total Accounts Available</th>
         </tr>
-        {agentlist.map((val, index) => {
+        {updatedlist.map((val, index) => {
 index++;
           return (
             <tr>

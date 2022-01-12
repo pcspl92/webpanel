@@ -6,14 +6,26 @@ const ViewLogin = () => {
   const [fromdate, setfromdate] = useState();
   const [todate, settodate] = useState();
   const [agentloglist, setagentloglist] = useState([]);
+  const [updatedloglist,setupdatedloglist]=useState([]);
+
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/auth/logs/agent');
       setagentloglist(data);
+      setupdatedloglist(data);
     })();
   }, []);
-
+  const filterlist=()=>{
+   
+      setupdatedloglist(agentloglist.filter((val)=>{return moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrAfter(fromdate) && moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrBefore(todate)}))
+   
+  }
+  const unfilterlist=()=>{
+   
+    setupdatedloglist(agentloglist);
+ 
+}
   return (
     <div className="viewback">
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>LOGIN RECORD</div>
@@ -53,11 +65,11 @@ const ViewLogin = () => {
         <button
           className="p-1 me-5 font-weight-bold"
           style={{ fontSize: '1vw' }}
-        >
+      onClick={filterlist}  >
           Search
         </button>
 
-        <button className="p-1 font-weight-bold" style={{ fontSize: '1vw' }}>
+        <button className="p-1 font-weight-bold" style={{ fontSize: '1vw' }} onClick={unfilterlist}>
           {' '}
           View All
         </button>
@@ -70,7 +82,7 @@ const ViewLogin = () => {
           <th>Login Activity Description</th>
           <th>IP Address</th>
         </tr>
-        {agentloglist.map((val, index) => {
+        {updatedloglist.map((val, index) => {
           index = index + 1;
 
           return (
