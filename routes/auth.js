@@ -119,8 +119,8 @@ router.post('/login/agent', async (req, res) => {
   if (!(await comparePassword(req.body.password, user[0].password)))
     return res.status(400).json({ auth: 'Wrong credential combination' });
 
-  // const ip = await getIP();
-  // await createAgentAuthLog('Logged In', ip, user[0].id);
+  const ip = await getIP();
+  await createAgentAuthLog('Logged In', ip, user[0].id);
 
   res.cookie(
     'auth',
@@ -151,8 +151,8 @@ router.post('/login/company', async (req, res) => {
   if (!(await comparePassword(req.body.password, company[0].password)))
     return res.status(400).json({ auth: 'Wrong credential combination' });
 
-  // const ip = await getIP();
-  // await createCompanyAuthLog('Logged In', ip, company[0].id);
+  const ip = await getIP();
+  await createCompanyAuthLog('Logged In', ip, company[0].id);
 
   res.cookie(
     'auth',
@@ -172,13 +172,13 @@ router.post('/login/company', async (req, res) => {
 // @desc    Logout route
 // @access  Private(Agent|Subagent|Company)
 router.post('/logout', isLoggedIn, async (req, res) => {
-  // const ip = await getIP();
-  // if (
-  //   req.user.permissions[0] === 'agent' ||
-  //   req.user.permissions[0] === 'subagent'
-  // )
-  //   await createAgentAuthLog('Logged Out', ip, req.user.id);
-  // else await createCompanyAuthLog('Logged Out', ip, req.user.id);
+  const ip = await getIP();
+  if (
+    req.user.permissions[0] === 'agent' ||
+    req.user.permissions[0] === 'subagent'
+  )
+    await createAgentAuthLog('Logged Out', ip, req.user.id);
+  else await createCompanyAuthLog('Logged Out', ip, req.user.id);
   res.cookie('auth', '', {
     maxAge: -1,
     path: '/',
