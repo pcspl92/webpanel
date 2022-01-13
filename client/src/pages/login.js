@@ -30,7 +30,9 @@ export default function Login() {
     }
   };
 
-  const onLoadRecaptcha = () => captcha.current.reset();
+  const onLoadRecaptcha = () => {
+    if (captcha.current) captcha.current.reset();
+  };
 
   const verifyCallback = async (token) => {
     try {
