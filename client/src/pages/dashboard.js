@@ -11,7 +11,6 @@ export default function Dashboard() {
     (async () => {
       const { data } = await axios.get('/dashboard/agent');
       setDashData(data);
-      console.log(data);
     })();
   }, []);
 

@@ -24,6 +24,7 @@ module.exports = (app) => {
       credentials: true,
     })
   );
+  app.use(express.static('../client/build'));
   app.use('/api/auth', auth);
   app.use('/api/agent', agent);
   app.use('/api/company', company);
@@ -34,5 +35,4 @@ module.exports = (app) => {
   app.use('/api/order', order);
   app.use('/api/user', user);
   app.use('/api/contactlist', cl);
-  app.use('*', (req, res) => res.status(400).send('Invalid Route'));
 };
