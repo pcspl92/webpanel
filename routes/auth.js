@@ -7,17 +7,17 @@ const getIP = require('../utils/getIPAddress');
 const genToken = require('../utils/genToken');
 const { comparePassword, hashPassword } = require('../utils/bcrypt');
 const {
-  findCompany,
+  findCompanyByUsername,
   updateCompanyPassword,
   createCompanyAuthLog,
-  getCompanyLoginLogs,
+  getCompanyAuthLogs,
 } = require('../queries/company');
 const {
   findAgent,
   updateAgentPassword,
   getAgentBalance,
   createAgentAuthLog,
-  getAgentLoginLogs,
+  getAgentAuthLogs,
 } = require('../queries/agent');
 const { agentSubAgentCheck, companyCheck, isLoggedIn } = require('../guard');
 
@@ -58,7 +58,7 @@ router.get(
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
   async (req, res) => {
-    const data = await getAgentLoginLogs(req.user.id);
+    const data = await getAgentAuthLogs(req.user.id);
     return res.status(200).json(data);
   }
 );
@@ -72,7 +72,7 @@ router.get(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const data = await getCompanyLoginLogs(req.user.id);
+    const data = await getCompanyAuthLogs(req.user.id);
     return res.status(200).json(data);
   }
 );
@@ -143,7 +143,7 @@ router.post('/login/agent', async (req, res) => {
 // @desc    Company login route
 // @access  Public(all)
 router.post('/login/company', async (req, res) => {
-  const company = await findCompany(req.body.username);
+  const company = await findCompanyByUsername(req.body.username);
 
   if (!company.length)
     return res.status(400).json({ auth: 'Wrong credential combination' });

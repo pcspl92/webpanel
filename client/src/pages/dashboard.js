@@ -44,10 +44,10 @@ export default function Dashboard() {
             {' '}
             Total PPT User Accounts :{' '}
           </th>
-          <th>{dashData.data.ptt ? dashData.data.ptt.total : 0}</th>
-          <th>{dashData.data.ptt ? dashData.data.ptt.active : 0}</th>
-          <th>{dashData.data.ptt ? dashData.data.ptt.available : 0}</th>
-          <th>{dashData.data.ptt ? dashData.data.ptt.expired : 0}</th>
+          <th>{dashData.data?.ptt?.total || 0}</th>
+          <th>{dashData.data?.ptt?.active || 0}</th>
+          <th>{dashData.data?.ptt?.available || 0}</th>
+          <th>{dashData.data?.ptt?.expired || 0}</th>
         </tr>
         <tr>
           <th
@@ -56,18 +56,10 @@ export default function Dashboard() {
             {' '}
             Total Dispatcher Accounts :{' '}
           </th>
-          <th>
-            {dashData.data.dispatcher ? dashData.data.dispatcher.total : 0}
-          </th>
-          <th>
-            {dashData.data.dispatcher ? dashData.data.dispatcher.active : 0}
-          </th>
-          <th>
-            {dashData.data.dispatcher ? dashData.data.dispatcher.available : 0}
-          </th>
-          <th>
-            {dashData.data.dispatcher ? dashData.data.dispatcher.expired : 0}
-          </th>
+          <th>{dashData.data?.dispatcher?.total || 0}</th>
+          <th>{dashData.data?.dispatcher?.active || 0}</th>
+          <th>{dashData.data?.dispatcher?.available || 0}</th>
+          <th>{dashData.data?.dispatcher?.expired || 0}</th>
         </tr>{' '}
         <tr>
           <th
@@ -76,10 +68,10 @@ export default function Dashboard() {
             {' '}
             Total Control Station Accounts :{' '}
           </th>
-          <th>{dashData.data.control ? dashData.data.control.total : 0}</th>
-          <th>{dashData.data.control ? dashData.data.control.active : 0}</th>
-          <th>{dashData.data.control ? dashData.data.control.available : 0}</th>
-          <th>{dashData.data.control ? dashData.data.control.expired : 0}</th>
+          <th>{dashData.data?.control?.total || 0}</th>
+          <th>{dashData.data?.control?.active || 0}</th>
+          <th>{dashData.data?.control?.available || 0}</th>
+          <th>{dashData.data?.control?.expired || 0}</th>
         </tr>
       </table>
       <br />

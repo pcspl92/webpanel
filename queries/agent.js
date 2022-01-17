@@ -1,12 +1,17 @@
 const query = require('../utils/queryTemplate');
 
 const findAgent = (username) => {
-  const sql = `SELECT id, password, display_name, agent_type FROM agents WHERE username="${username}"`;
+  const sql = `SELECT id, password, display_name, agent_type FROM agents WHERE username="${username}";`;
   return query(sql);
 };
 
 const findAgentById = (agentId) => {
-  const sql = `SELECT id FROM agents WHERE id=${agentId}`;
+  const sql = `SELECT id FROM agents WHERE id=${agentId};`;
+  return query(sql);
+};
+
+const getAgentId = (subagentId) => {
+  const sql = `SELECT agent_id FROM agents WHERE id=${subagentId};`;
   return query(sql);
 };
 
@@ -121,7 +126,7 @@ const createAgentActivityLog = (desc, agentId) => {
   return query(sql);
 };
 
-const getAgentLoginLogs = (id) => {
+const getAgentAuthLogs = (id) => {
   const sql = `SELECT * FROM agent_login_logs WHERE agent_id=${id};`;
   return query(sql);
 };
@@ -180,6 +185,7 @@ const getDashboardData = (agentIds, currDate) => {
 module.exports = {
   findAgent,
   findAgentById,
+  getAgentId,
   getSubAgents,
   getSubAgentNames,
   deductBalance,
@@ -193,7 +199,7 @@ module.exports = {
   getAgentUnitPrice,
   updateSubAgent,
   updateAgentPassword,
-  getAgentLoginLogs,
+  getAgentAuthLogs,
   getAgentActivityLogs,
   addProfit,
   viewSubAgentData,

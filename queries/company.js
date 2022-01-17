@@ -1,17 +1,36 @@
 const query = require('../utils/queryTemplate');
 
-const findCompany = (username) => {
-  const sql = `SELECT id, password, display_name FROM companies WHERE username="${username}";`;
+const findCompanyById = (id) => {
+  const sql = `SELECT id FROM companies WHERE id=${id};`;
   return query(sql);
 };
 
 const findCompanyByUsername = (username) => {
-  const sql = `SELECT id FROM companies WHERE username='${username}'`;
+  const sql = `SELECT id, password, display_name FROM companies WHERE username="${username}";`;
+  return query(sql);
+};
+
+const getCompanies = (agentId) => {
+  const sql = `SELECT id, display_name FROM companies WHERE agent_id=${agentId}`;
+  return query(sql);
+};
+
+const getCompanyViewData = (agentIds) => {
+  const sql = `SELECT c.username AS account_name, c.display_name AS company_name, 
+               c.timestamp, c.contact_number, a.display_name AS agent_name
+               FROM companies c
+               JOIN agents a ON c.agent_id = a.id
+               WHERE c.agent_id IN (${agentIds});`;
   return query(sql);
 };
 
 const getDepartmentCount = (id) => {
   const sql = `SELECT COUNT(id) AS count FROM departments WHERE company_id=${id};`;
+  return query(sql);
+};
+
+const getDepartments = (companyId) => {
+  const sql = `SELECT id, display_name FROM departments WHERE company_id=${companyId};`;
   return query(sql);
 };
 
@@ -34,18 +53,9 @@ const updateCompanyPassword = (password, companyId) => {
   return query(sql);
 };
 
-const findCompanies = () => {
-  const sql = `SELECT  username,display_name,contact_number,timestamp`;
-  return query(sql);
-};
-
-const updateCompany = (
-  newpassword,
-  newcompanyname,
-  newcontactnumber,
-  newsubagent
-) => {
-  const sql = `UPDATE  companies SET password='${newpassword}' diplay_name='${newcompanyname}',contact_number='${newcontactnumber}',agent_id='${newsubagent}'`;
+const updateCompany = (id, password, displayName, contactNumber, agentId) => {
+  const sql = `UPDATE companies SET password='${password}', display_name='${displayName}', contact_number='${contactNumber}', agent_id=${agentId}
+               WHERE id=${id};`;
   return query(sql);
 };
 
@@ -72,7 +82,7 @@ const createCompanyActivityLog = (desc, companyId) => {
   return query(sql);
 };
 
-const getCompanyLoginLogs = (id) => {
+const getCompanyAuthLogs = (id) => {
   const sql = `SELECT * FROM company_login_logs WHERE company_id=${id};`;
   return query(sql);
 };
@@ -83,17 +93,25 @@ const getCompanyActivityLogs = (id) => {
   return query(sql);
 };
 
+const deleteCompany = (id) => {
+  const sql = `DELETE FROM companies WHERE id=${id}`;
+  return query(sql);
+};
+
 module.exports = {
-  findCompany,
   findCompanyByUsername,
+  findCompanyById,
   createCompany,
-  findCompanies,
   updateCompanyPassword,
   updateCompany,
   getDepartmentCount,
   getDashboardData,
   createCompanyAuthLog,
   createCompanyActivityLog,
-  getCompanyLoginLogs,
+  getCompanyAuthLogs,
   getCompanyActivityLogs,
+  getCompanies,
+  getCompanyViewData,
+  deleteCompany,
+  getDepartments,
 };

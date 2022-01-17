@@ -3,6 +3,7 @@ const guard = require('express-jwt-permissions')();
 
 const { companyCheck, isLoggedIn } = require('../guard');
 const { findTGByName, createTG } = require('../queries/talkgroup');
+const { createCompanyActivityLog } = require('../queries/company');
 
 const router = express.Router();
 
@@ -22,6 +23,7 @@ router.post(
         .json({ username: 'Talkgroup with given name already exists' });
 
     await createTG({ tgName: req.body.name, companyId: req.user.id });
+    await createCompanyActivityLog('Talk-Group Create', req.user.id);
     return res.status(201).send('created');
   }
 );

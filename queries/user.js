@@ -12,4 +12,10 @@ const getUsersAgentPanel = (agentIds) => {
   return query(sql);
 };
 
-module.exports = { getUsersAgentPanel };
+const getPttUsers = (companyId) => {
+  // working
+  const sql = ``;
+  return query(sql);
+};
+
+module.exports = { getUsersAgentPanel, getPttUsers };

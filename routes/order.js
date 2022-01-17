@@ -20,6 +20,7 @@ const {
   getAgentBalance,
   addProfit,
   getSubAgents,
+  createAgentActivityLog,
 } = require('../queries/agent');
 
 const router = express.Router();
@@ -109,6 +110,7 @@ router.post(
       );
       await addProfit((unitPrice - agentUnitPrice) * req.body.qty, req.user.id);
     }
+    await createAgentActivityLog('Order Create', req.user.id);
     return res.status(201).send('created');
   }
 );
@@ -152,7 +154,7 @@ router.put(
       req.params.orderId,
       req.body.all
     );
-
+    await createAgentActivityLog('Order Features Modify', req.user.id);
     return res.status(201).send('Updated');
   }
 );
@@ -224,7 +226,7 @@ router.put(
         req.user.id
       );
     }
-
+    await createAgentActivityLog('Order Renewal', req.user.id);
     return res.status(201).send('Updated');
   }
 );
@@ -265,7 +267,7 @@ router.put(
       []
     );
     await updateOrderId(licenseIds, orderRes.insertId, req.params.orderId);
-
+    await createAgentActivityLog('Order Transfer', req.user.id);
     return res.status(201).send('Updated');
   }
 );
