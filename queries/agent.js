@@ -37,8 +37,8 @@ const createAgent = (username, password, displayname, agenttype, agentid) => {
   return query(sql);
 };
 
-const addAgentDetials = (contactnumber, agentid) => {
-  const sql = `INSERT INTO agents_add_data (contact_number, agent_id) VALUES ("${contactnumber}",${agentid})`;
+const addAgentDetails = (contactNumber, agentId) => {
+  const sql = `INSERT INTO agents_add_data (contact_number, agent_id) VALUES ("${contactNumber}", ${agentId})`;
   return query(sql);
 };
 
@@ -190,7 +190,7 @@ module.exports = {
   getSubAgentNames,
   deductBalance,
   createAgent,
-  addAgentDetials,
+  addAgentDetails,
   addPriceDetails,
   updatePriceDetails,
   getTotalCompanyCount,

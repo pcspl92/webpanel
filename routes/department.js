@@ -6,9 +6,9 @@ const { companyCheck, isLoggedIn } = require('../guard');
 const {
   findDeptByUsername,
   createDept,
-  updateDepartment,
-  findDepartmentById,
-  deleteDepartment,
+  updateDept,
+  findDeptById,
+  deleteDept,
 } = require('../queries/department');
 const {
   getDepartments,
@@ -49,7 +49,7 @@ router.post(
 
     const password = await hashPassword(req.body.password);
     const data = {
-      ..._.pick(req.body, ['username', 'displayName']),
+      ..._.pick(req.body, ['username', 'display_name']),
       password,
       companyId: req.user.id,
     };
@@ -69,15 +69,21 @@ router.put(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const department = await findDepartmentById(req.params.id);
+    let department = await findDeptById(req.params.id);
     if (!department.length)
       return res
         .status(404)
         .json({ department: 'Department with given id is not registered' });
 
+    department = await findDeptByUsername(req.body.username);
+    if (department.length)
+      return res
+        .status(400)
+        .json({ username: 'Department with given username already exists' });
+
     const password = await hashPassword(req.body.password);
 
-    await updateDepartment(password, req.body.display_name, req.params.id);
+    await updateDept(password, req.body.display_name, req.params.id);
     await createCompanyActivityLog('Department Modify', req.user.id);
     return res.status(200).send('updated');
   }
@@ -92,13 +98,13 @@ router.delete(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const department = await findDepartmentById(req.params.id);
+    const department = await findDeptById(req.params.id);
     if (!department.length)
       return res
         .status(404)
         .json({ department: 'Department with given id is not registered' });
 
-    await deleteDepartment(req.params.id);
+    await deleteDept(req.params.id);
     await createCompanyActivityLog('Department Delete', req.user.id);
     return res.status(200).send('deleted');
   }

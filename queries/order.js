@@ -43,8 +43,11 @@ const createOrder = (
 
 const createLicense = (orderId, qty) => {
   const sql = Array(qty)
-    .fill(`VALUES (${orderId}) `)
-    .reduce((acc, val) => acc + val, `INSERT INTO licenses (order_id) `);
+    .fill(`(${orderId})`)
+    .reduce((acc, val, index) => {
+      if (index === qty - 1) return `${acc} ${val};`;
+      return `${acc} ${val},`;
+    }, `INSERT INTO licenses (order_id) VALUES`);
   return query(sql);
 };
 

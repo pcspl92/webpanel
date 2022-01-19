@@ -5,7 +5,7 @@ const {
   findAgent,
   findAgentById,
   createAgent,
-  addAgentDetials,
+  addAgentDetails,
   addPriceDetails,
   updatePriceDetails,
   getAgentBalance,
@@ -76,7 +76,7 @@ router.post(
       'subagent',
       req.user.id
     );
-    await addAgentDetials(req.body.contact_number, result.insertId);
+    await addAgentDetails(req.body.contact_number, result.insertId);
     await addPriceDetails(
       req.body.ptt.monthly,
       req.body.ptt.quarterly,

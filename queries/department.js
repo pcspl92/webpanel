@@ -5,7 +5,7 @@ const findDeptByUsername = (username) => {
   return query(sql);
 };
 
-const findDepartmentById = (id) => {
+const findDeptById = (id) => {
   const sql = `SELECT id FROM departments WHERE id=${id};`;
   return query(sql);
 };
@@ -22,12 +22,12 @@ const createDept = ({
   return query(sql);
 };
 
-const updateDepartment = (password, displayName, id) => {
+const updateDept = (password, displayName, id) => {
   const sql = `UPDATE departments SET password='${password}', display_name='${displayName}' WHERE id=${id};`;
   return query(sql);
 };
 
-const deleteDepartment = (id) => {
+const deleteDept = (id) => {
   const sql = `DELETE FROM departments WHERE id=${id};`;
   return query(sql);
 };
@@ -35,7 +35,7 @@ const deleteDepartment = (id) => {
 module.exports = {
   findDeptByUsername,
   createDept,
-  updateDepartment,
-  findDepartmentById,
-  deleteDepartment,
+  updateDept,
+  findDeptById,
+  deleteDept,
 };
