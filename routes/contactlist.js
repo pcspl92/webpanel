@@ -23,7 +23,7 @@ router.get(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const list = getContactLists(req.user.id);
+    const list = await getContactLists(req.user.id);
     return res.status(200).json(list);
   }
 );

@@ -5,8 +5,8 @@ const findUserByUsername = (username) => {
   return query(sql);
 };
 
-const findUserById = (id) => {
-  const sql = `SELECT id FROM users WHERE id=${id};`;
+const findUserById = (id, type) => {
+  const sql = `SELECT id FROM users WHERE id=${id} AND user_type='${type}';`;
   return query(sql);
 };
 
@@ -22,15 +22,14 @@ const getUsersAgentPanel = (agentIds) => {
   return query(sql);
 };
 
-const getPttUsers = (companyId) => {
-  // working
-  const sql = ``;
+const getUsers = (deptIds, type) => {
+  const sql = `SELECT id, display_name FROM users WHERE department_id IN (${deptIds}) AND user_type='${type}';`;
   return query(sql);
 };
 
-const createPttUser = (username, password, displayName, deptId) => {
+const createUser = (type, username, password, displayName, deptId) => {
   const sql = `INSERT INTO users (user_type, username, password, display_name, department_id) 
-               VALUES ('ptt', '${username}', '${password}', '${displayName}', ${deptId})`;
+               VALUES ('${type}', '${username}', '${password}', '${displayName}', ${deptId})`;
   return query(sql);
 };
 
@@ -39,7 +38,7 @@ const updateLicense = (licenseId, userId) => {
   return query(sql);
 };
 
-const createPttUserAddData = (
+const createUserAddData = (
   {
     grp_call: grpCall,
     enc,
@@ -58,7 +57,7 @@ const createPttUserAddData = (
   return [query(sql1), query(sql2)];
 };
 
-const mapPttUserTalkgroup = (tgIds, defTg, userId) => {
+const mapUserTalkgroup = (tgIds, defTg, userId) => {
   const sql = tgIds.reduce((acc, tgId, index) => {
     if (index === tgIds.length - 1)
       return `${acc} (${userId}, ${tgId}, ${tgId === defTg ? 1 : 0});`;
@@ -67,13 +66,51 @@ const mapPttUserTalkgroup = (tgIds, defTg, userId) => {
   return query(sql);
 };
 
+const mapControlStations = (controlIds, userId) => {
+  const sql = `UPDATE users_add_data SET dispatcher_id=${userId} WHERE user_id IN (${controlIds});`;
+  return query(sql);
+};
+
+const updateUser = (password, displayName, deptId, userId) => {
+  const sql = `UPDATE users SET password='${password}', display_name='${displayName}', department_id=${deptId} WHERE id=${userId};`;
+  return query(sql);
+};
+
+const updateUserAddData = (
+  {
+    grp_call: grpCall,
+    enc,
+    priv_call: privCall,
+    live_gps: liveGps,
+    geo_fence: geoFence,
+    chat,
+  },
+  contactNumber,
+  contactListId,
+  userId
+) => {
+  const sql1 = `UPDATE users_add_data SET contact_no='${contactNumber}', contact_list_id=${contactListId} WHERE user_id=${userId};`;
+  const sql2 = `UPDATE user_features SET grp_call=${grpCall}, enc=${enc}, priv_call=${privCall}, live_gps=${liveGps}, geo_fence=${geoFence}, chat=${chat}
+                WHERE user_id=${userId};`;
+  return [query(sql1), query(sql2)];
+};
+
+const deleteUserTalkgroupMaps = (userId) => {
+  const sql = `DELETE FROM user_talkgroup_maps WHERE user_id=${userId};`;
+  return query(sql);
+};
+
 module.exports = {
   findUserByUsername,
   findUserById,
   getUsersAgentPanel,
-  getPttUsers,
-  createPttUser,
-  createPttUserAddData,
-  mapPttUserTalkgroup,
+  getUsers,
+  createUser,
+  createUserAddData,
+  mapUserTalkgroup,
   updateLicense,
+  mapControlStations,
+  updateUser,
+  updateUserAddData,
+  deleteUserTalkgroupMaps,
 };
