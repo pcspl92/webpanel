@@ -100,6 +100,31 @@ const deleteUserTalkgroupMaps = (userId) => {
   return query(sql);
 };
 
+const getCSUserById = (id) => {
+  const sql = `SELECT id, display_name FROM control_station_user WHERE id=${id};`;
+  return query(sql);
+};
+
+const createCSUser = ({
+  ip_address: ipAddress,
+  port,
+  display_name: displayName,
+  device_id: deviceId,
+  rec_port: recPort,
+  contact_no: contactNo,
+  cs_type_id: csTypeId,
+  dept_id: deptId,
+}) => {
+  const sql = `INSERT INTO control_station_user (remote_ip_address, remote_port, display_name, device_id, receiving_port, contact_no, cs_type_id, department_id) VALUES
+               ('${ipAddress}', ${port}, '${displayName}', '${deviceId}', ${recPort}, '${contactNo}', ${csTypeId}, ${deptId});`;
+  return query(sql);
+};
+
+const getCSUserByName = (displayName) => {
+  const sql = `SELECT id FROM control_station_user WHERE display_name='${displayName}';`;
+  return query(sql);
+};
+
 module.exports = {
   findUserByUsername,
   findUserById,
@@ -113,4 +138,7 @@ module.exports = {
   updateUser,
   updateUserAddData,
   deleteUserTalkgroupMaps,
+  getCSUserById,
+  createCSUser,
+  getCSUserByName,
 };

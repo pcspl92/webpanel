@@ -17,6 +17,8 @@ const {
   updateUser,
   updateUserAddData,
   deleteUserTalkgroupMaps,
+  createCSUser,
+  getCSUserByName,
 } = require('../queries/user');
 const {
   createCompanyActivityLog,
@@ -193,10 +195,25 @@ router.post(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    // working
-    const users = `Control Station user creation route`;
-    console.log(users);
-    // await createCompanyActivityLog('Control Station User Create', req.user.id);
+    const user = await getCSUserByName(req.body.display_name);
+    if (user.length)
+      return res(400).json({
+        user: 'Control Station with given name alreay exists.',
+      });
+
+    await createCSUser(
+      _.pick(req.body, [
+        'ip_address',
+        'port',
+        'display_name',
+        'device_id',
+        'rec_port',
+        'contact_no',
+        'cs_type_id',
+        'dept_id',
+      ])
+    );
+    await createCompanyActivityLog('Control Station User Create', req.user.id);
     return res.status(201).send('created');
   }
 );

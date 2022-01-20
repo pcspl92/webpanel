@@ -23,7 +23,7 @@ const { agentSubAgentCheck, companyCheck, isLoggedIn } = require('../guard');
 
 const router = express.Router();
 
-// @route   GET api/auth/status/
+// @route   GET api/auth/status
 // @desc    Gives the status of user whether logged-in or not
 // @access  Public(all)
 router.get('/status', async (req, res) => {
