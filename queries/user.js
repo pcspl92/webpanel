@@ -125,6 +125,21 @@ const getCSUserByName = (displayName) => {
   return query(sql);
 };
 
+const updateCSUser = ({
+  ip_address: ipAddress,
+  port,
+  display_name: displayName,
+  device_id: deviceId,
+  rec_port: recPort,
+  contact_no: contactNo,
+  cs_type_id: csTypeId,
+  dept_id: deptId,
+}) => {
+  const sql = `UPDATE control_station_user SET remote_ip_address='${ipAddress}', remote_port=${port}, display_name='${displayName}', 
+               device_id='${deviceId}', receiving_port=${recPort}, cs_type_id=${csTypeId}, contact_no='${contactNo}', department_id=${deptId};`;
+  return query(sql);
+};
+
 module.exports = {
   findUserByUsername,
   findUserById,
@@ -141,4 +156,5 @@ module.exports = {
   getCSUserById,
   createCSUser,
   getCSUserByName,
+  updateCSUser,
 };

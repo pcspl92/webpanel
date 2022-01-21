@@ -19,6 +19,8 @@ const {
   deleteUserTalkgroupMaps,
   createCSUser,
   getCSUserByName,
+  updateCSUser,
+  getCSUserById,
 } = require('../queries/user');
 const {
   createCompanyActivityLog,
@@ -304,6 +306,48 @@ router.put(
     if (req.body.control_ids.length)
       await mapControlStations(req.body.control_ids, req.params.id);
     await createCompanyActivityLog('Dispatcher User Modify', req.user.id);
+    return res.status(200).send('updated');
+  }
+);
+
+// @route   PUT api/user/control/:id
+// @desc    Control Station user updation route
+// @access  Private(Company)
+router.put(
+  '/control/:id',
+  isLoggedIn,
+  guard.check('company'),
+  companyCheck,
+  async (req, res) => {
+    let user = await getCSUserById(req.params.id);
+    if (!user.length)
+      return res.status(400).json({
+        user: 'Control Station user with given id is not registered.',
+      });
+
+    if (
+      req.body.display_name.toLowerCase() !== user[0].display_name.toLowerCase()
+    ) {
+      user = await getCSUserByName(req.body.display_name);
+      if (user.length)
+        return res(400).json({
+          user: 'Control Station with given name alreay exists.',
+        });
+    }
+
+    await updateCSUser(
+      _.pick(req.body, [
+        'ip_address',
+        'port',
+        'display_name',
+        'device_id',
+        'rec_port',
+        'contact_no',
+        'cs_type_id',
+        'dept_id',
+      ])
+    );
+    await createCompanyActivityLog('Control Station User Modify', req.user.id);
     return res.status(200).send('updated');
   }
 );
