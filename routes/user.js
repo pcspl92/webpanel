@@ -21,6 +21,7 @@ const {
   getCSUserByName,
   updateCSUser,
   getCSUserById,
+  deleteDispatcherControlMaps,
 } = require('../queries/user');
 const {
   createCompanyActivityLog,
@@ -303,8 +304,10 @@ router.put(
     );
     await deleteUserTalkgroupMaps(req.params.id);
     await mapUserTalkgroup(req.body.tg_ids, req.body.def_tg, req.params.id);
-    if (req.body.control_ids.length)
+    if (req.body.control_ids.length) {
+      await deleteDispatcherControlMaps(req.params.id);
       await mapControlStations(req.body.control_ids, req.params.id);
+    }
     await createCompanyActivityLog('Dispatcher User Modify', req.user.id);
     return res.status(200).send('updated');
   }

@@ -67,7 +67,11 @@ const mapUserTalkgroup = (tgIds, defTg, userId) => {
 };
 
 const mapControlStations = (controlIds, userId) => {
-  const sql = `UPDATE users_add_data SET dispatcher_id=${userId} WHERE user_id IN (${controlIds});`;
+  const sql = controlIds.reduce((acc, controlId, index) => {
+    if (index === controlIds.length - 1)
+      return `${acc} (${userId}, ${controlId});`;
+    return `${acc} (${userId}, ${controlId}),`;
+  }, `INSERT INTO dispatcher_control_maps (dispatcher_id, control_id) VALUES`);
   return query(sql);
 };
 
@@ -97,6 +101,11 @@ const updateUserAddData = (
 
 const deleteUserTalkgroupMaps = (userId) => {
   const sql = `DELETE FROM user_talkgroup_maps WHERE user_id=${userId};`;
+  return query(sql);
+};
+
+const deleteDispatcherControlMaps = (userId) => {
+  const sql = `DELETE FROM dispatcher_control_maps WHERE dispatcher_id=${userId};`;
   return query(sql);
 };
 
@@ -157,4 +166,5 @@ module.exports = {
   createCSUser,
   getCSUserByName,
   updateCSUser,
+  deleteDispatcherControlMaps,
 };
