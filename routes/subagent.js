@@ -15,7 +15,9 @@ const {
   getSubAgents,
   getSubAgentNames,
   createAgentActivityLog,
+  getSubAgentBalance,
 } = require('../queries/agent');
+const { createTransactionLog } = require('../queries/order');
 const { agentCheck, isLoggedIn } = require('../guard');
 const { hashPassword } = require('../utils/bcrypt');
 
@@ -150,8 +152,24 @@ router.put(
         amount: `Your available balance is ${balance}, please choose amount below ${balance}`,
       });
 
+    const [{ subAgentBalance }] = await getSubAgentBalance(req.params.id);
+
     await Promise.all(
       rechargeSubAgent(req.params.id, req.user.id, req.body.amount)
+    );
+    await createTransactionLog(
+      'Subagent Recharge',
+      req.body.amount,
+      balance - req.body.amount,
+      'DR',
+      req.user.id
+    );
+    await createTransactionLog(
+      'Subagent Recharge',
+      req.body.amount,
+      subAgentBalance + req.body.amount,
+      'CR',
+      req.user.id
     );
     await createAgentActivityLog('Subagent Recharge', req.user.id);
     return res.status(200).send('updated');

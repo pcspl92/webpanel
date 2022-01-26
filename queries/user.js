@@ -149,6 +149,21 @@ const updateCSUser = ({
   return query(sql);
 };
 
+const viewUsersCompanyPanel = (deptIds, currDate) => {
+  const sql = `SELECT u.username AS account_name, u.display_name AS user_display_name, u.user_type AS account_type,
+               u.timestamp AS creation_date, d.display_name AS department, uad.contact_no AS contact_person,
+               o.license_expiry AS license_renewal, o.id AS order_id, IF(o.license_expiry > '${currDate}', "Normal", "Expired") AS status,
+               uf.grp_call, uf.enc, uf.priv_call, uf.live_gps, uf.geo_fence, uf.chat 
+               FROM users u
+               JOIN departments d ON u.department_id=d.id
+               JOIN users_add_data uad ON uad.user_id=u.id
+               JOIN licenses l ON l.user_id=u.id
+               JOIN orders o ON l.order_id=o.id
+               JOIN user_features uf ON uf.user_id=u.id
+               WHERE u.department_id IN (${deptIds});`;
+  return query(sql);
+};
+
 module.exports = {
   findUserByUsername,
   findUserById,
@@ -167,4 +182,5 @@ module.exports = {
   getCSUserByName,
   updateCSUser,
   deleteDispatcherControlMaps,
+  viewUsersCompanyPanel,
 };

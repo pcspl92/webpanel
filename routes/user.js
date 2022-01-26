@@ -1,6 +1,7 @@
 const express = require('express');
 const guard = require('express-jwt-permissions')();
 const _ = require('lodash');
+const moment = require('moment');
 
 const { agentSubAgentCheck, companyCheck, isLoggedIn } = require('../guard');
 const { getSubAgents } = require('../queries/agent');
@@ -22,6 +23,7 @@ const {
   updateCSUser,
   getCSUserById,
   deleteDispatcherControlMaps,
+  viewUsersCompanyPanel,
 } = require('../queries/user');
 const {
   createCompanyActivityLog,
@@ -60,8 +62,15 @@ router.get(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const user = `Helllo User`;
-    return res.status(200).json(user);
+    const result = await getDepartments(req.user.id);
+    const deptIds = result.reduce(
+      (acc, sub) => [...acc, sub.id],
+      [req.user.id]
+    );
+    const currDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+
+    const userData = await viewUsersCompanyPanel(deptIds, currDate);
+    return res.status(200).json(userData);
   }
 );
 

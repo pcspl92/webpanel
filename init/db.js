@@ -6,6 +6,7 @@ const options = {
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   timezone: '+00:00',
+  multipleStatements: true,
 };
 
 module.exports = mysql.createPool(options);

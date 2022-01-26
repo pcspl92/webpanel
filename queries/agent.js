@@ -105,6 +105,11 @@ const getAgentBalance = (agentId) => {
   return query(sql);
 };
 
+const getSubAgentBalance = (subAgentId) => {
+  const sql = `SELECT balance AS subAgentBalance FROM agents_add_data WHERE agent_id=${subAgentId};`;
+  return query(sql);
+};
+
 const updateSubAgent = (displayName, contactNumber, password, subagentId) => {
   const sql1 = `UPDATE agents SET display_name="${displayName}", password="${password}" WHERE id=${subagentId};`;
   const sql2 = `UPDATE agents_add_data SET contact_number="${contactNumber}" WHERE agent_id=${subagentId};`;
@@ -206,4 +211,5 @@ module.exports = {
   getDashboardData,
   createAgentAuthLog,
   createAgentActivityLog,
+  getSubAgentBalance,
 };

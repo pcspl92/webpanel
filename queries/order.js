@@ -73,6 +73,58 @@ const getLicenseCount = (orderId) => {
   return query(sql);
 };
 
+const createTransactionLog = (
+  details,
+  amount,
+  balance,
+  type,
+  agentId,
+  orderId
+) => {
+  const sql = `INSERT INTO transactions (details, trnc_amount, balance_left, type, agent_id, order_id) 
+               VALUES ('${details}', ${amount}, ${balance}, '${type}', ${agentId}, ${orderId});`;
+  return query(sql);
+};
+
+const getTransactionLogs = (agentId) => {
+  const sql = `SELECT id, timestamp AS date, trnc_amount AS transaction_amount, type AS transaction_type,
+               balance_left AS balance, details AS transaction_details FROM transactions 
+               WHERE agent_id=${agentId};`;
+  return query(sql);
+};
+
+const getCompanyOrderList = (companyId, currDate) => {
+  const sql = `SELECT o.id, o.license_type AS account_type, o.license_expiry AS license_renewal_date,
+               f.grp_call, f.enc, f.priv_call, f.live_gps, f.geo_fence, f.chat,
+               COUNT(case when o.license_expiry > '${currDate}' then o.id else null end) - COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS available, 
+               COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS active,
+               IF(o.license_expiry > '${currDate}', "Active", "Expired") AS status 
+               FROM orders o
+               JOIN licenses l ON l.order_id=o.id
+               JOIN features f ON o.feature_id=f.id
+               WHERE o.company_id=${companyId} 
+               GROUP BY o.id;`;
+  return query(sql);
+};
+
+const getCompanyTransactionList = (companyId, currDate) => {
+  const sql = `SELECT t.details AS transaction_type, t.timestamp AS transaction_date,
+               o.id, o.license_type AS account_type, o.license_expiry AS license_renewal_date,
+               COUNT(case when o.license_expiry > '${currDate}' then o.id else null end) - COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS available, 
+               COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS active,
+               FROM transactions t
+               JOIN orders o ON t.order_id=o.id
+               JOIN licenses l ON l.order_id=o.id
+               WHERE o.company_id=${companyId}
+               GROUP BY t.id;`;
+  return query(sql);
+};
+
+const getLicenses = (orderId) => {
+  const sql = `SELECT id FROM licenses WHERE order_id=${orderId} AND user_id IS NULL;`;
+  return query(sql);
+};
+
 module.exports = {
   getOrders,
   createLicense,
@@ -82,4 +134,9 @@ module.exports = {
   updateOrderId,
   getLicenseIds,
   getLicenseCount,
+  createTransactionLog,
+  getTransactionLogs,
+  getCompanyOrderList,
+  getCompanyTransactionList,
+  getLicenses,
 };
