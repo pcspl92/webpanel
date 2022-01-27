@@ -5,30 +5,25 @@ const { companyCheck, isLoggedIn } = require('../guard');
 const {
   getContactListByName,
   getContactListById,
-  getContactListJoined,
   createContactList,
   updateContactList,
   deleteContactList,
+  getContactLists,
 } = require('../queries/contactlist');
+const { createCompanyActivityLog } = require('../queries/company');
 
 const router = express.Router();
 
-// @route   GET api/contactlist/:id
+// @route   GET api/contactlist/
 // @desc    Contact-List fetching route
 // @access  Private(Company)
 router.get(
-  '/:id',
+  '/',
   isLoggedIn,
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    let list = await getContactListById(req.params.id);
-    if (!list.length)
-      return res
-        .status(404)
-        .json({ contactlist: 'No Contact List with given id found.' });
-
-    list = await getContactListJoined(req.params.id);
+    const list = await getContactLists(req.user.id);
     return res.status(200).json(list);
   }
 );
@@ -48,7 +43,10 @@ router.post(
         .status(400)
         .json({ contactList: 'Contact List with given name already exists.' });
 
-    await createContactList(req.body.name, req.user.id, req.body.userIds);
+    await Promise.all(
+      createContactList(req.body.name, req.user.id, req.body.userIds)
+    );
+    await createCompanyActivityLog('Contact-List Create', req.user.id);
     return res.status(201).send('created');
   }
 );
@@ -74,7 +72,10 @@ router.put(
         .status(404)
         .json({ contactlist: 'Contact List with given name already exists.' });
 
-    await updateContactList(req.params.id, req.body.name, req.body.userIds);
+    await Promise.all(
+      updateContactList(req.params.id, req.body.name, req.body.userIds)
+    );
+    await createCompanyActivityLog('Contact-List Modify', req.user.id);
     return res.status(200).send('updated');
   }
 );
@@ -95,6 +96,7 @@ router.delete(
         .json({ contactlist: 'No Contact List with given id found.' });
 
     await deleteContactList(req.params.id);
+    await createCompanyActivityLog('Contact-List Delete', req.user.id);
     return res.status(200).send('deleted');
   }
 );

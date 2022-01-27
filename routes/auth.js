@@ -1,28 +1,29 @@
 const express = require('express');
 const _ = require('lodash');
 const guard = require('express-jwt-permissions')();
+const axios = require('axios');
 
 const getIP = require('../utils/getIPAddress');
 const genToken = require('../utils/genToken');
 const { comparePassword, hashPassword } = require('../utils/bcrypt');
 const {
-  findCompany,
+  findCompanyByUsername,
   updateCompanyPassword,
   createCompanyAuthLog,
-  getCompanyLoginLogs,
+  getCompanyAuthLogs,
 } = require('../queries/company');
 const {
   findAgent,
   updateAgentPassword,
   getAgentBalance,
   createAgentAuthLog,
-  getAgentLoginLogs,
+  getAgentAuthLogs,
 } = require('../queries/agent');
 const { agentSubAgentCheck, companyCheck, isLoggedIn } = require('../guard');
 
 const router = express.Router();
 
-// @route   GET api/auth/status/
+// @route   GET api/auth/status
 // @desc    Gives the status of user whether logged-in or not
 // @access  Public(all)
 router.get('/status', async (req, res) => {
@@ -57,7 +58,7 @@ router.get(
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
   async (req, res) => {
-    const data = await getAgentLoginLogs(req.user.id);
+    const data = await getAgentAuthLogs(req.user.id);
     return res.status(200).json(data);
   }
 );
@@ -71,7 +72,7 @@ router.get(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const data = await getCompanyLoginLogs(req.user.id);
+    const data = await getCompanyAuthLogs(req.user.id);
     return res.status(200).json(data);
   }
 );
@@ -118,8 +119,8 @@ router.post('/login/agent', async (req, res) => {
   if (!(await comparePassword(req.body.password, user[0].password)))
     return res.status(400).json({ auth: 'Wrong credential combination' });
 
-  // const ip = await getIP();
-  // await createAgentAuthLog('Logged In', ip, user[0].id);
+  const ip = await getIP();
+  await createAgentAuthLog('Logged In', ip, user[0].id);
 
   res.cookie(
     'auth',
@@ -142,7 +143,7 @@ router.post('/login/agent', async (req, res) => {
 // @desc    Company login route
 // @access  Public(all)
 router.post('/login/company', async (req, res) => {
-  const company = await findCompany(req.body.username);
+  const company = await findCompanyByUsername(req.body.username);
 
   if (!company.length)
     return res.status(400).json({ auth: 'Wrong credential combination' });
@@ -150,8 +151,8 @@ router.post('/login/company', async (req, res) => {
   if (!(await comparePassword(req.body.password, company[0].password)))
     return res.status(400).json({ auth: 'Wrong credential combination' });
 
-  // const ip = await getIP();
-  // await createCompanyAuthLog('Logged In', ip, company[0].id);
+  const ip = await getIP();
+  await createCompanyAuthLog('Logged In', ip, company[0].id);
 
   res.cookie(
     'auth',
@@ -171,18 +172,31 @@ router.post('/login/company', async (req, res) => {
 // @desc    Logout route
 // @access  Private(Agent|Subagent|Company)
 router.post('/logout', isLoggedIn, async (req, res) => {
-  // const ip = await getIP();
-  // if (
-  //   req.user.permissions[0] === 'agent' ||
-  //   req.user.permissions[0] === 'subagent'
-  // )
-  //   await createAgentAuthLog('Logged Out', ip, req.user.id);
-  // else await createCompanyAuthLog('Logged Out', ip, req.user.id);
+  const ip = await getIP();
+  if (
+    req.user.permissions[0] === 'agent' ||
+    req.user.permissions[0] === 'subagent'
+  )
+    await createAgentAuthLog('Logged Out', ip, req.user.id);
+  else await createCompanyAuthLog('Logged Out', ip, req.user.id);
   res.cookie('auth', '', {
     maxAge: -1,
     path: '/',
   });
   return res.status(200).send('logged out');
+});
+
+// @route   POST api/auth/verify-captcha
+// @desc    Captcha verify route
+// @access  Public(all)
+router.post('/verify-captcha', async (req, res) => {
+  const { data } = await axios.post(
+    `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.CAPTCHA_SECRET_KEY}&response=${req.body.token}`
+  );
+
+  if (!data.success)
+    return res.status(400).send('Incorrect Captcha Token Used');
+  return res.status(200).send('Verified');
 });
 
 module.exports = router;

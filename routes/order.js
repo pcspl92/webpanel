@@ -1,8 +1,9 @@
 const express = require('express');
 const guard = require('express-jwt-permissions')();
 const _ = require('lodash');
+const moment = require('moment');
 
-const { agentSubAgentCheck, isLoggedIn } = require('../guard');
+const { agentSubAgentCheck, companyCheck, isLoggedIn } = require('../guard');
 const getExpiryDate = require('../utils/licenseExpiryDate');
 const {
   getOrders,
@@ -13,6 +14,10 @@ const {
   updateOrderId,
   getLicenseIds,
   getLicenseCount,
+  createTransactionLog,
+  getTransactionLogs,
+  getCompanyOrderList,
+  getCompanyTransactionList,
 } = require('../queries/order');
 const {
   getAgentUnitPrice,
@@ -20,6 +25,8 @@ const {
   getAgentBalance,
   addProfit,
   getSubAgents,
+  createAgentActivityLog,
+  getAgentId,
 } = require('../queries/agent');
 
 const router = express.Router();
@@ -27,34 +34,90 @@ const router = express.Router();
 // @route   GET api/order/
 // @desc    Agent-Subagent orders fetching route
 // @access  Private(Agent|Subagent)
-router.get('/', isLoggedIn, async (req, res) => {
-  if (req.user.permissions.includes('agent')) {
-    const result = await getSubAgents(req.user.id);
-    const subagents = result.reduce(
-      (acc, sub) => [...acc, sub.id],
-      [req.user.id]
-    );
-    const agentOrders = await getOrders(subagents);
-    return res.status(200).json(agentOrders);
-  }
+router.get(
+  '/',
+  isLoggedIn,
+  guard.check([['agent'], ['subagent']]),
+  agentSubAgentCheck,
+  async (req, res) => {
+    if (req.user.permissions.includes('agent')) {
+      const result = await getSubAgents(req.user.id);
+      const subagents = result.reduce(
+        (acc, sub) => [...acc, sub.id],
+        [req.user.id]
+      );
+      const agentOrders = await getOrders(subagents);
+      return res.status(200).json(agentOrders);
+    }
 
-  const subAgentOrders = await getOrders([req.user.id]);
-  return res.status(200).json(subAgentOrders);
-});
+    const subAgentOrders = await getOrders([req.user.id]);
+    return res.status(200).json(subAgentOrders);
+  }
+);
+
+// @route   GET api/order/transaction
+// @desc    User transaction logs fetching route
+// @access  Private(Agent|Subagent)
+router.get(
+  '/transaction',
+  isLoggedIn,
+  guard.check([['agent'], ['subagent']]),
+  agentSubAgentCheck,
+  async (req, res) => {
+    const transactions = await getTransactionLogs(req.user.id);
+    return res.status(200).json(transactions);
+  }
+);
+
+// @route   GET api/order/company-panel
+// @desc    Company Panel orders view fetching route
+// @access  Private(Company)
+router.get(
+  '/company-panel',
+  isLoggedIn,
+  guard.check('company'),
+  companyCheck,
+  async (req, res) => {
+    const currDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+    const orders = await getCompanyOrderList(req.user.id, currDate);
+    return res.status(200).json(orders);
+  }
+);
+
+// @route   GET api/order/transaction/company-panel
+// @desc    Company Panel order transaction view fetching route
+// @access  Private(Company)
+router.get(
+  '/transaction/company-panel',
+  isLoggedIn,
+  guard.check('company'),
+  companyCheck,
+  async (req, res) => {
+    const currDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+    const transactions = await getCompanyTransactionList(req.user.id, currDate);
+    return res.status(200).json(transactions);
+  }
+);
 
 // @route   GET api/order/:orderId/count
 // @desc    Available license count providing route
 // @access  Private(Agent|Subagent)
-router.get('/:orderId/count', isLoggedIn, async (req, res) => {
-  const order = await findOrder(req.params.orderId);
-  if (!order.length)
-    return res
-      .status(404)
-      .json({ order: "Order with given id doesn't exist." });
+router.get(
+  '/:orderId/count',
+  isLoggedIn,
+  guard.check([['agent'], ['subagent']]),
+  agentSubAgentCheck,
+  async (req, res) => {
+    const order = await findOrder(req.params.orderId);
+    if (!order.length)
+      return res
+        .status(404)
+        .json({ order: "Order with given id doesn't exist." });
 
-  const licenseCount = await getLicenseCount(req.params.orderId);
-  return res.status(200).json({ licenseCount });
-});
+    const licenseCount = await getLicenseCount(req.params.orderId);
+    return res.status(200).json({ licenseCount });
+  }
+);
 
 // @route   POST api/order/
 // @desc    Order creation route
@@ -99,7 +162,16 @@ router.post(
     );
     await createLicense(orderRes.insertId, req.body.qty);
 
-    await deductBalance(unitPrice * req.body.qty, req.user.id);
+    let price = unitPrice * req.body.qty;
+    await deductBalance(price, req.user.id);
+    await createTransactionLog(
+      'Order Created',
+      price,
+      balance - price,
+      'DR',
+      req.user.id,
+      orderRes.insertId
+    );
     if (req.user.permissions.includes('subagent')) {
       const [{ agentUnitPrice }] = await getAgentUnitPrice(
         req.user.id,
@@ -107,8 +179,19 @@ router.post(
         req.body.renewal,
         'subagent'
       );
-      await addProfit((unitPrice - agentUnitPrice) * req.body.qty, req.user.id);
+      const result = await getAgentId(req.user.id);
+      price = (unitPrice - agentUnitPrice) * req.body.qty;
+      await addProfit(price, result[0].agent_id);
+      await createTransactionLog(
+        'Order Created',
+        price,
+        balance - price,
+        'CR',
+        result[0].agent_id,
+        orderRes.insertId
+      );
     }
+    await createAgentActivityLog('Order Create', req.user.id);
     return res.status(201).send('created');
   }
 );
@@ -152,8 +235,8 @@ router.put(
       req.params.orderId,
       req.body.all
     );
-
-    return res.status(201).send('Updated');
+    await createAgentActivityLog('Order Features Modify', req.user.id);
+    return res.status(201).send('updated');
   }
 );
 
@@ -207,10 +290,15 @@ router.put(
       req.params.orderId,
       req.body.all
     );
-
-    await deductBalance(
-      unitPrice * req.body.period * licenseCount,
-      req.user.id
+    let price = unitPrice * req.body.period * licenseCount;
+    await deductBalance(price, req.user.id);
+    await createTransactionLog(
+      'Order Renewal',
+      price,
+      balance - price,
+      'DR',
+      req.user.id,
+      orderRes.insertId
     );
     if (req.user.permissions.includes('subagent')) {
       const [{ agentUnitPrice }] = await getAgentUnitPrice(
@@ -219,13 +307,20 @@ router.put(
         req.body.renewal,
         'subagent'
       );
-      await addProfit(
-        (unitPrice - agentUnitPrice) * req.body.period * licenseCount,
-        req.user.id
+      const result = await getAgentId(req.user.id);
+      price = (unitPrice - agentUnitPrice) * req.body.period * licenseCount;
+      await addProfit(price, result[0].agent_id);
+      await createTransactionLog(
+        'Order Renewal',
+        price,
+        balance - price,
+        'CR',
+        result[0].agent_id,
+        orderRes.insertId
       );
     }
-
-    return res.status(201).send('Updated');
+    await createAgentActivityLog('Order Renewal', req.user.id);
+    return res.status(201).send('updated');
   }
 );
 
@@ -245,7 +340,6 @@ router.put(
         .json({ order: "Order with given id doesn't exist." });
 
     const [{ count }] = await getLicenseCount(req.params.orderId);
-    console.log('licenseCount', count);
     if (req.body.qty > count)
       return res.status(400).json({
         licenseCount: `You can't transfer more than ${count} licenses.`,
@@ -265,8 +359,8 @@ router.put(
       []
     );
     await updateOrderId(licenseIds, orderRes.insertId, req.params.orderId);
-
-    return res.status(201).send('Updated');
+    await createAgentActivityLog('Order Transfer', req.user.id);
+    return res.status(201).send('updated');
   }
 );
 

@@ -11,4 +11,6 @@ module.exports = () => {
     throw new Error('Please provide TOKEN_SECRET environment variable');
   if (!process.env.COOKIE_SECRET)
     throw new Error('Please provide COOKIE_SECRET environment variable');
+  if (!process.env.CAPTCHA_SECRET_KEY)
+    throw new Error('Please provide CAPTCHA_SECRET_KEY environment variable');
 };

@@ -5,7 +5,7 @@ const {
   findAgent,
   findAgentById,
   createAgent,
-  addAgentDetials,
+  addAgentDetails,
   addPriceDetails,
   updatePriceDetails,
   getAgentBalance,
@@ -15,7 +15,9 @@ const {
   getSubAgents,
   getSubAgentNames,
   createAgentActivityLog,
+  getSubAgentBalance,
 } = require('../queries/agent');
+const { createTransactionLog } = require('../queries/order');
 const { agentCheck, isLoggedIn } = require('../guard');
 const { hashPassword } = require('../utils/bcrypt');
 
@@ -76,7 +78,7 @@ router.post(
       'subagent',
       req.user.id
     );
-    await addAgentDetials(req.body.contact_number, result.insertId);
+    await addAgentDetails(req.body.contact_number, result.insertId);
     await addPriceDetails(
       req.body.ptt.monthly,
       req.body.ptt.quarterly,
@@ -95,8 +97,7 @@ router.post(
       req.body.control.one_time,
       result.insertId
     );
-    await createAgentActivityLog('Subagent create', req.user.id);
-
+    await createAgentActivityLog('Subagent Create', req.user.id);
     return res.status(201).send('created');
   }
 );
@@ -125,8 +126,7 @@ router.put(
         req.params.id
       )
     );
-    await createAgentActivityLog('Subagent modify', req.user.id);
-
+    await createAgentActivityLog('Subagent Modify', req.user.id);
     return res.status(200).send('updated');
   }
 );
@@ -152,11 +152,26 @@ router.put(
         amount: `Your available balance is ${balance}, please choose amount below ${balance}`,
       });
 
+    const [{ subAgentBalance }] = await getSubAgentBalance(req.params.id);
+
     await Promise.all(
       rechargeSubAgent(req.params.id, req.user.id, req.body.amount)
     );
-    await createAgentActivityLog('Subagent modify', req.user.id);
-
+    await createTransactionLog(
+      'Subagent Recharge',
+      req.body.amount,
+      balance - req.body.amount,
+      'DR',
+      req.user.id
+    );
+    await createTransactionLog(
+      'Subagent Recharge',
+      req.body.amount,
+      subAgentBalance + req.body.amount,
+      'CR',
+      req.user.id
+    );
+    await createAgentActivityLog('Subagent Recharge', req.user.id);
     return res.status(200).send('updated');
   }
 );
@@ -196,8 +211,7 @@ router.put(
         req.params.id
       )
     );
-    await createAgentActivityLog('Subagent modify', req.user.id);
-
+    await createAgentActivityLog('Subagent Prices Modify', req.user.id);
     return res.status(200).send('updated');
   }
 );

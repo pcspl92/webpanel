@@ -1,12 +1,17 @@
 const query = require('../utils/queryTemplate');
 
 const findAgent = (username) => {
-  const sql = `SELECT id, password, display_name, agent_type FROM agents WHERE username="${username}"`;
+  const sql = `SELECT id, password, display_name, agent_type FROM agents WHERE username="${username}";`;
   return query(sql);
 };
 
 const findAgentById = (agentId) => {
-  const sql = `SELECT id FROM agents WHERE id=${agentId}`;
+  const sql = `SELECT id FROM agents WHERE id=${agentId};`;
+  return query(sql);
+};
+
+const getAgentId = (subagentId) => {
+  const sql = `SELECT agent_id FROM agents WHERE id=${subagentId};`;
   return query(sql);
 };
 
@@ -32,8 +37,8 @@ const createAgent = (username, password, displayname, agenttype, agentid) => {
   return query(sql);
 };
 
-const addAgentDetials = (contactnumber, agentid) => {
-  const sql = `INSERT INTO agents_add_data (contact_number, agent_id) VALUES ("${contactnumber}",${agentid})`;
+const addAgentDetails = (contactNumber, agentId) => {
+  const sql = `INSERT INTO agents_add_data (contact_number, agent_id) VALUES ("${contactNumber}", ${agentId})`;
   return query(sql);
 };
 
@@ -100,6 +105,11 @@ const getAgentBalance = (agentId) => {
   return query(sql);
 };
 
+const getSubAgentBalance = (subAgentId) => {
+  const sql = `SELECT balance AS subAgentBalance FROM agents_add_data WHERE agent_id=${subAgentId};`;
+  return query(sql);
+};
+
 const updateSubAgent = (displayName, contactNumber, password, subagentId) => {
   const sql1 = `UPDATE agents SET display_name="${displayName}", password="${password}" WHERE id=${subagentId};`;
   const sql2 = `UPDATE agents_add_data SET contact_number="${contactNumber}" WHERE agent_id=${subagentId};`;
@@ -121,7 +131,7 @@ const createAgentActivityLog = (desc, agentId) => {
   return query(sql);
 };
 
-const getAgentLoginLogs = (id) => {
+const getAgentAuthLogs = (id) => {
   const sql = `SELECT * FROM agent_login_logs WHERE agent_id=${id};`;
   return query(sql);
 };
@@ -180,11 +190,12 @@ const getDashboardData = (agentIds, currDate) => {
 module.exports = {
   findAgent,
   findAgentById,
+  getAgentId,
   getSubAgents,
   getSubAgentNames,
   deductBalance,
   createAgent,
-  addAgentDetials,
+  addAgentDetails,
   addPriceDetails,
   updatePriceDetails,
   getTotalCompanyCount,
@@ -193,11 +204,12 @@ module.exports = {
   getAgentUnitPrice,
   updateSubAgent,
   updateAgentPassword,
-  getAgentLoginLogs,
+  getAgentAuthLogs,
   getAgentActivityLogs,
   addProfit,
   viewSubAgentData,
   getDashboardData,
   createAgentAuthLog,
   createAgentActivityLog,
+  getSubAgentBalance,
 };
