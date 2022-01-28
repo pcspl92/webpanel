@@ -4,3 +4,7 @@
   font-style: italic;
   font-size: 2vh;
 }
+
+select {
+  width: 11.8vw;
+}

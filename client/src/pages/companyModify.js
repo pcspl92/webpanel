@@ -1,29 +1,22 @@
 import React, { useState } from 'react';
-import '../css/AddAgent.css';
+import '../css/companyModify.css';
 import axios from '../utils/axios';
+
 import generator from 'generate-password-browser';
   
 const CompanyModify=()=>{
-    const [agentid, setagentid] = useState('');
-    const [agentlist, setagentlist] = useState([]);
+    const [companyid, setcompanyid] = useState('');
+    const [sagentlist, setsagentlist] = useState([]);
     const [companylist, setcompanylist] = useState([]);
     const [active, setactive] = useState(true);
     const [contact_number, setcontact] = useState('');
-    const [agentnewname, setagentnewname] = useState('');
+    const [compnewname, setcompnewname] = useState('');
     const [password, setPassword] = useState('');
     const [generated, setGenerated] = useState(false);
     const [disabled, setDisabled] = useState(false);
   
   
-  
-    const reset = () => {
-      setagentid('');
-      setactive(true);
-      setcontact('');
-      setagentnewname('');
-      setPassword('');
-      setGenerated(false);
-    };
+
   
   
   
@@ -46,19 +39,19 @@ const CompanyModify=()=>{
         <br />
         <br />
         <div className="modifyform">
-          <div className="me-5">
+          <div >
             <span>
-              <label htmlFor="id1">Select Sub-Agent :&nbsp;&nbsp;&nbsp; </label>
+              <label htmlFor="id1">Select Company :&nbsp;&nbsp;&nbsp; </label>
             </span>
             <select
               id="id1"
               onChange={(event) => {
-                setagentid(event.target.value);
+                setcompanyid(event.target.value);
               }}
               required
             >
-              <option value="">Select Sub Agent</option>
-              {agentlist.map((val) => {
+              <option value="">Select Company</option>
+              {companylist.map((val) => {
                 return (
                   <option key={val.id} value={val.id}>
                     {val.display_name}
@@ -66,6 +59,15 @@ const CompanyModify=()=>{
                 );
               })}
             </select>
+          </div>
+       
+          <div className='mt-3 me-2'>
+              <button>Delete</button>
+              &nbsp;
+              &nbsp;
+              &nbsp;
+
+              <button>Relieve</button>
           </div>
           <div className="mt-3 me-5">
             <span>
@@ -116,16 +118,16 @@ const CompanyModify=()=>{
           )}
           <div className="mt-3">
             <span>
-              <label htmlFor="id5">Sub Agent Name :&nbsp;&nbsp;&nbsp;</label>
+              <label htmlFor="id5">Company Name :&nbsp;&nbsp;&nbsp;</label>
             </span>
             <input
               type="text"
               id="id5"
               style={{ width: '12vw' }}
               onChange={(event) => {
-                setagentnewname(event.target.value);
+                setcompnewname(event.target.value);
               }}
-              value={agentnewname}
+              value={compnewname}
             />
           </div>
           <div className="mt-3 ">
@@ -142,6 +144,26 @@ const CompanyModify=()=>{
               value={contact_number}
             />
           </div>
+        
+          <div className='mt-3'>
+          <span>
+            <label htmlFor="id1">Sub-Agent :&nbsp;&nbsp;&nbsp; </label>
+          </span>
+          <select
+            id="id1"
+         
+            required
+          >
+            <option value="">Select Sub Agent</option>
+            {sagentlist.map((val) => {
+              return (
+                <option key={val.id} value={val.id}>
+                  {val.display_name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
         </div>
         <button className="mt-3" type="submit" disabled={disabled}>
           UPDATE

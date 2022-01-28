@@ -66,7 +66,7 @@ const ModifyAgent = () => {
       <br />
       <br />
       <div className="modifyform">
-        <div className="me-5">
+        <div >
           <span>
             <label htmlFor="id1">Select Sub-Agent :&nbsp;&nbsp;&nbsp; </label>
           </span>
