@@ -30,7 +30,38 @@ export default function Navbar() {
          `link ${isActive ? 'activeheadings' : 'headings'}`
        } to="/dashboard">&nbsp; &nbsp; Dashboard</NavLink>
 
-      <div className="headings">+ Company Management</div>
+      <div className="headings" onClick={dropdowncompany}>+ Company Management</div>
+      {
+companydrop&&( <div style={{ marginTop: '1.5vh', marginLeft: '2vw' }}> 
+   <NavLink
+       to="/company-management/create-new-company"
+       className={({ isActive }) =>
+         `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+       }
+     >
+       &nbsp; Create New Company{' '}
+     </NavLink> 
+     <br />
+       <NavLink
+       to="/company-management/view-companies"
+       className={({ isActive }) =>
+         `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+       }
+     >
+       &nbsp; View Company List{' '}
+     </NavLink> 
+     <br /> 
+      <NavLink
+       to="/company-management/modify-company"
+       className={({ isActive }) =>
+         `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+       }
+     >
+       &nbsp; Modify Company{' '}
+     </NavLink>
+</div>)
+
+      }
 
       <div className="headings" onClick={dropdownuser}> + User Management</div>
 {userdrop&&(

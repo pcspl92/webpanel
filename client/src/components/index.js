@@ -18,6 +18,9 @@ import PrivateRoute from '../utils/privateRoute';
 import LoginRoute from '../utils/loginRoute';
 import Header from './header';
 import Navbar from './navbar';
+import CompanyModify from '../pages/companyModify';
+import CompanyView from '../pages/companView';
+import CompanyCreate from '../pages/companyCreate';
 
 export default function App() {
   return (
@@ -49,6 +52,12 @@ export default function App() {
                 <Route path="change-password" element={<PrivateRoute component={<ChangePassword/>}/>} />
                 <Route path="activity" element={<PrivateRoute component={<ViewActivity/>}/>}  />
                 <Route path="loginrecord" element={<PrivateRoute component={<ViewLogin/>}/>} />
+            
+              </Route>
+              <Route path="/company-management">
+                <Route path="create-new-company" element={<PrivateRoute component={<CompanyCreate/>}/>} />
+                <Route path="view-companies" element={<PrivateRoute component={<CompanyView/>}/>}  />
+                <Route path="modify-company" element={<PrivateRoute component={<CompanyModify/>}/>} />
             
               </Route>
               <Route path="*" element={<NotFound />} />
