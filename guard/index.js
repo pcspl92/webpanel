@@ -5,6 +5,13 @@ const agentCheck = (err, req, res, next) => {
   return next();
 };
 
+const subAgentCheck = (err, req, res, next) => {
+  if (err.code === 'permission_denied')
+    return res.status(403).send('Subagent access only');
+
+  return next();
+};
+
 const agentSubAgentCheck = (err, req, res, next) => {
   if (err.code === 'permission_denied')
     return res.status(403).send('Agent or Subagent access only');
@@ -25,4 +32,10 @@ const isLoggedIn = (req, res, next) => {
   return next();
 };
 
-module.exports = { agentCheck, agentSubAgentCheck, companyCheck, isLoggedIn };
+module.exports = {
+  agentCheck,
+  subAgentCheck,
+  agentSubAgentCheck,
+  companyCheck,
+  isLoggedIn,
+};

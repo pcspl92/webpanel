@@ -2,7 +2,12 @@ const express = require('express');
 const guard = require('express-jwt-permissions')();
 const _ = require('lodash');
 
-const { agentSubAgentCheck, companyCheck, isLoggedIn } = require('../guard');
+const {
+  agentSubAgentCheck,
+  companyCheck,
+  subAgentCheck,
+  isLoggedIn,
+} = require('../guard');
 const {
   findCompanyByUsername,
   getCompanies,
@@ -13,6 +18,7 @@ const {
   findCompanyById,
   getDepartmentCount,
   deleteCompany,
+  relieveCompany,
 } = require('../queries/company');
 const {
   getAgentId,
@@ -32,16 +38,22 @@ router.get(
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
   async (req, res) => {
-    const companies = await getCompanies(req.user.id);
+    let subagents = [req.user.id];
+    if (req.user.permissions.includes('agent')) {
+      const result = await getSubAgents(req.user.id);
+      subagents = result.reduce((acc, sub) => [...acc, sub.id], [req.user.id]);
+    }
+
+    const companies = await getCompanies(subagents);
     return res.status(201).json(companies);
   }
 );
 
-// @route   GET api/company/view
+// @route   GET api/company/agent-panel
 // @desc    Company view page data fetching route
 // @access  Private(Agent|SubAgent)
 router.get(
-  '/view',
+  '/agent-panel',
   isLoggedIn,
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
@@ -90,7 +102,9 @@ router.post(
     const data = {
       ..._.pick(req.body, ['username', 'display_name', 'contact_number']),
       password,
-      agentId: req.user.id,
+      agentId: req.user.permissions.includes('subagent')
+        ? req.user.id
+        : req.body.subagent_id,
     };
 
     await createCompany(data);
@@ -115,17 +129,37 @@ router.put(
         .json({ company: 'Company with given id is not registered' });
 
     const password = await hashPassword(req.body.password);
-    let agentId = req.body.agent_id;
-    if (req.user.permissions[0] === 'subagent' && req.relieve)
-      agentId = await getAgentId(req.user.id);
 
     await updateCompany(
       req.params.id,
       password,
       req.body.display_name,
       req.body.contact_number,
-      agentId
+      req.body.agent_id
     );
+    await createAgentActivityLog('Company Modify', req.user.id);
+    return res.status(200).send('updated');
+  }
+);
+
+// @route   PUT api/company/:id/relieve
+// @desc    Company relieving route
+// @access  Private(Subagent)
+router.put(
+  '/:id/relieve',
+  isLoggedIn,
+  guard.check('subagent'),
+  subAgentCheck,
+  async (req, res) => {
+    const company = await findCompanyById(req.params.id);
+    if (!company.length)
+      return res
+        .status(404)
+        .json({ company: 'Company with given id is not registered' });
+
+    const agentId = await getAgentId(req.user.id);
+
+    await relieveCompany(agentId[0].agent_id, req.params.id);
     await createAgentActivityLog('Company Modify', req.user.id);
     return res.status(200).send('updated');
   }

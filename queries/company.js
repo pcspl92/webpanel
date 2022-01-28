@@ -10,8 +10,8 @@ const findCompanyByUsername = (username) => {
   return query(sql);
 };
 
-const getCompanies = (agentId) => {
-  const sql = `SELECT id, display_name FROM companies WHERE agent_id=${agentId}`;
+const getCompanies = (agentIds) => {
+  const sql = `SELECT id, display_name FROM companies WHERE agent_id IN (${agentIds})`;
   return query(sql);
 };
 
@@ -56,6 +56,11 @@ const updateCompanyPassword = (password, companyId) => {
 const updateCompany = (id, password, displayName, contactNumber, agentId) => {
   const sql = `UPDATE companies SET password='${password}', display_name='${displayName}', contact_number='${contactNumber}', agent_id=${agentId}
                WHERE id=${id};`;
+  return query(sql);
+};
+
+const relieveCompany = (agentId, id) => {
+  const sql = `UPDATE companies SET agent_id=${agentId} WHERE id=${id};`;
   return query(sql);
 };
 
@@ -104,6 +109,7 @@ module.exports = {
   createCompany,
   updateCompanyPassword,
   updateCompany,
+  relieveCompany,
   getDepartmentCount,
   getDashboardData,
   createCompanyAuthLog,
