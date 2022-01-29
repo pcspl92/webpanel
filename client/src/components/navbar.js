@@ -98,7 +98,7 @@ licdrop&&( <div style={{ marginTop: '1.5vh', marginLeft: '2vw' }}>
          `link ${isActive ? 'activesubheadings' : 'subheadings'}`
        }
      >
-       &nbsp; View Company List{' '}
+       &nbsp; View Order History{' '}
      </NavLink> 
      <br /> 
       <NavLink

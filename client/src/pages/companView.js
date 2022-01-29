@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../css/companyView.css';
 import axios from '../utils/axios';
+import moment from 'moment';
 
 const CompanyView = () => {
   const [tableData, setTableData] = useState([]);
@@ -16,13 +17,15 @@ const CompanyView = () => {
       setTableData(data);
       setupdatedlist(data);
       setLoading(false);
+
     })();
   }, []);
+  console.log(tableData);
   const filter = () => {
     setupdatedlist(
       tableData.filter((val) => {
         return (
-      (companyName.length&&val.agent_name.toLowerCase().includes(companyName.toLowerCase())) ||
+      (companyName.length&&val.company_name.toLowerCase().includes(companyName.toLowerCase())) ||
          (compaccname.length&& val.account_name.toLowerCase().includes(compaccname.toLowerCase()))
         );
       })
@@ -101,11 +104,11 @@ const CompanyView = () => {
         return (
           <tr>
             <th>{index}</th>
-            <th>{val.agent_name}</th>
+            <th>{val.company_name}</th>
             <th>{val.account_name}</th>
-            <th>{val.orders}</th>
-            <th>{val.active}</th>
-            <th>{val.available}</th>
+            <th>{moment(val.timestamp).format('DD-MM-YYYY')}</th>
+            <th>{val.contact_number}</th>
+            <th>{val.agent_name}</th>
           </tr>
         );
       })}
