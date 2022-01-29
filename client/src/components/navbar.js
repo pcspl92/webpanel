@@ -77,10 +77,50 @@ companydrop&&( <div style={{ marginTop: '1.5vh', marginLeft: '2vw' }}>
 
      <br />
      </div>
+     
 
 )}
-      <div className="headings">+ License Management</div>
+      <div className="headings" onClick={dropdownlic}>+ License Management</div>
+      {
+licdrop&&( <div style={{ marginTop: '1.5vh', marginLeft: '2vw' }}> 
+   <NavLink
+       to="/license-management/new-order"
+       className={({ isActive }) =>
+         `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+       }
+     >
+       &nbsp; New License Order{' '}
+     </NavLink> 
+     <br />
+       <NavLink
+       to="/license-management/order-history"
+       className={({ isActive }) =>
+         `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+       }
+     >
+       &nbsp; View Company List{' '}
+     </NavLink> 
+     <br /> 
+      <NavLink
+       to="/license-management/transactions"
+       className={({ isActive }) =>
+         `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+       }
+     >
+       &nbsp; Transactions{' '}
+     </NavLink>
+     <br/>
+     <NavLink
+       to="/license-management/update-license"
+       className={({ isActive }) =>
+         `link ${isActive ? 'activesubheadings' : 'subheadings'}`
+       }
+     >
+       &nbsp; Update License{' '}
+     </NavLink>
+</div>)
 
+      }
       <div className="headings" onClick={dropdownagent}>
         + Sub-Agent Management
       </div>

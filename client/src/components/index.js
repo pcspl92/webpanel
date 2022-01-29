@@ -21,6 +21,10 @@ import Navbar from './navbar';
 import CompanyModify from '../pages/companyModify';
 import CompanyView from '../pages/companView';
 import CompanyCreate from '../pages/companyCreate';
+import LicenseCreate from '../pages/licenseCreate';
+import LicenseView from '../pages/licenseView';
+import Licensetransac from '../pages/licensetransac';
+import LicenseModify from '../pages/licenseModify';
 
 export default function App() {
   return (
@@ -39,6 +43,14 @@ export default function App() {
                  <Route path="/users">
                 <Route path="view" element={<PrivateRoute component={<ViewUsers/>}/>} />
              
+            
+              </Route>
+              <Route path="/license-management">
+                <Route path="new-order" element={<PrivateRoute component={<LicenseCreate/>}/>} />
+                <Route path="order-history" element={<PrivateRoute component={<LicenseView/>}/>}  />
+                <Route path="transactions" element={<PrivateRoute component={<Licensetransac/>}/>} />
+                <Route path="update-license" element={<PrivateRoute component={<LicenseModify/>}/>} />
+
             
               </Route>
               <Route path="/subagent">
