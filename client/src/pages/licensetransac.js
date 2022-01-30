@@ -1,13 +1,97 @@
 import React, { useEffect, useState } from 'react';
 import '../css/licensetransac.css';
 import axios from '../utils/axios';
-
+import moment from 'moment';
 export default function Licensetransac() {
-
-return (
-    <div>
-
-    </div>
-)
+    const [fromdate, setfromdate] = useState();
+    const [todate, settodate] = useState();
+    const [trandetails, settrandetails] = useState([]);
+    const [updatedtranDetails,setupdatedtranDetails]=useState([]);
+  
+ 
+    const filterlist=()=>{
+     
+        setupdatedtranDetails(trandetails.filter((val)=>{return moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrAfter(fromdate) && moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrBefore(todate)}))
+     
+    }
+    const unfilterlist=()=>{
+     
+      setupdatedtranDetails(trandetails);
+   
+  }
+    return (
+      <div className="viewback">
+        <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>TRANSACTIONS</div>
+  
+        <br />
+        <div className="filter">
+          <div>
+            <span>
+              <label for="id1">From Date: &nbsp;</label>
+            </span>
+            <input
+              type="date"
+              id="id1"
+              onChange={(event) => {
+                setfromdate(event.target.value);
+              }}
+              required
+            />
+          </div>
+          <br />
+  
+          <div>
+            <span>
+              <label for="id2">To Date : &nbsp;</label>
+            </span>
+            <input
+              type="date"
+              id="id2"
+              onChange={(event) => {
+                settodate(event.target.value);
+              }}
+              required
+            />
+          </div>
+        </div>
+        <div className="mt-3">
+          <button
+            className="p-1 me-5 font-weight-bold"
+            style={{ fontSize: '1vw' }}
+        onClick={filterlist}  >
+            Search
+          </button>
+  
+          <button className="p-1 font-weight-bold" style={{ fontSize: '1vw' }} onClick={unfilterlist}>
+            {' '}
+            View All
+          </button>
+        </div>
+        <table className="mt-3">
+          <tr className="tableheading">
+            <th>S. No</th>
+            <th>Transation Date</th>
+            <th>Transaction Amount</th>
+            <th>Transaction Type</th>
+            <th>Balance</th>
+            <th>Transaction Details</th>
+          </tr>
+          {updatedtranDetails.map((val, index) => {
+            index = index + 1;
+  
+            return (
+              <tr>
+                <th>{index}</th>
+                <th>{moment(val.timestamp).format('DD-MM-YYYY')}</th>
+                <th>{val.amount}</th>
+                <th>{val.type}</th>
+                <th>{val.balance}</th>
+                <th>{val.trandetails}</th>
+              </tr>
+            );
+          })}
+        </table>
+      </div>
+    );
 
 }
