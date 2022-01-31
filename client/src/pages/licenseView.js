@@ -3,41 +3,55 @@ import '../css/licenseView.css';
 import axios from '../utils/axios';
 import moment from 'moment';
 export default function LicenseView() {
+  const [tableData, setTableData] = useState([]);
+  const [companyName, setcompanyname] = useState('');
+  const [agentName, setAgentName] = useState([]);
+  const [orderId, setOrderId] = useState([]);
+  const [expdate, setexpdate] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [updatedlist, setupdatedlist] = useState([]);
 
-    const [tableData, setTableData] = useState([]);
-    const [companyName, setcompanyname] = useState("");
-    const [agentName, setAgentName] = useState([]);
-    const [orderId, setOrderId] = useState([]);
-    const [expdate, setexpdate] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get('/order/agent-panel');
+      setTableData(data);
+      setLoading(false);
+    })();
+  }, []);
 
-    const [loading, setLoading] = useState(false);
-    const [updatedlist, setupdatedlist] = useState([]);
-  
-  
-    console.log(tableData);
-    const filter = () => {
-      setupdatedlist(
-        tableData.filter((val) => {
-          return (
-        (companyName.length&&val.company_name.toLowerCase().includes(companyName.toLowerCase())) ||
-           (agentName.length&& val.agent_name.toLowerCase().includes(agentName.toLowerCase()))||(moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrAfter(expdate) )||(orderId.length&&val.order_id.toLowerCase().includes(orderId.toLowerCase()))
-          );
-        })
-      );
-    };
-  
-    const unfilter = () => {
-      setupdatedlist(tableData);
-    };
-    const table = () => (
-      <div className="viewback">
+  const filter = () => {
+    setupdatedlist(
+      tableData.filter((val) => {
+        return (
+          (companyName.length &&
+            val.company_name
+              .toLowerCase()
+              .includes(companyName.toLowerCase())) ||
+          (agentName.length &&
+            val.agent_name.toLowerCase().includes(agentName.toLowerCase())) ||
+          moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrAfter(
+            expdate
+          ) ||
+          (orderId.length &&
+            val.order_id.toLowerCase().includes(orderId.toLowerCase()))
+        );
+      })
+    );
+  };
+
+  const unfilter = () => {
+    setupdatedlist(tableData);
+  };
+
+  const table = () => (
+    <div className="viewback">
       <div style={{ fontWeight: 'bolder', fontSize: '4vh', marginTop: '3vh' }}>
-License Order History
+        License Order History
       </div>
-  
+
       <br />
       <div className="filter">
-      <div>
+        <div>
           <span>
             <label for="id1">Order Id :</label>
           </span>
@@ -50,7 +64,7 @@ License Order History
             required
           />
         </div>
-          <br/>
+        <br />
         <div>
           <span>
             <label for="id1">Company Name :</label>
@@ -101,7 +115,7 @@ License Order History
         >
           Search
         </button>
-  
+
         <button
           className="p-1 font-weight-bold"
           style={{ fontSize: '1vw' }}
@@ -125,38 +139,42 @@ License Order History
           <th>Expiry Date</th>
           <th>Agent Name</th>
         </tr>
-        {updatedlist.map((val, index) => {
+        {tableData.map((val, index) => {
           index++;
           return (
             <tr>
               <th>{index}</th>
               <th>{val.order_id}</th>
-              <th>{val.account_name}</th>
               <th>{val.company_name}</th>
               <th>{moment(val.timestamp).format('DD-MM-YYYY')}</th>
+              <th>{val.license_type}</th>
               <th>{val.renewal_type}</th>
-              <th>{val.Accounts_active}</th>
-              <th>{val.Accounts_available}</th>
-              <th>{val.features}</th>
-              <th>{moment(val.expdate).format('DD-MM-YYYY')}</th>
+              <th>{val.active}</th>
+              <th>{val.available}</th>
+              <th>
+                {val.enc ? 'Encryption, ' : null}
+                {val.grp_call ? 'Group Call, ' : null}
+                {val.chat ? 'Chat, ' : null}
+                {val.priv_call ? 'Private Call, ' : null}
+                {val.geo_fence ? 'Geo Fence, ' : null}
+                {val.live_gps ? 'Live GPS' : null}
+              </th>
+              <th>{moment(val.expiry_date).format('DD-MM-YYYY')}</th>
               <th>{val.agent_name}</th>
-
-
             </tr>
           );
         })}
       </table>
     </div>
-    );
-  
-    if (loading) {
-      return (
-        <div className="modifyback">
-          <div className="spinner-border text-primary" role="status"></div>
-        </div>
-      );
-    }
-  
-    return <div>{!loading && table()}</div>;
+  );
 
+  if (loading) {
+    return (
+      <div className="modifyback">
+        <div className="spinner-border text-primary" role="status"></div>
+      </div>
+    );
+  }
+
+  return <div>{!loading && table()}</div>;
 }

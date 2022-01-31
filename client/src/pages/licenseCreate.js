@@ -1,169 +1,245 @@
-import React, { useEffect, useState } from 'react';
 import '../css/licenseCreate.css';
+
+import React, { useEffect, useState } from 'react';
+
+import { useAuth } from '../hooks/useAuth';
 import axios from '../utils/axios';
 
 export default function LicenseCreate() {
+  const [quantity, setquantity] = useState(0);
+  const [licenseType, setLicenseType] = useState('');
+  const [renewalType, setRenewalType] = useState('');
+  const [company, setcompany] = useState(0);
+  const [companylist, setcompanylist] = useState([]);
+  const [features, setFeatures] = useState({
+    grp_call: false,
+    enc: false,
+    priv_call: false,
+    live_gps: false,
+    geo_fence: false,
+    chat: false,
+  });
+  const [loading, setLoading] = useState(true);
+  const [disabled, setDisabled] = useState(false);
+  const [inputDisabled, setInputDisabled] = useState(true);
+  const [price, setPrice] = useState(0);
+  const { user } = useAuth();
 
-    
-    const [quantity, setquantity] = useState(0);
-    const [licenseType, setlicensetype] = useState('');
-    const [renewalType, setRenewalType] = useState('');
-    const [company, setcompany] = useState(0);
-    const [companylist, setcompanylist] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [disabled, setDisabled] = useState(false);
-    const [price,setotalprice]=useState(0);
-    const [avlbal,setavlbal]=useState(0);
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get('/company/');
+      setcompanylist(data);
+      setLoading(false);
+    })();
+  }, []);
 
-  
-  
-  
+  const setFeature = (checked, feature) => {
+    setFeatures({ ...features, [feature]: checked });
+  };
 
-
-
-    const form = () => {
-      return (
-        <form className="passback" >
-          <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
-             NEW LICENSE ORDER
-          </div>
-          Available Balance : {avlbal}
-          <div className="formarea">
-          <br />
-            <div>
-              <span>
-                <label htmlFor="company">Select Company :&nbsp;&nbsp;&nbsp; </label>
-              </span>
-              <select
-                id="company"
-                onChange={(event) => {
-                  setcompany(event.target.value);
-                }}
-                value={company}
-                required
-              >
-                <option value={0}>Select Company</option>
-                {companylist.map((val) => {
-                  return (
-                    <option key={val.id} value={val.id}>
-                      {val.display_name}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-        
-        <br/>
-            <div>
-              <span>
-                <label htmlFor="lictype">License Type: &nbsp;</label>
-              </span>
-              <select
-                id="id1"
-                onChange={(event) => {
-                  setcompany(event.target.value);
-                }}
-                value={company}
-                required
-              >
-                <option value={0}>Select License Type</option>
-             
-                    <option >
-                        PTT User
-                    </option>
-                    <option >
-                        Dispatcher
-                    </option> 
-                      <option >
-                       Control Station
-                    </option>  
-              </select>
-            </div>
-            <br />
-            <div>
-              <span>
-                <label htmlFor="username">License Renewal: &nbsp;</label>
-              </span>
-              <select
-                id="id3"
-                onChange={(event) => {
-                  setRenewalType(event.target.value);
-                }}
-                value={renewalType}
-                required
-              >
-                <option value={0}>Select License Renewal Type</option>
-             
-                    <option >
-                        Monthly
-                    </option>
-                    <option >
-                        Quarterly
-                    </option> 
-                      <option >
-                          Half Yearly
-                    </option>  
-                    <option >
-                           Yearly
-                    </option>  
-                    <option >
-                        One-Time
-                    </option>  
-              </select>
-            </div>
-            <br />
-            <div>
-              <span>
-                <label htmlFor="confirm">Quantity : &nbsp;</label>
-              </span>
-              <input
-                type="number"
-                id="confirm"
-                onChange={(event) => {
-                  setquantity(event.target.value);
-                }}
-                value={quantity}
-                required
-              />
-            </div>
-
-            <br />
-            Unit Price : {price} &nbsp; &nbsp;
-Total Price : {price}
-     
-       
-          </div>
-     
-          <div>
- <label >Features : </label>&nbsp;<br/>
-  <input type="checkbox" id="feature" name="feature1" />
-  <label for="feature1"> Group Call</label>&nbsp;&nbsp;
-  <input type="checkbox" id="feature" name="feature2" />
-  <label for="feature2"> Private Call</label>&nbsp;&nbsp;
-  <input type="checkbox" id="feature" name="feature3" />
-  <label for="feature3"> Encryption </label>&nbsp;&nbsp;
- <input type="checkbox" id="feature" name="feature3" />
-  <label for="feature3"> Live GPS </label>&nbsp;&nbsp; 
- <input type="checkbox" id="feature" name="feature3" />
-  <label for="feature3"> Geo-Fence </label>&nbsp;&nbsp;
-   <input type="checkbox" id="feature" name="feature3" />
-  <label for="feature3"> Chat </label>&nbsp;&nbsp;
-  </div>
-  <br/>
-          <button type="submit" disabled={disabled}>
-            Purchase
-          </button>
-        </form>
-      );
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setDisabled(true);
+    const data = {
+      license_type: licenseType,
+      renewal: renewalType,
+      qty: Number(quantity),
+      company_id: Number(company),
+      features,
     };
-  
-    if (loading) {
-      return (
-        <div className="passback">
-          <div className="spinner-border text-primary" role="status"></div>
-        </div>
-      );
+
+    try {
+      await axios.post('/order/', data);
+    } catch (err) {
+      console.log(err.respons.data);
     }
-  
-    return <div>{!loading && form()}</div>;
+
+    setDisabled(false);
+  };
+
+  const getAgentUnitPrice = async (renewalTypeValue) => {
+    if (renewalTypeValue !== '0' && licenseType !== '0') {
+      const { data } = await axios.get(
+        `/agent/unit-price/${licenseType}/${renewalTypeValue}`
+      );
+      setPrice(data);
+      setInputDisabled(false);
+    }
+    setRenewalType(renewalTypeValue);
+  };
+
+  const form = () => {
+    return (
+      <form className="passback" onSubmit={onSubmit}>
+        <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
+          NEW LICENSE ORDER
+        </div>
+        Available Balance : {user.balance}
+        <div className="formarea">
+          <br />
+          <div>
+            <span>
+              <label htmlFor="company">
+                Select Company :&nbsp;&nbsp;&nbsp;{' '}
+              </label>
+            </span>
+            <select
+              id="company"
+              onChange={(event) => {
+                setcompany(event.target.value);
+              }}
+              value={company}
+              required
+            >
+              <option value={0}>Select Company</option>
+              {companylist.map((val) => {
+                return (
+                  <option key={val.id} value={val.id}>
+                    {val.display_name}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <br />
+          <div>
+            <span>
+              <label htmlFor="lictype">License Type: &nbsp;</label>
+            </span>
+            <select
+              id="id1"
+              onChange={(event) => {
+                setLicenseType(event.target.value);
+              }}
+              value={licenseType}
+              required
+            >
+              <option value={0}>Select License Type</option>
+
+              <option value={'ptt'}>PTT User</option>
+              <option value={'dispatcher'}>Dispatcher</option>
+              <option value={'control'}>Control Station</option>
+            </select>
+          </div>
+          <br />
+          <div>
+            <span>
+              <label htmlFor="username">License Renewal: &nbsp;</label>
+            </span>
+            <select
+              id="id3"
+              onChange={(e) => {
+                getAgentUnitPrice(e.target.value);
+              }}
+              value={renewalType}
+              required
+            >
+              <option value={0}>Select License Renewal Type</option>
+              <option value={'monthly'}>Monthly</option>
+              <option value={'quarterly'}>Quarterly</option>
+              <option value={'half_yearly'}>Half Yearly</option>
+              <option value={'yearly'}>Yearly</option>
+              <option value={'one_time'}>One-Time</option>
+            </select>
+          </div>
+          <br />
+          <div>
+            <span>
+              <label htmlFor="confirm">Quantity : &nbsp;</label>
+            </span>
+            <input
+              type="number"
+              id="confirm"
+              onChange={(event) => {
+                setquantity(event.target.value);
+              }}
+              value={quantity}
+              disabled={inputDisabled}
+              required
+            />
+          </div>
+          <br />
+          Unit Price : {price} &nbsp; &nbsp; Total Price : {quantity * price}
+        </div>
+        <div>
+          <label>Features : </label>&nbsp;
+          <br />
+          <input
+            type="checkbox"
+            id="feature"
+            name="feature1"
+            onChange={(e) => {
+              setFeature(e.target.checked, 'grp_call');
+            }}
+            disabled={inputDisabled}
+          />
+          <label for="feature1"> Group Call</label>&nbsp;&nbsp;
+          <input
+            type="checkbox"
+            id="feature"
+            name="feature2"
+            onChange={(e) => {
+              setFeature(e.target.checked, 'priv_call');
+            }}
+            disabled={inputDisabled}
+          />
+          <label for="feature2"> Private Call</label>&nbsp;&nbsp;
+          <input
+            type="checkbox"
+            id="feature"
+            name="feature3"
+            onChange={(e) => {
+              setFeature(e.target.checked, 'enc');
+            }}
+            disabled={inputDisabled}
+          />
+          <label for="feature3"> Encryption </label>&nbsp;&nbsp;
+          <input
+            type="checkbox"
+            id="feature"
+            name="feature3"
+            onChange={(e) => {
+              setFeature(e.target.checked, 'live_gps');
+            }}
+            disabled={inputDisabled}
+          />
+          <label for="feature3"> Live GPS </label>&nbsp;&nbsp;
+          <input
+            type="checkbox"
+            id="feature"
+            name="feature3"
+            onChange={(e) => {
+              setFeature(e.target.checked, 'geo_fence');
+            }}
+            disabled={inputDisabled}
+          />
+          <label for="feature3"> Geo-Fence </label>&nbsp;&nbsp;
+          <input
+            type="checkbox"
+            id="feature"
+            name="feature3"
+            onChange={(e) => {
+              setFeature(e.target.checked, 'chat');
+            }}
+            disabled={inputDisabled}
+          />
+          <label for="feature3"> Chat </label>&nbsp;&nbsp;
+        </div>
+        <br />
+        <button type="submit" disabled={disabled}>
+          Purchase
+        </button>
+      </form>
+    );
+  };
+
+  if (loading) {
+    return (
+      <div className="passback">
+        <div className="spinner-border text-primary" role="status"></div>
+      </div>
+    );
+  }
+
+  return <div>{!loading && form()}</div>;
 }

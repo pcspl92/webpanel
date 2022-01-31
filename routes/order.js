@@ -18,6 +18,7 @@ const {
   getTransactionLogs,
   getCompanyOrderList,
   getCompanyTransactionList,
+  getLicenseTypes,
 } = require('../queries/order');
 const {
   getAgentUnitPrice,
@@ -31,11 +32,11 @@ const {
 
 const router = express.Router();
 
-// @route   GET api/order/
+// @route   GET api/order/agent-panel
 // @desc    Agent-Subagent orders fetching route
 // @access  Private(Agent|Subagent)
 router.get(
-  '/',
+  '/agent-panel',
   isLoggedIn,
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
@@ -55,11 +56,11 @@ router.get(
   }
 );
 
-// @route   GET api/order/transaction
-// @desc    User transaction logs fetching route
+// @route   GET api/order/transaction/agent-panel
+// @desc    Agent-Subagent transaction logs fetching route
 // @access  Private(Agent|Subagent)
 router.get(
-  '/transaction',
+  '/transaction/agent-panel',
   isLoggedIn,
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
@@ -96,26 +97,6 @@ router.get(
     const currDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
     const transactions = await getCompanyTransactionList(req.user.id, currDate);
     return res.status(200).json(transactions);
-  }
-);
-
-// @route   GET api/order/:orderId/count
-// @desc    Available license count providing route
-// @access  Private(Agent|Subagent)
-router.get(
-  '/:orderId/count',
-  isLoggedIn,
-  guard.check([['agent'], ['subagent']]),
-  agentSubAgentCheck,
-  async (req, res) => {
-    const order = await findOrder(req.params.orderId);
-    if (!order.length)
-      return res
-        .status(404)
-        .json({ order: "Order with given id doesn't exist." });
-
-    const licenseCount = await getLicenseCount(req.params.orderId);
-    return res.status(200).json({ licenseCount });
   }
 );
 

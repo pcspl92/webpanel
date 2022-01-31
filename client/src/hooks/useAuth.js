@@ -37,7 +37,13 @@ export default function Auth({ children }) {
     logout,
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="loader">
+        <div className="spinner-border text-primary" role="status"></div>
+      </div>
+    );
+  }
 
   return (
     <AuthContext.Provider value={value}>

@@ -74,6 +74,14 @@
 .header-options div {
   cursor: pointer;
 }
+
 .header-options div:first-child {
   margin-right: 2rem;
+}
+
+.loader {
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  place-items: center;
 }

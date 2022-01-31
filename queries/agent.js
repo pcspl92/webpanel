@@ -142,9 +142,9 @@ const getAgentActivityLogs = (id) => {
   return query(sql);
 };
 
-const getAgentUnitPrice = (agentId, licenseType, renewal, type) => {
+const getAgentUnitPrice = (agentId, licenseType, renewal, agentType) => {
   let sql = `SELECT ${renewal} AS unitPrice FROM prices WHERE (agent_id=${agentId} AND license_type="${licenseType}")`;
-  if (type === 'subagent') {
+  if (agentType === 'subagent') {
     sql = `SELECT ${renewal} AS agentUnitPrice FROM prices WHERE (agent_id=(SELECT agent_id FROM agents WHERE id=${agentId}) AND license_type="${licenseType}")`;
   }
   return query(sql);
