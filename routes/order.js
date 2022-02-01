@@ -18,6 +18,12 @@ const {
   getTransactionLogs,
   getCompanyOrderList,
   getCompanyTransactionList,
+  getOrderList,
+  getUsers,
+  getFeatures,
+  getTransferAccounts,
+  getOrderData,
+  getUnitPrices,
 } = require('../queries/order');
 const {
   getAgentUnitPrice,
@@ -28,8 +34,93 @@ const {
   createAgentActivityLog,
   getAgentId,
 } = require('../queries/agent');
+const { getCompanies } = require('../queries/company');
 
 const router = express.Router();
+
+// @route   GET api/order/
+// @desc    Orders fetching route
+// @access  Private(Agent|Subagent)
+router.get(
+  '/',
+  isLoggedIn,
+  guard.check([['agent'], ['subagent']]),
+  agentSubAgentCheck,
+  async (req, res) => {
+    let agents = [req.user.id];
+    if (req.user.permissions.includes('agent')) {
+      const result = await getSubAgents(req.user.id);
+      agents = result.reduce((acc, sub) => [...acc, sub.id], [req.user.id]);
+    }
+
+    const list = await getOrderList(agents);
+    return res.status(200).json(list);
+  }
+);
+
+// @route   GET api/order/:orderId/:type
+// @desc    Order update page data fetching route
+// @access  Private(Agent|Subagent)
+router.get(
+  '/:orderId/:type',
+  isLoggedIn,
+  guard.check([['agent'], ['subagent']]),
+  agentSubAgentCheck,
+  async (req, res) => {
+    const order = await findOrder(req.params.orderId);
+    if (!order.length)
+      return res
+        .status(404)
+        .json({ order: "Order with given id doesn't exist." });
+
+    const getUpdateFormData = async () => {
+      const users = await getUsers(req.params.orderId);
+      const features = await getFeatures(req.params.orderId);
+      return { users, features: features[0] };
+    };
+
+    const getRenewFormData = async () => {
+      const users = await getUsers(req.params.orderId);
+      const [{ expDate, type }] = await getOrderData(req.params.orderId);
+      const [unitPrices] = await getUnitPrices(type, req.user.id);
+      return { users, expDate, unitPrices };
+    };
+
+    const getTransferFormData = async () => {
+      const [{ available }] = await getTransferAccounts(req.params.orderId);
+      let subagents = [req.user.id];
+      if (req.user.permissions.includes('agent')) {
+        const result = await getSubAgents(req.user.id);
+        subagents = result.reduce(
+          (acc, sub) => [...acc, sub.id],
+          [req.user.id]
+        );
+      }
+
+      const companies = await getCompanies(subagents);
+      return { available, companies };
+    };
+
+    let data;
+    switch (req.params.type) {
+      case 'update':
+        data = await getUpdateFormData();
+        break;
+      case 'transfer':
+        data = await getTransferFormData();
+        break;
+      case 'renew':
+        data = await getRenewFormData();
+        break;
+      default:
+        return res
+          .status(400)
+          .json({ type: 'Only update, transfer and renew types are allowed' });
+    }
+
+    return res.status(200).json(data);
+  }
+);
 
 // @route   GET api/order/agent-panel
 // @desc    Agent-Subagent orders fetching route
@@ -41,18 +132,13 @@ router.get(
   agentSubAgentCheck,
   async (req, res) => {
     const currDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
-
+    let agents = [req.user.id];
     if (req.user.permissions.includes('agent')) {
       const result = await getSubAgents(req.user.id);
-      const subagents = result.reduce(
-        (acc, sub) => [...acc, sub.id],
-        [req.user.id]
-      );
-      const agentOrders = await getOrders(subagents, currDate);
-      return res.status(200).json(agentOrders);
+      agents = result.reduce((acc, sub) => [...acc, sub.id], [req.user.id]);
     }
 
-    const subAgentOrders = await getOrders([req.user.id], currDate);
+    const subAgentOrders = await getOrders(agents, currDate);
     return res.status(200).json(subAgentOrders);
   }
 );

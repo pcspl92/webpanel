@@ -126,6 +126,40 @@ const getLicenses = (orderId) => {
   return query(sql);
 };
 
+const getOrderList = (agentIds) => {
+  const sql = `SELECT id FROM orders WHERE agent_id IN (${agentIds}) ORDER BY id asc`;
+  return query(sql);
+};
+
+const getUsers = (orderId) => {
+  const sql = `SELECT id, display_name FROM users WHERE id IN (
+                 SELECT user_id FROM licenses WHERE order_id=${orderId}
+               );`;
+  return query(sql);
+};
+
+const getFeatures = (orderId) => {
+  const sql = `SELECT * FROM features WHERE id=(
+                 SELECT feature_id FROM orders WHERE id=${orderId}
+               );`;
+  return query(sql);
+};
+
+const getTransferAccounts = (orderId) => {
+  const sql = `SELECT COUNT(order_id) AS available FROM licenses WHERE order_id=${orderId};`;
+  return query(sql);
+};
+
+const getOrderData = (orderId) => {
+  const sql = `SELECT license_expiry AS expDate, license_type AS type FROM orders WHERE id=${orderId};`;
+  return query(sql);
+};
+
+const getUnitPrices = (type, agentId) => {
+  const sql = `SELECT monthly, quarterly, half_yearly, yearly FROM prices WHERE agent_id=${agentId} AND license_type='${type}';`;
+  return query(sql);
+};
+
 module.exports = {
   getOrders,
   createLicense,
@@ -140,4 +174,10 @@ module.exports = {
   getCompanyOrderList,
   getCompanyTransactionList,
   getLicenses,
+  getOrderList,
+  getUsers,
+  getFeatures,
+  getTransferAccounts,
+  getOrderData,
+  getUnitPrices,
 };
