@@ -6,12 +6,14 @@ const ViewAgent = () => {
   const [agentaccname, setagentaccname] = useState('');
   const [agentlist, setagentlist] = useState([]);
   const [updatedlist, setupdatedlist] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/subagent/');
       setagentlist(data);
       setupdatedlist(data);
+      setLoading(false);
     })();
   }, []);
 
@@ -19,18 +21,26 @@ const ViewAgent = () => {
     setupdatedlist(
       agentlist.filter((val) => {
         return (
-          val.agent_name.toLowerCase().includes(agentname.toLowerCase()) ||
-          val.account_name.toLowerCase().includes(agentaccname.toLowerCase())
+          (agentname.length &&
+            val.agent_name.toLowerCase().includes(agentname.toLowerCase())) ||
+          (agentaccname.length &&
+            val.account_name.toLowerCase().includes(agentaccname.toLowerCase()))
         );
       })
     );
   };
 
-  const unfilter = () => {
-    setupdatedlist(agentlist);
+  const reset = () => {
+    setagentname('');
+    setagentaccname('');
   };
 
-  return (
+  const unfilter = () => {
+    setupdatedlist(agentlist);
+    reset();
+  };
+
+  const table = () => (
     <div className="viewback">
       <div style={{ fontWeight: 'bolder', fontSize: '4vh', marginTop: '3vh' }}>
         VIEW SUB-AGENTS
@@ -48,6 +58,7 @@ const ViewAgent = () => {
             onChange={(event) => {
               setagentname(event.target.value);
             }}
+            value={agentname}
             required
           />
         </div>
@@ -63,6 +74,7 @@ const ViewAgent = () => {
             onChange={(event) => {
               setagentaccname(event.target.value);
             }}
+            value={agentaccname}
             required
           />
         </div>
@@ -94,21 +106,29 @@ const ViewAgent = () => {
           <th>Total Active Orders</th>
           <th>Total Accounts Available</th>
         </tr>
-        {updatedlist.map((val, index) => {
-          index++;
-          return (
-            <tr>
-              <th>{index}</th>
-              <th>{val.agent_name}</th>
-              <th>{val.account_name}</th>
-              <th>{val.orders}</th>
-              <th>{val.active}</th>
-              <th>{val.available}</th>
-            </tr>
-          );
-        })}
+        {updatedlist.map((val, index) => (
+          <tr key={val.id}>
+            <th>{index + 1}</th>
+            <th>{val.agent_name}</th>
+            <th>{val.account_name}</th>
+            <th>{val.orders}</th>
+            <th>{val.active}</th>
+            <th>{val.available}</th>
+          </tr>
+        ))}
       </table>
     </div>
   );
+
+  if (loading) {
+    return (
+      <div className="viewback">
+        <div className="spinner-border text-primary" role="status"></div>
+      </div>
+    );
+  }
+
+  return <div>{!loading && table()}</div>;
 };
+
 export default ViewAgent;

@@ -7,26 +7,41 @@ const ViewActivity = () => {
   const [todate, settodate] = useState();
   const [agentactlist, setagentactlist] = useState([]);
   const [updatedactlist, setupdatedactlist] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/agent/activity-logs');
       setagentactlist(data);
       setupdatedactlist(data);
-    })(console.log(agentactlist));
-    console.log(agentactlist);
+      setLoading(false);
+    })();
   }, []);
-  const filterlist=()=>{
-   
-    setupdatedactlist(agentactlist.filter((val)=>{return moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrAfter(fromdate) && moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrBefore(todate)}))
- 
-}
-const unfilterlist=()=>{
- 
-  setupdatedactlist(agentactlist);
 
-}
-  return (
+  const filterlist = () => {
+    if (fromdate.length && todate.length) {
+      setupdatedactlist(
+        agentactlist.filter((val) => {
+          return (
+            moment(val.timestamp).isSameOrAfter(fromdate) &&
+            moment(val.timestamp).isSameOrBefore(todate)
+          );
+        })
+      );
+    }
+  };
+
+  const reset = () => {
+    setfromdate('');
+    settodate('');
+  };
+
+  const unfilterlist = () => {
+    setupdatedactlist(agentactlist);
+    reset();
+  };
+
+  const table = () => (
     <div className="viewback">
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
         VIEW ACTIVITY LOG
@@ -44,6 +59,7 @@ const unfilterlist=()=>{
             onChange={(event) => {
               setfromdate(event.target.value);
             }}
+            value={fromdate}
             required
           />
         </div>
@@ -59,6 +75,7 @@ const unfilterlist=()=>{
             onChange={(event) => {
               settodate(event.target.value);
             }}
+            value={todate}
             required
           />
         </div>
@@ -67,11 +84,16 @@ const unfilterlist=()=>{
         <button
           className="p-1 me-5 font-weight-bold"
           style={{ fontSize: '1vw' }}
-        onClick={filterlist}>
+          onClick={filterlist}
+        >
           Search
         </button>
 
-        <button className="p-1 font-weight-bold" style={{ fontSize: '1vw' }}  onClick={unfilterlist}>
+        <button
+          className="p-1 font-weight-bold"
+          style={{ fontSize: '1vw' }}
+          onClick={unfilterlist}
+        >
           {' '}
           View All
         </button>
@@ -99,5 +121,16 @@ const unfilterlist=()=>{
       </table>
     </div>
   );
+
+  if (loading) {
+    return (
+      <div className="viewback">
+        <div className="spinner-border text-primary" role="status"></div>
+      </div>
+    );
+  }
+
+  return <div>{!loading && table()}</div>;
 };
+
 export default ViewActivity;

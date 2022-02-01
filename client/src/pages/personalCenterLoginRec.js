@@ -1,35 +1,52 @@
-import React, { useState, useEffect } from 'react';
 import '../css/personalCenterLoginRecord.css';
-import axios from '../utils/axios';
+
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+
+import axios from '../utils/axios';
+
 const ViewLogin = () => {
   const [fromdate, setfromdate] = useState();
   const [todate, settodate] = useState();
   const [agentloglist, setagentloglist] = useState([]);
-  const [updatedloglist,setupdatedloglist]=useState([]);
-
+  const [updatedloglist, setupdatedloglist] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/auth/logs/agent');
       setagentloglist(data);
       setupdatedloglist(data);
+      setLoading(false);
     })();
   }, []);
-  const filterlist=()=>{
-   
-      setupdatedloglist(agentloglist.filter((val)=>{return moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrAfter(fromdate) && moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrBefore(todate)}))
-   
-  }
-  const unfilterlist=()=>{
-   
+
+  const filterlist = () => {
+    if (fromdate.length && todate.length) {
+      setupdatedloglist(
+        agentloglist.filter((val) => {
+          return (
+            moment(val.timestamp).isSameOrAfter(fromdate) &&
+            moment(val.timestamp).isSameOrBefore(todate)
+          );
+        })
+      );
+    }
+  };
+
+  const reset = () => {
+    setfromdate('');
+    settodate('');
+  };
+
+  const unfilterlist = () => {
     setupdatedloglist(agentloglist);
- 
-}
-  return (
+    reset();
+  };
+
+  const table = () => (
     <div className="viewback">
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>LOGIN RECORD</div>
-
       <br />
       <div className="filter">
         <div>
@@ -42,11 +59,11 @@ const ViewLogin = () => {
             onChange={(event) => {
               setfromdate(event.target.value);
             }}
+            value={fromdate}
             required
           />
         </div>
         <br />
-
         <div>
           <span>
             <label for="id2">To Date : &nbsp;</label>
@@ -57,6 +74,7 @@ const ViewLogin = () => {
             onChange={(event) => {
               settodate(event.target.value);
             }}
+            value={todate}
             required
           />
         </div>
@@ -65,11 +83,15 @@ const ViewLogin = () => {
         <button
           className="p-1 me-5 font-weight-bold"
           style={{ fontSize: '1vw' }}
-      onClick={filterlist}  >
+          onClick={filterlist}
+        >
           Search
         </button>
-
-        <button className="p-1 font-weight-bold" style={{ fontSize: '1vw' }} onClick={unfilterlist}>
+        <button
+          className="p-1 font-weight-bold"
+          style={{ fontSize: '1vw' }}
+          onClick={unfilterlist}
+        >
           {' '}
           View All
         </button>
@@ -82,21 +104,28 @@ const ViewLogin = () => {
           <th>Login Activity Description</th>
           <th>IP Address</th>
         </tr>
-        {updatedloglist.map((val, index) => {
-          index = index + 1;
-
-          return (
-            <tr>
-              <th>{index}</th>
-              <th>{moment(val.timestamp).format('DD-MM-YYYY')}</th>
-              <th>{moment(val.timestamp).format('HH:mm')}</th>
-              <th>{val.login_desc}</th>
-              <th>{val.ipaddress}</th>
-            </tr>
-          );
-        })}
+        {updatedloglist.map((val, index) => (
+          <tr key={val.id}>
+            <th>{index + 1}</th>
+            <th>{moment(val.timestamp).format('DD-MM-YYYY')}</th>
+            <th>{moment(val.timestamp).format('HH:mm')}</th>
+            <th>{val.login_desc}</th>
+            <th>{val.ipaddress}</th>
+          </tr>
+        ))}
       </table>
     </div>
   );
+
+  if (loading) {
+    return (
+      <div className="viewback">
+        <div className="spinner-border text-primary" role="status"></div>
+      </div>
+    );
+  }
+
+  return <div>{!loading && table()}</div>;
 };
+
 export default ViewLogin;

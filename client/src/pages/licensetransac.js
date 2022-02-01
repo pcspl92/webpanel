@@ -3,8 +3,8 @@ import '../css/licensetransac.css';
 import axios from '../utils/axios';
 import moment from 'moment';
 export default function Licensetransac() {
-  const [fromdate, setfromdate] = useState();
-  const [todate, settodate] = useState();
+  const [fromdate, setfromdate] = useState('');
+  const [todate, settodate] = useState('');
   const [trandetails, settrandetails] = useState([]);
   const [updatedtranDetails, setupdatedtranDetails] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,27 +13,32 @@ export default function Licensetransac() {
     (async () => {
       const { data } = await axios.get('/order/transaction/agent-panel');
       settrandetails(data);
+      setupdatedtranDetails(data);
       setLoading(false);
     })();
   }, []);
 
   const filterlist = () => {
-    setupdatedtranDetails(
-      trandetails.filter((val) => {
-        return (
-          moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrAfter(
-            fromdate
-          ) &&
-          moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrBefore(
-            todate
-          )
-        );
-      })
-    );
+    if (fromdate.length && todate.length) {
+      setupdatedtranDetails(
+        trandetails.filter((val) => {
+          return (
+            moment(val.date).isSameOrAfter(fromdate) &&
+            moment(val.date).isSameOrBefore(todate)
+          );
+        })
+      );
+    }
+  };
+
+  const reset = () => {
+    setfromdate('');
+    settodate('');
   };
 
   const unfilterlist = () => {
     setupdatedtranDetails(trandetails);
+    reset();
   };
 
   const table = () => (
@@ -52,6 +57,7 @@ export default function Licensetransac() {
             onChange={(event) => {
               setfromdate(event.target.value);
             }}
+            value={fromdate}
             required
           />
         </div>
@@ -67,6 +73,7 @@ export default function Licensetransac() {
             onChange={(event) => {
               settodate(event.target.value);
             }}
+            value={todate}
             required
           />
         </div>
@@ -98,7 +105,7 @@ export default function Licensetransac() {
           <th>Balance</th>
           <th>Transaction Details</th>
         </tr>
-        {trandetails.map((val, index) => (
+        {updatedtranDetails.map((val, index) => (
           <tr key={val.id}>
             <th>{index + 1}</th>
             <th>{moment(val.date).format('DD-MM-YYYY')}</th>

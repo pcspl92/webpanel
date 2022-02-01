@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
 import '../css/licenseView.css';
-import axios from '../utils/axios';
+
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
+
+import axios from '../utils/axios';
+
 export default function LicenseView() {
   const [tableData, setTableData] = useState([]);
   const [companyName, setcompanyname] = useState('');
   const [agentName, setAgentName] = useState([]);
   const [orderId, setOrderId] = useState([]);
-  const [expdate, setexpdate] = useState([]);
+  const [expdate, setexpdate] = useState('');
   const [loading, setLoading] = useState(true);
   const [updatedlist, setupdatedlist] = useState([]);
 
@@ -15,6 +18,7 @@ export default function LicenseView() {
     (async () => {
       const { data } = await axios.get('/order/agent-panel');
       setTableData(data);
+      setupdatedlist(data);
       setLoading(false);
     })();
   }, []);
@@ -29,11 +33,8 @@ export default function LicenseView() {
               .includes(companyName.toLowerCase())) ||
           (agentName.length &&
             val.agent_name.toLowerCase().includes(agentName.toLowerCase())) ||
-          moment(moment(val.timestamp).format('YYYY-MM-DD')).isSameOrAfter(
-            expdate
-          ) ||
-          (orderId.length &&
-            val.order_id.toLowerCase().includes(orderId.toLowerCase()))
+          (expdate.length && moment(val.expiry_date).isAfter(expdate)) ||
+          (orderId.length && val.order_id === Number(orderId))
         );
       })
     );
@@ -139,7 +140,7 @@ export default function LicenseView() {
           <th>Expiry Date</th>
           <th>Agent Name</th>
         </tr>
-        {tableData.map((val, index) => {
+        {updatedlist.map((val, index) => {
           index++;
           return (
             <tr>

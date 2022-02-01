@@ -10,12 +10,14 @@ const ViewUsers = () => {
   const [expiryDate, setexpiryDate] = useState('');
   const [userlist, setuserlist] = useState([]);
   const [userupdlist, setuserupdlist] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/user/agent-panel');
       setuserlist(data);
       setuserupdlist(data);
+      setLoading(false);
     })();
   }, []);
 
@@ -62,7 +64,7 @@ const ViewUsers = () => {
     reset();
   };
 
-  return (
+  const table = () => (
     <div className="viewback">
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>VIEW USERS</div>
 
@@ -178,5 +180,15 @@ const ViewUsers = () => {
       </table>
     </div>
   );
+
+  if (loading) {
+    return (
+      <div className="viewback">
+        <div className="spinner-border text-primary" role="status"></div>
+      </div>
+    );
+  }
+
+  return <div>{!loading && table()}</div>;
 };
 export default ViewUsers;
