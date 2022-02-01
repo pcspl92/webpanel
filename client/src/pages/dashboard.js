@@ -5,18 +5,18 @@ import { useAuth } from '../hooks/useAuth';
 
 export default function Dashboard() {
   const [dashData, setDashData] = useState({});
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/dashboard/agent');
       setDashData(data);
+      setLoading(false);
     })();
   }, []);
 
-  if (!dashData.data) return <div>Loading...</div>;
-
-  return (
+  const table = () => (
     <div className="viewback">
       <br />
 
@@ -86,4 +86,14 @@ export default function Dashboard() {
       </div>
     </div>
   );
+
+  if (loading) {
+    return (
+      <div className="modifyback">
+        <div className="spinner-border text-primary" role="status"></div>
+      </div>
+    );
+  }
+
+  return <div>{!loading && table()}</div>;
 }

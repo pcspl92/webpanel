@@ -1,10 +1,11 @@
 const query = require('../utils/queryTemplate');
 
-const getOrders = (subAgents) => {
+const getOrders = (subAgents, currDate) => {
   const sql = `SELECT o.id AS order_id, o.timestamp AS order_date, license_type, license_expiry AS expiry_date, renewal AS renewal_type,
                a.display_name AS agent_name, c.display_name AS company_name,
                f.grp_call, f.enc, f.priv_call, f.live_gps, f.geo_fence, f.chat, 
-               COUNT(l.id) - COUNT(l.user_id) AS available, COUNT(l.user_id) AS active
+               COUNT(case when o.license_expiry > '${currDate}' then o.id else null end) - COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS available, 
+               COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS active
                FROM orders o
                JOIN agents a ON o.agent_id = a.id
                JOIN features f ON o.feature_id = f.id

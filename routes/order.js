@@ -18,7 +18,6 @@ const {
   getTransactionLogs,
   getCompanyOrderList,
   getCompanyTransactionList,
-  getLicenseTypes,
 } = require('../queries/order');
 const {
   getAgentUnitPrice,
@@ -41,17 +40,19 @@ router.get(
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
   async (req, res) => {
+    const currDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+
     if (req.user.permissions.includes('agent')) {
       const result = await getSubAgents(req.user.id);
       const subagents = result.reduce(
         (acc, sub) => [...acc, sub.id],
         [req.user.id]
       );
-      const agentOrders = await getOrders(subagents);
+      const agentOrders = await getOrders(subagents, currDate);
       return res.status(200).json(agentOrders);
     }
 
-    const subAgentOrders = await getOrders([req.user.id]);
+    const subAgentOrders = await getOrders([req.user.id], currDate);
     return res.status(200).json(subAgentOrders);
   }
 );
