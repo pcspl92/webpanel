@@ -11,7 +11,7 @@ const findAgentById = (agentId) => {
 };
 
 const getAgentId = (subagentId) => {
-  const sql = `SELECT agent_id FROM agents WHERE id=${subagentId};`;
+  const sql = `SELECT agent_id AS agentId FROM agents WHERE id=${subagentId};`;
   return query(sql);
 };
 

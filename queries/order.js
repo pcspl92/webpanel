@@ -57,10 +57,8 @@ const findOrder = (orderId) => {
   return query(sql);
 };
 
-const updateOrderId = (licenseIds, newOrderId, oldOrderId, all) => {
-  let sql = `UPDATE licenses SET order_id=${newOrderId} WHERE id IN (${licenseIds})`;
-  if (all)
-    sql = `UPDATE licenses SET order_id=${newOrderId} WHERE order_id=${oldOrderId}`;
+const updateOrderId = (licenseIds, newOrderId) => {
+  const sql = `UPDATE licenses SET order_id=${newOrderId} WHERE id IN (${licenseIds})`;
   return query(sql);
 };
 
@@ -145,11 +143,6 @@ const getFeatures = (orderId) => {
   return query(sql);
 };
 
-const getTransferAccounts = (orderId) => {
-  const sql = `SELECT COUNT(order_id) AS available FROM licenses WHERE order_id=${orderId};`;
-  return query(sql);
-};
-
 const getOrderData = (orderId) => {
   const sql = `SELECT license_expiry AS expDate, license_type AS type FROM orders WHERE id=${orderId};`;
   return query(sql);
@@ -157,6 +150,11 @@ const getOrderData = (orderId) => {
 
 const getUnitPrices = (type, agentId) => {
   const sql = `SELECT monthly, quarterly, half_yearly, yearly FROM prices WHERE agent_id=${agentId} AND license_type='${type}';`;
+  return query(sql);
+};
+
+const getLicensesForOrder = (orderId, userIds) => {
+  const sql = `SELECT id FROM licenses WHERE order_id=${orderId} AND user_id IN (${userIds})`;
   return query(sql);
 };
 
@@ -177,7 +175,7 @@ module.exports = {
   getOrderList,
   getUsers,
   getFeatures,
-  getTransferAccounts,
   getOrderData,
   getUnitPrices,
+  getLicensesForOrder,
 };

@@ -115,7 +115,6 @@ export default function LicenseCreate() {
               required
             >
               <option value={0}>Select License Type</option>
-
               <option value={'ptt'}>PTT User</option>
               <option value={'dispatcher'}>Dispatcher</option>
               <option value={'control'}>Control Station</option>

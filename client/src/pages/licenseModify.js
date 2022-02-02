@@ -1,6 +1,6 @@
 import '../css/licenseModify.css';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import moment from 'moment';
 
 import axios from '../utils/axios';
@@ -12,8 +12,7 @@ export default function LicenseModify() {
   const [orderlist, setorderlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [disabled, setDisabled] = useState(false);
-  const [accountlist, setaccountlist] = useState([]);
-  const [selectedlist, setselectedlist] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [showacc, setshowacc] = useState(true);
   const [company, setcompany] = useState('0');
   const [formLoading, setFormLoading] = useState(true);
@@ -21,6 +20,16 @@ export default function LicenseModify() {
   const [number, setNumber] = useState(0);
   const [period, setPeriod] = useState('0');
   const [transferQuantity, setTransferQuantity] = useState(0);
+  const [disableSelect, setDisableSelect] = useState(false);
+  const [featuresGlobal, setFeaturesGlobal] = useState({
+    grp_call: false,
+    enc: false,
+    priv_call: false,
+    live_gps: false,
+    geo_fence: false,
+    chat: false,
+  });
+  const selectedUserIds = useRef(new Set());
   const { user } = useAuth();
 
   useEffect(() => {
@@ -31,24 +40,12 @@ export default function LicenseModify() {
     })();
   }, []);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    setDisabled(true);
-
-    console.log('submitted');
-  };
-
-  function onselect() {
-    setselectedlist(
-      accountlist.filter((val) => {
-        return val.selected === true;
-      })
-    );
-    setaccountlist(
-      accountlist.filter((val) => {
-        return val.selected === true;
-      })
-    );
+  function onSelect(users) {
+    let selected = [];
+    selectedUserIds.current.forEach((id) => {
+      selected.push(users.filter((user) => user.id === id)[0]);
+    });
+    setSelectedUsers(selected);
   }
 
   const SelectAcc = ({ users }) => {
@@ -59,35 +56,64 @@ export default function LicenseModify() {
           <div className="accbox">
             {users.map((val, index) => {
               return (
-                <>
+                <div key={val.id}>
                   <input
                     type="checkbox"
                     id="subitem"
                     name="selection"
+                    defaultChecked={selectedUserIds.current.has(val.id)}
                     onClick={() => {
-                      val.selected = !val.selected;
+                      selectedUserIds.current.has(val.id)
+                        ? selectedUserIds.current.delete(val.id)
+                        : selectedUserIds.current.add(val.id);
                     }}
                   />
                   <label for="selection">{val.display_name}</label>
-                </>
+                </div>
               );
             })}
           </div>
-          <button onClick={onselect}>
+          <button type="button" onClick={() => onSelect(users)}>
             &nbsp;&nbsp; &gt; &gt; &nbsp;&nbsp;
           </button>
           <div className="accbox">
-            {selectedlist.map((val, index) => {
-              return (
-                <>
-                  <div>{val.account_name}</div>
-                </>
-              );
-            })}
+            {(selectedUsers.length &&
+              selectedUsers.map((val) => {
+                return <div key={val.id}>{val.display_name}</div>;
+              })) ||
+              null}
           </div>
         </div>
       </div>
     );
+  };
+
+  const setShow = (show, users) => {
+    users.forEach(({ id }) => selectedUserIds.current.add(id));
+    setshowacc(show);
+  };
+
+  const resetUpdateForm = () => {
+    selectedUserIds.current.clear();
+    setSelectedUsers([]);
+    setshowacc(true);
+  };
+
+  const updateSubmit = async () => {
+    const users = [];
+    selectedUserIds.current.forEach((id) => users.push(id));
+    const data = { features: featuresGlobal, user_ids: users, all: !showacc };
+
+    try {
+      await axios.put(`/order/${order}/features`, data);
+      resetUpdateForm();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const setFeature = (checked, feature) => {
+    setFeaturesGlobal({ ...featuresGlobal, [feature]: checked });
   };
 
   const updateForm = () => {
@@ -102,7 +128,7 @@ export default function LicenseModify() {
             id="feature"
             name="selection"
             onClick={() => {
-              setshowacc(!showacc);
+              setShow(!showacc, users);
             }}
           />
           <label for="selection"> All Acocunts </label>
@@ -115,33 +141,61 @@ export default function LicenseModify() {
             type="checkbox"
             id="feature"
             name="feature1"
-            checked={grp_call}
+            defaultChecked={grp_call}
+            onChange={(e) => {
+              setFeature(e.target.checked, 'grp_call');
+            }}
           />
           <label for="feature1"> Group Call</label>&nbsp;&nbsp;
           <input
             type="checkbox"
             id="feature"
             name="feature2"
-            checked={priv_call}
+            defaultChecked={priv_call}
+            onChange={(e) => {
+              setFeature(e.target.checked, 'priv_call');
+            }}
           />
           <label for="feature2"> Private Call</label>&nbsp;&nbsp;
-          <input type="checkbox" id="feature" name="feature3" checked={enc} />
+          <input
+            type="checkbox"
+            id="feature"
+            name="feature3"
+            defaultChecked={enc}
+            onChange={(e) => {
+              setFeature(e.target.checked, 'enc');
+            }}
+          />
           <label for="feature3"> Encryption </label>&nbsp;&nbsp;
           <input
             type="checkbox"
             id="feature"
             name="feature3"
-            checked={live_gps}
+            defaultChecked={live_gps}
+            onChange={(e) => {
+              setFeature(e.target.checked, 'live_gps');
+            }}
           />
           <label for="feature3"> Live GPS </label>&nbsp;&nbsp;
           <input
             type="checkbox"
             id="feature"
             name="feature3"
-            checked={geo_fence}
+            defaultChecked={geo_fence}
+            onChange={(e) => {
+              setFeature(e.target.checked, 'geo_fence');
+            }}
           />
           <label for="feature3"> Geo-Fence </label>&nbsp;&nbsp;
-          <input type="checkbox" id="feature" name="feature3" checked={chat} />
+          <input
+            type="checkbox"
+            id="feature"
+            name="feature3"
+            defaultChecked={chat}
+            onChange={(e) => {
+              setFeature(e.target.checked, 'chat');
+            }}
+          />
           <label for="feature3"> Chat </label>&nbsp;&nbsp;
         </div>
         Add-on Unit Price : 0 &nbsp; &nbsp; Add-on Total Price : 0
@@ -152,32 +206,64 @@ export default function LicenseModify() {
     );
   };
 
+  const resetRenewForm = () => {
+    selectedUserIds.current.clear();
+    setSelectedUsers([]);
+    setshowacc(true);
+    setNumber(0);
+    setPeriod('0');
+  };
+
+  const renewSubmit = async () => {
+    const users = [];
+    selectedUserIds.current.forEach((id) => users.push(id));
+    const data = {
+      user_ids: users,
+      renewal: period,
+      period: number,
+      all: !showacc,
+    };
+
+    try {
+      await axios.put(`/order/${order}/renewal`, data);
+      resetRenewForm();
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  };
+
   const calcExpiryDate = (expDate) => {
     let date;
     if (period !== '0') {
       switch (period) {
         case 'monthly':
-          date = moment(expDate).add(number, 'M').format('DD-MM-YYYY HH:mm:ss');
+          date = moment(`${expDate}`)
+            .add(number, 'M')
+            .format('YYYY-MM-DD HH:mm:ss');
           break;
         case 'quarterly':
-          date = moment(expDate).add(number, 'Q').format('DD-MM-YYYY HH:mm:ss');
+          date = moment(`${expDate}`)
+            .add(number, 'Q')
+            .format('YYYY-MM-DD HH:mm:ss');
           break;
         case 'half_yearly':
-          date = moment(expDate)
+          date = moment(`${expDate}`)
             .add(2 * number, 'Q')
-            .format('DD-MM-YYYY HH:mm:ss');
+            .format('YYYY-MM-DD HH:mm:ss');
           break;
         case 'yearly':
-          date = moment(expDate).add(number, 'y').format('DD-MM-YYYY HH:mm:ss');
+          date = moment(`${expDate}`)
+            .add(number, 'y')
+            .format('YYYY-MM-DD HH:mm:ss');
           break;
         default:
       }
 
-      const newExpDate = moment(date).isAfter('19-01-2038 03:14:07')
-        ? '19-01-2038 03:14:07'
+      const newExpDate = moment(date).isAfter('2038-01-19 03:14:07')
+        ? '2038-01-19 03:14:07'
         : date;
 
-      return newExpDate;
+      return moment(`${newExpDate}`).format('DD-MM-YYYY HH:mm:ss');
     }
   };
 
@@ -192,7 +278,7 @@ export default function LicenseModify() {
             id="feature"
             name="selection"
             onClick={() => {
-              setshowacc(!showacc);
+              setShow(!showacc, users);
             }}
           />
           <label for="selection"> All Accounts </label>
@@ -201,9 +287,17 @@ export default function LicenseModify() {
         <br />
         <div className="me-3">
           Renew License For :{' '}
-          <input type="number" onChange={(e) => setNumber(e.target.value)} />{' '}
+          <input
+            type="number"
+            onChange={(e) => setNumber(e.target.value)}
+            value={number}
+          />{' '}
           &nbsp;{' '}
-          <select required onChange={(e) => setPeriod(e.target.value)}>
+          <select
+            required
+            onChange={(e) => setPeriod(e.target.value)}
+            value={period}
+          >
             <option value="0">Select Period</option>
             <option value={'monthly'}>Monthly</option>
             <option value={'quarterly'}>Quarterly</option>
@@ -220,7 +314,9 @@ export default function LicenseModify() {
         <div>
           Renewal Unit Price : {period !== '0' ? unitPrices[period] : ''} &nbsp;
           &nbsp; Renewal Total Price :{' '}
-          {period !== '0' ? number * unitPrices[period] : ''}
+          {period !== '0'
+            ? number * selectedUserIds.current.size * unitPrices[period]
+            : ''}
         </div>
         <br />
         <button type="submit" disabled={disabled}>
@@ -228,6 +324,22 @@ export default function LicenseModify() {
         </button>
       </div>
     );
+  };
+
+  const resetTransferForm = () => {
+    setcompany('0');
+    setTransferQuantity(0);
+  };
+
+  const transferSubmit = async () => {
+    const data = { qty: transferQuantity, company_id: company };
+
+    try {
+      await axios.put(`/order/${order}/transfer`, data);
+      resetTransferForm();
+    } catch (err) {
+      console.log(err.response.data);
+    }
   };
 
   const transferForm = () => {
@@ -269,14 +381,50 @@ export default function LicenseModify() {
     );
   };
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setDisabled(true);
+
+    switch (updateType) {
+      case 'update':
+        await updateSubmit();
+        break;
+      case 'transfer':
+        await transferSubmit();
+        break;
+      case 'renew':
+        await renewSubmit();
+        break;
+      default:
+    }
+
+    setDisabled(false);
+  };
+
   const getFormData = async (type) => {
     setFormLoading(true);
+    setDisableSelect(true);
     if (order !== 0) {
       setupdateType(type);
       const { data } = await axios.get(`/order/${order}/${type}`);
       console.log('fetched', data);
       setFormData(data);
+      if (type === 'update') {
+        const { features } = data;
+        const { chat, grp_call, priv_call, geo_fence, enc, live_gps } =
+          features;
+        setFeaturesGlobal({
+          ...featuresGlobal,
+          chat: !!chat,
+          grp_call: !!grp_call,
+          priv_call: !!priv_call,
+          geo_fence: !!geo_fence,
+          enc: !!enc,
+          live_gps: !!live_gps,
+        });
+      }
     }
+    setDisableSelect(false);
     setFormLoading(false);
   };
 
@@ -298,6 +446,7 @@ export default function LicenseModify() {
               onChange={(event) => {
                 setorder(event.target.value);
               }}
+              disabled={disableSelect}
               value={order}
               required
             >
@@ -322,6 +471,7 @@ export default function LicenseModify() {
               onChange={(e) => {
                 getFormData(e.target.value);
               }}
+              disabled={disableSelect}
               value={updateType}
               required
             >

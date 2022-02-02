@@ -21,9 +21,9 @@ const {
   getOrderList,
   getUsers,
   getFeatures,
-  getTransferAccounts,
   getOrderData,
   getUnitPrices,
+  getLicensesForOrder,
 } = require('../queries/order');
 const {
   getAgentUnitPrice,
@@ -55,70 +55,6 @@ router.get(
 
     const list = await getOrderList(agents);
     return res.status(200).json(list);
-  }
-);
-
-// @route   GET api/order/:orderId/:type
-// @desc    Order update page data fetching route
-// @access  Private(Agent|Subagent)
-router.get(
-  '/:orderId/:type',
-  isLoggedIn,
-  guard.check([['agent'], ['subagent']]),
-  agentSubAgentCheck,
-  async (req, res) => {
-    const order = await findOrder(req.params.orderId);
-    if (!order.length)
-      return res
-        .status(404)
-        .json({ order: "Order with given id doesn't exist." });
-
-    const getUpdateFormData = async () => {
-      const users = await getUsers(req.params.orderId);
-      const features = await getFeatures(req.params.orderId);
-      return { users, features: features[0] };
-    };
-
-    const getRenewFormData = async () => {
-      const users = await getUsers(req.params.orderId);
-      const [{ expDate, type }] = await getOrderData(req.params.orderId);
-      const [unitPrices] = await getUnitPrices(type, req.user.id);
-      return { users, expDate, unitPrices };
-    };
-
-    const getTransferFormData = async () => {
-      const [{ available }] = await getTransferAccounts(req.params.orderId);
-      let subagents = [req.user.id];
-      if (req.user.permissions.includes('agent')) {
-        const result = await getSubAgents(req.user.id);
-        subagents = result.reduce(
-          (acc, sub) => [...acc, sub.id],
-          [req.user.id]
-        );
-      }
-
-      const companies = await getCompanies(subagents);
-      return { available, companies };
-    };
-
-    let data;
-    switch (req.params.type) {
-      case 'update':
-        data = await getUpdateFormData();
-        break;
-      case 'transfer':
-        data = await getTransferFormData();
-        break;
-      case 'renew':
-        data = await getRenewFormData();
-        break;
-      default:
-        return res
-          .status(400)
-          .json({ type: 'Only update, transfer and renew types are allowed' });
-    }
-
-    return res.status(200).json(data);
   }
 );
 
@@ -184,6 +120,70 @@ router.get(
     const currDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
     const transactions = await getCompanyTransactionList(req.user.id, currDate);
     return res.status(200).json(transactions);
+  }
+);
+
+// @route   GET api/order/:orderId/:type
+// @desc    Order update page data fetching route
+// @access  Private(Agent|Subagent)
+router.get(
+  '/:orderId/:type',
+  isLoggedIn,
+  guard.check([['agent'], ['subagent']]),
+  agentSubAgentCheck,
+  async (req, res) => {
+    const order = await findOrder(req.params.orderId);
+    if (!order.length)
+      return res
+        .status(404)
+        .json({ order: "Order with given id doesn't exist." });
+
+    const getUpdateFormData = async () => {
+      const users = await getUsers(req.params.orderId);
+      const features = await getFeatures(req.params.orderId);
+      return { users, features: features[0] };
+    };
+
+    const getRenewFormData = async () => {
+      const users = await getUsers(req.params.orderId);
+      const [{ expDate, type }] = await getOrderData(req.params.orderId);
+      const [unitPrices] = await getUnitPrices(type, req.user.id);
+      return { users, expDate, unitPrices };
+    };
+
+    const getTransferFormData = async () => {
+      const [{ count }] = await getLicenseCount(req.params.orderId);
+      let subagents = [req.user.id];
+      if (req.user.permissions.includes('agent')) {
+        const result = await getSubAgents(req.user.id);
+        subagents = result.reduce(
+          (acc, sub) => [...acc, sub.id],
+          [req.user.id]
+        );
+      }
+
+      const companies = await getCompanies(subagents);
+      return { available: count, companies };
+    };
+
+    let data;
+    switch (req.params.type) {
+      case 'update':
+        data = await getUpdateFormData();
+        break;
+      case 'transfer':
+        data = await getTransferFormData();
+        break;
+      case 'renew':
+        data = await getRenewFormData();
+        break;
+      default:
+        return res
+          .status(400)
+          .json({ type: 'Only update, transfer and renew types are allowed' });
+    }
+
+    return res.status(200).json(data);
   }
 );
 
@@ -279,6 +279,11 @@ router.put(
         .status(404)
         .json({ order: "Order with given id doesn't exist." });
 
+    const result = await getLicensesForOrder(
+      req.params.orderId,
+      req.body.user_ids
+    );
+    const licenseIds = result.reduce((acc, val) => [...acc, val.id], []);
     const featureRes = await createFeatures(
       _.pick(req.body.features, [
         'grp_call',
@@ -291,18 +296,13 @@ router.put(
     );
     const orderRes = await createOrder(
       order[0].license_type,
-      order[0].license_expiry,
+      moment(`${order[0].license_expiry}`).format('YYYY-MM-DD HH:mm:ss'),
       order[0].company_id,
       featureRes.insertId,
       order[0].renewal,
       order[0].agent_id
     );
-    await updateOrderId(
-      req.body.license_ids,
-      orderRes.insertId,
-      req.params.orderId,
-      req.body.all
-    );
+    await updateOrderId(licenseIds, orderRes.insertId);
     await createAgentActivityLog('Order Features Modify', req.user.id);
     return res.status(201).send('updated');
   }
@@ -323,18 +323,19 @@ router.put(
         .status(404)
         .json({ order: "Order with given id doesn't exist." });
 
+    const result = await getLicensesForOrder(
+      req.params.orderId,
+      req.body.user_ids
+    );
+    const licenseIds = result.reduce((acc, val) => [...acc, val.id], []);
     const [{ unitPrice }] = await getAgentUnitPrice(
       req.user.id,
       order[0].license_type,
       req.body.renewal
     );
-    const getAllLicenses = await getLicenseCount(req.params.orderId);
-    const licenseCount = req.body.all
-      ? getAllLicenses[0].count
-      : req.body.license_ids.length;
     const [{ balance }] = await getAgentBalance(req.user.id);
 
-    if (balance < unitPrice * req.body.period * licenseCount)
+    if (balance < unitPrice * req.body.period * licenseIds.length)
       return res.status(400).json({
         balance: `Insufficient balance`,
       });
@@ -352,13 +353,8 @@ router.put(
       req.body.renewal,
       order[0].agent_id
     );
-    await updateOrderId(
-      req.body.license_ids,
-      orderRes.insertId,
-      req.params.orderId,
-      req.body.all
-    );
-    let price = unitPrice * req.body.period * licenseCount;
+    await updateOrderId(licenseIds, orderRes.insertId);
+    let price = unitPrice * req.body.period * licenseIds.length;
     await deductBalance(price, req.user.id);
     await createTransactionLog(
       'Order Renewal',
@@ -375,9 +371,10 @@ router.put(
         req.body.renewal,
         'subagent'
       );
-      const result = await getAgentId(req.user.id);
-      price = (unitPrice - agentUnitPrice) * req.body.period * licenseCount;
-      await addProfit(price, result[0].agent_id);
+      const [{ agentId }] = await getAgentId(req.user.id);
+      price =
+        (unitPrice - agentUnitPrice) * req.body.period * licenseIds.length;
+      await addProfit(price, agentId);
       await createTransactionLog(
         'Order Renewal',
         price,
@@ -415,7 +412,7 @@ router.put(
 
     const orderRes = await createOrder(
       order[0].license_type,
-      order[0].license_expiry,
+      moment(`${order[0].license_expiry}`).format('YYYY-MM-DD HH:mm:ss'),
       req.body.company_id,
       order[0].feature_id,
       order[0].renewal,
