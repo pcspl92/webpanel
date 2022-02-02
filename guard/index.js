@@ -27,7 +27,7 @@ const companyCheck = (err, req, res, next) => {
 };
 
 const isLoggedIn = (req, res, next) => {
-  if (!req.user) return res.status(400).send('Please Login First');
+  if (!req.user) return res.status(401).send('Please Login First');
 
   return next();
 };
