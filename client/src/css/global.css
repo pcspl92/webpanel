@@ -13,6 +13,10 @@
   --primary: #3b78c6;
 }
 
+a {
+  text-decoration: none;
+}
+
 .form-login {
   height: 100vh;
   width: 100vw;
@@ -48,7 +52,7 @@
 }
 
 .mainback {
-  background-color: #3b78c6;
+  background-color: var(--primary);
 }
 
 .form-input {
@@ -84,4 +88,20 @@
   width: 100vw;
   display: grid;
   place-items: center;
+}
+
+.login-buttons {
+  display: flex;
+  justify-content: center;
+  margin: 5rem;
+}
+
+.login-buttons a {
+  padding: 0.75rem;
+  background-color: var(--primary);
+  color: #fff;
+  border-radius: 10px;
+  margin-right: 3rem;
+  width: 160px;
+  text-align: center;
 }

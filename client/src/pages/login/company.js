@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { loadReCaptcha, ReCaptcha } from 'react-recaptcha-google';
-import axios from '../utils/axios';
+import axios from '../../utils/axios';
 
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function Login() {
   const [credentials, setCredentials] = useState({
@@ -15,15 +15,15 @@ export default function Login() {
   const captcha = useRef();
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
-  const to = location.state?.from?.pathname || '/dashboard';
+  const { companyLogin } = useAuth();
+  const to = location.state?.from?.pathname || '/company/dashboard';
 
   useEffect(() => loadReCaptcha(), []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(credentials);
+      await companyLogin(credentials);
       navigate(to, { replace: true });
     } catch (err) {
       setErrors(err.response.data);
@@ -49,7 +49,7 @@ export default function Login() {
     return (
       <form onSubmit={onSubmit} className="layout-login">
         <h3 className="fs-4 text-white text-center fw-600 my-4">
-          PULSE PTT Management System(Agent Login)
+          PULSE PTT Management System(Company Login)
         </h3>
         <div className="text-end mr-3rem mt-3rem">
           <div className="mb-3">

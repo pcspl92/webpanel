@@ -20,8 +20,14 @@ export default function Auth({ children }) {
     })();
   }, []);
 
-  const login = async (body) => {
+  const agentLogin = async (body) => {
     await axios.post('/auth/login/agent', body);
+    const { data } = await axios.get('/auth/status');
+    setUser({ ...data, auth: true });
+  };
+
+  const companyLogin = async (body) => {
+    await axios.post('/auth/login/company', body);
     const { data } = await axios.get('/auth/status');
     setUser({ ...data, auth: true });
   };
@@ -33,7 +39,8 @@ export default function Auth({ children }) {
 
   const value = {
     user,
-    login,
+    agentLogin,
+    companyLogin,
     logout,
   };
 
