@@ -28,14 +28,14 @@ import Licensetransac from '../pages/licensetransac';
 import LicenseModify from '../pages/licenseModify';
 import AgentHeader from './header/agent';
 import AgentNavbar from './navbar/agent';
-import CompanyChangePassword from '../pages/companyPersonalCentrechangepass';
-import CompanyViewActivity from '../pages/companypersonalcentreActRec';
-import CompanyViewLogin from '../pages/companyPersonalCentreLogRec';
 //company imports
 import CompanyLogin from '../pages/login/company';
 import CompanyDashboard from '../pages/dashboard/company';
 import CompanyHeader from './header/company';
 import CompanyNavbar from './navbar/company';
+import CompanyChangePassword from '../pages/companyPersonalCentrechangepass';
+import CompanyViewActivity from '../pages/companypersonalcentreActRec';
+import CompanyViewLogin from '../pages/companyPersonalCentreLogRec';
 
 export default function App() {
   return (
@@ -103,24 +103,6 @@ export default function App() {
                     <Route path="recharge" element={<RechargeAgent />} />
                     <Route path="modify" element={<ModifyAgent />} />
                   </Route>
-                  <Route path="personal-center">
-                    <Route
-                      path="change-password"
-                      element={
-                        <CompanyPrivateRoute component={<CompanyChangePassword />} />
-                      }
-                    />
-                    <Route
-                      path="activity"
-                      element={
-                        <CompanyPrivateRoute component={<CompanyViewActivity />} />
-                      }
-                    />
-                    <Route
-                      path="loginrecord"
-                      element={<CompanyPrivateRoute component={<CompanyViewLogin />} />}
-                    />
-                  </Route>
                   <Route path="company-management">
                     <Route
                       path="create-new-company"
@@ -154,22 +136,28 @@ export default function App() {
                       <CompanyPrivateRoute component={<CompanyDashboard />} />
                     }
                   />
-                     <Route path="personal-center">
+                  <Route path="personal-center">
                     <Route
                       path="change-password"
                       element={
-                        <AgentPrivateRoute component={<ChangePassword />} />
+                        <CompanyPrivateRoute
+                          component={<CompanyChangePassword />}
+                        />
                       }
                     />
                     <Route
                       path="activity"
                       element={
-                        <AgentPrivateRoute component={<ViewActivity />} />
+                        <CompanyPrivateRoute
+                          component={<CompanyViewActivity />}
+                        />
                       }
                     />
                     <Route
                       path="loginrecord"
-                      element={<AgentPrivateRoute component={<ViewLogin />} />}
+                      element={
+                        <CompanyPrivateRoute component={<CompanyViewLogin />} />
+                      }
                     />
                   </Route>
                 </Route>

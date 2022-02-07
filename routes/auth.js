@@ -3,7 +3,6 @@ const _ = require('lodash');
 const guard = require('express-jwt-permissions')();
 const axios = require('axios');
 
-const getIP = require('../utils/getIPAddress');
 const genToken = require('../utils/genToken');
 const { comparePassword, hashPassword } = require('../utils/bcrypt');
 const {
@@ -77,36 +76,6 @@ router.get(
   }
 );
 
-// @route   PUT api/auth/password/agent
-// @desc    Agent and Subagent password change route
-// @access  Private(Agent|Subagent)
-router.put(
-  '/password/agent',
-  isLoggedIn,
-  guard.check([['agent'], ['subagent']]),
-  agentSubAgentCheck,
-  async (req, res) => {
-    const password = await hashPassword(req.body.password);
-    await updateAgentPassword(password, req.user.id);
-    return res.status(200).send('updated');
-  }
-);
-
-// @route   PUT api/auth/password/company
-// @desc    Company password change route
-// @access  Private(Company)
-router.put(
-  '/password/company',
-  isLoggedIn,
-  guard.check('company'),
-  companyCheck,
-  async (req, res) => {
-    const password = await hashPassword(req.body.password);
-    await updateCompanyPassword(password, req.user.id);
-    return res.status(200).send('updated');
-  }
-);
-
 // @route   POST api/auth/login/agent
 // @desc    Agent and Subagent login route
 // @access  Public(all)
@@ -119,8 +88,7 @@ router.post('/login/agent', async (req, res) => {
   if (!(await comparePassword(req.body.password, user[0].password)))
     return res.status(400).json({ auth: 'Wrong credential combination' });
 
-  const ip = await getIP();
-  await createAgentAuthLog('Logged In', ip, user[0].id);
+  await createAgentAuthLog('Logged In', req.body.ip_address, user[0].id);
 
   res.cookie(
     'auth',
@@ -151,8 +119,7 @@ router.post('/login/company', async (req, res) => {
   if (!(await comparePassword(req.body.password, company[0].password)))
     return res.status(400).json({ auth: 'Wrong credential combination' });
 
-  const ip = await getIP();
-  await createCompanyAuthLog('Logged In', ip, company[0].id);
+  await createCompanyAuthLog('Logged In', req.body.ip_address, company[0].id);
 
   res.cookie(
     'auth',
@@ -172,13 +139,13 @@ router.post('/login/company', async (req, res) => {
 // @desc    Logout route
 // @access  Private(Agent|Subagent|Company)
 router.post('/logout', isLoggedIn, async (req, res) => {
-  const ip = await getIP();
   if (
     req.user.permissions[0] === 'agent' ||
     req.user.permissions[0] === 'subagent'
   )
-    await createAgentAuthLog('Logged Out', ip, req.user.id);
-  else await createCompanyAuthLog('Logged Out', ip, req.user.id);
+    await createAgentAuthLog('Logged Out', req.body.ip_address, req.user.id);
+  else
+    await createCompanyAuthLog('Logged Out', req.body.ip_address, req.user.id);
   res.cookie('auth', '', {
     maxAge: -1,
     path: '/',
@@ -198,5 +165,35 @@ router.post('/verify-captcha', async (req, res) => {
     return res.status(400).send('Incorrect Captcha Token Used');
   return res.status(200).send('Verified');
 });
+
+// @route   PUT api/auth/password/agent
+// @desc    Agent and Subagent password change route
+// @access  Private(Agent|Subagent)
+router.put(
+  '/password/agent',
+  isLoggedIn,
+  guard.check([['agent'], ['subagent']]),
+  agentSubAgentCheck,
+  async (req, res) => {
+    const password = await hashPassword(req.body.password);
+    await updateAgentPassword(password, req.user.id);
+    return res.status(200).send('updated');
+  }
+);
+
+// @route   PUT api/auth/password/company
+// @desc    Company password change route
+// @access  Private(Company)
+router.put(
+  '/password/company',
+  isLoggedIn,
+  guard.check('company'),
+  companyCheck,
+  async (req, res) => {
+    const password = await hashPassword(req.body.password);
+    await updateCompanyPassword(password, req.user.id);
+    return res.status(200).send('updated');
+  }
+);
 
 module.exports = router;

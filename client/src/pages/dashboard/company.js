@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
 import '../../css/dashboard.css';
+
+import React, { useEffect, useState } from 'react';
+
 import axios from '../../utils/axios';
-import { useAuth } from '../../hooks/useAuth';
 
 export default function Dashboard() {
   const [dashData, setDashData] = useState({});
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
 
   useEffect(() => {
     (async () => {
