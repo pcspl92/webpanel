@@ -6,6 +6,8 @@ import Index from '../pages/index';
 import { AgentPrivateRoute, CompanyPrivateRoute } from '../utils/privateRoute';
 import { AgentLoginRoute, CompanyLoginRoute } from '../utils/loginRoute';
 import HeroRoute from '../utils/heroRoute';
+import { useAuth } from '../hooks/useAuth';
+
 // agent imports
 import AgentLogin from '../pages/login/agent';
 import CreateSubAgent from '../pages/subAgentCreate';
@@ -38,12 +40,13 @@ import CompanyViewActivity from '../pages/companypersonalcentreActRec';
 import CompanyViewLogin from '../pages/companyPersonalCentreLogRec';
 
 export default function App() {
+  const { user } = useAuth();
   return (
     <BrowserRouter>
       <div className="mainback">
-        {/* <Header /> */}
+        {user.type === 'company' ? <CompanyHeader /> : <AgentHeader />}
         <div className="bottompart">
-          {/* <Navbar /> */}
+          {user.type === 'company' ? <CompanyNavbar /> : <AgentNavbar />}
           <div className="routearea">
             <Routes>
               <Route path="/">
