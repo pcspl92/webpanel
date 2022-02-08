@@ -1,4 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
+import publicIp from 'public-ip';
 
 import axios from '../utils/axios';
 
@@ -20,20 +21,30 @@ export default function Auth({ children }) {
     })();
   }, []);
 
+  const getIp = async () => {
+    const data = await publicIp.v4({
+      fallbackUrls: ['https://ifconfig.co/ip'],
+    });
+    return data;
+  };
+
   const agentLogin = async (body) => {
-    await axios.post('/auth/login/agent', body);
+    const ip = await getIp();
+    await axios.post('/auth/login/agent', { ...body, ip_address: ip });
     const { data } = await axios.get('/auth/status');
     setUser({ ...data, auth: true });
   };
 
   const companyLogin = async (body) => {
-    await axios.post('/auth/login/company', body);
+    const ip = await getIp();
+    await axios.post('/auth/login/company', { ...body, ip_address: ip });
     const { data } = await axios.get('/auth/status');
     setUser({ ...data, auth: true });
   };
 
   const logout = async () => {
-    await axios.post('/auth/logout');
+    const ip = await getIp();
+    await axios.post('/auth/logout', { ip_address: ip });
     setUser({ auth: false });
   };
 

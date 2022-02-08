@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
 import '../css/personalCenterviewUseract.css';
-import axios from '../utils/axios';
+
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+
+import axios from '../utils/axios';
 const CompanyViewActivity = () => {
   const [fromdate, setfromdate] = useState();
   const [todate, settodate] = useState();
@@ -113,7 +115,7 @@ const CompanyViewActivity = () => {
               <th>{index}</th>
               <th>{moment(val.timestamp).format('DD-MM-YYYY')}</th>
               <th>{moment(val.timestamp).format('HH:mm')}</th>
-              <th>{val.account_name}</th>
+              <th>{val.display_name}</th>
               <th>{val.activity_desc}</th>
             </tr>
           );
