@@ -16,13 +16,9 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "react-toggle-button": "^2.2.0",
-<<<<<<< HEAD
     "recharts": "^2.1.8",
     "web-vitals": "^2.1.2",
     "yup": "^0.32.11"
-=======
-    "web-vitals": "^2.1.2"
->>>>>>> a5d117c8d8190e6291f8a240cbd6bae46482802f
   },
   "scripts": {
     "start": "react-scripts start",

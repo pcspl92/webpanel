@@ -110,7 +110,7 @@ const getCompanyTransactionList = (companyId, currDate) => {
   const sql = `SELECT t.details AS transaction_type, t.timestamp AS transaction_date,
                o.id, o.license_type AS account_type, o.license_expiry AS license_renewal_date,
                COUNT(case when o.license_expiry > '${currDate}' then o.id else null end) - COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS available, 
-               COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS active,
+               COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS active
                FROM transactions t
                JOIN orders o ON t.order_id=o.id
                JOIN licenses l ON l.order_id=o.id
