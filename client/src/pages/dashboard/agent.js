@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../../css/dashboard.css';
 import axios from '../../utils/axios';
 import { useAuth } from '../../hooks/useAuth';
+import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
 
 export default function Dashboard() {
   const [dashData, setDashData] = useState({});
@@ -84,6 +85,13 @@ export default function Dashboard() {
         <span>Total Companies :</span>
         {dashData.total_companies}
       </div>
+      PTT User Online/Offline Chart
+      <PieChart></PieChart>
+      Dispatcher Accounts Chart
+      <PieChart></PieChart>
+     Control Station Accounts Chart
+     <PieChart></PieChart>
+
     </div>
   );
 

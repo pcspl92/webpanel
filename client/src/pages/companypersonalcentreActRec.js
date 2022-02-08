@@ -11,7 +11,7 @@ const CompanyViewActivity = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get('/agent/activity-logs');
+      const { data } = await axios.get('/company/activity-logs');
       setcompanyactlist(data);
       setupdatedactlist(data);
       setLoading(false);
