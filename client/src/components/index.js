@@ -6,6 +6,8 @@ import Index from '../pages/index';
 import { AgentPrivateRoute, CompanyPrivateRoute } from '../utils/privateRoute';
 import { AgentLoginRoute, CompanyLoginRoute } from '../utils/loginRoute';
 import HeroRoute from '../utils/heroRoute';
+import { useAuth } from '../hooks/useAuth';
+
 // agent imports
 import AgentLogin from '../pages/login/agent';
 import CreateSubAgent from '../pages/subAgentCreate';
@@ -28,27 +30,26 @@ import Licensetransac from '../pages/licensetransac';
 import LicenseModify from '../pages/licenseModify';
 import AgentHeader from './header/agent';
 import AgentNavbar from './navbar/agent';
-import CompanyChangePassword from '../pages/companyPersonalCentrechangepass';
-import CompanyViewActivity from '../pages/companypersonalcentreActRec';
-import CompanyViewLogin from '../pages/companyPersonalCentreLogRec';
 //company imports
 import CompanyLogin from '../pages/login/company';
 import CompanyDashboard from '../pages/dashboard/company';
 import CompanyHeader from './header/company';
 import CompanyNavbar from './navbar/company';
-
+import CompanyChangePassword from '../pages/companyPersonalCentrechangepass';
+import CompanyViewActivity from '../pages/companypersonalcentreActRec';
+import CompanyViewLogin from '../pages/companyPersonalCentreLogRec';
 import CompanyUserView from '../pages/TcompanyUserView';
 import CompanyOrderList from '../pages/TcompanyOrderLIst';
 import CompanyOrderTrans from '../pages/TcompanyOrdertrans';
+
 export default function App() {
+  const { user } = useAuth();
   return (
     <BrowserRouter>
       <div className="mainback">
-       <CompanyHeader /> 
-       <AgentHeader /> 
+        {user.type === 'company' ? <CompanyHeader /> : <AgentHeader />}
         <div className="bottompart">
-          <CompanyNavbar />
-          <AgentNavbar /> 
+          {user.type === 'company' ? <CompanyNavbar /> : <AgentNavbar />}
           <div className="routearea">
             <Routes>
               <Route path="/">
@@ -108,42 +109,48 @@ export default function App() {
                     <Route path="recharge" element={<RechargeAgent />} />
                     <Route path="modify" element={<ModifyAgent />} />
                   </Route>
-                  <Route path="user-management"/>
+                  <Route path="user-management" />
                   <Route
-                      path="view-user-list"
-                      element={
-                        <CompanyPrivateRoute component={< CompanyUserView/>} />
-                      }
-                    />
-                  <Route path="order-center"/>
+                    path="view-user-list"
+                    element={
+                      <CompanyPrivateRoute component={<CompanyUserView />} />
+                    }
+                  />
+                  <Route path="order-center" />
                   <Route
-                      path="order-list"
-                      element={
-                        <CompanyPrivateRoute component={<CompanyOrderList />} />
-                      }
-                    />
-                     <Route
-                      path="transaction-history"
-                      element={
-                        <CompanyPrivateRoute component={<CompanyOrderTrans />} />
-                      }
-                    />
+                    path="order-list"
+                    element={
+                      <CompanyPrivateRoute component={<CompanyOrderList />} />
+                    }
+                  />
+                  <Route
+                    path="transaction-history"
+                    element={
+                      <CompanyPrivateRoute component={<CompanyOrderTrans />} />
+                    }
+                  />
                   <Route path="personal-center">
                     <Route
                       path="change-password"
                       element={
-                        <CompanyPrivateRoute component={<CompanyChangePassword />} />
+                        <CompanyPrivateRoute
+                          component={<CompanyChangePassword />}
+                        />
                       }
                     />
                     <Route
                       path="activity"
                       element={
-                        <CompanyPrivateRoute component={<CompanyViewActivity />} />
+                        <CompanyPrivateRoute
+                          component={<CompanyViewActivity />}
+                        />
                       }
                     />
                     <Route
                       path="loginrecord"
-                      element={<CompanyPrivateRoute component={<CompanyViewLogin />} />}
+                      element={
+                        <CompanyPrivateRoute component={<CompanyViewLogin />} />
+                      }
                     />
                   </Route>
                   <Route path="company-management">
@@ -179,23 +186,29 @@ export default function App() {
                       <CompanyPrivateRoute component={<CompanyDashboard />} />
                     }
                   />
-                  
-                     <Route path="personal-center">
+
+                  <Route path="personal-center">
                     <Route
                       path="change-password"
                       element={
-                        <AgentPrivateRoute component={<ChangePassword />} />
+                        <CompanyPrivateRoute
+                          component={<CompanyChangePassword />}
+                        />
                       }
                     />
                     <Route
                       path="activity"
                       element={
-                        <AgentPrivateRoute component={<ViewActivity />} />
+                        <CompanyPrivateRoute
+                          component={<CompanyViewActivity />}
+                        />
                       }
                     />
                     <Route
                       path="loginrecord"
-                      element={<AgentPrivateRoute component={<ViewLogin />} />}
+                      element={
+                        <CompanyPrivateRoute component={<CompanyViewLogin />} />
+                      }
                     />
                   </Route>
                 </Route>

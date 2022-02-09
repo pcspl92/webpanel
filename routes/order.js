@@ -79,20 +79,6 @@ router.get(
   }
 );
 
-// @route   GET api/order/transaction/agent-panel
-// @desc    Agent-Subagent transaction logs fetching route
-// @access  Private(Agent|Subagent)
-router.get(
-  '/transaction/agent-panel',
-  isLoggedIn,
-  guard.check([['agent'], ['subagent']]),
-  agentSubAgentCheck,
-  async (req, res) => {
-    const transactions = await getTransactionLogs(req.user.id);
-    return res.status(200).json(transactions);
-  }
-);
-
 // @route   GET api/order/company-panel
 // @desc    Company Panel orders view fetching route
 // @access  Private(Company)
@@ -105,6 +91,20 @@ router.get(
     const currDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
     const orders = await getCompanyOrderList(req.user.id, currDate);
     return res.status(200).json(orders);
+  }
+);
+
+// @route   GET api/order/transaction/agent-panel
+// @desc    Agent-Subagent transaction logs fetching route
+// @access  Private(Agent|Subagent)
+router.get(
+  '/transaction/agent-panel',
+  isLoggedIn,
+  guard.check([['agent'], ['subagent']]),
+  agentSubAgentCheck,
+  async (req, res) => {
+    const transactions = await getTransactionLogs(req.user.id);
+    return res.status(200).json(transactions);
   }
 );
 
