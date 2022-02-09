@@ -39,7 +39,7 @@ import CompanyChangePassword from '../pages/companyPersonalCentrechangepass';
 import CompanyViewActivity from '../pages/companypersonalcentreActRec';
 import CompanyViewLogin from '../pages/companyPersonalCentreLogRec';
 import CompanyUserView from '../pages/TcompanyUserView';
-import CompanyOrderList from '../pages/TcompanyOrderLIst';
+import CompanyOrderList from '../pages/companyOrderLIst';
 import CompanyOrderTrans from '../pages/TcompanyOrdertrans';
 
 export default function App() {
@@ -116,19 +116,7 @@ export default function App() {
                       <CompanyPrivateRoute component={<CompanyUserView />} />
                     }
                   />
-                  <Route path="order-center" />
-                  <Route
-                    path="order-list"
-                    element={
-                      <CompanyPrivateRoute component={<CompanyOrderList />} />
-                    }
-                  />
-                  <Route
-                    path="transaction-history"
-                    element={
-                      <CompanyPrivateRoute component={<CompanyOrderTrans />} />
-                    }
-                  />
+                
                   <Route path="personal-center">
                     <Route
                       path="change-password"
@@ -186,7 +174,20 @@ export default function App() {
                       <CompanyPrivateRoute component={<CompanyDashboard />} />
                     }
                   />
-
+                     <Route path="order-center" >
+                  <Route
+                    path="order-list"
+                    element={
+                      <CompanyPrivateRoute component={<CompanyOrderList />} />
+                    }
+                  />
+                  <Route
+                    path="transaction-history"
+                    element={
+                      <CompanyPrivateRoute component={<CompanyOrderTrans />} />
+                    }
+                  />
+                  </Route>
                   <Route path="personal-center">
                     <Route
                       path="change-password"
