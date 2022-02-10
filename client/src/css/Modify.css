@@ -5,6 +5,8 @@
   align-items: center;
   height: 90vh;
   width: 82vw;
+  margin-left: 18vw;
+  margin-top: 10vh;
 }
 .modifyform {
   display: flex;

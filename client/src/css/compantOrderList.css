@@ -1,29 +1,30 @@
 .viewback {
-    display: flex;
-    height: 90vh;
-    width: 82vw;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  .filter {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-end;
-    margin-top: 1vw;
-  }
-  .tableheading {
-    background-color: #8cb3d9;
-  }
-  td,
-  th {
-    border: 1px solid black;
-    text-align: right;
-    padding: 6px;
-    border-collapse: collapse;
-  }
-  table {
-    border-collapse: collapse;
-  }
-  
+  display: flex;
+  height: 90vh;
+  width: 82vw;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-left: 18vw;
+  margin-top: 10vh;
+}
+.filter {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-top: 1vw;
+}
+.tableheading {
+  background-color: #8cb3d9;
+}
+td,
+th {
+  border: 1px solid black;
+  text-align: right;
+  padding: 6px;
+  border-collapse: collapse;
+}
+table {
+  border-collapse: collapse;
+}

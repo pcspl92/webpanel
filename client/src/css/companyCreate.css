@@ -5,6 +5,8 @@
   height: 90vh;
   justify-content: center;
   align-items: center;
+  margin-left: 18vw;
+  margin-top: 10vh;
 }
 .formarea {
   display: flex;
