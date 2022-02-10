@@ -40,7 +40,7 @@ import CompanyViewActivity from '../pages/companypersonalcentreActRec';
 import CompanyViewLogin from '../pages/companyPersonalCentreLogRec';
 import CompanyUserView from '../pages/TcompanyUserView';
 import CompanyOrderList from '../pages/companyOrderLIst';
-import CompanyOrderTrans from '../pages/TcompanyOrdertrans';
+import CompanyOrderTrans from '../pages/companyOrdertrans';
 
 export default function App() {
   const { user } = useAuth();

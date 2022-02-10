@@ -95,7 +95,7 @@ const CompanyOrderList = () => {
           <th>Order Status</th>
           <th>Account Type</th>
           <th>License Tpye</th>
-          <th>License Renewal Date</th>
+          <th>License <br/> Renewal Date</th>
           <th>Active <br/> Accounts</th>
           <th>Available <br/> Accounts</th>
            <th>Features</th>
