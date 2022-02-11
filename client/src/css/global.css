@@ -51,10 +51,6 @@ a {
   border-radius: 10px;
 }
 
-.mainback {
-  background-color: var(--primary);
-}
-
 .form-input {
   border-color: transparent;
   border-radius: 5px;

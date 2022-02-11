@@ -82,3 +82,9 @@
 .activeheadings:hover {
   color: yellow;
 }
+.routearea {
+  height: auto;
+  width: auto;
+  margin-top: 10vh;
+  margin-left: 18vw;
+}

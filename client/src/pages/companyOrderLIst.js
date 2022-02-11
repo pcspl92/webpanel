@@ -29,7 +29,6 @@ const CompanyOrderList = () => {
   }
     return (
           <div className="viewback">
-      <br />
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
         ORDER LIST
       </div>

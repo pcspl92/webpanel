@@ -45,6 +45,7 @@ const CompanyViewActivity = () => {
 
   const table = () => (
     <div className="viewback">
+        <br />
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
         VIEW ACTIVITY LOG
       </div>

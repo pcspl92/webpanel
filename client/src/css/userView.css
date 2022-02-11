@@ -5,8 +5,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-left: 18vw;
-  margin-top: 10vh;
 }
 .filter {
   display: flex;
