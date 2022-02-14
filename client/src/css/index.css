@@ -32,6 +32,7 @@
   height: 90vh;
   width: 100vw;
   background-color: white;
+  margin-top: 10vh;
 }
 .navbar {
   width: 18vw;
@@ -46,7 +47,6 @@
   font-weight: bolder;
   font-size: 1vw;
   position: fixed;
-  margin-top: 10vh;
 }
 .headings {
   color: white;
@@ -85,6 +85,5 @@
 .routearea {
   height: auto;
   width: auto;
-  margin-top: 10vh;
   margin-left: 18vw;
 }

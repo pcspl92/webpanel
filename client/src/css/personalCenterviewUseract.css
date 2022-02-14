@@ -1,10 +1,11 @@
 .viewback {
   display: flex;
-  height: 90vh;
+  height: auto;
   width: 82vw;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: auto;
 }
 .filter {
   display: flex;

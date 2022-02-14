@@ -41,6 +41,10 @@ import CompanyViewLogin from '../pages/companyPersonalCentreLogRec';
 import CompanyUserView from '../pages/TcompanyUserView';
 import CompanyOrderList from '../pages/companyOrderLIst';
 import CompanyOrderTrans from '../pages/companyOrdertrans';
+import DepartmentCreate from '../pages/departmentCreate';
+import DepartmentModify from '../pages/departmentModify';
+import TalkGroupCreate from '../pages/talkgroupCreate';
+import TalkGroupModify from '../pages/talkgroupModify';
 
 export default function App() {
   const { user } = useAuth();
@@ -174,6 +178,34 @@ export default function App() {
                       <CompanyPrivateRoute component={<CompanyDashboard />} />
                     }
                   />
+                     <Route path="talkgroup-management" >
+                  <Route
+                    path="new-talk-group"
+                    element={
+                      <CompanyPrivateRoute component={<TalkGroupCreate />} />
+                    }
+                  />
+                   <Route
+                    path="modify-talk-group"
+                    element={
+                      <CompanyPrivateRoute component={<TalkGroupModify />} />
+                    }
+                  />
+                  </Route>
+                    <Route path="department-management" >
+                  <Route
+                    path="new-department"
+                    element={
+                      <CompanyPrivateRoute component={<DepartmentCreate />} />
+                    }
+                  />
+                   <Route
+                    path="modify-department"
+                    element={
+                      <CompanyPrivateRoute component={<DepartmentModify />} />
+                    }
+                  />
+                  </Route>
                      <Route path="order-center" >
                   <Route
                     path="order-list"
