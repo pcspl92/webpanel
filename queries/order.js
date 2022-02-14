@@ -93,7 +93,7 @@ const getTransactionLogs = (agentId) => {
 };
 
 const getCompanyOrderList = (companyId, currDate) => {
-  const sql = `SELECT o.id, o.license_type AS account_type, o.license_expiry AS license_renewal_date,
+  const sql = `SELECT o.id, o.license_type AS account_type, o.license_expiry AS license_renewal_date, o.renewal AS license_type,
                f.grp_call, f.enc, f.priv_call, f.live_gps, f.geo_fence, f.chat,
                COUNT(case when o.license_expiry > '${currDate}' then o.id else null end) - COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS available, 
                COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS active,
@@ -108,7 +108,7 @@ const getCompanyOrderList = (companyId, currDate) => {
 
 const getCompanyTransactionList = (companyId, currDate) => {
   const sql = `SELECT t.details AS transaction_type, t.timestamp AS transaction_date,
-               o.id, o.license_type AS account_type, o.license_expiry AS license_renewal_date,
+               o.id, o.license_type AS account_type, o.license_expiry AS license_renewal_date, o.renewal AS license_type,
                COUNT(case when o.license_expiry > '${currDate}' then o.id else null end) - COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS available, 
                COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS active
                FROM transactions t

@@ -27,11 +27,9 @@ const CompanyOrderList = () => {
       </div>
     );
   }
-    return (
-          <div className="viewback">
-      <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
-        ORDER LIST
-      </div>
+  return (
+    <div className="viewback">
+      <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>ORDER LIST</div>
       <table className="mt-3">
         <tr className="tableheading">
           <th
@@ -86,7 +84,7 @@ const CompanyOrderList = () => {
         <span>Total Departments :</span>
         {dashData.total_departments}
       </div>
-      <br/>
+      <br />
       <table className="mt-3">
         <tr className="tableheading">
           <th>S. No</th>
@@ -94,10 +92,16 @@ const CompanyOrderList = () => {
           <th>Order Status</th>
           <th>Account Type</th>
           <th>License Tpye</th>
-          <th>License <br/> Renewal Date</th>
-          <th>Active <br/> Accounts</th>
-          <th>Available <br/> Accounts</th>
-           <th>Features</th>
+          <th>
+            License <br /> Renewal Date
+          </th>
+          <th>
+            Active <br /> Accounts
+          </th>
+          <th>
+            Available <br /> Accounts
+          </th>
+          <th>Features</th>
         </tr>
         {tableData.map((val, index) => (
           <tr key={val.id}>
@@ -109,27 +113,18 @@ const CompanyOrderList = () => {
             <th>{moment(val.license_renewal_date).format('DD-MM-YYYY')}</th>
             <th>{val.active}</th>
             <th>{val.available}</th>
-            <th>{val.geo_fence==1 && <>Geo Fence; </>}{ val.grp_call==1 && <>Group Call; </>  }{ val.chat==1 && <>Chat; </>  }{ val.priv_call==1 && <>Private Call; </>  }{ val.live_gps==1 && <>Live GPS; </>  }</th>
-            {  /*account_type: 
-active: 0
-available: 0
-chat: 0
-enc: 0
-geo_fence: 1
-grp_call: 1
-id: 2
-license_renewal_date: "2022-01-23T14:12:25.000Z"
-live_gps: 0
-priv_call: 1
-status: "Expired"*/}
+            <th>
+              {val.geo_fence == 1 && <>Geo Fence; </>}
+              {val.grp_call == 1 && <>Group Call; </>}
+              {val.chat == 1 && <>Chat; </>}
+              {val.priv_call == 1 && <>Private Call; </>}
+              {val.live_gps == 1 && <>Live GPS; </>}
+            </th>
           </tr>
         ))}
-        
       </table>
     </div>
-    );
-  }
-
-
+  );
+};
 
 export default CompanyOrderList;
