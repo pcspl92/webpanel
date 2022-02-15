@@ -105,6 +105,7 @@ export default function Navbar() {
         >
           &nbsp; New Contact List{' '}
         </NavLink>
+        <br/>
         <NavLink
           to="/company/contact-list/modify"
           className={({ isActive }) =>

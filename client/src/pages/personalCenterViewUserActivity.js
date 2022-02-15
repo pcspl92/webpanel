@@ -130,7 +130,7 @@ const ViewActivity = () => {
     );
   }
 
-  return <div>{!loading && table()}</div>;
+  return <>{!loading && table()}</>;
 };
 
 export default ViewActivity;

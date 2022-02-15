@@ -50,7 +50,7 @@ const CompanyViewActivity = () => {
       </div>
 
       <br />
-      <div className="filter">
+      <div>
         <div>
           <span>
             <label for="id1">From Date: &nbsp;</label>

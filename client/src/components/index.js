@@ -45,6 +45,7 @@ import DepartmentCreate from '../pages/departmentCreate';
 import DepartmentModify from '../pages/departmentModify';
 import TalkGroupCreate from '../pages/talkgroupCreate';
 import TalkGroupModify from '../pages/talkgroupModify';
+import ContactListCreate from '../pages/contactListCreate';
 
 export default function App() {
   const { user } = useAuth();
@@ -178,6 +179,20 @@ export default function App() {
                       <CompanyPrivateRoute component={<CompanyDashboard />} />
                     }
                   />
+                    <Route path="contact-list" >
+                  <Route
+                    path="new"
+                    element={
+                      <CompanyPrivateRoute component={<ContactListCreate />} />
+                    }
+                  />
+                   <Route
+                    path="modifyp"
+                    element={
+                      <CompanyPrivateRoute component={<ContactListCreate />} />
+                    }
+                  />
+                  </Route>
                      <Route path="talkgroup-management" >
                   <Route
                     path="new-talk-group"
