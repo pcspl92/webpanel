@@ -69,17 +69,11 @@ router.put(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    let department = await findDeptById(req.params.id);
+    const department = await findDeptById(req.params.id);
     if (!department.length)
       return res
         .status(404)
         .json({ department: 'Department with given id is not registered' });
-
-    department = await findDeptByUsername(req.body.username);
-    if (department.length)
-      return res
-        .status(400)
-        .json({ username: 'Department with given username already exists' });
 
     const password = await hashPassword(req.body.password);
 
