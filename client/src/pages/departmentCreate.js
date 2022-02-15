@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import axios from '../utils/axios';
 import '../css/departmentCreate.css';
@@ -7,39 +7,41 @@ const DepartmentCreate = () => {
   const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
   const [deptname, setdeptname] = useState('');
-  const [contnum, setcontnum] = useState('');
-  const [subagent, setSubagent] = useState(0);
-  const [sagentlist, setsagentlist] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
- 
-
   const reset = () => {
-    setDisabled(false);
     setusername('');
     setPassword('');
     setdeptname('');
-    setcontnum('');
-    setSubagent(0);
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
 
-   
+    const data = {
+      username,
+      password,
+      display_name: deptname,
+    };
 
-    reset();
+    try {
+      await axios.post('/department/', data);
+      reset();
+    } catch (err) {
+      console.log(err.response.data);
+    }
+
+    setDisabled(false);
   };
 
   const form = () => {
     return (
       <form className="passback" onSubmit={onSubmit}>
         <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
-           NEW DEPARTMENT
+          NEW DEPARTMENT
         </div>
-        <br/>
+        <br />
         <div className="formarea">
           <div>
             <span>
@@ -80,7 +82,9 @@ const DepartmentCreate = () => {
           <br />
           <div>
             <span>
-              <label htmlFor="display_name">Department Display Name : &nbsp;</label>
+              <label htmlFor="display_name">
+                Department Display Name : &nbsp;
+              </label>
             </span>
             <input
               type="text"
@@ -93,9 +97,8 @@ const DepartmentCreate = () => {
             />
           </div>
           <br />
-         
+
           <br />
-       
         </div>
         <br />
         <button type="submit" disabled={disabled}>
@@ -105,14 +108,6 @@ const DepartmentCreate = () => {
     );
   };
 
-  if (loading) {
-    return (
-      <div className="passback">
-        <div className="spinner-border text-primary" role="status"></div>
-      </div>
-    );
-  }
-
-  return <div>{!loading && form()}</div>;
+  return <div>{form()}</div>;
 };
 export default DepartmentCreate;

@@ -9,29 +9,35 @@ const TalkGroupCreate = () => {
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
- 
-
   const reset = () => {
-    setDisabled(false);
-  
+    settgname('');
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
 
-   
+    const data = {
+      name: tgname,
+    };
 
-    reset();
+    try {
+      await axios.post('/talkgroup/', data);
+      reset();
+    } catch (err) {
+      console.log(err.response.data);
+    }
+
+    setDisabled(false);
   };
 
   const form = () => {
     return (
       <form className="passback" onSubmit={onSubmit}>
         <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
-           NEW TALK-GROUP
+          NEW TALK-GROUP
         </div>
-        <br/>
+        <br />
         <div className="formarea">
           <div>
             <span>
@@ -48,11 +54,6 @@ const TalkGroupCreate = () => {
             />
           </div>
           <br />
-       
-         
-        
-         
-       
         </div>
         <br />
         <button type="submit" disabled={disabled}>

@@ -7,39 +7,45 @@ import axios from '../utils/axios';
 
 const TalkGroupModify = () => {
   const [tglist, settgtlist] = useState([]);
-   const [tgnewname, settgnewname] = useState('');
+  const [tgnewname, settgnewname] = useState('');
 
   const [disabled, setDisabled] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [talkgroup, setTalkgroup] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [talkgroup, setTalkgroup] = useState('0');
   const [err, setErr] = useState({});
 
   const { user } = useAuth();
 
- 
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get('/talkgroup/');
+      settgtlist(data);
+      setLoading(false);
+    })();
+  }, []);
 
   const reset = () => {
-    setDisabled(false);
     settgnewname('');
-
-    setTalkgroup(0);
+    setTalkgroup('0');
   };
-
-  
-
-
-
- 
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
 
+    const data = {
+      name: tgnewname,
+    };
 
+    try {
+      await axios.put(`/talkgroup/${talkgroup}`, data);
+      reset();
+    } catch (err) {
+      console.log(err.response.data);
+    }
 
-    reset();
+    setDisabled(false);
   };
-
 
   const form = () => (
     <form className="modifyback" onSubmit={onSubmit}>
@@ -50,7 +56,9 @@ const TalkGroupModify = () => {
       <div className="modifyform">
         <div>
           <span>
-            <label htmlFor="company">Select Talk-Group :&nbsp;&nbsp;&nbsp; </label>
+            <label htmlFor="company">
+              Select Talk-Group :&nbsp;&nbsp;&nbsp;{' '}
+            </label>
           </span>
           <select
             id="company"
@@ -64,16 +72,13 @@ const TalkGroupModify = () => {
             {tglist.map((val) => {
               return (
                 <option key={val.id} value={val.id}>
-                  {val.display_name}
+                  {val.tg_name}
                 </option>
               );
             })}
           </select>
         </div>
 
-       
-      
-      
         <div className="mt-3">
           <span>
             <label htmlFor="display_name">
@@ -90,9 +95,6 @@ const TalkGroupModify = () => {
             value={tgnewname}
           />
         </div>
-      
-
-      
       </div>
       <button className="mt-3" type="submit" disabled={disabled}>
         UPDATE

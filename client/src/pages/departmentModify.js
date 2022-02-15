@@ -8,40 +8,48 @@ import axios from '../utils/axios';
 
 const DepartmentModify = () => {
   const [departmentlist, setdepartmentlist] = useState([]);
-   const [deptnewname, setdeptnewname] = useState('');
+  const [deptnewname, setdeptnewname] = useState('');
   const [password, setPassword] = useState('');
   const [generated, setGenerated] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [department, setDepartment] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [department, setDepartment] = useState('0');
   const [err, setErr] = useState({});
 
   const { user } = useAuth();
 
- 
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get('/department/');
+      setdepartmentlist(data);
+      setLoading(false);
+    })();
+  }, []);
 
   const reset = () => {
-    setDisabled(false);
     setPassword('');
     setdeptnewname('');
-
     setGenerated(false);
-    setDepartment(0);
+    setDepartment('0');
   };
-
-  
-
-
-
- 
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
 
+    const data = {
+      display_name: deptnewname,
+      password,
+    };
 
+    try {
+      await axios.put(`/department/${department}`, data);
+      reset();
+    } catch (err) {
+      console.log(err.resposnse.data);
+    }
 
-    reset();
+    setDisabled(false);
   };
 
   const generatePassword = () => {
@@ -64,7 +72,9 @@ const DepartmentModify = () => {
       <div className="modifyform">
         <div>
           <span>
-            <label htmlFor="company">Select Department :&nbsp;&nbsp;&nbsp; </label>
+            <label htmlFor="company">
+              Select Department :&nbsp;&nbsp;&nbsp;{' '}
+            </label>
           </span>
           <select
             id="company"
@@ -74,7 +84,7 @@ const DepartmentModify = () => {
             value={department}
             required
           >
-            <option value={0}>Select Company</option>
+            <option value={'0'}>Select Company</option>
             {departmentlist.map((val) => {
               return (
                 <option key={val.id} value={val.id}>
@@ -85,8 +95,6 @@ const DepartmentModify = () => {
           </select>
         </div>
 
-       
-      
         <div className="mt-3 me-5">
           <span>Password : &nbsp;&nbsp;&nbsp;</span>
           <button
@@ -119,9 +127,6 @@ const DepartmentModify = () => {
             value={deptnewname}
           />
         </div>
-      
-
-      
       </div>
       <button className="mt-3" type="submit" disabled={disabled}>
         UPDATE
