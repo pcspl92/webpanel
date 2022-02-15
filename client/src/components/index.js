@@ -46,6 +46,7 @@ import DepartmentModify from '../pages/departmentModify';
 import TalkGroupCreate from '../pages/talkgroupCreate';
 import TalkGroupModify from '../pages/talkgroupModify';
 import ContactListCreate from '../pages/contactListCreate';
+import ContactListModify from '../pages/contactlistModify';
 
 export default function App() {
   const { user } = useAuth();
@@ -121,7 +122,7 @@ export default function App() {
                       <CompanyPrivateRoute component={<CompanyUserView />} />
                     }
                   />
-                
+
                   <Route path="personal-center">
                     <Route
                       path="change-password"
@@ -179,61 +180,67 @@ export default function App() {
                       <CompanyPrivateRoute component={<CompanyDashboard />} />
                     }
                   />
-                    <Route path="contact-list" >
-                  <Route
-                    path="new"
-                    element={
-                      <CompanyPrivateRoute component={<ContactListCreate />} />
-                    }
-                  />
-                   <Route
-                    path="modifyp"
-                    element={
-                      <CompanyPrivateRoute component={<ContactListCreate />} />
-                    }
-                  />
+                  <Route path="contact-list">
+                    <Route
+                      path="new"
+                      element={
+                        <CompanyPrivateRoute
+                          component={<ContactListCreate />}
+                        />
+                      }
+                    />
+                    <Route
+                      path="modify"
+                      element={
+                        <CompanyPrivateRoute
+                          component={<ContactListModify />}
+                        />
+                      }
+                    />
                   </Route>
-                     <Route path="talkgroup-management" >
-                  <Route
-                    path="new-talk-group"
-                    element={
-                      <CompanyPrivateRoute component={<TalkGroupCreate />} />
-                    }
-                  />
-                   <Route
-                    path="modify-talk-group"
-                    element={
-                      <CompanyPrivateRoute component={<TalkGroupModify />} />
-                    }
-                  />
+                  <Route path="talkgroup-management">
+                    <Route
+                      path="new-talk-group"
+                      element={
+                        <CompanyPrivateRoute component={<TalkGroupCreate />} />
+                      }
+                    />
+                    <Route
+                      path="modify-talk-group"
+                      element={
+                        <CompanyPrivateRoute component={<TalkGroupModify />} />
+                      }
+                    />
                   </Route>
-                    <Route path="department-management" >
-                  <Route
-                    path="new-department"
-                    element={
-                      <CompanyPrivateRoute component={<DepartmentCreate />} />
-                    }
-                  />
-                   <Route
-                    path="modify-department"
-                    element={
-                      <CompanyPrivateRoute component={<DepartmentModify />} />
-                    }
-                  />
+                  <Route path="department-management">
+                    <Route
+                      path="new-department"
+                      element={
+                        <CompanyPrivateRoute component={<DepartmentCreate />} />
+                      }
+                    />
+                    <Route
+                      path="modify-department"
+                      element={
+                        <CompanyPrivateRoute component={<DepartmentModify />} />
+                      }
+                    />
                   </Route>
-                     <Route path="order-center" >
-                  <Route
-                    path="order-list"
-                    element={
-                      <CompanyPrivateRoute component={<CompanyOrderList />} />
-                    }
-                  />
-                  <Route
-                    path="transaction-history"
-                    element={
-                      <CompanyPrivateRoute component={<CompanyOrderTrans />} />
-                    }
-                  />
+                  <Route path="order-center">
+                    <Route
+                      path="order-list"
+                      element={
+                        <CompanyPrivateRoute component={<CompanyOrderList />} />
+                      }
+                    />
+                    <Route
+                      path="transaction-history"
+                      element={
+                        <CompanyPrivateRoute
+                          component={<CompanyOrderTrans />}
+                        />
+                      }
+                    />
                   </Route>
                   <Route path="personal-center">
                     <Route

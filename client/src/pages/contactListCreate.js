@@ -3,35 +3,48 @@ import '../css/contactlistModify.css';
 import React, { useEffect, useState, useRef } from 'react';
 
 import axios from '../utils/axios';
-import { useAuth } from '../hooks/useAuth';
 
 export default function ContactListCreate() {
- const [loading , setLoading]=useState(false);
- const [contactlistName,setcontactlistName]=useState("");
- const [disabled,setDisabled]=useState(false);
- const [userlist,setuserlist]=useState([]);
- const [selectedUsers, setSelectedUsers] = useState([]);
- const selectedUserIds = useRef(new Set());
+  const [loading, setLoading] = useState(true);
+  const [contactlistName, setcontactlistName] = useState('');
+  const [disabled, setDisabled] = useState(false);
+  const [userlist, setuserlist] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const selectedUserIds = useRef(new Set());
 
- const reset = () => {
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get('/user/ptt');
+      setuserlist(data);
+      setLoading(false);
+    })();
+  }, []);
+
+  const reset = () => {
     setcontactlistName('');
-   
   };
+
   function onSelect(users) {
-    let selected = [];
+    const selected = [];
     selectedUserIds.current.forEach((id) => {
       selected.push(users.filter((user) => user.id === id)[0]);
     });
     setSelectedUsers(selected);
   }
- const onSubmit = async (e) => {
+
+  const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
 
- 
+    const users = [];
+    selectedUserIds.current.forEach((id) => users.push(id));
+    const data = {
+      name: contactlistName,
+      userIds: users,
+    };
 
     try {
-      await axios.post('/department/', );
+      await axios.post('/contactlist/', data);
       reset();
     } catch (err) {
       console.log(err.response.data);
@@ -40,59 +53,52 @@ export default function ContactListCreate() {
     setDisabled(false);
   };
 
-
-  const SelectAcc = ( {users} ) => {
-    return (
-      <div>
-          <span>
-        Add PTT User Accounts
-        </span>
-        <br/>
-        <div className="comp">
-          <div className="accbox">
-            {users.map((val, index) => {
-              return (
-                <div key={val.id}>
-                  <input
-                    type="checkbox"
-                    id="subitem"
-                    name="selection"
-                    defaultChecked={selectedUserIds.current.has(val.id)}
-                    onClick={() => {
-                      selectedUserIds.current.has(val.id)
-                        ? selectedUserIds.current.delete(val.id)
-                        : selectedUserIds.current.add(val.id);
-                    }}
-                  />
-                  <label for="selection">{val.display_name}</label>
-                </div>
-              );
-            })}
-          </div>
-          <button type="button" onClick={() => onSelect(users)}>
-            &nbsp;&nbsp; &gt; &gt; &nbsp;&nbsp;
-          </button>
-          <div className="accbox">
-            {(selectedUsers.length &&
-              selectedUsers.map((val) => {
-                return <div key={val.id}>{val.display_name}</div>;
-              })) ||
-              null}
-          </div>
+  const SelectAcc = ({ users }) => (
+    <div>
+      <span>Add PTT User Accounts</span>
+      <br />
+      <div className="comp">
+        <div className="accbox">
+          {users.map((val) => (
+            <div key={val.id}>
+              <input
+                type="checkbox"
+                id="subitem"
+                name="selection"
+                defaultChecked={selectedUserIds.current.has(val.id)}
+                onClick={() => {
+                  selectedUserIds.current.has(val.id)
+                    ? selectedUserIds.current.delete(val.id)
+                    : selectedUserIds.current.add(val.id);
+                }}
+              />
+              <label htmlFor="selection">{val.display_name}</label>
+            </div>
+          ))}
+        </div>
+        <button type="button" onClick={() => onSelect(users)}>
+          &nbsp;&nbsp; &gt; &gt; &nbsp;&nbsp;
+        </button>
+        <div className="accbox">
+          {(selectedUsers.length &&
+            selectedUsers.map((val) => (
+              <div key={val.id}>{val.display_name}</div>
+            ))) ||
+            null}
         </div>
       </div>
-    );
-  };
+    </div>
+  );
 
-if (loading) {
+  if (loading) {
     return (
       <div className="passback">
-        <div className="spinner-border text-primary" role="status"></div>
+        <div className="spinner-border text-primary" role="status" />
       </div>
     );
-}
-return (
-    <form className="passback" >
+  }
+  return (
+    <form className="passback" onSubmit={onSubmit}>
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
         NEW CONTACT LIST
       </div>
@@ -105,6 +111,7 @@ return (
           <input
             type="text"
             id="username"
+            name="username"
             onChange={(event) => {
               setcontactlistName(event.target.value);
             }}
@@ -113,9 +120,7 @@ return (
           />
         </div>
         <br />
-      <SelectAcc users={userlist}/>
-      
-
+        <SelectAcc users={userlist} />
       </div>
       <br />
       <button type="submit" disabled={disabled}>
@@ -123,5 +128,4 @@ return (
       </button>
     </form>
   );
-
 }

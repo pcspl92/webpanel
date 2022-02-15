@@ -9,6 +9,8 @@ const {
   updateContactList,
   deleteContactList,
   getContactLists,
+  createUserContactListMaps,
+  deleteUserContactListMaps,
 } = require('../queries/contactlist');
 const { createCompanyActivityLog } = require('../queries/company');
 
@@ -43,9 +45,9 @@ router.post(
         .status(400)
         .json({ contactList: 'Contact List with given name already exists.' });
 
-    await Promise.all(
-      createContactList(req.body.name, req.user.id, req.body.userIds)
-    );
+    const { insertId } = await createContactList(req.body.name, req.user.id);
+    if (req.body.userIds.length)
+      await createUserContactListMaps(insertId, req.body.userIds);
     await createCompanyActivityLog('Contact-List Create', req.user.id);
     return res.status(201).send('created');
   }
@@ -67,14 +69,15 @@ router.put(
         .json({ contactlist: 'No Contact List with given id found.' });
 
     list = await getContactListByName(req.body.name);
-    if (!list.length)
+    if (list.length)
       return res
         .status(404)
         .json({ contactlist: 'Contact List with given name already exists.' });
 
-    await Promise.all(
-      updateContactList(req.params.id, req.body.name, req.body.userIds)
-    );
+    await updateContactList(req.params.id, req.body.name);
+    await deleteUserContactListMaps(req.params.id);
+    if (req.body.userIds.length)
+      await createUserContactListMaps(req.params.id, req.body.userIds);
     await createCompanyActivityLog('Contact-List Modify', req.user.id);
     return res.status(200).send('updated');
   }

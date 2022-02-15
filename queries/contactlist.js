@@ -15,26 +15,28 @@ const getContactLists = (companyId) => {
   return query(sql);
 };
 
-const createContactList = (name, companyId, userIds) => {
-  if (!userIds.length) {
-    const sql = `INSERT INTO contact_lists (name, company_id) VALUES ('${name}', ${companyId});`;
-    return [query(sql)];
-  }
-
-  const sql1 = `INSERT INTO contact_lists (name, company_id) VALUES ('${name}', ${companyId});`;
-  const sql2 = `UPDATE users_add_data SET contact_list_id=(SELECT LAST_INSERT_ID()) WHERE user_id IN (${userIds});`;
-  return [query(sql1), query(sql2)];
+const createContactList = (name, companyId) => {
+  const sql = `INSERT INTO contact_lists (name, company_id) VALUES ('${name}', ${companyId});`;
+  return query(sql);
 };
 
-const updateContactList = (id, name, userIds) => {
-  if (!userIds.length) {
-    const sql = `UPDATE contact_lists SET name='${name}';`;
-    return query(sql);
-  }
+const createUserContactListMaps = (contactListId, userIds) => {
+  const sql = userIds.reduce((acc, userId, index) => {
+    if (index === userIds.length - 1)
+      return `${acc} (${contactListId}, ${userId});`;
+    return `${acc} (${contactListId}, ${userId}),`;
+  }, `INSERT INTO contact_list_user_maps (contact_list_id, user_id) VALUES`);
+  return query(sql);
+};
 
-  const sql1 = `UPDATE contact_lists SET name='${name}';`;
-  const sql2 = `UPDATE users_add_data SET contact_list_id=${id} WHERE user_id IN (${userIds});`;
-  return [query(sql1), query(sql2)];
+const deleteUserContactListMaps = (contactListId) => {
+  const sql = `DELETE FROM contact_list_user_maps WHERE contact_list_id=${contactListId};`;
+  return query(sql);
+};
+
+const updateContactList = (id, name) => {
+  const sql = `UPDATE contact_lists SET name='${name}' WHERE id=${id};`;
+  return query(sql);
 };
 
 const deleteContactList = (id) => {
@@ -49,4 +51,6 @@ module.exports = {
   createContactList,
   updateContactList,
   deleteContactList,
+  createUserContactListMaps,
+  deleteUserContactListMaps,
 };
