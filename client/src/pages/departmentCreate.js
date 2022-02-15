@@ -7,9 +7,6 @@ const DepartmentCreate = () => {
   const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
   const [deptname, setdeptname] = useState('');
-  const [contnum, setcontnum] = useState('');
-  const [subagent, setSubagent] = useState(0);
-  const [sagentlist, setsagentlist] = useState([]);
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
@@ -20,8 +17,6 @@ const DepartmentCreate = () => {
     setusername('');
     setPassword('');
     setdeptname('');
-    setcontnum('');
-    setSubagent(0);
   };
 
   const onSubmit = async (e) => {
