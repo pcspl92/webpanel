@@ -15,9 +15,6 @@ import ViewAgent from '../pages/subAgentView';
 import SetPrices from '../pages/subAgentSetprices';
 import RechargeAgent from '../pages/subAgentRecharge';
 import ModifyAgent from '../pages/subAgentModify';
-import ChangePassword from '../pages/personalCenterChangePassword';
-import ViewActivity from '../pages/personalCenterViewUserActivity';
-import ViewLogin from '../pages/personalCenterLoginRec';
 import ViewUsers from '../pages/usersView';
 import AgentDashboard from '../pages/dashboard/agent';
 import NotFound from '../pages/404';
@@ -30,7 +27,7 @@ import Licensetransac from '../pages/licensetransac';
 import LicenseModify from '../pages/licenseModify';
 import AgentHeader from './header/agent';
 import AgentNavbar from './navbar/agent';
-//company imports
+// company imports
 import CompanyLogin from '../pages/login/company';
 import CompanyDashboard from '../pages/dashboard/company';
 import CompanyHeader from './header/company';
