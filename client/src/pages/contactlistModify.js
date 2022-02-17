@@ -3,7 +3,6 @@ import '../css/contactlistModify.css';
 import React, { useEffect, useState, useRef } from 'react';
 
 import axios from '../utils/axios';
-import { useAuth } from '../hooks/useAuth';
 
 export default function ContactListCreate() {
   const [loading, setLoading] = useState(true);
@@ -32,7 +31,7 @@ export default function ContactListCreate() {
   };
 
   function onSelect(users) {
-    let selected = [];
+    const selected = [];
     selectedUserIds.current.forEach((id) => {
       selected.push(users.filter((user) => user.id === id)[0]);
     });
@@ -60,15 +59,13 @@ export default function ContactListCreate() {
     setDisabled(false);
   };
 
-  const SelectAcc = ({ users }) => {
-    return (
+  const SelectAcc = ({ users }) => (
       <div>
         <span>PTT User Accounts</span>
         <br />
         <div className="comp">
           <div className="accbox">
-            {users.map((val, index) => {
-              return (
+            {users.map((val) => (
                 <div key={val.id}>
                   <input
                     type="checkbox"
@@ -81,25 +78,21 @@ export default function ContactListCreate() {
                         : selectedUserIds.current.add(val.id);
                     }}
                   />
-                  <label for="selection">{val.display_name}</label>
+                  <label htmlFor="selection">{val.display_name}</label>
                 </div>
-              );
-            })}
+              ))}
           </div>
           <button type="button" onClick={() => onSelect(users)}>
             &nbsp;&nbsp; &gt; &gt; &nbsp;&nbsp;
           </button>
           <div className="accbox">
             {(selectedUsers.length &&
-              selectedUsers.map((val) => {
-                return <div key={val.id}>{val.display_name}</div>;
-              })) ||
+              selectedUsers.map((val) => <div key={val.id}>{val.display_name}</div>)) ||
               null}
           </div>
         </div>
       </div>
     );
-  };
 
   if (loading) {
     return (
@@ -145,13 +138,11 @@ export default function ContactListCreate() {
             required
           >
             <option value={0}>Select Talk-Group</option>
-            {contactlistarr.map((val) => {
-              return (
+            {contactlistarr.map((val) => (
                 <option key={val.id} value={val.id}>
                   {val.display_name}
                 </option>
-              );
-            })}
+              ))}
           </select>
         </div>
         <br />

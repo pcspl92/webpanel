@@ -21,29 +21,21 @@ const ViewUsers = () => {
     })();
   }, []);
 
-  const companyFilter = () => {
-    return userlist.filter((rec) =>
+  const companyFilter = () => userlist.filter((rec) =>
       rec.company_name.toLowerCase().includes(companyName.toLowerCase())
     );
-  };
 
-  const accountFilter = () => {
-    return userlist.filter((rec) =>
+  const accountFilter = () => userlist.filter((rec) =>
       rec.account_name.toLowerCase().includes(accountName.toLowerCase())
     );
-  };
 
-  const userFilter = () => {
-    return userlist.filter((rec) =>
+  const userFilter = () => userlist.filter((rec) =>
       rec.user_name.toLowerCase().includes(userName.toLowerCase())
     );
-  };
 
-  const expiryFilter = () => {
-    return userlist.filter((rec) =>
+  const expiryFilter = () => userlist.filter((rec) =>
       moment(rec.license_expiry).isAfter(expiryDate)
     );
-  };
 
   const filter = () => {
     if (companyName.length) setuserupdlist(companyFilter());
@@ -72,7 +64,7 @@ const ViewUsers = () => {
       <div className="filter">
         <div>
           <span>
-            <label for="id1">Company Name: &nbsp;</label>
+            <label htmlFor="id1">Company Name: &nbsp;</label>
           </span>
           <input
             type="text"
@@ -87,7 +79,7 @@ const ViewUsers = () => {
         <br />
         <div>
           <span>
-            <label for="id2">User Name : &nbsp;</label>
+            <label htmlFor="id2">User Name : &nbsp;</label>
           </span>
           <input
             type="text"
@@ -102,7 +94,7 @@ const ViewUsers = () => {
         <br />
         <div>
           <span>
-            <label for="id1">Account Name: &nbsp;</label>
+            <label htmlFor="id1">Account Name: &nbsp;</label>
           </span>
           <input
             type="text"
@@ -117,7 +109,7 @@ const ViewUsers = () => {
         <br />{' '}
         <div>
           <span>
-            <label for="id1">License Expiring After: &nbsp;</label>
+            <label htmlFor="id1">License Expiring After: &nbsp;</label>
           </span>
           <input
             type="date"
@@ -161,8 +153,7 @@ const ViewUsers = () => {
           <th>Agent Name</th>
           <th></th>
         </tr>
-        {userupdlist.map((val, index) => {
-          return (
+        {userupdlist.map((val, index) => (
             <tr key={val.license_id}>
               <th>{index + 1}</th>
               <th>{val.user_name}</th>
@@ -175,8 +166,7 @@ const ViewUsers = () => {
               <th>{val.agent_name}</th>
               <th> </th>
             </tr>
-          );
-        })}
+          ))}
       </table>
     </div>
   );

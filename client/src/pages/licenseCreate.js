@@ -68,8 +68,7 @@ export default function LicenseCreate() {
     setRenewalType(renewalTypeValue);
   };
 
-  const form = () => {
-    return (
+  const form = () => (
       <form className="passback" onSubmit={onSubmit}>
         <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
           NEW LICENSE ORDER
@@ -92,13 +91,11 @@ export default function LicenseCreate() {
               required
             >
               <option value={0}>Select Company</option>
-              {companylist.map((val) => {
-                return (
+              {companylist.map((val) => (
                   <option key={val.id} value={val.id}>
                     {val.display_name}
                   </option>
-                );
-              })}
+                ))}
             </select>
           </div>
           <br />
@@ -172,7 +169,7 @@ export default function LicenseCreate() {
             }}
             disabled={inputDisabled}
           />
-          <label for="feature1"> Group Call</label>&nbsp;&nbsp;
+          <label htmlFor="feature1"> Group Call</label>&nbsp;&nbsp;
           <input
             type="checkbox"
             id="feature"
@@ -182,7 +179,7 @@ export default function LicenseCreate() {
             }}
             disabled={inputDisabled}
           />
-          <label for="feature2"> Private Call</label>&nbsp;&nbsp;
+          <label htmlFor="feature2"> Private Call</label>&nbsp;&nbsp;
           <input
             type="checkbox"
             id="feature"
@@ -192,7 +189,7 @@ export default function LicenseCreate() {
             }}
             disabled={inputDisabled}
           />
-          <label for="feature3"> Encryption </label>&nbsp;&nbsp;
+          <label htmlFor="feature3"> Encryption </label>&nbsp;&nbsp;
           <input
             type="checkbox"
             id="feature"
@@ -202,7 +199,7 @@ export default function LicenseCreate() {
             }}
             disabled={inputDisabled}
           />
-          <label for="feature3"> Live GPS </label>&nbsp;&nbsp;
+          <label htmlFor="feature3"> Live GPS </label>&nbsp;&nbsp;
           <input
             type="checkbox"
             id="feature"
@@ -212,7 +209,7 @@ export default function LicenseCreate() {
             }}
             disabled={inputDisabled}
           />
-          <label for="feature3"> Geo-Fence </label>&nbsp;&nbsp;
+          <label htmlFor="feature3"> Geo-Fence </label>&nbsp;&nbsp;
           <input
             type="checkbox"
             id="feature"
@@ -222,7 +219,7 @@ export default function LicenseCreate() {
             }}
             disabled={inputDisabled}
           />
-          <label for="feature3"> Chat </label>&nbsp;&nbsp;
+          <label htmlFor="feature3"> Chat </label>&nbsp;&nbsp;
         </div>
         <br />
         <button type="submit" disabled={disabled}>
@@ -230,7 +227,6 @@ export default function LicenseCreate() {
         </button>
       </form>
     );
-  };
 
   if (loading) {
     return (

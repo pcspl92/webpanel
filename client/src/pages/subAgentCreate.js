@@ -7,19 +7,25 @@ const AddAgent = () => {
   const [password, setpassword] = useState('');
   const [subagentname, setsubagentname] = useState('');
   const [contactnum, setcontact] = useState('');
-  //Setting PTT User Price
+
+  // Setting PTT User Price
+
   const [monthlyptt, setmonthlyppt] = useState(0);
   const [quarterlyptt, setquarterlyppt] = useState(0);
   const [halfylyptt, sethalfylyppt] = useState(0);
   const [yearlyptt, setyearlyppt] = useState(0);
   const [onetimeptt, setonetimeppt] = useState(0);
-  //Setting Dispatcher Account Price
+
+  // Setting Dispatcher Account Price
+
   const [monthlydap, setmonthlydap] = useState(0);
   const [quarterlydap, setquarterlydap] = useState(0);
   const [halfylydap, sethalfylydap] = useState(0);
   const [yearlydap, setyearlydap] = useState(0);
   const [onetimedap, setonetimedap] = useState(0);
-  //Setting Control Station Account Price
+
+  // Setting Control Station Account Price
+
   const [monthlycsap, setmonthlycsap] = useState(0);
   const [quarterlycsap, setquarterlycsap] = useState(0);
   const [halfylycsap, sethalfylycsap] = useState(0);

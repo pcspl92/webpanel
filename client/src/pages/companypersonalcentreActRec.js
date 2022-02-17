@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 
 import axios from '../utils/axios';
+
 const CompanyViewActivity = () => {
   const [fromdate, setfromdate] = useState();
   const [todate, settodate] = useState();
@@ -23,12 +24,10 @@ const CompanyViewActivity = () => {
   const filterlist = () => {
     if (fromdate.length && todate.length) {
       setupdatedactlist(
-        companyactlist.filter((val) => {
-          return (
+        companyactlist.filter((val) => (
             moment(val.timestamp).isSameOrAfter(fromdate) &&
             moment(val.timestamp).isSameOrBefore(todate)
-          );
-        })
+          ))
       );
     }
   };
@@ -53,7 +52,7 @@ const CompanyViewActivity = () => {
       <div>
         <div>
           <span>
-            <label for="id1">From Date: &nbsp;</label>
+            <label htmlFor="id1">From Date: &nbsp;</label>
           </span>
           <input
             type="date"
@@ -69,7 +68,7 @@ const CompanyViewActivity = () => {
 
         <div>
           <span>
-            <label for="id2">To Date : &nbsp;</label>
+            <label htmlFor="id2">To Date : &nbsp;</label>
           </span>
           <input
             type="date"
@@ -109,9 +108,10 @@ const CompanyViewActivity = () => {
           <th>User Activity Description</th>
         </tr>
         {updatedactlist.map((val, index) => {
-          index++;
+          // eslint-disable-next-line no-param-reassign
+          index+=1;
           return (
-            <tr>
+            <tr key={val.id} >
               <th>{index}</th>
               <th>{moment(val.timestamp).format('DD-MM-YYYY')}</th>
               <th>{moment(val.timestamp).format('HH:mm')}</th>

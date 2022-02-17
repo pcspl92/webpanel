@@ -28,7 +28,7 @@ const CompanyChangePassword = () => {
       <div className="formarea">
         <div>
           <span>
-            <label for="id1">New Password: &nbsp;</label>
+            <label htmlFor="id1">New Password: &nbsp;</label>
           </span>
           <input
             type="password"
@@ -44,7 +44,7 @@ const CompanyChangePassword = () => {
         <br />
         <div>
           <span>
-            <label for="id2">Confirm Password : &nbsp;</label>
+            <label htmlFor="id2">Confirm Password : &nbsp;</label>
           </span>
           <input
             type="password"

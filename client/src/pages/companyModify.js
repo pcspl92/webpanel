@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import generator from 'generate-password-browser';
 
@@ -11,7 +10,7 @@ const CompanyModify = () => {
   const [companylist, setcompanylist] = useState([]);
   const [active, setactive] = useState(true);
   const [type, setType] = useState('modify');
-  const [contact_number, setcontact] = useState('');
+  const [contactNumber, setcontact] = useState('');
   const [compnewname, setcompnewname] = useState('');
   const [password, setPassword] = useState('');
   const [generated, setGenerated] = useState(false);
@@ -51,22 +50,22 @@ const CompanyModify = () => {
     const data = {
       password,
       display_name: compnewname,
-      contact_number,
+      contactNumber,
       agent_id: subagent,
     };
 
     try {
       await axios.put(`/company/${company}`, data);
-    } catch (err) {
-      setErr(err.response.data);
+    } catch (error) {
+      setErr(error.response.data);
     }
   };
 
   const relieveCompany = async () => {
     try {
       await axios.put(`/company/${company}/relieve`);
-    } catch (err) {
-      setErr(err.response.data);
+    } catch (error) {
+      setErr(error.response.data);
     }
   };
 
@@ -74,8 +73,8 @@ const CompanyModify = () => {
     try {
       await axios.delete(`/company/${company}`);
       setcompanylist(companylist.filter((com) => com.id !== +companyId));
-    } catch (err) {
-      setErr(err.response.data);
+    } catch (error) {
+      setErr(error.response.data);
     }
   };
 
@@ -132,13 +131,11 @@ const CompanyModify = () => {
             required
           >
             <option value={0}>Select Company</option>
-            {companylist.map((val) => {
-              return (
+            {companylist.map((val) => (
                 <option key={val.id} value={val.id}>
                   {val.display_name}
                 </option>
-              );
-            })}
+              ))}
           </select>
         </div>
 
@@ -227,7 +224,7 @@ const CompanyModify = () => {
             onChange={(event) => {
               setcontact(event.target.value);
             }}
-            value={contact_number}
+            value={contactNumber}
           />
         </div>
 
@@ -244,13 +241,11 @@ const CompanyModify = () => {
             required
           >
             <option value={0}>Select Sub Agent</option>
-            {sagentlist.map((val) => {
-              return (
+            {sagentlist.map((val) => (
                 <option key={val.id} value={val.id}>
                   {val.display_name}
                 </option>
-              );
-            })}
+              ))}
           </select>
         </div>
       </div>

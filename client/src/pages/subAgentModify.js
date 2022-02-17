@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import '../css/Modify.css';
-import axios from '../utils/axios';
 import generator from 'generate-password-browser';
+import axios from '../utils/axios';
+
 const ModifyAgent = () => {
   const [agentid, setagentid] = useState('');
   const [agentlist, setagentlist] = useState([]);
   const [active, setactive] = useState(true);
-  const [contact_number, setcontact] = useState('');
+  const [contactNumber, setcontact] = useState('');
   const [agentnewname, setagentnewname] = useState('');
   const [password, setPassword] = useState('');
   const [generated, setGenerated] = useState(false);
@@ -35,7 +36,7 @@ const ModifyAgent = () => {
     const data = {
       password,
       display_name: agentnewname,
-      contact_number,
+      contactNumber,
     };
 
     try {
@@ -78,13 +79,11 @@ const ModifyAgent = () => {
             required
           >
             <option value="">Select Sub Agent</option>
-            {agentlist.map((val) => {
-              return (
+            {agentlist.map((val) => (
                 <option key={val.id} value={val.id}>
                   {val.display_name}
                 </option>
-              );
-            })}
+              ))}
           </select>
         </div>
         <div className="mt-3 me-5">
@@ -159,7 +158,7 @@ const ModifyAgent = () => {
             onChange={(event) => {
               setcontact(event.target.value);
             }}
-            value={contact_number}
+            value={contactNumber}
           />
         </div>
       </div>

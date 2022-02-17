@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../css/ViewAgent.css';
 import axios from '../utils/axios';
+
 const ViewAgent = () => {
   const [agentname, setagentname] = useState('');
   const [agentaccname, setagentaccname] = useState('');
@@ -19,14 +20,12 @@ const ViewAgent = () => {
 
   const filter = () => {
     setupdatedlist(
-      agentlist.filter((val) => {
-        return (
+      agentlist.filter((val) => (
           (agentname.length &&
             val.agent_name.toLowerCase().includes(agentname.toLowerCase())) ||
           (agentaccname.length &&
             val.account_name.toLowerCase().includes(agentaccname.toLowerCase()))
-        );
-      })
+        ))
     );
   };
 
@@ -50,7 +49,7 @@ const ViewAgent = () => {
       <div className="filter">
         <div>
           <span>
-            <label for="id1">Agent Name :</label>
+            <label htmlFor="id1">Agent Name :</label>
           </span>
           <input
             type="text"
@@ -66,7 +65,7 @@ const ViewAgent = () => {
         <br />
         <div>
           <span>
-            <label for="id2">Agent Account Name :</label>
+            <label htmlFor="id2">Agent Account Name :</label>
           </span>
           <input
             type="text"

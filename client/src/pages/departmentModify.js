@@ -1,8 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import generator from 'generate-password-browser';
-
-import { useAuth } from '../hooks/useAuth';
 import '../css/departmentModify.css';
 import axios from '../utils/axios';
 
@@ -16,7 +13,6 @@ const DepartmentModify = () => {
   const [department, setDepartment] = useState('0');
   const [err, setErr] = useState({});
 
-  const { user } = useAuth();
 
   useEffect(() => {
     (async () => {
@@ -45,8 +41,10 @@ const DepartmentModify = () => {
     try {
       await axios.put(`/department/${department}`, data);
       reset();
-    } catch (err) {
-      console.log(err.resposnse.data);
+    } catch (error) {
+
+      console.log(error.resposnse.data);
+
     }
 
     setDisabled(false);
@@ -85,13 +83,11 @@ const DepartmentModify = () => {
             required
           >
             <option value={'0'}>Select Company</option>
-            {departmentlist.map((val) => {
-              return (
+            {departmentlist.map((val) => (
                 <option key={val.id} value={val.id}>
                   {val.display_name}
                 </option>
-              );
-            })}
+              ))}
           </select>
         </div>
 

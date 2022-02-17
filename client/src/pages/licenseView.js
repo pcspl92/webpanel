@@ -25,8 +25,7 @@ export default function LicenseView() {
 
   const filter = () => {
     setupdatedlist(
-      tableData.filter((val) => {
-        return (
+      tableData.filter((val) => (
           (companyName.length &&
             val.company_name
               .toLowerCase()
@@ -35,8 +34,7 @@ export default function LicenseView() {
             val.agent_name.toLowerCase().includes(agentName.toLowerCase())) ||
           (expdate.length && moment(val.expiry_date).isAfter(expdate)) ||
           (orderId.length && val.order_id === Number(orderId))
-        );
-      })
+        ))
     );
   };
 
@@ -54,7 +52,7 @@ export default function LicenseView() {
       <div className="filter">
         <div>
           <span>
-            <label for="id1">Order Id :</label>
+            <label htmlFor="id1">Order Id :</label>
           </span>
           <input
             type="text"
@@ -68,7 +66,7 @@ export default function LicenseView() {
         <br />
         <div>
           <span>
-            <label for="id1">Company Name :</label>
+            <label htmlFor="id1">Company Name :</label>
           </span>
           <input
             type="text"
@@ -82,7 +80,7 @@ export default function LicenseView() {
         <br />
         <div>
           <span>
-            <label for="id2">Agent Name :</label>
+            <label htmlFor="id2">Agent Name :</label>
           </span>
           <input
             type="text"
@@ -96,7 +94,7 @@ export default function LicenseView() {
         <br />
         <div>
           <span>
-            <label for="id2">License Expiring After :</label>
+            <label htmlFor="id2">License Expiring After :</label>
           </span>
           <input
             type="date"
@@ -141,9 +139,10 @@ export default function LicenseView() {
           <th>Agent Name</th>
         </tr>
         {updatedlist.map((val, index) => {
-          index++;
+          // eslint-disable-next-line no-param-reassign
+          index+=1;
           return (
-            <tr>
+            <tr key={val.id} >
               <th>{index}</th>
               <th>{val.order_id}</th>
               <th>{val.company_name}</th>

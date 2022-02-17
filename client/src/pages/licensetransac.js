@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import '../css/licensetransac.css';
-import axios from '../utils/axios';
 import moment from 'moment';
+import axios from '../utils/axios';
+
 export default function Licensetransac() {
   const [fromdate, setfromdate] = useState('');
   const [todate, settodate] = useState('');
@@ -21,12 +22,10 @@ export default function Licensetransac() {
   const filterlist = () => {
     if (fromdate.length && todate.length) {
       setupdatedtranDetails(
-        trandetails.filter((val) => {
-          return (
+        trandetails.filter((val) => (
             moment(val.date).isSameOrAfter(fromdate) &&
             moment(val.date).isSameOrBefore(todate)
-          );
-        })
+          ))
       );
     }
   };
@@ -49,7 +48,7 @@ export default function Licensetransac() {
       <div className="filter">
         <div>
           <span>
-            <label for="id1">From Date: &nbsp;</label>
+            <label htmlFor="id1">From Date: &nbsp;</label>
           </span>
           <input
             type="date"
@@ -65,7 +64,7 @@ export default function Licensetransac() {
 
         <div>
           <span>
-            <label for="id2">To Date : &nbsp;</label>
+            <label htmlFor="id2">To Date : &nbsp;</label>
           </span>
           <input
             type="date"

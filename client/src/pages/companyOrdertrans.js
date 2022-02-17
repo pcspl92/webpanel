@@ -21,12 +21,10 @@ export default function CompanyTransactionView() {
   const filterlist = () => {
     if (fromdate.length && todate.length) {
       setupdatedTableData(
-        tableData.filter((val) => {
-          return (
+        tableData.filter((val) => (
             moment(val.timestamp).isSameOrAfter(fromdate) &&
             moment(val.timestamp).isSameOrBefore(todate)
-          );
-        })
+          ))
       );
     }
   };
@@ -56,7 +54,7 @@ export default function CompanyTransactionView() {
 <div className="filter">
   <div>
     <span>
-      <label for="id1">From Date: &nbsp;</label>
+      <label htmlFor="id1">From Date: &nbsp;</label>
     </span>
     <input
       type="date"
@@ -72,7 +70,7 @@ export default function CompanyTransactionView() {
 
   <div>
     <span>
-      <label for="id2">To Date : &nbsp;</label>
+      <label htmlFor="id2">To Date : &nbsp;</label>
     </span>
     <input
       type="date"
@@ -117,9 +115,11 @@ export default function CompanyTransactionView() {
     <th>Available <br/>Accounts</th>
   </tr>
   {updatedTableData.map((val, index) => {
-    index++;
+    // eslint-disable-next-line no-plusplus
+    // eslint-disable-next-line no-param-reassign
+    index+=1;
     return (
-      <tr>
+      <tr key={val.id} >
         <th>{index}</th>
         <th>{val.id}</th>
         <th>{val.transaction_type}</th>

@@ -60,6 +60,7 @@ const RechargeAgent = () => {
             id="id1"
             onChange={(event) => {
               setagentid(event.target.value);
+              // eslint-disable-next-line no-multi-assign
               subBalance.current = subBalance.current = agentlist.filter(
                 (agent) => agent.id === Number(event.target.value)
               )[0]?.balance;
@@ -67,13 +68,11 @@ const RechargeAgent = () => {
             required
           >
             <option val="0">Select a Option </option>
-            {agentlist.map((val) => {
-              return (
+            {agentlist.map((val) => (
                 <option key={val.id} value={val.id}>
                   {val.display_name}
                 </option>
-              );
-            })}
+              ))}
           </select>
         </div>
         <br />

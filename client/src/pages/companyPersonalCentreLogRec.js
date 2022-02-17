@@ -24,12 +24,10 @@ const CompanyViewLogin = () => {
   const filterlist = () => {
     if (fromdate.length && todate.length) {
       setupdatedloglist(
-        companyloglist.filter((val) => {
-          return (
+        companyloglist.filter((val) => (
             moment(val.timestamp).isSameOrAfter(fromdate) &&
             moment(val.timestamp).isSameOrBefore(todate)
-          );
-        })
+          ))
       );
     }
   };
@@ -51,7 +49,7 @@ const CompanyViewLogin = () => {
       <div className="filter">
         <div>
           <span>
-            <label for="id1">From Date: &nbsp;</label>
+            <label htmlFor="id1">From Date: &nbsp;</label>
           </span>
           <input
             type="date"
@@ -66,7 +64,7 @@ const CompanyViewLogin = () => {
         <br />
         <div>
           <span>
-            <label for="id2">To Date : &nbsp;</label>
+            <label htmlFor="id2">To Date : &nbsp;</label>
           </span>
           <input
             type="date"

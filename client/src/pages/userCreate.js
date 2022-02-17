@@ -1,4 +1,4 @@
-import '../css/licenseModify.css';
+import '../css/userCreate.css';
 
 import React, { useEffect, useState, useRef } from 'react';
 import moment from 'moment';
@@ -43,7 +43,7 @@ export default function LicenseModify() {
   function onSelect(users) {
     const selected = [];
     selectedUserIds.current.forEach((id) => {
-      selected.push(users.filter((usersel) => usersel.id === id)[0]);
+      selected.push(users.filter((user2) => user2.id === id)[0]);
     });
     setSelectedUsers(selected);
   }
@@ -251,16 +251,15 @@ export default function LicenseModify() {
             .format('YYYY-MM-DD HH:mm:ss');
           break;
         default:
-     return ; }
+      }
 
       const newExpDate = moment(date).isAfter('2038-01-19 03:14:07')
         ? '2038-01-19 03:14:07'
         : date;
 
-      // eslint-disable-next-line consistent-return
       return moment(`${newExpDate}`).format('DD-MM-YYYY HH:mm:ss');
     }
-  };
+  return <></>};
 
   const renewForm = () => {
     const { users, expDate, unitPrices } = formData;
