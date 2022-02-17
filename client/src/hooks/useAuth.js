@@ -5,9 +5,7 @@ import axios from '../utils/axios';
 
 const AuthContext = createContext();
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
 
 export default function Auth({ children }) {
   const [user, setUser] = useState({ auth: false });
