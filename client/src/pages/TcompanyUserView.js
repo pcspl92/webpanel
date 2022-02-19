@@ -16,6 +16,8 @@ const CompanyUserView = () => {
     })();
   }, []);
 
+  console.log('table-data', tableData);
+
   if (loading) {
     return (
       <div className="viewback">

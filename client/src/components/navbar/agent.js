@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import '../../css/index.css';
 import { NavLink, useLocation } from 'react-router-dom';
+import '../../css/index.css';
+
 export default function Navbar() {
   const [companydrop, setcompanydrop] = useState(false);
   const location = useLocation();
@@ -23,7 +24,9 @@ export default function Navbar() {
   function dropdownper() {
     setperdrop(!perdrop);
   }
-  if (location.pathname === '/agent/') return null;
+
+  if (location.pathname === '/agent/' || location.pathname === '/') return null;
+
   return (
     <div className="navbar">
       <NavLink

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
+import * as yup from 'yup';
 import '../css/AddAgent.css';
-import axios from '../utils/axios';
+// import axios from '../utils/axios';
 
 const AddAgent = () => {
   const [username, setusername] = useState('');
   const [password, setpassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [subagentname, setsubagentname] = useState('');
   const [contactnum, setcontact] = useState('');
+  const [errors, setErrors] = useState({});
 
   // Setting PTT User Price
-
   const [monthlyptt, setmonthlyppt] = useState(0);
   const [quarterlyptt, setquarterlyppt] = useState(0);
   const [halfylyptt, sethalfylyppt] = useState(0);
@@ -17,7 +19,6 @@ const AddAgent = () => {
   const [onetimeptt, setonetimeppt] = useState(0);
 
   // Setting Dispatcher Account Price
-
   const [monthlydap, setmonthlydap] = useState(0);
   const [quarterlydap, setquarterlydap] = useState(0);
   const [halfylydap, sethalfylydap] = useState(0);
@@ -25,7 +26,6 @@ const AddAgent = () => {
   const [onetimedap, setonetimedap] = useState(0);
 
   // Setting Control Station Account Price
-
   const [monthlycsap, setmonthlycsap] = useState(0);
   const [quarterlycsap, setquarterlycsap] = useState(0);
   const [halfylycsap, sethalfylycsap] = useState(0);
@@ -33,26 +33,63 @@ const AddAgent = () => {
   const [onetimecsap, setonetimecsap] = useState(0);
   const [disabled, setDisabled] = useState(false);
 
-  const reset = () => {
-    setusername('');
-    setpassword('');
-    setsubagentname('');
-    setcontact('');
-    setmonthlyppt(0);
-    setquarterlyppt(0);
-    sethalfylyppt(0);
-    setyearlyppt(0);
-    setonetimeppt(0);
-    setmonthlydap(0);
-    setquarterlydap(0);
-    sethalfylydap(0);
-    setyearlydap(0);
-    setonetimedap(0);
-    setmonthlycsap(0);
-    setquarterlycsap(0);
-    sethalfylycsap(0);
-    setyearlycsap(0);
-    setonetimecsap(0);
+  // const reset = () => {
+  //   setusername('');
+  //   setpassword('');
+  // setConfirmPassword('');
+  //   setsubagentname('');
+  //   setcontact('');
+  //   setmonthlyppt(0);
+  //   setquarterlyppt(0);
+  //   sethalfylyppt(0);
+  //   setyearlyppt(0);
+  //   setonetimeppt(0);
+  //   setmonthlydap(0);
+  //   setquarterlydap(0);
+  //   sethalfylydap(0);
+  //   setyearlydap(0);
+  //   setonetimedap(0);
+  //   setmonthlycsap(0);
+  //   setquarterlycsap(0);
+  //   sethalfylycsap(0);
+  //   setyearlycsap(0);
+  //   setonetimecsap(0);
+  // };
+
+  const schema = yup.object().shape({
+    username: yup
+      .string()
+      .typeError('Username must be string')
+      .required('This field is required')
+      .min(3, 'Username must be 3-40 characters long')
+      .max(40, 'Username must be 3-40 characters long'),
+    password: yup
+      .string()
+      .typeError('Password must be string')
+      .required('This field is required')
+      .min(8, 'Password must be 8-30 characters long')
+      .max(30, 'Password must be 8-30 characters long'),
+    confirm_password: yup
+      .string()
+      .typeError('Confirm Password must be string')
+      .oneOf([yup.ref('password'), null], 'Passwords must match'),
+    display_name: yup
+      .string()
+      .typeError('Sub-Agent name must be string')
+      .required('This field is required')
+      .min(10, 'Sub-Agent name must be 10-90 characters long')
+      .max(90, 'Sub-Agent name must be 10-90 characters long'),
+    contact_number: yup
+      .number()
+      .typeError('Contact Number must be number')
+      .min(10, 'Contact number must be 10 characters long')
+      .max(10, 'Contact number must be 10 characters long')
+      .required('This filed is required'),
+  });
+
+  const validate = async (data) => {
+    const formData = { ...data, confirm_password: confirmPassword };
+    await schema.validate(formData, { abortEarly: false });
   };
 
   const onSubmit = async (e) => {
@@ -88,12 +125,22 @@ const AddAgent = () => {
     };
 
     try {
-      await axios.post('/subagent/', data);
-      reset();
-      setDisabled(false);
-    } catch (err) {
-      console.log(err.response.data);
+      await validate(data);
+      // await axios.post('/subagent/', data);
+      // reset();
+    } catch (error) {
+      if (error.inner.length) {
+        const validateErrors = error.inner.reduce(
+          (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+          {}
+        );
+        setErrors(validateErrors);
+      } else {
+        console.log(error.response.data);
+      }
     }
+
+    setDisabled(false);
   };
 
   return (
@@ -131,14 +178,18 @@ const AddAgent = () => {
             setusername(event.target.value);
           }}
           value={username}
-          required
         />
-        <br /> <br />
+        <div className="text-danger fw-600">{errors?.username}</div>
         <span>
           <label htmlFor="id2">Password :</label>
         </span>
-        <input type="password" id="id2" />
-        <br /> <br />
+        <input
+          type="password"
+          id="id2"
+          onChange={(e) => setpassword(e.target.value)}
+          value={password}
+        />
+        <div className="text-danger fw-600">{errors?.password}</div>
         <span>
           <label htmlFor="id3">Confirm Password :</label>
         </span>
@@ -146,12 +197,11 @@ const AddAgent = () => {
           type="password"
           id="id3"
           onChange={(event) => {
-            setpassword(event.target.value);
+            setConfirmPassword(event.target.value);
           }}
-          value={password}
-          required
+          value={confirmPassword}
         />
-        <br /> <br />
+        <div className="text-danger fw-600">{errors?.confirm_password}</div>
         <span>
           <label htmlFor="id4">Sub - Agent Name :</label>
         </span>
@@ -162,20 +212,21 @@ const AddAgent = () => {
             setsubagentname(event.target.value);
           }}
           value={subagentname}
-          required
         />
-        <br /> <br />
+        <div className="text-danger fw-600">{errors?.display_name}</div>
         <span>
           <label htmlFor="id5">Contact Number :</label>
         </span>
         <input
-          type="text"
+          type="number"
           id="id5"
+          min="0"
           onChange={(event) => {
             setcontact(event.target.value);
           }}
           value={contactnum}
         />
+        <div className="text-danger fw-600">{errors?.contact_number}</div>
       </div>
       <br />
       <div style={{ marginLeft: '40vw' }}>

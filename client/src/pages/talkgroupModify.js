@@ -1,7 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 
-import { useAuth } from '../hooks/useAuth';
 import '../css/departmentModify.css';
 import axios from '../utils/axios';
 
@@ -13,8 +11,6 @@ const TalkGroupModify = () => {
   const [loading, setLoading] = useState(true);
   const [talkgroup, setTalkgroup] = useState('0');
   const [err, setErr] = useState({});
-
-  const { user } = useAuth();
 
   useEffect(() => {
     (async () => {
@@ -40,8 +36,8 @@ const TalkGroupModify = () => {
     try {
       await axios.put(`/talkgroup/${talkgroup}`, data);
       reset();
-    } catch (err) {
-      console.log(err.response.data);
+    } catch (error) {
+      setErr(error.response.data);
     }
 
     setDisabled(false);
@@ -69,13 +65,11 @@ const TalkGroupModify = () => {
             required
           >
             <option value={0}>Select Talk-Group</option>
-            {tglist.map((val) => {
-              return (
-                <option key={val.id} value={val.id}>
-                  {val.tg_name}
-                </option>
-              );
-            })}
+            {tglist.map((val) => (
+              <option key={val.id} value={val.id}>
+                {val.tg_name}
+              </option>
+            ))}
           </select>
         </div>
 
