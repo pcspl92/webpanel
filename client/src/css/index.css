@@ -1,8 +1,8 @@
 .mainback {
   height: 100vh;
   width: 100vw;
-  display: flex;
   background-color: white;
+  overflow: hidden;
 }
 .toppart {
   background-color: #8cb3d9;
@@ -31,6 +31,7 @@
   height: 90vh;
   width: 100vw;
   background-color: white;
+  overflow: hidden;
   margin-top: 10vh;
 }
 .navbar {
@@ -85,4 +86,8 @@
   height: auto;
   width: auto;
   margin-left: 18vw;
+  overflow: auto;
+  height: 90vh;
+  width: 82vw;
+  overflow: hidden;
 }

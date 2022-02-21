@@ -106,14 +106,19 @@ const ViewAgent = () => {
           <th>Total Accounts Available</th>
         </tr>
         {updatedlist.map((val, index) => (
-          <tr key={val.id}>
+        
+        <tr key={val.id}>
             <th>{index + 1}</th>
             <th>{val.agent_name}</th>
             <th>{val.account_name}</th>
             <th>{val.orders}</th>
             <th>{val.active}</th>
             <th>{val.available}</th>
+           
+            
           </tr>
+          
+          
         ))}
       </table>
     </div>

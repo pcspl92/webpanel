@@ -1,6 +1,7 @@
-import '../css/CompanyUserView.css';
+
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import '../css/CompanyUserView.css';
 import axios from '../utils/axios';
 
 const CompanyUserView = () => {
@@ -63,14 +64,14 @@ reset();
 
   if (loading) {
     return (
-      <div className="viewback">
+      <div className="viewback2">
         <div className="spinner-border text-primary" role="status"></div>
       </div>
     );
   }
 return(
-  <div className="viewback">
-  <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>VIEW USERS</div>
+  <div className="viewback2">
+      <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>VIEW USERS</div>
 
   <br />
   <div className="filter">
