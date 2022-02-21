@@ -35,8 +35,7 @@ const DepartmentCreate = () => {
     setDisabled(false);
   };
 
-  const form = () => {
-    return (
+  const form = () => (
       <form className="passback" onSubmit={onSubmit}>
         <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
           NEW DEPARTMENT
@@ -106,7 +105,6 @@ const DepartmentCreate = () => {
         </button>
       </form>
     );
-  };
 
   return <div>{form()}</div>;
 };

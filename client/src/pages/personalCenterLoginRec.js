@@ -24,12 +24,10 @@ const ViewLogin = () => {
   const filterlist = () => {
     if (fromdate.length && todate.length) {
       setupdatedloglist(
-        agentloglist.filter((val) => {
-          return (
+        agentloglist.filter((val) => (
             moment(val.timestamp).isSameOrAfter(fromdate) &&
             moment(val.timestamp).isSameOrBefore(todate)
-          );
-        })
+          ))
       );
     }
   };
@@ -51,7 +49,7 @@ const ViewLogin = () => {
       <div className="filter">
         <div>
           <span>
-            <label for="id1">From Date: &nbsp;</label>
+            <label htmlFor="id1">From Date: &nbsp;</label>
           </span>
           <input
             type="date"
@@ -66,7 +64,7 @@ const ViewLogin = () => {
         <br />
         <div>
           <span>
-            <label for="id2">To Date : &nbsp;</label>
+            <label htmlFor="id2">To Date : &nbsp;</label>
           </span>
           <input
             type="date"

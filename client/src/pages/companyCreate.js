@@ -51,8 +51,7 @@ const CompanyCreate = () => {
     reset();
   };
 
-  const form = () => {
-    return (
+  const form = () => (
       <form className="passback" onSubmit={onSubmit}>
         <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
           CREATE NEW COMPANY
@@ -138,13 +137,11 @@ const CompanyCreate = () => {
               required
             >
               <option value={0}>Select Sub Agent</option>
-              {sagentlist.map((val) => {
-                return (
+              {sagentlist.map((val) => (
                   <option key={val.id} value={val.id}>
                     {val.display_name}
                   </option>
-                );
-              })}
+                ))}
             </select>
           </div>
         </div>
@@ -154,7 +151,6 @@ const CompanyCreate = () => {
         </button>
       </form>
     );
-  };
 
   if (loading) {
     return (

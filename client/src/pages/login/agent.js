@@ -45,8 +45,7 @@ export default function Login() {
 
   const expiredCallback = () => setDisabled(true);
 
-  const renderForm = () => {
-    return (
+  const renderForm = () => (
       <form onSubmit={onSubmit} className="layout-login">
         <h3 className="fs-4 text-white text-center fw-600 my-4">
           PULSE PTT Management System(Agent Login)
@@ -111,7 +110,6 @@ export default function Login() {
         </div>
       </form>
     );
-  };
 
   return <div className="form-login">{renderForm()}</div>;
 }

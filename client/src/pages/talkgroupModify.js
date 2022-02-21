@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 
 import { useAuth } from '../hooks/useAuth';
@@ -14,7 +13,7 @@ const TalkGroupModify = () => {
   const [talkgroup, setTalkgroup] = useState('0');
   const [err, setErr] = useState({});
 
-  const { user } = useAuth();
+ 
 
   useEffect(() => {
     (async () => {
