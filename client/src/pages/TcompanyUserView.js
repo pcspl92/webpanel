@@ -4,6 +4,7 @@ import moment from 'moment';
 import axios from '../utils/axios';
 
 const CompanyUserView = () => {
+
   const [companyName, setCompanyName] = useState('');
   const [accountName, setAccountName] = useState('');
   const [userName, setuserName] = useState('');
@@ -19,7 +20,6 @@ const CompanyUserView = () => {
       const { data } = await axios.get('/user/company-panel');
       setTableData(data);
       setuserupdlist(data);
-      setLoading(false);
       setLoading(false);
 
     })();

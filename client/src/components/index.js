@@ -73,6 +73,26 @@ export default function App() {
                       <AgentPrivateRoute component={<AgentDashboard />} />
                     }
                   />
+                    <Route path="company-management">
+                    <Route
+                      path="create-new-company"
+                      element={
+                        <AgentPrivateRoute component={<CompanyCreate />} />
+                      }
+                    />
+                    <Route
+                      path="view-companies"
+                      element={
+                        <AgentPrivateRoute component={<CompanyView />} />
+                      }
+                    />
+                    <Route
+                      path="modify-company"
+                      element={
+                        <AgentPrivateRoute component={<CompanyModify />} />
+                      }
+                    />
+                  </Route>
                   <Route path="users">
                     <Route
                       path="view"
@@ -139,30 +159,11 @@ export default function App() {
                     <Route
                       path="loginrecord"
                       element={
-                        <CompanyPrivateRoute component={<ViewLogin />} />
+                        <AgentPrivateRoute component={<ViewLogin />} />
                       }
                     />
                   </Route>
-                  <Route path="company-management">
-                    <Route
-                      path="create-new-company"
-                      element={
-                        <AgentPrivateRoute component={<CompanyCreate />} />
-                      }
-                    />
-                    <Route
-                      path="view-companies"
-                      element={
-                        <AgentPrivateRoute component={<CompanyView />} />
-                      }
-                    />
-                    <Route
-                      path="modify-company"
-                      element={
-                        <AgentPrivateRoute component={<CompanyModify />} />
-                      }
-                    />
-                  </Route>
+                
                 </Route>
 
                 <Route path="company">

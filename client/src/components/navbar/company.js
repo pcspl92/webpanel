@@ -69,7 +69,7 @@ export default function Navbar() {
           </NavLink>
           <br />
           <NavLink
-            to="/company/user-managment/bulk-create"
+            to="/company/user-management/bulk-create"
             className={({ isActive }) =>
               `link ${isActive ? 'activesubheadings' : 'subheadings'}`
             }
@@ -78,7 +78,7 @@ export default function Navbar() {
           </NavLink>
           <br/>
           <NavLink
-            to="/company/user-managment/view-user-list"
+            to="/company/user-management/view-user-list"
             className={({ isActive }) =>
               `link ${isActive ? 'activesubheadings' : 'subheadings'}`
             }
