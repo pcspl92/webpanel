@@ -76,6 +76,7 @@ export default function Navbar() {
           >
             &nbsp; Bulk Create{' '}
           </NavLink>
+          <br/>
           <NavLink
             to="/company/user-managment/view-user-list"
             className={({ isActive }) =>
@@ -84,6 +85,8 @@ export default function Navbar() {
           >
             &nbsp; View User List{' '}
           </NavLink>
+          <br/>
+
           <NavLink
             to="/company/user-managment/modify-user"
             className={({ isActive }) =>

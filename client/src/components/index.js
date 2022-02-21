@@ -1,3 +1,5 @@
+/* eslint-disable import/no-named-as-default-member */
+/* eslint-disable import/no-named-as-default */
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import '../css/index.css';
@@ -27,6 +29,9 @@ import Licensetransac from '../pages/licensetransac';
 import LicenseModify from '../pages/licenseModify';
 import AgentHeader from './header/agent';
 import AgentNavbar from './navbar/agent';
+import ChangePassword from '../pages/personalCenterChangePassword';
+import ViewActivity from '../pages/personalCenterViewUserActivity';
+import ViewLogin from '../pages/personalCenterLoginRec';
 // company imports
 import CompanyLogin from '../pages/login/company';
 import CompanyDashboard from '../pages/dashboard/company';
@@ -112,35 +117,29 @@ export default function App() {
                     <Route path="recharge" element={<RechargeAgent />} />
                     <Route path="modify" element={<ModifyAgent />} />
                   </Route>
-                  <Route path="user-management" />
-                  <Route
-                    path="view-user-list"
-                    element={
-                      <CompanyPrivateRoute component={<CompanyUserView />} />
-                    }
-                  />
+                
 
                   <Route path="personal-center">
                     <Route
                       path="change-password"
                       element={
-                        <CompanyPrivateRoute
-                          component={<CompanyChangePassword />}
+                        <AgentPrivateRoute
+                          component={<ChangePassword />}
                         />
                       }
                     />
                     <Route
                       path="activity"
                       element={
-                        <CompanyPrivateRoute
-                          component={<CompanyViewActivity />}
+                        <AgentPrivateRoute
+                          component={<ViewActivity />}
                         />
                       }
                     />
                     <Route
                       path="loginrecord"
                       element={
-                        <CompanyPrivateRoute component={<CompanyViewLogin />} />
+                        <CompanyPrivateRoute component={<ViewLogin />} />
                       }
                     />
                   </Route>
@@ -177,6 +176,14 @@ export default function App() {
                       <CompanyPrivateRoute component={<CompanyDashboard />} />
                     }
                   />
+                    <Route path="user-management" >
+                  <Route
+                    path="view-user-list"
+                    element={
+                      <CompanyPrivateRoute component={<CompanyUserView />} />
+                    }
+                  />
+                  </Route>
                   <Route path="contact-list">
                     <Route
                       path="new"

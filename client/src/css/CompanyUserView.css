@@ -1,0 +1,29 @@
+.viewback {
+  display: flex;
+  height: 90vh;
+  width: 82vw;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.filter {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-top: 1vw;
+}
+.tableheading {
+  background-color: #8cb3d9;
+}
+td,
+th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 6px;
+}
+table {
+}
+input {
+  width: 15vw;
+}
