@@ -19,7 +19,7 @@ export default function Header() {
         {user.display_name}
         <div className="header-options">
           <div>Lang</div>
-          <div onClick={logout()}>Logout</div>
+          <div onClick={logout}>Logout</div>
         </div>
       </div>
     </div>
