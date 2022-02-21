@@ -151,7 +151,7 @@ const updateCSUser = ({
 
 const viewUsersCompanyPanel = (deptIds, currDate) => {
   const sql = `SELECT u.username AS account_name, u.display_name AS user_display_name, u.user_type AS account_type,
-               u.timestamp AS creation_date, d.display_name AS department, uad.contact_no AS contact_person,
+               uad.timestamp AS creation_date, d.display_name AS department, uad.contact_no AS contact_person,
                o.license_expiry AS license_renewal, o.id AS order_id, IF(o.license_expiry > '${currDate}', "Normal", "Expired") AS status,
                uf.grp_call, uf.enc, uf.priv_call, uf.live_gps, uf.geo_fence, uf.chat 
                FROM users u
