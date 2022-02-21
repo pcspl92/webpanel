@@ -12,7 +12,7 @@ const findUserById = (id, type) => {
 
 const getUsersAgentPanel = (agentIds) => {
   const sql = `SELECT o.license_expiry AS license_expiry, o.license_type AS account_type, a.display_name AS agent_name,
-               c.display_name AS company_name, l.id AS license_id, u.username AS account_name, u.display_name AS user_name 
+               c.display_name AS company_name, l.id AS license_id, u.username AS account_name, u.display_name AS user_name , a.status AS status
                FROM orders o
                JOIN agents a ON o.agent_id = a.id
                JOIN companies c ON o.company_id = c.id
@@ -164,6 +164,12 @@ const viewUsersCompanyPanel = (deptIds, currDate) => {
   return query(sql);
 };
 
+const changeStatusForAllUsers = (status, deptIds) => {
+  const sql1 = `UPDATE users SET status='${status}' WHERE department_id IN (${deptIds});`;
+  const sql2 = `UPDATE control_station_user SET status='${status}' WHERE department_id IN (${deptIds});`;
+  return [query(sql1), query(sql2)];
+};
+
 module.exports = {
   findUserByUsername,
   findUserById,
@@ -183,4 +189,5 @@ module.exports = {
   updateCSUser,
   deleteDispatcherControlMaps,
   viewUsersCompanyPanel,
+  changeStatusForAllUsers,
 };

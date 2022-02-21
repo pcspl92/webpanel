@@ -1,7 +1,7 @@
 const query = require('../utils/queryTemplate');
 
 const findAgent = (username) => {
-  const sql = `SELECT id, password, display_name, agent_type FROM agents WHERE username="${username}";`;
+  const sql = `SELECT id, password, display_name, agent_type, status FROM agents WHERE username="${username}";`;
   return query(sql);
 };
 
@@ -110,8 +110,14 @@ const getSubAgentBalance = (subAgentId) => {
   return query(sql);
 };
 
-const updateSubAgent = (displayName, contactNumber, password, subagentId) => {
-  const sql1 = `UPDATE agents SET display_name="${displayName}", password="${password}" WHERE id=${subagentId};`;
+const updateSubAgent = (
+  displayName,
+  contactNumber,
+  password,
+  status,
+  subagentId
+) => {
+  const sql1 = `UPDATE agents SET display_name="${displayName}", password="${password}", status="${status}" WHERE id=${subagentId};`;
   const sql2 = `UPDATE agents_add_data SET contact_number="${contactNumber}" WHERE agent_id=${subagentId};`;
   return [query(sql1), query(sql2)];
 };
@@ -165,7 +171,7 @@ const addProfit = (profit, subAgentId) => {
 
 const viewSubAgentData = (subAgentIds) => {
   const sql = `SELECT COUNT(o.id) - COUNT(l.user_id) AS available, COUNT(l.user_id) AS active, COUNT(DISTINCT o.id) AS orders,
-               a.username AS account_name, a.display_name AS agent_name, a.id
+               a.username AS account_name, a.display_name AS agent_name
                FROM agents a 
                LEFT JOIN orders o ON o.agent_id = a.id
                LEFT JOIN licenses l ON o.id = l.order_id

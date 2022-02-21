@@ -9,7 +9,8 @@ export default function Header() {
   const location = useLocation();
   const { logout, user } = useAuth();
 
-  if (location.pathname === '/agent/' || location.pathname === '/') return null;
+  const restrictedPaths = new Set(['/', '/company/', '/agent/']);
+  if (restrictedPaths.has(location.pathname)) return null;
 
   return (
     <div className="toppart">

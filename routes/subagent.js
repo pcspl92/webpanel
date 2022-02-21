@@ -123,6 +123,7 @@ router.put(
         req.body.display_name,
         req.body.contact_number,
         password,
+        req.body.status,
         req.params.id
       )
     );

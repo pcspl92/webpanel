@@ -25,7 +25,8 @@ export default function Navbar() {
     setperdrop(!perdrop);
   }
 
-  if (location.pathname === '/agent/' || location.pathname === '/') return null;
+  const restrictedPaths = new Set(['/', '/company/', '/agent/']);
+  if (restrictedPaths.has(location.pathname)) return null;
 
   return (
     <div className="navbar">

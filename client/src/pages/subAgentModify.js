@@ -37,6 +37,7 @@ const ModifyAgent = () => {
       password,
       display_name: agentnewname,
       contactNumber,
+      status: active ? 'active' : 'paused',
     };
 
     try {
@@ -67,7 +68,7 @@ const ModifyAgent = () => {
       <br />
       <br />
       <div className="modifyform">
-        <div >
+        <div>
           <span>
             <label htmlFor="id1">Select Sub-Agent :&nbsp;&nbsp;&nbsp; </label>
           </span>
@@ -80,10 +81,10 @@ const ModifyAgent = () => {
           >
             <option value="">Select Sub Agent</option>
             {agentlist.map((val) => (
-                <option key={val.id} value={val.id}>
-                  {val.display_name}
-                </option>
-              ))}
+              <option key={val.id} value={val.id}>
+                {val.display_name}
+              </option>
+            ))}
           </select>
         </div>
         <div className="mt-3 me-5">

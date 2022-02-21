@@ -50,8 +50,9 @@ const CompanyModify = () => {
     const data = {
       password,
       display_name: compnewname,
-      contactNumber,
+      contact_number: contactNumber,
       agent_id: subagent,
+      status: active ? 'active' : 'paused',
     };
 
     try {
@@ -132,10 +133,10 @@ const CompanyModify = () => {
           >
             <option value={0}>Select Company</option>
             {companylist.map((val) => (
-                <option key={val.id} value={val.id}>
-                  {val.display_name}
-                </option>
-              ))}
+              <option key={val.id} value={val.id}>
+                {val.display_name}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -242,10 +243,10 @@ const CompanyModify = () => {
           >
             <option value={0}>Select Sub Agent</option>
             {sagentlist.map((val) => (
-                <option key={val.id} value={val.id}>
-                  {val.display_name}
-                </option>
-              ))}
+              <option key={val.id} value={val.id}>
+                {val.display_name}
+              </option>
+            ))}
           </select>
         </div>
       </div>

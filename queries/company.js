@@ -1,12 +1,12 @@
 const query = require('../utils/queryTemplate');
 
 const findCompanyById = (id) => {
-  const sql = `SELECT id FROM companies WHERE id=${id};`;
+  const sql = `SELECT id, status FROM companies WHERE id=${id};`;
   return query(sql);
 };
 
 const findCompanyByUsername = (username) => {
-  const sql = `SELECT id, password, display_name FROM companies WHERE username="${username}";`;
+  const sql = `SELECT id, password, display_name, status FROM companies WHERE username="${username}";`;
   return query(sql);
 };
 
@@ -44,7 +44,6 @@ const createCompany = ({
   const sql = `INSERT INTO companies 
                (username, password, display_name, contact_number, agent_id) 
                VALUES ("${username}", "${password}", "${displayName}", "${contactNumber}", ${agentId});`;
-
   return query(sql);
 };
 
@@ -53,9 +52,16 @@ const updateCompanyPassword = (password, companyId) => {
   return query(sql);
 };
 
-const updateCompany = (id, password, displayName, contactNumber, agentId) => {
-  const sql = `UPDATE companies SET password='${password}', display_name='${displayName}', contact_number='${contactNumber}', agent_id=${agentId}
-               WHERE id=${id};`;
+const updateCompany = (
+  id,
+  password,
+  displayName,
+  contactNumber,
+  status,
+  agentId
+) => {
+  const sql = `UPDATE companies SET password='${password}', display_name='${displayName}', 
+               contact_number='${contactNumber}', agent_id=${agentId}, status='${status}' WHERE id=${id};`;
   return query(sql);
 };
 

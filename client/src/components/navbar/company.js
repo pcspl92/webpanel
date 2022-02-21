@@ -31,8 +31,8 @@ export default function Navbar() {
     setperdrop(!perdrop);
   }
 
-  if (location.pathname === '/company/' || location.pathname === '/')
-    return null;
+  const restrictedPaths = new Set(['/', '/company/', '/agent/']);
+  if (restrictedPaths.has(location.pathname)) return null;
 
   return (
     <div className="navbar">
@@ -76,7 +76,7 @@ export default function Navbar() {
           >
             &nbsp; Bulk Create{' '}
           </NavLink>
-          <br/>
+          <br />
           <NavLink
             to="/company/user-management/view-user-list"
             className={({ isActive }) =>
@@ -85,7 +85,7 @@ export default function Navbar() {
           >
             &nbsp; View User List{' '}
           </NavLink>
-          <br/>
+          <br />
 
           <NavLink
             to="/company/user-managment/modify-user"

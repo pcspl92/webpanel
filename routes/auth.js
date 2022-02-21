@@ -88,6 +88,9 @@ router.post('/login/agent', async (req, res) => {
   if (!(await comparePassword(req.body.password, user[0].password)))
     return res.status(400).json({ auth: 'Wrong credential combination' });
 
+  if (user[0].status === 'paused')
+    return res.status(400).json({ auth: 'Account is paused' });
+
   await createAgentAuthLog('Logged In', req.body.ip_address, user[0].id);
 
   res.cookie(
@@ -118,6 +121,9 @@ router.post('/login/company', async (req, res) => {
 
   if (!(await comparePassword(req.body.password, company[0].password)))
     return res.status(400).json({ auth: 'Wrong credential combination' });
+
+  if (company[0].status === 'paused')
+    return res.status(400).json({ auth: 'Account is paused' });
 
   await createCompanyAuthLog('Logged In', req.body.ip_address, company[0].id);
 

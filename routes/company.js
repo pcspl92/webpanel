@@ -19,12 +19,14 @@ const {
   getDepartmentCount,
   deleteCompany,
   relieveCompany,
+  getDepartments,
 } = require('../queries/company');
 const {
   getAgentId,
   getSubAgents,
   createAgentActivityLog,
 } = require('../queries/agent');
+const { changeStatusForAllUsers } = require('../queries/user');
 const { hashPassword } = require('../utils/bcrypt');
 
 const router = express.Router();
@@ -135,8 +137,19 @@ router.put(
       password,
       req.body.display_name,
       req.body.contact_number,
+      req.body.status,
       req.body.agent_id
     );
+    if (req.body.status === 'paused') {
+      const result = await getDepartments(req.params.id);
+      const deptIds = result.reduce((acc, sub) => [...acc, sub.id], []);
+      await Promise.all(changeStatusForAllUsers('paused', deptIds));
+    }
+    if (company[0].status === 'paused' && req.body.status === 'active') {
+      const result = await getDepartments(req.params.id);
+      const deptIds = result.reduce((acc, sub) => [...acc, sub.id], []);
+      await Promise.all(changeStatusForAllUsers('active', deptIds));
+    }
     await createAgentActivityLog('Company Modify', req.user.id);
     return res.status(200).send('updated');
   }
