@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../../css/index.css';
-import { Routes, Route, NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
+
 export default function Navbar() {
   const location = useLocation();
  
