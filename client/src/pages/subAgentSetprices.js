@@ -110,17 +110,10 @@ const SetPrices = () => {
           <option>Select a Option</option>
 
           {agentlist.map((val) => (
-<<<<<<< HEAD
-              <option key={val.id} value={val.id}>
-                {val.display_name}
-              </option>
-            ))}
-=======
             <option key={val.id} value={val.id}>
               {val.display_name}
             </option>
           ))}
->>>>>>> 0f0066e6bf3b029e12614945c3824667d9dbab4d
         </select>
       </div>
       <br />

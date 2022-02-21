@@ -12,11 +12,6 @@ const TalkGroupModify = () => {
   const [talkgroup, setTalkgroup] = useState('0');
   const [err, setErr] = useState({});
 
-<<<<<<< HEAD
- 
-
-=======
->>>>>>> 0f0066e6bf3b029e12614945c3824667d9dbab4d
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/talkgroup/');

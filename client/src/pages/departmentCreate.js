@@ -36,11 +36,6 @@ const DepartmentCreate = () => {
   };
 
   const form = () => (
-<<<<<<< HEAD
-      <form className="passback" onSubmit={onSubmit}>
-        <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
-          NEW DEPARTMENT
-=======
     <form className="passback" onSubmit={onSubmit}>
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
         NEW DEPARTMENT
@@ -99,18 +94,10 @@ const DepartmentCreate = () => {
             value={deptname}
             required
           />
->>>>>>> 0f0066e6bf3b029e12614945c3824667d9dbab4d
         </div>
         <br />
 
         <br />
-<<<<<<< HEAD
-        <button type="submit" disabled={disabled}>
-          Save
-        </button>
-      </form>
-    );
-=======
       </div>
       <br />
       <button type="submit" disabled={disabled}>
@@ -118,7 +105,6 @@ const DepartmentCreate = () => {
       </button>
     </form>
   );
->>>>>>> 0f0066e6bf3b029e12614945c3824667d9dbab4d
 
   return <div>{form()}</div>;
 };
