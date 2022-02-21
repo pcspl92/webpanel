@@ -5,7 +5,7 @@ import axios from '../../utils/axios';
 
 import { useAuth } from '../../hooks/useAuth';
 
-export default function Login() {
+ function Login() {
   const [credentials, setCredentials] = useState({
     username: '',
     password: '',
@@ -113,3 +113,4 @@ export default function Login() {
 
   return <div className="form-login">{renderForm()}</div>;
 }
+export default Login;

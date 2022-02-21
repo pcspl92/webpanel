@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import '../css/SetPrices.css';
 import axios from '../utils/axios';
+
 const SetPrices = () => {
   const [agentid, setagentid] = useState(0);
   const [agentlist, setagentlist] = useState([]);
-  //Setting PTT User Price
+  // Setting PTT User Price
   const [monthlyptt, setmonthlyppt] = useState(0);
   const [quarterlyptt, setquarterlyppt] = useState(0);
   const [halfylyptt, sethalfylyppt] = useState(0);
   const [yearlyptt, setyearlyppt] = useState(0);
   const [onetimeptt, setonetimeppt] = useState(0);
-  //Setting Dispatcher Account Price
+  // Setting Dispatcher Account Price
   const [monthlydap, setmonthlydap] = useState(0);
   const [quarterlydap, setquarterlydap] = useState(0);
   const [halfylydap, sethalfylydap] = useState(0);
   const [yearlydap, setyearlydap] = useState(0);
   const [onetimedap, setonetimedap] = useState(0);
-  //Setting Control Station Account Price
+  // Setting Control Station Account Price
   const [monthlycsap, setmonthlycsap] = useState(0);
   const [quarterlycsap, setquarterlycsap] = useState(0);
   const [halfylycsap, sethalfylycsap] = useState(0);
@@ -81,10 +82,11 @@ const SetPrices = () => {
     try {
       await axios.put(`/subagent/${agentid}/prices`, data);
       reset();
-      setDisabled(false);
     } catch (err) {
       console.log(err.response.data);
     }
+
+    setDisabled(false);
   };
 
   return (
@@ -107,13 +109,11 @@ const SetPrices = () => {
         >
           <option>Select a Option</option>
 
-          {agentlist.map((val) => {
-            return (
-              <option key={val.id} value={val.id}>
-                {val.display_name}
-              </option>
-            );
-          })}
+          {agentlist.map((val) => (
+            <option key={val.id} value={val.id}>
+              {val.display_name}
+            </option>
+          ))}
         </select>
       </div>
       <br />

@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import axios from '../utils/axios';
 
 const CompanyUserView = () => {
+  // eslint-disable-next-line no-unused-vars
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -15,6 +16,8 @@ const CompanyUserView = () => {
       setLoading(false);
     })();
   }, []);
+
+  console.log('table-data', tableData);
 
   if (loading) {
     return (
