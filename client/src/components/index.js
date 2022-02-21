@@ -40,7 +40,7 @@ import CompanyNavbar from './navbar/company';
 import CompanyChangePassword from '../pages/companyPersonalCentrechangepass';
 import CompanyViewActivity from '../pages/companypersonalcentreActRec';
 import CompanyViewLogin from '../pages/companyPersonalCentreLogRec';
-import CompanyUserView from '../pages/TcompanyUserView';
+import CompanyUserView from '../pages/companyUserView';
 import CompanyOrderList from '../pages/companyOrderLIst';
 import CompanyOrderTrans from '../pages/companyOrdertrans';
 import DepartmentCreate from   '../pages/departmentCreate';

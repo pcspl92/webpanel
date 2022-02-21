@@ -5,10 +5,10 @@ import '../css/CompanyUserView.css';
 import axios from '../utils/axios';
 
 const CompanyUserView = () => {
-
-  const [companyName, setCompanyName] = useState('');
+  const [orderID, setorderID] = useState('');
   const [accountName, setAccountName] = useState('');
-  const [userName, setuserName] = useState('');
+  const [accountType, setAccountType] = useState('');
+  const [userDisplayName, setuserDisplayName] = useState('');
   const [expiryDate, setexpiryDate] = useState('');
   const [userupdlist, setuserupdlist] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,8 +26,11 @@ const CompanyUserView = () => {
     })();
   }, []);
 
-  const companyFilter = () => tableData.filter((rec) =>
-  rec.company_name.toLowerCase().includes(companyName.toLowerCase())
+  const accountTypeFilter = () => tableData.filter((rec) =>
+  rec.account_type.toLowerCase().includes(accountType.toLowerCase())
+);
+const orderIDFilter = () => tableData.filter((rec) =>
+rec.order_id.toLowerCase().includes(orderID.toLowerCase())
 );
 
 const accountFilter = () => tableData.filter((rec) =>
@@ -35,25 +38,27 @@ const accountFilter = () => tableData.filter((rec) =>
 );
 
 const userFilter = () => tableData.filter((rec) =>
-  rec.user_name.toLowerCase().includes(userName.toLowerCase())
+  rec.user_display_name.toLowerCase().includes(userDisplayName.toLowerCase())
 );
 
 const expiryFilter = () => tableData.filter((rec) =>
-  moment(rec.license_expiry).isAfter(expiryDate)
+  moment(rec.license_renewal).isAfter(expiryDate)
 );
 
 const filter = () => {
-if (companyName.length) setuserupdlist(companyFilter());
+  if (accountType.length) setuserupdlist(accountTypeFilter());  
+if (orderID.length) setuserupdlist(orderIDFilter());
 if (accountName.length) setuserupdlist(accountFilter());
-if (userName.length) setuserupdlist(userFilter());
+if (userDisplayName.length) setuserupdlist(userFilter());
 if (expiryDate.length) setuserupdlist(expiryFilter());
 };
 
 const reset = () => {
-setCompanyName('');
+setorderID('');
 setAccountName('');
-setuserName('');
+setuserDisplayName('');
 setexpiryDate('');
+setAccountType('');
 };
 
 const unFilter = () => {
@@ -77,30 +82,49 @@ return(
   <div className="filter">
     <div>
       <span>
-        <label htmlFor="id1">Company Name: &nbsp;</label>
+        <label htmlFor="id1">User Account Type: &nbsp;</label>
+      </span>
+      <select
+              id="id1"
+              onChange={(event) => {
+                setAccountType(event.target.value);
+              }}
+              value={accountType}
+              required
+            >
+              <option value={0}>Select License Type</option>
+              <option value={'ptt'}>PTT User</option>
+              <option value={'dispatcher'}>Dispatcher</option>
+              <option value={'control'}>Control Station</option>
+            </select>
+    </div>
+    <br />
+    <div>
+      <span>
+        <label htmlFor="id1">Order ID: &nbsp;</label>
       </span>
       <input
         type="text"
         id="id1"
         onChange={(event) => {
-          setCompanyName(event.target.value);
+          setorderID(event.target.value);
         }}
-        value={companyName}
+        value={orderID}
         required
       />
     </div>
-    <br />
+    <br/>
     <div>
       <span>
-        <label htmlFor="id2">User Name : &nbsp;</label>
+        <label htmlFor="id2">User Display Name : &nbsp;</label>
       </span>
       <input
         type="text"
         id="id2"
         onChange={(event) => {
-          setuserName(event.target.value);
+          setuserDisplayName(event.target.value);
         }}
-        value={userName}
+        value={userDisplayName}
         required
       />
     </div>
@@ -156,28 +180,46 @@ return(
   <table className="mt-3">
     <tr className="tableheading">
       <th>S. No</th>
-      <th>User Name</th>
+      <th>Order ID</th>
       <th>Account Name</th>
-      <th>Company Name</th>
+      <th>User Display<br/> Name</th>
+      
       <th>Account Type</th>
-      <th>Status</th>
-      <th>License ID</th>
-      <th>License Expiry</th>
-      <th>Agent Name</th>
-      <th></th>
+      <th>Creation Date</th>
+      <th>Department</th>
+      <th>Contact Person</th>
+      <th>License Type</th>
+      <th>License Renewal Date</th>
+      <th>User Status</th>
+      <th>Online</th>
+      <th>Features</th>
     </tr>
     {userupdlist.map((val, index) => (
         <tr key={val.license_id}>
           <th>{index + 1}</th>
-          <th>{val.user_name}</th>
+          <th>{val.order_id}</th>
           <th>{val.account_name}</th>
-          <th>{val.company_name}</th>
+          <th>{val.user_display_name}</th>
           <th>{val.account_type}</th>
+          <th>{moment(val.creation_date).format('DD-MM-YYYY')}</th>
+          <th>{val.department}</th>
+
+          <th>{val.contact_person}</th>
+          <th>{val.license_type}</th>
+          <th>{moment(val.license_renewal).format('DD-MM-YYYY')}</th>
           <th>{val.status}</th>
-          <th>{val.license_id}</th>
-          <th>{moment(val.license_expiry).format('DD-MM-YYYY')}</th>
-          <th>{val.agent_name}</th>
-          <th> </th>
+          <th>{val.online}</th>
+
+
+          <th>
+                {val.enc ? 'Encryption, ' : null}
+                {val.grp_call ? 'Group Call, ' : null}
+                {val.chat ? 'Chat, ' : null}
+                {val.priv_call ? 'Private Call, ' : null}
+                {val.geo_fence ? 'Geo Fence, ' : null}
+                {val.live_gps ? 'Live GPS' : null}
+              </th>
+        
         </tr>
       ))}
   </table>
