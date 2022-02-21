@@ -4,8 +4,9 @@
   width: 82vw;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  overflow: auto;
+  justify-content: start;
+  padding: 1vw;
+  overflow-x: hidden;
 }
 .filter {
   display: flex;
