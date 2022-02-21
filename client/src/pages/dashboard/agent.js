@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { PieChart } from 'recharts';
 import '../../css/dashboard.css';
 import axios from '../../utils/axios';
 import { useAuth } from '../../hooks/useAuth';
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from 'recharts';
 
 export default function Dashboard() {
   const [dashData, setDashData] = useState({});
@@ -20,12 +20,10 @@ export default function Dashboard() {
   const table = () => (
     <div className="viewback">
       <br />
-
       <div>
         <span>Total Balance :</span>
         {user.balance}
       </div>
-
       <table className="mt-3">
         <tr className="tableheading">
           <th
@@ -89,9 +87,8 @@ export default function Dashboard() {
       <PieChart></PieChart>
       Dispatcher Accounts Chart
       <PieChart></PieChart>
-     Control Station Accounts Chart
-     <PieChart></PieChart>
-
+      Control Station Accounts Chart
+      <PieChart></PieChart>
     </div>
   );
 

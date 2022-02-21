@@ -24,10 +24,18 @@ const ViewLogin = () => {
   const filterlist = () => {
     if (fromdate.length && todate.length) {
       setupdatedloglist(
+<<<<<<< HEAD
         agentloglist.filter((val) => (
             moment(val.timestamp).isSameOrAfter(fromdate) &&
             moment(val.timestamp).isSameOrBefore(todate)
           ))
+=======
+        agentloglist.filter(
+          (val) =>
+            moment(val.timestamp).isSameOrAfter(fromdate) &&
+            moment(val.timestamp).isSameOrBefore(todate)
+        )
+>>>>>>> 0f0066e6bf3b029e12614945c3824667d9dbab4d
       );
     }
   };

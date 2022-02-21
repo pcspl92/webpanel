@@ -13,7 +13,6 @@ const DepartmentModify = () => {
   const [department, setDepartment] = useState('0');
   const [err, setErr] = useState({});
 
-
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/department/');
@@ -42,9 +41,7 @@ const DepartmentModify = () => {
       await axios.put(`/department/${department}`, data);
       reset();
     } catch (error) {
-
-      console.log(error.resposnse.data);
-
+      setErr(error.resposnse.data);
     }
 
     setDisabled(false);
@@ -84,10 +81,10 @@ const DepartmentModify = () => {
           >
             <option value={'0'}>Select Company</option>
             {departmentlist.map((val) => (
-                <option key={val.id} value={val.id}>
-                  {val.display_name}
-                </option>
-              ))}
+              <option key={val.id} value={val.id}>
+                {val.display_name}
+              </option>
+            ))}
           </select>
         </div>
 

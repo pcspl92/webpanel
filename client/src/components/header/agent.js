@@ -9,7 +9,8 @@ export default function Header() {
   const location = useLocation();
   const { logout, user } = useAuth();
 
-  if (location.pathname === '/agent/') return null;
+  if (location.pathname === '/agent/' || location.pathname === '/') return null;
+
   return (
     <div className="toppart">
       PULSE PTT AGENT MANAGEMENT CONSOLE

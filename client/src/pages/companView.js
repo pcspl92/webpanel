@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import '../css/companyView.css';
 import moment from 'moment';
+import '../css/companyView.css';
+<<<<<<< HEAD
+import moment from 'moment';
+=======
+>>>>>>> 0f0066e6bf3b029e12614945c3824667d9dbab4d
 import axios from '../utils/axios';
 
 const CompanyView = () => {
@@ -21,14 +25,23 @@ const CompanyView = () => {
 
   const filter = () => {
     setupdatedlist(
+<<<<<<< HEAD
       tableData.filter((val) => (
+=======
+      tableData.filter(
+        (val) =>
+>>>>>>> 0f0066e6bf3b029e12614945c3824667d9dbab4d
           (companyName.length &&
             val.company_name
               .toLowerCase()
               .includes(companyName.toLowerCase())) ||
           (compaccname.length &&
             val.account_name.toLowerCase().includes(compaccname.toLowerCase()))
+<<<<<<< HEAD
         ))
+=======
+      )
+>>>>>>> 0f0066e6bf3b029e12614945c3824667d9dbab4d
     );
   };
 

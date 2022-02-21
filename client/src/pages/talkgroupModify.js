@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import { useAuth } from '../hooks/useAuth';
 import '../css/departmentModify.css';
 import axios from '../utils/axios';
 
@@ -13,8 +12,11 @@ const TalkGroupModify = () => {
   const [talkgroup, setTalkgroup] = useState('0');
   const [err, setErr] = useState({});
 
+<<<<<<< HEAD
  
 
+=======
+>>>>>>> 0f0066e6bf3b029e12614945c3824667d9dbab4d
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/talkgroup/');
@@ -39,8 +41,8 @@ const TalkGroupModify = () => {
     try {
       await axios.put(`/talkgroup/${talkgroup}`, data);
       reset();
-    } catch (err) {
-      console.log(err.response.data);
+    } catch (error) {
+      setErr(error.response.data);
     }
 
     setDisabled(false);
@@ -68,13 +70,11 @@ const TalkGroupModify = () => {
             required
           >
             <option value={0}>Select Talk-Group</option>
-            {tglist.map((val) => {
-              return (
-                <option key={val.id} value={val.id}>
-                  {val.tg_name}
-                </option>
-              );
-            })}
+            {tglist.map((val) => (
+              <option key={val.id} value={val.id}>
+                {val.tg_name}
+              </option>
+            ))}
           </select>
         </div>
 
