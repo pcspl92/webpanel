@@ -5,7 +5,7 @@ import '../css/CompanyUserView.css';
 import axios from '../utils/axios';
 
 const CompanyUserView = () => {
-  const [orderID, setorderID] = useState('');
+  const [orderID, setorderID] = useState(0);
   const [accountName, setAccountName] = useState('');
   const [accountType, setAccountType] = useState('');
   const [userDisplayName, setuserDisplayName] = useState('');
@@ -30,7 +30,7 @@ const CompanyUserView = () => {
   rec.account_type.toLowerCase().includes(accountType.toLowerCase())
 );
 const orderIDFilter = () => tableData.filter((rec) =>
-rec.order_id.toLowerCase().includes(orderID.toLowerCase())
+rec.order_id===orderID
 );
 
 const accountFilter = () => tableData.filter((rec) =>

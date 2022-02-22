@@ -49,6 +49,9 @@ import TalkGroupCreate from '../pages/talkgroupCreate';
 import TalkGroupModify from '../pages/talkgroupModify';
 import ContactListCreate from '../pages/contactListCreate';
 import ContactListModify from '../pages/contactlistModify';
+import UserCreate from '../pages/companyUserCreate';
+import UserModify from '../pages/companyUserModify';
+import BulkUserCreate from '../pages/companyUserBulkCreate';
 
 export default function App() {
   const { user } = useAuth();
@@ -178,10 +181,30 @@ export default function App() {
                     }
                   />
                     <Route path="user-management" >
+                 
+                    <Route
+                    path="create-new-user"
+                    element={
+                      <CompanyPrivateRoute component={<UserCreate />} />
+                    }
+                  />
+                   <Route
+                    path="bulk-create"
+                    element={
+                      <CompanyPrivateRoute component={<BulkUserCreate />} />
+                    }
+                  />
                   <Route
                     path="view-user-list"
                     element={
                       <CompanyPrivateRoute component={<CompanyUserView />} />
+                    }
+                  />
+               
+                   <Route
+                    path="modify-user"
+                    element={
+                      <CompanyPrivateRoute component={<UserModify />} />
                     }
                   />
                   </Route>

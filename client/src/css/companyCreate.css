@@ -3,7 +3,9 @@
   flex-direction: column;
   width: 82vw;
   height: 90vh;
-  justify-content: center;
+  justify-content: start;
+  overflow-x: hidden;
+  padding: 2vw;
   align-items: center;
 }
 .formarea {

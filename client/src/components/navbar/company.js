@@ -51,7 +51,7 @@ export default function Navbar() {
       {userdrop && (
         <div style={{ marginTop: '1.5vh', marginLeft: '2vw' }}>
           <NavLink
-            to="/company/user-managment/create-new-user"
+            to="/company/user-management/create-new-user"
             className={({ isActive }) =>
               `link ${isActive ? 'activesubheadings' : 'subheadings'}`
             }
@@ -60,7 +60,7 @@ export default function Navbar() {
           </NavLink>
           <br />
           <NavLink
-            to="/company/user-managment/bulk-create-excel"
+            to="/company/user-management/bulk-create-excel"
             className={({ isActive }) =>
               `link ${isActive ? 'activesubheadings' : 'subheadings'}`
             }
@@ -88,7 +88,7 @@ export default function Navbar() {
           <br />
 
           <NavLink
-            to="/company/user-managment/modify-user"
+            to="/company/user-management/modify-user"
             className={({ isActive }) =>
               `link ${isActive ? 'activesubheadings' : 'subheadings'}`
             }
