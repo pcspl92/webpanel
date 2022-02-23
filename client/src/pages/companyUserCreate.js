@@ -93,7 +93,7 @@ function UserCreate() {
 
   function onTGSelect() {
     const selected = [];
-    selectedUserIds.current.forEach((id) => {
+    selectedTGIds.current.forEach((id) => {
       selected.push(TGList.filter((TGid) => TGid.id === id)[0]);
     });
     setSelectedTG(selected);
@@ -101,7 +101,7 @@ function UserCreate() {
 
   function onCSSelect() {
     const selected = [];
-    selectedUserIds.current.forEach((id) => {
+    selectedCSIds.current.forEach((id) => {
       selected.push(CSList.filter((usersel) => usersel.id === id)[0]);
     });
     setSelectedCS(selected);
