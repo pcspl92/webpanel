@@ -35,7 +35,7 @@ const {
 } = require('../queries/company');
 const { getTGs } = require('../queries/talkgroup');
 const { getContactLists } = require('../queries/contactlist');
-const { getFeatures } = require('../queries/order');
+const { getFeatures, getLicenseIds } = require('../queries/order');
 const { hashPassword } = require('../utils/bcrypt');
 
 const router = express.Router();
@@ -185,6 +185,7 @@ router.post(
         .status(400)
         .json({ user: 'User with given username is already registered.' });
 
+    const [{ id: licenseId }] = await getLicenseIds(req.body.order_id, 1);
     const password = await hashPassword(req.body.password);
     const { insertId } = await createUser(
       'ptt',
@@ -193,7 +194,7 @@ router.post(
       req.body.display_name,
       req.body.dept_id
     );
-    await updateLicense(req.body.license_id, insertId);
+    await updateLicense(licenseId, insertId);
     await Promise.all(
       createUserAddData(
         _.pick(req.body.features, [
@@ -230,6 +231,7 @@ router.post(
         .status(400)
         .json({ user: 'User with given username is already registered.' });
 
+    const [{ id: licenseId }] = await getLicenseIds(req.body.order_id, 1);
     const password = await hashPassword(req.body.password);
     const { insertId } = await createUser(
       'dispatcher',
@@ -238,7 +240,7 @@ router.post(
       req.body.display_name,
       req.body.dept_id
     );
-    await updateLicense(req.body.license_id, insertId);
+    await updateLicense(licenseId, insertId);
     await Promise.all(
       createUserAddData(
         _.pick(req.body.features, [
@@ -277,7 +279,8 @@ router.post(
         user: 'Control Station with given name alreay exists.',
       });
 
-    await createCSUser(
+    const [{ id: licenseId }] = await getLicenseIds(req.body.order_id, 1);
+    const { insertId } = await createCSUser(
       _.pick(req.body, [
         'ip_address',
         'port',
@@ -289,6 +292,7 @@ router.post(
         'dept_id',
       ])
     );
+    await updateLicense(licenseId, insertId);
     await createCompanyActivityLog('Control Station User Create', req.user.id);
     return res.status(201).send('created');
   }
