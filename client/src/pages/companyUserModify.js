@@ -99,14 +99,14 @@ import { useAuth } from '../hooks/useAuth';
 
   function onTGSelect() {
     const selected = [];
-    selectedUserIds.current.forEach((id) => {
+    selectedTGIds.current.forEach((id) => {
       selected.push(TGList.filter((TGid) => TGid.id === id)[0]);
     });
     setSelectedTG(selected);
   }
   function onCSSelect(users) {
     const selected = [];
-    selectedUserIds.current.forEach((id) => {
+    selectedCSIds.current.forEach((id) => {
       selected.push(CSList.filter((usersel) => usersel.id === id)[0]);
     });
     setSelectedCS(selected);
@@ -158,7 +158,7 @@ import { useAuth } from '../hooks/useAuth';
                     type="checkbox"
                     id="subitem"
                     name="selection"
-                    defaultChecked={selectedUserIds.current.has(val.id)}
+                    defaultChecked={selectedCSIds.current.has(val.id)}
                     onClick={() => {
                       selectedCSIds.current.has(val.id)
                         ? selectedCSIds.current.delete(val.id)
@@ -365,19 +365,25 @@ TGList.map((val,id)=>(<option key={id}>{val.tg_name}</option>))
      <SelectControlStations/>
      <br/>
      <div>
-            <span>
-              <label htmlFor="confirm">Assign Contact List : &nbsp;</label>
-            </span>
-            <input
-              type="text"
-              id="name"
-              onChange={(event) => {
-                setaccountName(event.target.value);
-              }}
-              value={accountName}
-              required
-            />
-          </div>
+          <span>
+            <label htmlFor="lictype">Assign Contact List: &nbsp;</label>
+          </span>
+          <select
+            id="id1"
+            onChange={(e) => {
+              setControlStation(e.target.value);
+            }}
+            value={controlstation}
+            required
+          >
+            <option value="0">Select Contact List</option>
+            {formData.cls.map((val, id) => (
+              <option key={val.id} value={val.id}>
+                {val.display_name}
+              </option>
+            ))}
+          </select>
+        </div>
         <div>
           <label>Features : </label>&nbsp;
           <br />
