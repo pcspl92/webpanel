@@ -170,6 +170,30 @@ const changeStatusForAllUsers = (status, deptIds) => {
   return [query(sql1), query(sql2)];
 };
 
+const getOrderIdForUsers = (companyId) => {
+  const sql = `SELECT l.order_id, o.license_expiry, o.license_type, o.company_id FROM licenses l
+               JOIN orders o ON l.order_id = o.id
+               GROUP BY order_id 
+               HAVING COUNT(user_id) < COUNT(l.id) AND o.company_id=${companyId};`;
+  return query(sql);
+};
+
+const getControlStations = (deptIds) => {
+  const sql = `SELECT id, display_name FROM control_station_user WHERE department_id IN (${deptIds});`;
+  return query(sql);
+};
+
+const getReceivingPort = (basePort) => {
+  const sql = `SELECT IF(MAX(receiving_port) < ${basePort}, ${basePort}, 
+               MAX(receiving_port)+1 ) AS receivingPort FROM control_station_user;`;
+  return query(sql);
+};
+
+const getControlStationTypes = (comapnyId) => {
+  const sql = `SELECT id, name FROM control_station_types WHERE company_id=${comapnyId};`;
+  return query(sql);
+};
+
 module.exports = {
   findUserByUsername,
   findUserById,
@@ -190,4 +214,8 @@ module.exports = {
   deleteDispatcherControlMaps,
   viewUsersCompanyPanel,
   changeStatusForAllUsers,
+  getOrderIdForUsers,
+  getControlStations,
+  getReceivingPort,
+  getControlStationTypes,
 };

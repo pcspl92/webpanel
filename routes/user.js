@@ -24,11 +24,18 @@ const {
   getCSUserById,
   deleteDispatcherControlMaps,
   viewUsersCompanyPanel,
+  getOrderIdForUsers,
+  getControlStations,
+  getReceivingPort,
+  getControlStationTypes,
 } = require('../queries/user');
 const {
   createCompanyActivityLog,
   getDepartments,
 } = require('../queries/company');
+const { getTGs } = require('../queries/talkgroup');
+const { getContactLists } = require('../queries/contactlist');
+const { getFeatures } = require('../queries/order');
 const { hashPassword } = require('../utils/bcrypt');
 
 const router = express.Router();
@@ -74,35 +81,92 @@ router.get(
   }
 );
 
-// @route   GET api/user/ptt
-// @desc    PTT user fetching route
+// @route   GET api/user/company-panel/user-panel
+// @desc    User fetching route for given type
 // @access  Private(Company)
 router.get(
-  '/ptt',
+  '/company-panel/user-panel',
   isLoggedIn,
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const depts = await getDepartments(req.user.id);
-    const deptIds = depts.reduce((acc, dept) => [...acc, dept.id], []);
-    const users = await getUsers(deptIds, 'ptt');
-    return res.status(200).send(users);
+    const users = await getOrderIdForUsers(req.user.id);
+    const departments = await getDepartments(req.user.id);
+    return res.status(200).json({ users, departments });
   }
 );
 
-// @route   GET api/user/control
-// @desc    Control Station user fetching route
+// @route   GET api/user/:type
+// @desc    User fetching route for given type
 // @access  Private(Company)
 router.get(
-  '/control',
+  '/:type',
   isLoggedIn,
   guard.check('company'),
   companyCheck,
   async (req, res) => {
     const depts = await getDepartments(req.user.id);
     const deptIds = depts.reduce((acc, dept) => [...acc, dept.id], []);
-    const users = await getUsers(deptIds, 'control');
+    const users = await getUsers(deptIds, req.params.type);
     return res.status(200).send(users);
+  }
+);
+// @route   GET api/user/:type/:orderId
+// @desc    User form data fetching route
+// @access  Private(Company)
+router.get(
+  '/:type/:orderId',
+  isLoggedIn,
+  guard.check('company'),
+  companyCheck,
+  async (req, res) => {
+    let data = {};
+
+    const getPttFormData = async () => {
+      const [tgs, cls, [features]] = await Promise.all([
+        getTGs(req.user.id),
+        getContactLists(req.user.id),
+        getFeatures(req.params.orderId),
+      ]);
+      return { tgs, cls, features };
+    };
+
+    const getDisaptcherFormData = async () => {
+      const depts = await getDepartments(req.user.id);
+      const deptIds = depts.reduce((acc, dept) => [...acc, dept.id], []);
+      const [tgs, cls, [features], controlStations] = await Promise.all([
+        getTGs(req.user.id),
+        getContactLists(req.user.id),
+        getFeatures(req.params.orderId),
+        getControlStations(deptIds),
+      ]);
+      return { tgs, cls, features, controlStations };
+    };
+
+    const getControlFormData = async () => {
+      const receivingPortBase = 8080;
+      const [[{ receivingPort }], csTypes] = await Promise.all([
+        getReceivingPort(receivingPortBase),
+        getControlStationTypes(req.user.id),
+      ]);
+      return { receivingPort, csTypes };
+    };
+
+    switch (req.params.type) {
+      case 'ptt':
+        data = await getPttFormData();
+        break;
+      case 'dispatcher':
+        data = await getDisaptcherFormData();
+        break;
+      case 'control':
+        data = await getControlFormData();
+        break;
+      default:
+        break;
+    }
+
+    return res.status(200).json(data);
   }
 );
 

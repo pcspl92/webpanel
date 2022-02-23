@@ -49,38 +49,40 @@ export default function LicenseModify() {
   }
 
   const SelectAcc = ({ users }) => (
-      <div>
-        Select Accounts
-        <div className="comp">
-          <div className="accbox">
-            {users.map((val) => (
-                <div key={val.id}>
-                  <input
-                    type="checkbox"
-                    id="subitem"
-                    name="selection"
-                    defaultChecked={selectedUserIds.current.has(val.id)}
-                    onClick={() => {
-                      selectedUserIds.current.has(val.id)
-                        ? selectedUserIds.current.delete(val.id)
-                        : selectedUserIds.current.add(val.id);
-                    }}
-                  />
-                  <label htmlFor="selection">{val.display_name}</label>
-                </div>
-              ))}
-          </div>
-          <button type="button" onClick={() => onSelect(users)}>
-            &nbsp;&nbsp; &gt; &gt; &nbsp;&nbsp;
-          </button>
-          <div className="accbox">
-            {(selectedUsers.length &&
-              selectedUsers.map((val) => <div key={val.id}>{val.display_name}</div>)) ||
-              null}
-          </div>
+    <div>
+      Select Accounts
+      <div className="comp">
+        <div className="accbox">
+          {users.map((val) => (
+            <div key={val.id}>
+              <input
+                type="checkbox"
+                id="subitem"
+                name="selection"
+                defaultChecked={selectedUserIds.current.has(val.id)}
+                onClick={() => {
+                  selectedUserIds.current.has(val.id)
+                    ? selectedUserIds.current.delete(val.id)
+                    : selectedUserIds.current.add(val.id);
+                }}
+              />
+              <label htmlFor="selection">{val.display_name}</label>
+            </div>
+          ))}
+        </div>
+        <button type="button" onClick={() => onSelect(users)}>
+          &nbsp;&nbsp; &gt; &gt; &nbsp;&nbsp;
+        </button>
+        <div className="accbox">
+          {(selectedUsers.length &&
+            selectedUsers.map((val) => (
+              <div key={val.id}>{val.display_name}</div>
+            ))) ||
+            null}
         </div>
       </div>
-    );
+    </div>
+  );
 
   const setShow = (show, users) => {
     users.forEach(({ id }) => selectedUserIds.current.add(id));
@@ -251,7 +253,8 @@ export default function LicenseModify() {
             .format('YYYY-MM-DD HH:mm:ss');
           break;
         default:
-     return ; }
+          return;
+      }
 
       const newExpDate = moment(date).isAfter('2038-01-19 03:14:07')
         ? '2038-01-19 03:14:07'
@@ -362,10 +365,10 @@ export default function LicenseModify() {
         >
           <option value="0">Select Company</option>
           {companies.map((val) => (
-              <option key={val.id} value={val.id}>
-                {val.display_name}
-              </option>
-            ))}
+            <option key={val.id} value={val.id}>
+              {val.display_name}
+            </option>
+          ))}
         </select>
         <button type="submit" disabled={disabled}>
           Transfer Accounts
@@ -400,12 +403,10 @@ export default function LicenseModify() {
     if (order !== 0) {
       setupdateType(type);
       const { data } = await axios.get(`/order/${order}/${type}`);
-      console.log('fetched', data);
       setFormData(data);
       if (type === 'update') {
         const { features } = data;
-        const { chat, grpCall, privCall, geoFence, enc, liveGps } =
-          features;
+        const { chat, grpCall, privCall, geoFence, enc, liveGps } = features;
         setFeaturesGlobal({
           ...featuresGlobal,
           chat: !!chat,
@@ -422,67 +423,67 @@ export default function LicenseModify() {
   };
 
   const form = () => (
-      <form className="passback" onSubmit={onSubmit}>
-        <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
-          UPDATE LICENSE ORDER
+    <form className="passback" onSubmit={onSubmit}>
+      <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
+        UPDATE LICENSE ORDER
+      </div>
+      Available Balance : {user.balance}
+      <div className="formarea">
+        <br />
+        <div>
+          <span>
+            <label htmlFor="company">Select Order :&nbsp;&nbsp;&nbsp; </label>
+          </span>
+          <select
+            id="order"
+            onChange={(event) => {
+              setorder(event.target.value);
+            }}
+            disabled={disableSelect}
+            value={order}
+            required
+          >
+            <option value={'0'}>Select Order Id</option>
+            {orderlist.map((val) => (
+              <option key={val.id} value={val.id}>
+                {val.id}
+              </option>
+            ))}
+          </select>
         </div>
-        Available Balance : {user.balance}
-        <div className="formarea">
-          <br />
-          <div>
-            <span>
-              <label htmlFor="company">Select Order :&nbsp;&nbsp;&nbsp; </label>
-            </span>
-            <select
-              id="order"
-              onChange={(event) => {
-                setorder(event.target.value);
-              }}
-              disabled={disableSelect}
-              value={order}
-              required
-            >
-              <option value={'0'}>Select Order Id</option>
-              {orderlist.map((val) => (
-                  <option key={val.id} value={val.id}>
-                    {val.id}
-                  </option>
-                ))}
-            </select>
-          </div>
 
-          <br />
-          <div>
-            <span>
-              <label htmlFor="lictype">Update Type: &nbsp;</label>
-            </span>
-            <select
-              id="id1"
-              onChange={(e) => {
-                getFormData(e.target.value);
-              }}
-              disabled={disableSelect}
-              value={updateType}
-              required
-            >
-              <option value={'0'}>Select Update Type</option>
-              <option value={'update'}>Update Features</option>
-              <option value={'renew'}>Renew</option>
-              <option value={'transfer'}>Transfer</option>
-            </select>
-          </div>
+        <br />
+        <div>
+          <span>
+            <label htmlFor="lictype">Update Type: &nbsp;</label>
+          </span>
+          <select
+            id="id1"
+            onChange={(e) => {
+              getFormData(e.target.value);
+            }}
+            disabled={disableSelect}
+            value={updateType}
+            required
+          >
+            <option value={'0'}>Select Update Type</option>
+            <option value={'update'}>Update Features</option>
+            <option value={'renew'}>Renew</option>
+            <option value={'transfer'}>Transfer</option>
+          </select>
         </div>
-        <br />
-        <br />
-        {formLoading && updateType !== '0' ? (
-          <div className="spinner-border text-primary" role="status"></div>
-        ) : null}
-        {updateType === 'update' && !formLoading && updateForm()}
-        {updateType === 'renew' && !formLoading && renewForm()}
-        {updateType === 'transfer' && !formLoading && transferForm()}
-        <br />
-      </form>
-    );
+      </div>
+      <br />
+      <br />
+      {formLoading && updateType !== '0' ? (
+        <div className="spinner-border text-primary" role="status"></div>
+      ) : null}
+      {updateType === 'update' && !formLoading && updateForm()}
+      {updateType === 'renew' && !formLoading && renewForm()}
+      {updateType === 'transfer' && !formLoading && transferForm()}
+      <br />
+    </form>
+  );
 
   if (loading) {
     return (
