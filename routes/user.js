@@ -28,6 +28,7 @@ const {
   getControlStations,
   getReceivingPort,
   getControlStationTypes,
+  getDataForUserModify,
 } = require('../queries/user');
 const {
   createCompanyActivityLog,
@@ -81,17 +82,33 @@ router.get(
   }
 );
 
-// @route   GET api/user/company-panel/user-panel
-// @desc    User fetching route for given type
+// @route   GET api/user/company-panel/user-create
+// @desc    User Create Form drop-down data fetching route
 // @access  Private(Company)
 router.get(
-  '/company-panel/user-panel',
+  '/company-panel/user-create',
   isLoggedIn,
   guard.check('company'),
   companyCheck,
   async (req, res) => {
     const users = await getOrderIdForUsers(req.user.id);
     const departments = await getDepartments(req.user.id);
+    return res.status(200).json({ users, departments });
+  }
+);
+
+// @route   GET api/user/company-panel/user-modify
+// @desc    User Modify Form drop-down data fetching route
+// @access  Private(Company)
+router.get(
+  '/company-panel/user-modify',
+  isLoggedIn,
+  guard.check('company'),
+  companyCheck,
+  async (req, res) => {
+    const departments = await getDepartments(req.user.id);
+    const deptIds = departments.reduce((acc, dept) => [...acc, dept.id], []);
+    const users = await getDataForUserModify(deptIds);
     return res.status(200).json({ users, departments });
   }
 );
@@ -111,11 +128,12 @@ router.get(
     return res.status(200).send(users);
   }
 );
-// @route   GET api/user/:type/:orderId
+
+// @route   GET api/user/:formType/:type/:orderId
 // @desc    User form data fetching route
 // @access  Private(Company)
 router.get(
-  '/:type/:orderId',
+  '/:formType/:type/:orderId',
   isLoggedIn,
   guard.check('company'),
   companyCheck,
@@ -146,7 +164,7 @@ router.get(
     const getControlFormData = async () => {
       const receivingPortBase = 8080;
       const [[{ receivingPort }], csTypes] = await Promise.all([
-        getReceivingPort(receivingPortBase),
+        getReceivingPort(receivingPortBase, req.params.formType),
         getControlStationTypes(req.user.id),
       ]);
       return { receivingPort, csTypes };
@@ -421,11 +439,11 @@ router.put(
         'port',
         'display_name',
         'device_id',
-        'rec_port',
         'contact_no',
         'cs_type_id',
         'dept_id',
-      ])
+      ]),
+      req.params.id
     );
     await createCompanyActivityLog('Control Station User Modify', req.user.id);
     return res.status(200).send('updated');

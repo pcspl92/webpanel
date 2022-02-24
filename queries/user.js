@@ -142,18 +142,21 @@ const getCSUserByName = (displayName) => {
   return query(sql);
 };
 
-const updateCSUser = ({
-  ip_address: ipAddress,
-  port,
-  display_name: displayName,
-  device_id: deviceId,
-  rec_port: recPort,
-  contact_no: contactNo,
-  cs_type_id: csTypeId,
-  dept_id: deptId,
-}) => {
+const updateCSUser = (
+  {
+    ip_address: ipAddress,
+    port,
+    display_name: displayName,
+    device_id: deviceId,
+    contact_no: contactNo,
+    cs_type_id: csTypeId,
+    dept_id: deptId,
+  },
+  userId
+) => {
   const sql = `UPDATE control_station_user SET remote_ip_address='${ipAddress}', remote_port=${port}, display_name='${displayName}', 
-               device_id='${deviceId}', receiving_port=${recPort}, cs_type_id=${csTypeId}, contact_no='${contactNo}', department_id=${deptId};`;
+               device_id='${deviceId}', cs_type_id=${csTypeId}, contact_no='${contactNo}', department_id=${deptId} 
+               WHERE id=${userId}`;
   return query(sql);
 };
 
@@ -191,14 +194,36 @@ const getControlStations = (deptIds) => {
   return query(sql);
 };
 
-const getReceivingPort = (basePort) => {
-  const sql = `SELECT IF(MAX(receiving_port) < ${basePort}, ${basePort}, 
-               MAX(receiving_port)+1 ) AS receivingPort FROM control_station_user;`;
+const getReceivingPort = (basePort, formType) => {
+  let sql;
+  if (formType === 'create')
+    sql = `SELECT IF(MAX(receiving_port) < ${basePort}, ${basePort}, 
+           MAX(receiving_port)+1 ) AS receivingPort FROM control_station_user;`;
+  else
+    sql = `SELECT receiving_port AS receivingPort FROM control_station_user 
+           WHERE id=(
+             SELECT user_id FROM licenses WHERE order_id=6
+           );`;
   return query(sql);
 };
 
 const getControlStationTypes = (comapnyId) => {
   const sql = `SELECT id, name FROM control_station_types WHERE company_id=${comapnyId};`;
+  return query(sql);
+};
+
+const getDataForUserModify = (deptIds) => {
+  const sql = `SELECT u.id, u.display_name, u.user_type, l.order_id 
+              FROM users u
+               JOIN licenses l ON l.user_id = u.id
+               JOIN (SELECT id, license_type FROM orders) AS o ON l.order_id = o.id
+               WHERE department_id IN (${deptIds}) AND o.license_type = u.user_type
+               UNION ALL
+               SELECT u.id, u.display_name, 'control' AS user_type, l.order_id
+               FROM control_station_user u
+               JOIN licenses l ON l.user_id = u.id
+               JOIN (SELECT id, license_type FROM orders) AS o ON l.order_id = o.id
+               WHERE department_id IN (${deptIds}) AND o.license_type = 'control';`;
   return query(sql);
 };
 
@@ -226,4 +251,5 @@ module.exports = {
   getControlStations,
   getReceivingPort,
   getControlStationTypes,
+  getDataForUserModify,
 };
