@@ -510,7 +510,7 @@ TGList.map((val,id)=>(<option key={id}>{val.tg_name}</option>))
   const form = () => (
       <form className="passback" >
         <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
-          CREATE NEW USER ACCOUNT
+          MODIFY USER ACCOUNT
         </div>
         Available Balance : {user.balance}
         <div className="formarea">
@@ -603,36 +603,7 @@ departmentList.map((val,id)=>(<option key={id} >{val.department_name}</option>))
               }
             </select>
           </div>
-          <br/>
-          <div>
-            <span>
-              <label htmlFor="confirm">Post-Fix Starting Number : &nbsp;</label>
-            </span>
-            <input
-              type="text"
-              id="name"
-              onChange={(event) => {
-                setpostfixNo(event.target.value);
-              }}
-              value={postfixNo}
-              required
-            />
-          </div>
-          <br/>
-          <div>
-            <span>
-              <label htmlFor="confirm">No. of Accounts : &nbsp;</label>
-            </span>
-            <input
-              type="number"
-              id="name"
-              onChange={(event) => {
-                setnumberofAccounts(event.target.value);
-              }}
-              value={numberofAccounts}
-              required
-            />
-          </div>
+    
         </div>
         <button> UPDATE </button>
 
