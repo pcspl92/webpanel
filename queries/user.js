@@ -58,11 +58,19 @@ const createUserAddData = (
 };
 
 const mapUserTalkgroup = (tgIds, defTg, userId) => {
-  const sql = tgIds.reduce((acc, tgId, index) => {
-    if (index === tgIds.length - 1)
-      return `${acc} (${userId}, ${tgId}, ${tgId === defTg ? 1 : 0});`;
-    return `${acc} (${userId}, ${tgId}, ${tgId === defTg ? 1 : 0}),`;
-  }, `INSERT INTO user_talkgroup_maps (user_id, talkgroup_id, default_tg) VALUES`);
+  let sql;
+  if (defTg)
+    sql = tgIds.reduce((acc, tgId, index) => {
+      if (index === tgIds.length - 1)
+        return `${acc} (${userId}, ${tgId}, ${tgId === defTg ? 1 : 0});`;
+      return `${acc} (${userId}, ${tgId}, ${tgId === defTg ? 1 : 0}),`;
+    }, `INSERT INTO user_talkgroup_maps (user_id, talkgroup_id, default_tg) VALUES`);
+  else
+    sql = tgIds.reduce((acc, tgId, index) => {
+      if (index === tgIds.length - 1) return `${acc} (${userId}, ${tgId});`;
+      return `${acc} (${userId}, ${tgId}),`;
+    }, `INSERT INTO user_talkgroup_maps (user_id, talkgroup_id) VALUES`);
+
   return query(sql);
 };
 
