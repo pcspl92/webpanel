@@ -29,6 +29,11 @@ const {
   getReceivingPort,
   getControlStationTypes,
   getDataForUserModify,
+  getPostFixNumber,
+  getCSPostFixNumber,
+  createBulkPttUsers,
+  createBulkDispatcherUsers,
+  createBulkControlStationUsers,
 } = require('../queries/user');
 const {
   createCompanyActivityLog,
@@ -36,7 +41,7 @@ const {
 } = require('../queries/company');
 const { getTGs } = require('../queries/talkgroup');
 const { getContactLists } = require('../queries/contactlist');
-const { getFeatures, getLicenseIds } = require('../queries/order');
+const { getFeatures, getLicenseIds, getLicenses } = require('../queries/order');
 const { hashPassword } = require('../utils/bcrypt');
 
 const router = express.Router();
@@ -447,6 +452,153 @@ router.put(
     );
     await createCompanyActivityLog('Control Station User Modify', req.user.id);
     return res.status(200).send('updated');
+  }
+);
+
+// @route   POST api/user/bulk/ptt
+// @desc    Bulk PTT user creation route
+// @access  Private(Company)
+router.post(
+  '/bulk/ptt',
+  isLoggedIn,
+  guard.check('company'),
+  async (req, res) => {
+    const result = await getPostFixNumber(req.body.username_prefix);
+    if (result.length) {
+      const nextPostfix =
+        +result[0].topOccurance.split(req.body.username_prefix)[1] + 1;
+      if (req.body.postfix_number < nextPostfix)
+        return res.status(400).json({
+          user: `Postfix number should be greater than or eqaul to ${nextPostfix}.`,
+        });
+    }
+
+    const licenses = await getLicenses(req.body.order_id);
+    const licenseIds = licenses.reduce((acc, val) => [...acc, val.id], []);
+    if (req.body.qty > licenseIds.length)
+      return res.status(400).json({
+        user: `You can create at most ${licenseIds.length} user accounts from selected order.`,
+      });
+
+    const password = await hashPassword(req.body.password);
+
+    await createBulkPttUsers(
+      req.body.postfix_number,
+      req.body.qty,
+      req.body.username_prefix,
+      password,
+      req.body.display_name_prefix,
+      req.body.dept_id,
+      req.body.tg_ids,
+      req.body.def_tg,
+      licenseIds,
+      _.pick(req.body.features, [
+        'grp_call',
+        'enc',
+        'priv_call',
+        'live_gps',
+        'geo_fence',
+        'chat',
+      ]),
+      req.body.contact_number,
+      req.body.contact_list_id
+    );
+    await createCompanyActivityLog('PTT User Create', req.user.id);
+    return res.status(201).send('created');
+  }
+);
+
+// @route   POST api/user/bulk/dispatcher
+// @desc    Bulk Dispatcher user creation route
+// @access  Private(Company)
+router.post(
+  '/bulk/dispatcher',
+  isLoggedIn,
+  guard.check('company'),
+  async (req, res) => {
+    const result = await getPostFixNumber(req.body.username_prefix);
+    if (result.length) {
+      const nextPostfix =
+        +result[0].topOccurance.split(req.body.username_prefix)[1] + 1;
+      if (req.body.postfix_number < nextPostfix)
+        return res.status(400).json({
+          user: `Postfix number should be greater than or eqaul to ${nextPostfix}.`,
+        });
+    }
+
+    const licenses = await getLicenses(req.body.order_id);
+    const licenseIds = licenses.reduce((acc, val) => [...acc, val.id], []);
+    if (req.body.qty > licenseIds.length)
+      return res.status(400).json({
+        user: `You can create at most ${licenseIds.length} user accounts from selected order.`,
+      });
+
+    const password = await hashPassword(req.body.password);
+
+    await createBulkDispatcherUsers(
+      req.body.postfix_number,
+      req.body.qty,
+      req.body.username_prefix,
+      password,
+      req.body.display_name_prefix,
+      req.body.dept_id,
+      req.body.tg_ids,
+      req.body.def_tg,
+      licenseIds,
+      _.pick(req.body.features, [
+        'grp_call',
+        'enc',
+        'priv_call',
+        'live_gps',
+        'geo_fence',
+        'chat',
+      ]),
+      req.body.contact_number,
+      req.body.contact_list_id,
+      req.body.control_ids
+    );
+    await createCompanyActivityLog('Dispatcher User Create', req.user.id);
+    return res.status(201).send('created');
+  }
+);
+
+// @route   POST api/user/bulk/control
+// @desc    Bulk Control Station user creation route
+// @access  Private(Company)
+router.post(
+  '/bulk/control',
+  isLoggedIn,
+  guard.check('company'),
+  async (req, res) => {
+    const result = await getCSPostFixNumber(req.body.display_name_prefix);
+    if (result.length) {
+      const nextPostfix =
+        +result[0].topOccurance.split(req.body.display_name_prefix)[1] + 1;
+      if (req.body.postfix_number < nextPostfix)
+        return res.status(400).json({
+          user: `Postfix number should be greater than or eqaul to ${nextPostfix}.`,
+        });
+    }
+
+    const licenses = await getLicenses(req.body.order_id);
+    const licenseIds = licenses.reduce((acc, val) => [...acc, val.id], []);
+    if (req.body.qty > licenseIds.length)
+      return res.status(400).json({
+        user: `You can create at most ${licenseIds.length} user accounts from selected order.`,
+      });
+
+    await createBulkControlStationUsers(
+      req.body.postfix_number,
+      req.body.qty,
+      req.body.display_name_prefix,
+      req.body.contact_number,
+      req.body.cs_type_id,
+      req.body.dept_id,
+      req.body.receiving_port
+    );
+
+    await createCompanyActivityLog('Control Station User Create', req.user.id);
+    return res.status(201).send('created');
   }
 );
 

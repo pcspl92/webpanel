@@ -1,4 +1,5 @@
 const query = require('../utils/queryTemplate');
+const { talkgroupMap, controlStationMap } = require('../utils/sqlMaps');
 
 const findUserByUsername = (username) => {
   const sql = `SELECT id FROM users WHERE username='${username}'`;
@@ -227,6 +228,144 @@ const getDataForUserModify = (deptIds) => {
   return query(sql);
 };
 
+const getPostFixNumber = (usernamePrefix) => {
+  const sql = `SELECT username AS topOccurance FROM users WHERE id = (
+                 SELECT MAX(id) FROM users WHERE username REGEXP '^${usernamePrefix}'
+               );`;
+  return query(sql);
+};
+
+const getCSPostFixNumber = (displayNamePrefix) => {
+  const sql = `SELECT display_name AS topOccurance FROM control_station_user WHERE id = (
+                 SELECT MAX(id) FROM control_station_user WHERE display_name REGEXP '^${displayNamePrefix}'
+               );`;
+  return query(sql);
+};
+
+const createBulkPttUsers = (
+  postfixNumber,
+  qty,
+  usernamePrefix,
+  password,
+  displayNamePrefix,
+  deptId,
+  tgIds,
+  defTg,
+  licenseIds,
+  {
+    grp_call: grpCall,
+    enc,
+    priv_call: privCall,
+    live_gps: liveGps,
+    geo_fence: geoFence,
+    chat,
+  },
+  contactNumber,
+  contactListId
+) => {
+  const sql = Array(qty)
+    .fill(usernamePrefix)
+    .reduce((acc, val, index) => {
+      const userId = `(SELECT id FROM users WHERE username='${val}${
+        postfixNumber + index
+      }')`;
+
+      return `${acc} INSERT INTO users (user_type, username, password, display_name, department_id) 
+              VALUES ('ptt', '${val}${postfixNumber + index}', 
+             '${password}', 
+             '${displayNamePrefix}${postfixNumber + index}', 
+              ${deptId});
+
+              INSERT INTO users_add_data (contact_no, contact_list_id, user_id) VALUES
+              ('${contactNumber}', ${contactListId}, ${userId});
+
+              INSERT INTO user_features (grp_call, enc, priv_call, live_gps, geo_fence, chat, user_id)
+              VALUES (${grpCall}, ${enc}, ${privCall}, ${liveGps}, ${geoFence}, ${chat}, ${userId});
+
+              UPDATE licenses SET user_id=${userId}
+              WHERE id=${licenseIds[index]};
+
+              ${talkgroupMap(tgIds, defTg, userId)}`;
+    }, ``);
+
+  return query(sql);
+};
+
+const createBulkDispatcherUsers = (
+  postfixNumber,
+  qty,
+  usernamePrefix,
+  password,
+  displayNamePrefix,
+  deptId,
+  tgIds,
+  defTg,
+  licenseIds,
+  {
+    grp_call: grpCall,
+    enc,
+    priv_call: privCall,
+    live_gps: liveGps,
+    geo_fence: geoFence,
+    chat,
+  },
+  contactNumber,
+  contactListId,
+  controlIds
+) => {
+  const sql = Array(qty)
+    .fill(usernamePrefix)
+    .reduce((acc, val, index) => {
+      const userId = `(SELECT id FROM users WHERE username='${val}${
+        postfixNumber + index
+      }')`;
+
+      return `${acc} INSERT INTO users (user_type, username, password, display_name, department_id) 
+              VALUES ('dispatcher', '${val}${postfixNumber + index}', 
+             '${password}', 
+             '${displayNamePrefix}${postfixNumber + index}', 
+              ${deptId});
+
+              INSERT INTO users_add_data (contact_no, contact_list_id, user_id) VALUES
+              ('${contactNumber}', ${contactListId}, ${userId});
+
+              INSERT INTO user_features (grp_call, enc, priv_call, live_gps, geo_fence, chat, user_id)
+              VALUES (${grpCall}, ${enc}, ${privCall}, ${liveGps}, ${geoFence}, ${chat}, ${userId});
+
+              UPDATE licenses SET user_id=${userId}
+              WHERE id=${licenseIds[index]};
+
+              ${talkgroupMap(tgIds, defTg, userId)}
+              
+              ${controlStationMap(controlIds, userId)}`;
+    }, ``);
+
+  return query(sql);
+};
+
+const createBulkControlStationUsers = (
+  postfixNumber,
+  qty,
+  displayNamePrefix,
+  contactNo,
+  csTypeId,
+  deptId,
+  receivingPort
+) => {
+  const sql = Array(qty)
+    .fill(displayNamePrefix)
+    .reduce(
+      (acc, val, index) =>
+        `${acc} INSERT INTO control_station_user (display_name, receiving_port, cs_type_id, contact_no, department_id)
+            VALUES ('${val}${postfixNumber + index}', ${
+          receivingPort + index
+        }, ${csTypeId}, '${contactNo}', ${deptId});`,
+      ``
+    );
+
+  return query(sql);
+};
+
 module.exports = {
   findUserByUsername,
   findUserById,
@@ -252,4 +391,9 @@ module.exports = {
   getReceivingPort,
   getControlStationTypes,
   getDataForUserModify,
+  getPostFixNumber,
+  getCSPostFixNumber,
+  createBulkPttUsers,
+  createBulkDispatcherUsers,
+  createBulkControlStationUsers,
 };

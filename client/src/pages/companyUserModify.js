@@ -1,10 +1,7 @@
-/* eslint-disable no-unused-vars */
 import '../css/licenseModify.css';
 
 import React, { useState, useRef, useEffect } from 'react';
 import generator from 'generate-password-browser';
-import * as yup from 'yup';
-import { useAuth } from '../hooks/useAuth';
 
 import axios from '../utils/axios';
 
