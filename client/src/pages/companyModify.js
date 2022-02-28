@@ -205,7 +205,7 @@ const CompanyModify = () => {
           <input
             type="text"
             id="display_name"
-            style={{ width: '12vw' }}
+            
             onChange={(event) => {
               setcompnewname(event.target.value);
             }}
@@ -221,7 +221,7 @@ const CompanyModify = () => {
           <input
             type="text"
             id="contact_number"
-            style={{ width: '12vw' }}
+        
             onChange={(event) => {
               setcontact(event.target.value);
             }}

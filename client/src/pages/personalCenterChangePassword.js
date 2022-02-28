@@ -5,19 +5,33 @@ import axios from '../utils/axios';
 
 const ChangePassword = () => {
   const [password, setPassword] = useState('');
+  const [errorm, seterrorm] = useState('');
+
+  const [confirmPassword, setconfirmPassword] = useState('');
+
   const [disabled, setDisabled] = useState(false);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
-
+if(confirmPassword===password)
+{
     try {
+
       await axios.put('/auth/password/agent', { password });
       setDisabled(false);
       setPassword('');
     } catch (err) {
       console.log(err.response.data);
     }
+ 
+   }
+  else{
+    seterrorm("Confirm Password and Password should match");
+    setDisabled(false);
+
+  }
+  
   };
 
   return (
@@ -50,11 +64,14 @@ const ChangePassword = () => {
             type="password"
             id="id2"
             onChange={(event) => {
-              setPassword(event.target.value);
+              setconfirmPassword(event.target.value);
             }}
             required
           />
         </div>
+        <br/>
+        <div className="text-danger fw-600">{errorm}</div>
+
       </div>
       <br />
       <button type="submit" disabled={disabled}>
