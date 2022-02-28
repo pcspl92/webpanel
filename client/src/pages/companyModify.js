@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import generator from 'generate-password-browser';
+import * as yup from 'yup';
 
 import { useAuth } from '../hooks/useAuth';
 import '../css/companyModify.css';
@@ -18,7 +19,7 @@ const CompanyModify = () => {
   const [loading, setLoading] = useState(true);
   const [subagent, setSubagent] = useState(0);
   const [company, setCompany] = useState(0);
-  const [err, setErr] = useState({});
+  const [errors, setErrors] = useState({});
 
   const { user } = useAuth();
 
@@ -34,8 +35,18 @@ const CompanyModify = () => {
     })();
   }, []);
 
+  const validateForm = async (data) => {
+    const schema = yup.object().shape({
+      password: yup.string().required('Password is required'),
+      display_name: yup.string().required('Company name is requried'),
+      contact_number: yup.string().required('Contact Number is required'),
+      agent_id: yup.number().min(1, 'Select a sub-agent'),
+      company_id: yup.number().min(1, 'Select a company'),
+    });
+    await schema.validate(data, { abortEarly: false });
+  };
+
   const reset = () => {
-    setDisabled(false);
     setPassword('');
     setcompnewname('');
     setcontact('');
@@ -51,31 +62,38 @@ const CompanyModify = () => {
       password,
       display_name: compnewname,
       contact_number: contactNumber,
-      agent_id: subagent,
+      agent_id: Number(subagent),
       status: active ? 'active' : 'paused',
     };
 
     try {
+      await validateForm({ ...data, company_id: Number(company) });
       await axios.put(`/company/${company}`, data);
     } catch (error) {
-      setErr(error.response.data);
+      if (error.inner.length) {
+        const validateErrors = error.inner.reduce(
+          (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+          {}
+        );
+        setErrors(validateErrors);
+      } else {
+        console.log(error.response.data);
+      }
     }
+
+    setDisabled(false);
   };
 
   const relieveCompany = async () => {
-    try {
-      await axios.put(`/company/${company}/relieve`);
-    } catch (error) {
-      setErr(error.response.data);
-    }
+    if (!+company) setErrors({ company_id: 'Select a company' });
+    else await axios.put(`/company/${company}/relieve`);
   };
 
-  const deleteCompany = async (companyId) => {
-    try {
+  const deleteCompany = async () => {
+    if (!+company) setErrors({ company_id: 'Select a company' });
+    else {
       await axios.delete(`/company/${company}`);
-      setcompanylist(companylist.filter((com) => com.id !== +companyId));
-    } catch (error) {
-      setErr(error.response.data);
+      setcompanylist(companylist.filter((com) => com.id !== +company));
     }
   };
 
@@ -88,10 +106,10 @@ const CompanyModify = () => {
         await modifyCompany();
         break;
       case 'relieve':
-        await relieveCompany(company);
+        await relieveCompany();
         break;
       case 'delete':
-        await deleteCompany(company);
+        await deleteCompany();
         break;
       default:
         break;
@@ -139,15 +157,18 @@ const CompanyModify = () => {
             ))}
           </select>
         </div>
+        <div className="text-danger fw-500">{errors?.company_id}</div>
 
         <div className="mt-3 me-2">
           <button type="submit" onClick={() => setType('delete')}>
             Delete
           </button>
           &nbsp; &nbsp; &nbsp;
-          <button type="submit" onClick={() => setType('relieve')}>
-            Relieve
-          </button>
+          {user.type === 'subagent' ? (
+            <button type="submit" onClick={() => setType('relieve')}>
+              Relieve
+            </button>
+          ) : null}
         </div>
         <div className="mt-3 me-5">
           <span>
@@ -193,6 +214,7 @@ const CompanyModify = () => {
             RESET
           </button>
         </div>
+        <div className="text-danger fw-500">{errors?.password}</div>
         {generated && (
           <div className="mt-3 me-5">New Generated Password : {password}</div>
         )}
@@ -212,6 +234,7 @@ const CompanyModify = () => {
             value={compnewname}
           />
         </div>
+        <div className="text-danger fw-500">{errors?.display_name}</div>
         <div className="mt-3 ">
           <span>
             <label htmlFor="contact_number">
@@ -228,7 +251,7 @@ const CompanyModify = () => {
             value={contactNumber}
           />
         </div>
-
+        <div className="text-danger fw-500">{errors?.contact_number}</div>
         <div className="mt-3">
           <span>
             <label htmlFor="subagent">Sub-Agent :&nbsp;&nbsp;&nbsp; </label>
@@ -249,11 +272,11 @@ const CompanyModify = () => {
             ))}
           </select>
         </div>
+        <div className="text-danger fw-500">{errors?.agent_id}</div>
       </div>
       <button className="mt-3" type="submit" disabled={disabled}>
         UPDATE
       </button>
-      <div className="text-danger">{err?.company}</div>
     </form>
   );
 

@@ -25,7 +25,8 @@ export default function LicenseView() {
 
   const filter = () => {
     setupdatedlist(
-      tableData.filter((val) => (
+      tableData.filter(
+        (val) =>
           (companyName.length &&
             val.company_name
               .toLowerCase()
@@ -34,7 +35,7 @@ export default function LicenseView() {
             val.agent_name.toLowerCase().includes(agentName.toLowerCase())) ||
           (expdate.length && moment(val.expiry_date).isAfter(expdate)) ||
           (orderId.length && val.order_id === Number(orderId))
-        ))
+      )
     );
   };
 
@@ -138,32 +139,28 @@ export default function LicenseView() {
           <th>Expiry Date</th>
           <th>Agent Name</th>
         </tr>
-        {updatedlist.map((val, index) => {
-          // eslint-disable-next-line no-param-reassign
-          index+=1;
-          return (
-            <tr key={val.id} >
-              <th>{index}</th>
-              <th>{val.order_id}</th>
-              <th>{val.company_name}</th>
-              <th>{moment(val.timestamp).format('DD-MM-YYYY')}</th>
-              <th>{val.license_type}</th>
-              <th>{val.renewal_type}</th>
-              <th>{val.active}</th>
-              <th>{val.available}</th>
-              <th>
-                {val.enc ? 'Encryption, ' : null}
-                {val.grp_call ? 'Group Call, ' : null}
-                {val.chat ? 'Chat, ' : null}
-                {val.priv_call ? 'Private Call, ' : null}
-                {val.geo_fence ? 'Geo Fence, ' : null}
-                {val.live_gps ? 'Live GPS' : null}
-              </th>
-              <th>{moment(val.expiry_date).format('DD-MM-YYYY')}</th>
-              <th>{val.agent_name}</th>
-            </tr>
-          );
-        })}
+        {updatedlist.map((val, index) => (
+          <tr key={val.id}>
+            <th>{index + 1}</th>
+            <th>{val.order_id}</th>
+            <th>{val.company_name}</th>
+            <th>{moment(val.order_date).format('DD-MM-YYYY')}</th>
+            <th>{val.license_type}</th>
+            <th>{val.renewal_type}</th>
+            <th>{val.active}</th>
+            <th>{val.available}</th>
+            <th>
+              {val.enc ? 'Encryption, ' : null}
+              {val.grp_call ? 'Group Call, ' : null}
+              {val.chat ? 'Chat, ' : null}
+              {val.priv_call ? 'Private Call, ' : null}
+              {val.geo_fence ? 'Geo Fence, ' : null}
+              {val.live_gps ? 'Live GPS' : null}
+            </th>
+            <th>{moment(val.expiry_date).format('DD-MM-YYYY')}</th>
+            <th>{val.agent_name}</th>
+          </tr>
+        ))}
       </table>
     </div>
   );
