@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef } from 'react';
-import * as yup from 'yup';
 import '../css/licenseModify.css';
 import '../css/companyUserCreate.css';
 import axios from '../utils/axios';
@@ -8,36 +6,27 @@ import axios from '../utils/axios';
 function UserCreate() {
   const [updateType, setupdateType] = useState('0');
   const [accountName, setaccountName] = useState('');
-  const [userdispName, setuserDispName] = useState('');
   const [password, setPassword] = useState('');
-  const [displayName, setDisplaynamw] = useState('');
-  const [controlStationTypeList, setcontrolStationTypeList] = useState([]);
-  const [controlStationType, setcontrolStationType] = useState([]);
+  const [controlStationType, setcontrolStationType] = useState('0');
   const [remoteIDadd, setRemoteIPadd] = useState('');
   const [remotePortadd, setRemotePortadd] = useState('');
   const [deviceID, setDeviceID] = useState('');
-  const [receivingPortadd, setReceivingPortadd] = useState('');
   const [contactNum, setcontactNum] = useState(0);
   const [department, setDepartment] = useState('');
   const [departmentList, setDepartmentList] = useState([]);
   const [order, setorder] = useState('0');
   const [orderlist, setorderlist] = useState([]);
-  const [contactList, setContactlist] = useState([]);
+  const [contactList, setContactlist] = useState('0');
   const [loading, setLoading] = useState(true);
   const [disabled, setDisabled] = useState(false);
-  const [TGList, setTGList] = useState([]);
-  const [CSList, setCSList] = useState([]);
   const [talkgroup, setTalkgroup] = useState();
-  const [controlstation, setControlStation] = useState();
   const [updOrderList, setUpdOrderList] = useState([]);
-
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [selectedTG, setSelectedTG] = useState([]);
   const [selectedCS, setSelectedCS] = useState([]);
-  const [showacc, setshowacc] = useState(true);
-  const [company, setcompany] = useState('0');
   const [formLoading, setFormLoading] = useState(false);
   const [formData, setFormData] = useState({});
-  const [disableSelect, setDisableSelect] = useState(true);
   const [featuresGlobal, setFeaturesGlobal] = useState({
     grp_call: false,
     enc: false,
@@ -46,65 +35,24 @@ function UserCreate() {
     geo_fence: false,
     chat: false,
   });
-  const selectedUserIds = useRef(new Set());
   const selectedTGIds = useRef(new Set());
   const selectedCSIds = useRef(new Set());
-  const schema = yup.object().shape({
-    username: yup
-      .string()
-      .typeError('Username must be string')
-      .required('This field is required')
-      .min(3, 'Username must be 3-40 characters long')
-      .max(40, 'Username must be 3-40 characters long'),
-    password: yup
-      .string()
-      .typeError('Password must be string')
-      .required('This field is required')
-      .min(8, 'Password must be 8-30 characters long')
-      .max(30, 'Password must be 8-30 characters long'),
-    confirm_password: yup
-      .string()
-      .typeError('Confirm Password must be string')
-      .oneOf([yup.ref('password'), null], 'Passwords must match'),
-    display_name: yup
-      .string()
-      .typeError('Sub-Agent name must be string')
-      .required('This field is required')
-      .min(10, 'Sub-Agent name must be 10-90 characters long')
-      .max(90, 'Sub-Agent name must be 10-90 characters long'),
-    contact_number: yup
-      .number()
-      .typeError('Contact Number must be number')
-      .min(10, 'Contact number must be 10 characters long')
-      .max(10, 'Contact number must be 10 characters long')
-      .required('This filed is required'),
-  });
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get('/user/company-panel/user-panel');
-      console.log(data);
+      const { data } = await axios.get('/user/company-panel/user-create');
       setorderlist(data.users);
       setDepartmentList(data.departments);
       setLoading(false);
     })();
   }, []);
-  // transfers users to new list
 
   function onTGSelect() {
     const selected = [];
     selectedTGIds.current.forEach((id) => {
-      selected.push(TGList.filter((TGid) => TGid.id === id)[0]);
+      selected.push(formData.tgs.filter((TGid) => TGid.id === id)[0]);
     });
     setSelectedTG(selected);
-  }
-
-  function onCSSelect() {
-    const selected = [];
-    selectedCSIds.current.forEach((id) => {
-      selected.push(CSList.filter((usersel) => usersel.id === id)[0]);
-    });
-    setSelectedCS(selected);
   }
 
   const SelectTalkGroups = () => (
@@ -112,7 +60,7 @@ function UserCreate() {
       Select Talkgroups
       <div className="comp">
         <div className="accbox">
-          {formData.tgs.map((val) => (
+          {formData.tgs?.map((val) => (
             <div key={val.id}>
               <input
                 type="checkbox"
@@ -133,57 +81,53 @@ function UserCreate() {
           &nbsp;&nbsp; &gt; &gt; &nbsp;&nbsp;
         </button>
         <div className="accbox">
-          {(selectedTG.length &&
-            selectedTG.map((val) => <div key={val.id}>{val.tg_name}</div>)) ||
+          {selectedTG?.map((val) => <div key={val.id}>{val.tg_name}</div>) ||
             null}
         </div>
       </div>
     </div>
   );
-
-  const SelectControlStations = () => (
-    <div>
-      Select Control Stations
-      <div className="comp">
-        <div className="accbox">
-          {formData.controlStations.map((val) => (
-            <div key={val.id}>
-              <input
-                type="checkbox"
-                id="subitem"
-                name="selection"
-                defaultChecked={selectedUserIds.current.has(val.id)}
-                onClick={() => {
-                  selectedCSIds.current.has(val.id)
-                    ? selectedCSIds.current.delete(val.id)
-                    : selectedCSIds.current.add(val.id);
-                }}
-              />
-              <label htmlFor="selection">{val.display_name}</label>
-            </div>
-          ))}
-        </div>
-        <button type="button" onClick={() => onCSSelect()}>
-          &nbsp;&nbsp; &gt; &gt; &nbsp;&nbsp;
-        </button>
-        <div className="accbox">
-          {(selectedCS.length &&
-            selectedCS.map((val) => (
-              <div key={val.id}>{val.display_name}</div>
-            ))) ||
-            null}
-        </div>
-      </div>
-    </div>
-  );
-
-  const setShow = (show, users) => {
-    users.forEach(({ id }) => selectedUserIds.current.add(id));
-    setshowacc(show);
-  };
 
   const setFeature = (checked, feature) => {
     setFeaturesGlobal({ ...featuresGlobal, [feature]: checked });
+  };
+
+  const resetPttForm = () => {
+    setaccountName('');
+    setPassword('');
+    setcontactNum('');
+    setDepartment('');
+    setDisplayName('');
+    setFeaturesGlobal('');
+    setContactlist('');
+    setTalkgroup('');
+    setConfirmPassword('');
+    setSelectedTG([]);
+    selectedTGIds.current.clear();
+  };
+
+  const pttSubmit = async () => {
+    const tgIds = [];
+    selectedTGIds.current.forEach((tgId) => tgIds.push(tgId));
+    const data = {
+      username: accountName,
+      password,
+      display_name: displayName,
+      order_id: Number(order),
+      dept_id: Number(department),
+      features: featuresGlobal,
+      contact_number: contactNum,
+      contact_list_id: Number(contactList),
+      tg_ids: tgIds,
+      def_tg: Number(talkgroup),
+    };
+
+    try {
+      await axios.post('/user/ptt', data);
+      resetPttForm();
+    } catch (err) {
+      console.log(err.response.data);
+    }
   };
 
   const PTTUserForm = () => (
@@ -221,7 +165,7 @@ function UserCreate() {
             onChange={(event) => {
               setPassword(event.target.value);
             }}
-            value={accountName}
+            value={password}
             required
           />
         </div>
@@ -234,9 +178,9 @@ function UserCreate() {
             type="password"
             id="name"
             onChange={(event) => {
-              setaccountName(event.target.value);
+              setConfirmPassword(event.target.value);
             }}
-            value={accountName}
+            value={confirmPassword}
             required
           />
         </div>
@@ -249,9 +193,9 @@ function UserCreate() {
             type="text"
             id="name"
             onChange={(event) => {
-              setaccountName(event.target.value);
+              setDisplayName(event.target.value);
             }}
-            value={accountName}
+            value={displayName}
             required
           />
         </div>
@@ -273,7 +217,7 @@ function UserCreate() {
             required
           >
             <option value="0">Select Default Talkgroup</option>
-            {formData.tgs.map((val, id) => (
+            {selectedTG?.map((val) => (
               <option key={val.id} value={val.id}>
                 {val.tg_name}
               </option>
@@ -288,13 +232,13 @@ function UserCreate() {
           <select
             id="id1"
             onChange={(e) => {
-              setControlStation(e.target.value);
+              setContactlist(e.target.value);
             }}
-            value={controlstation}
+            value={contactList}
             required
           >
             <option value="0">Select Contact List</option>
-            {formData.cls.map((val, id) => (
+            {formData.cls?.map((val) => (
               <option key={val.id} value={val.id}>
                 {val.display_name}
               </option>
@@ -304,7 +248,7 @@ function UserCreate() {
         <br />
         <label>Features : </label>&nbsp;
         <br />
-        {formData.features.grp_call ? (
+        {formData.features?.grp_call ? (
           <>
             <input
               type="checkbox"
@@ -317,7 +261,7 @@ function UserCreate() {
             <label htmlFor="feature1"> Group Call</label>&nbsp;&nbsp;
           </>
         ) : null}
-        {formData.features.priv_call ? (
+        {formData.features?.priv_call ? (
           <>
             <input
               type="checkbox"
@@ -330,7 +274,7 @@ function UserCreate() {
             <label htmlFor="feature2"> Private Call</label>&nbsp;&nbsp;
           </>
         ) : null}
-        {formData.features.enc ? (
+        {formData.features?.enc ? (
           <>
             <input
               type="checkbox"
@@ -343,7 +287,7 @@ function UserCreate() {
             <label htmlFor="feature3"> Encryption </label>&nbsp;&nbsp;
           </>
         ) : null}
-        {formData.features.live_gps ? (
+        {formData.features?.live_gps ? (
           <>
             <input
               type="checkbox"
@@ -356,7 +300,7 @@ function UserCreate() {
             <label htmlFor="feature3"> Live GPS </label>&nbsp;&nbsp;
           </>
         ) : null}
-        {formData.features.geo_fence ? (
+        {formData.features?.geo_fence ? (
           <>
             <input
               type="checkbox"
@@ -369,7 +313,7 @@ function UserCreate() {
             <label htmlFor="feature3"> Geo-Fence </label>&nbsp;&nbsp;
           </>
         ) : null}
-        {formData.features.chat ? (
+        {formData.features?.chat ? (
           <>
             <input
               type="checkbox"
@@ -386,6 +330,92 @@ function UserCreate() {
       <br />{' '}
     </div>
   );
+
+  function onCSSelect() {
+    const selected = [];
+    selectedCSIds.current.forEach((id) => {
+      selected.push(
+        formData.controlStations.filter((usersel) => usersel.id === id)[0]
+      );
+    });
+    setSelectedCS(selected);
+  }
+
+  const SelectControlStations = () => (
+    <div>
+      Select Control Stations
+      <div className="comp">
+        <div className="accbox">
+          {formData.controlStations?.map((val) => (
+            <div key={val.id}>
+              <input
+                type="checkbox"
+                id="subitem"
+                name="selection"
+                defaultChecked={selectedCSIds.current.has(val.id)}
+                onClick={() => {
+                  selectedCSIds.current.has(val.id)
+                    ? selectedCSIds.current.delete(val.id)
+                    : selectedCSIds.current.add(val.id);
+                }}
+              />
+              <label htmlFor="selection">{val.display_name}</label>
+            </div>
+          ))}
+        </div>
+        <button type="button" onClick={() => onCSSelect()}>
+          &nbsp;&nbsp; &gt; &gt; &nbsp;&nbsp;
+        </button>
+        <div className="accbox">
+          {selectedCS?.map((val) => (
+            <div key={val.id}>{val.display_name}</div>
+          )) || null}
+        </div>
+      </div>
+    </div>
+  );
+
+  const resetDispatcherForm = () => {
+    setaccountName('');
+    setPassword('');
+    setcontactNum('');
+    setDepartment('');
+    setDisplayName('');
+    setFeaturesGlobal('');
+    setContactlist('');
+    setTalkgroup('');
+    setConfirmPassword('');
+    setSelectedTG([]);
+    setSelectedCS([]);
+    selectedTGIds.current.clear();
+    selectedCSIds.current.clear();
+  };
+
+  const dispatcherSubmit = async () => {
+    const tgIds = [];
+    const csIds = [];
+    selectedTGIds.current.forEach((tgId) => tgIds.push(tgId));
+    selectedCSIds.current.forEach((csId) => csIds.push(csId));
+    const data = {
+      username: accountName,
+      password,
+      display_name: displayName,
+      order_id: Number(order),
+      dept_id: Number(department),
+      features: featuresGlobal,
+      contact_number: contactNum,
+      contact_list_id: Number(contactList),
+      tg_ids: tgIds,
+      control_ids: csIds,
+    };
+
+    try {
+      await axios.post('/user/dispatcher', data);
+      resetDispatcherForm();
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  };
 
   const DispatcherForm = () => (
     <div className="box2">
@@ -422,7 +452,7 @@ function UserCreate() {
             onChange={(event) => {
               setPassword(event.target.value);
             }}
-            value={accountName}
+            value={password}
             required
           />
         </div>
@@ -435,9 +465,9 @@ function UserCreate() {
             type="password"
             id="name"
             onChange={(event) => {
-              setaccountName(event.target.value);
+              setConfirmPassword(event.target.value);
             }}
-            value={accountName}
+            value={confirmPassword}
             required
           />
         </div>
@@ -450,9 +480,9 @@ function UserCreate() {
             type="text"
             id="name"
             onChange={(event) => {
-              setuserDispName(event.target.value);
+              setDisplayName(event.target.value);
             }}
-            value={accountName}
+            value={displayName}
             required
           />
         </div>
@@ -464,22 +494,28 @@ function UserCreate() {
       <br />
       <div>
         <span>
-          <label htmlFor="confirm">Assign Contact List : &nbsp;</label>
+          <label htmlFor="lictype">Assign Contact List: &nbsp;</label>
         </span>
-        <input
-          type="text"
-          id="name"
-          onChange={(event) => {
-            setaccountName(event.target.value);
+        <select
+          id="id1"
+          onChange={(e) => {
+            setContactlist(e.target.value);
           }}
-          value={accountName}
+          value={contactList}
           required
-        />
+        >
+          <option value="0">Select Contact List</option>
+          {formData.cls?.map((val) => (
+            <option key={val.id} value={val.id}>
+              {val.display_name}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         <label>Features : </label>&nbsp;
         <br />
-        {formData.features.grp_call ? (
+        {formData.features?.grp_call ? (
           <>
             <input
               type="checkbox"
@@ -492,7 +528,7 @@ function UserCreate() {
             <label htmlFor="feature1"> Group Call</label>&nbsp;&nbsp;
           </>
         ) : null}
-        {formData.features.priv_call ? (
+        {formData.features?.priv_call ? (
           <>
             <input
               type="checkbox"
@@ -505,7 +541,7 @@ function UserCreate() {
             <label htmlFor="feature2"> Private Call</label>&nbsp;&nbsp;
           </>
         ) : null}
-        {formData.features.enc ? (
+        {formData.features?.enc ? (
           <>
             <input
               type="checkbox"
@@ -518,7 +554,7 @@ function UserCreate() {
             <label htmlFor="feature3"> Encryption </label>&nbsp;&nbsp;
           </>
         ) : null}
-        {formData.features.live_gps ? (
+        {formData.features?.live_gps ? (
           <>
             <input
               type="checkbox"
@@ -531,7 +567,7 @@ function UserCreate() {
             <label htmlFor="feature3"> Live GPS </label>&nbsp;&nbsp;
           </>
         ) : null}
-        {formData.features.geo_fence ? (
+        {formData.features?.geo_fence ? (
           <>
             <input
               type="checkbox"
@@ -544,7 +580,7 @@ function UserCreate() {
             <label htmlFor="feature3"> Geo-Fence </label>&nbsp;&nbsp;
           </>
         ) : null}
-        {formData.features.chat ? (
+        {formData.features?.chat ? (
           <>
             <input
               type="checkbox"
@@ -561,6 +597,37 @@ function UserCreate() {
       <br />{' '}
     </div>
   );
+
+  const resetControlForm = () => {
+    setcontrolStationType('0');
+    setRemoteIPadd('');
+    setRemotePortadd('');
+    setDisplayName('');
+    setDeviceID('');
+    setcontactNum('');
+    setDepartment('');
+  };
+
+  const controlSubmit = async () => {
+    const data = {
+      ip_address: remoteIDadd,
+      port: Number(remotePortadd),
+      display_name: displayName,
+      device_id: deviceID,
+      rec_port: formData.receivingPort,
+      contact_no: contactNum,
+      cs_type_id: Number(controlStationType),
+      dept_id: Number(department),
+      order_id: Number(order),
+    };
+
+    try {
+      await axios.post('/user/control', data);
+      resetControlForm();
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  };
 
   const ControlStationForm = () => (
     <div className="box2">
@@ -585,7 +652,7 @@ function UserCreate() {
             required
           >
             <option value="0">Selct Control Station Type</option>
-            {formData.csTypes.map((val, id) => (
+            {formData.csTypes?.map((val) => (
               <option key={val.id} value={val.id}>
                 {val.name}
               </option>
@@ -631,9 +698,9 @@ function UserCreate() {
             type="text"
             id="add"
             onChange={(event) => {
-              setuserDispName(event.target.value);
+              setDisplayName(event.target.value);
             }}
-            value={userdispName}
+            value={displayName}
             required
           />
         </div>
@@ -660,26 +727,46 @@ function UserCreate() {
     </div>
   );
 
-  const selectType = (type) => {
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setDisabled(true);
+
+    switch (updateType) {
+      case 'ptt':
+        await pttSubmit();
+        break;
+      case 'dispatcher':
+        await dispatcherSubmit();
+        break;
+      case 'control':
+        await controlSubmit();
+        break;
+      default:
+    }
+    setDisabled(false);
+  };
+
+  const onSelectType = (type) => {
+    setUpdOrderList([]);
     if (type !== '0') {
       const orderIds = orderlist.filter((data) => data.license_type === type);
-      console.log(orderIds);
       setUpdOrderList(orderIds);
-    } else setUpdOrderList([]);
+    }
     setupdateType(type);
   };
 
   const getFormData = async (orderId) => {
+    setFormLoading(true);
     if (orderId !== '0') {
-      const { data } = await axios.get(`/user/${updateType}/${orderId}`);
-      console.log(data);
+      const { data } = await axios.get(`/user/create/${updateType}/${orderId}`);
       setFormData(data);
     }
     setorder(orderId);
+    setFormLoading(false);
   };
 
   const form = () => (
-    <form className="passback">
+    <form className="passback" onSubmit={onSubmit}>
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
         CREATE NEW USER ACCOUNT
       </div>
@@ -692,7 +779,7 @@ function UserCreate() {
           <select
             id="id1"
             onChange={(e) => {
-              selectType(e.target.value);
+              onSelectType(e.target.value);
             }}
             value={updateType}
             required
@@ -765,7 +852,7 @@ function UserCreate() {
             required
           >
             <option value="0">Select Department</option>
-            {departmentList.map((val, id) => (
+            {departmentList.map((val) => (
               <option key={val.id} value={val.id}>
                 {val.display_name}
               </option>
@@ -773,7 +860,10 @@ function UserCreate() {
           </select>
         </div>
       </div>
-      <button> SAVE </button>
+      <button disabled={disabled} type="submit">
+        {' '}
+        SAVE{' '}
+      </button>
     </form>
   );
 

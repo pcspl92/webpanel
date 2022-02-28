@@ -62,8 +62,8 @@ const updateOrderId = (licenseIds, newOrderId) => {
   return query(sql);
 };
 
-const getLicenseIds = (oldOrderId, qty) => {
-  const sql = `SELECT id FROM licenses WHERE order_id = ${oldOrderId} LIMIT 0, ${qty};`;
+const getLicenseIds = (orderId, qty) => {
+  const sql = `SELECT id FROM licenses WHERE order_id = ${orderId} LIMIT 0, ${qty};`;
   return query(sql);
 };
 

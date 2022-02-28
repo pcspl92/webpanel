@@ -1,17 +1,56 @@
 import React, { useState, useEffect } from 'react';
-
+import * as yup from 'yup';
 import axios from '../utils/axios';
 import '../css/companyCreate.css';
 
 const CompanyCreate = () => {
   const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setconfirmPassword] = useState('');
+  const [errors, setErrors] = useState({});
+
   const [compname, setcompname] = useState('');
   const [contnum, setcontnum] = useState('');
-  const [subagent, setSubagent] = useState(0);
+  const [subagent, setSubagent] = useState();
   const [sagentlist, setsagentlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [disabled, setDisabled] = useState(false);
+
+  const schema = yup.object().shape({
+    username: yup
+      .string()
+      .typeError('Username must be string')
+      .required('This field is required')
+      .min(3, 'Username must be 3-40 characters long')
+      .max(40, 'Username must be 3-40 characters long'),
+    password: yup
+      .string()
+      .typeError('Password must be string')
+      .required('This field is required')
+      .min(8, 'Password must be 8-30 characters long')
+      .max(30, 'Password must be 8-30 characters long'),
+    confirm_password: yup
+      .string()
+      .typeError('Confirm Password must be string')
+      .oneOf([yup.ref('password'), null], 'Passwords must match'),
+    display_name: yup
+      .string()
+      .typeError('Company name must be string')
+      .required('This field is required')
+      .min(10, 'Company name must be 10-90 characters long')
+      .max(90, 'Company name must be 10-90 characters long'),
+    contact_number: yup
+      .number()
+      .typeError('Contact Number must be number')
+      .min(10, 'Contact number must be 10 characters long')
+      .max(10, 'Contact number must be 10 characters long')
+      .required('This filed is required'),
+  });
+
+  const validate = async (data) => {
+    const formData = { ...data, confirm_password: confirmPassword };
+    await schema.validate(formData, { abortEarly: false });
+  };
 
   useEffect(() => {
     (async () => {
@@ -42,10 +81,19 @@ const CompanyCreate = () => {
     };
 
     try {
+      await validate(data);
       await axios.post('/company/', data);
       reset();
     } catch (error) {
-      console.log(error.response.data);
+      if (error.inner.length) {
+        const validateErrors = error.inner.reduce(
+          (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+          {}
+        );
+        setErrors(validateErrors);
+      } else {
+        console.log(error.response.data);
+      }
     }
 
     setDisabled(false);
@@ -71,13 +119,23 @@ const CompanyCreate = () => {
             required
           />
         </div>
+        <br/>
+
+        <div className="text-danger fw-600">{errors?.username}</div>
+
         <br />
         <div>
           <span>
             <label htmlFor="password"> Password : &nbsp;</label>
           </span>
-          <input type="password" id="password" required />
+          <input type="password" id="password"   onChange={(event) => {
+              setPassword(event.target.value);
+            }} required />
         </div>
+        <br/>
+
+        <div className="text-danger fw-600">{errors?.password}</div>
+
         <br />
         <div>
           <span>
@@ -87,12 +145,16 @@ const CompanyCreate = () => {
             type="password"
             id="confirm"
             onChange={(event) => {
-              setPassword(event.target.value);
+              setconfirmPassword(event.target.value);
             }}
-            value={password}
+            value={confirmPassword}
             required
           />
         </div>
+        <br/>
+
+        <div className="text-danger fw-600">{errors?.confirm_password}</div>
+
         <br />
         <div>
           <span>
@@ -108,6 +170,10 @@ const CompanyCreate = () => {
             required
           />
         </div>
+        <br/>
+
+        <div className="text-danger fw-600">{errors?.display_name}</div>
+
         <br />
         <div>
           <span>
@@ -123,6 +189,9 @@ const CompanyCreate = () => {
             required
           />
         </div>
+        <br/>
+        <div className="text-danger fw-600">{errors?.contact_number}</div>
+
         <br />
         <div>
           <span>
@@ -134,9 +203,9 @@ const CompanyCreate = () => {
               setSubagent(event.target.value);
             }}
             value={subagent}
-            required
-          >
-            <option value={0}>Select Sub Agent</option>
+            required>
+                            <option value=""  disabled hidden selected>Select a Sub Agent</option>
+
             {sagentlist.map((val) => (
               <option key={val.id} value={val.id}>
                 {val.display_name}
@@ -151,7 +220,6 @@ const CompanyCreate = () => {
       </button>
     </form>
   );
-
   if (loading) {
     return (
       <div className="passback">
