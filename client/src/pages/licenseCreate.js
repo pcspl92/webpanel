@@ -23,6 +23,8 @@ export default function LicenseCreate() {
   const [disabled, setDisabled] = useState(false);
   const [inputDisabled, setInputDisabled] = useState(true);
   const [price, setPrice] = useState(0);
+  const [disableRenewal, setDisableRenewal] = useState(true);
+  const [error, setError] = useState({});
   const { user } = useAuth();
 
   useEffect(() => {
@@ -49,9 +51,11 @@ export default function LicenseCreate() {
     };
 
     try {
+      if (!data.company_id)
+        throw new Error(JSON.stringify({ company: 'Select a company' }));
       await axios.post('/order/', data);
     } catch (err) {
-      console.log(err.respons.data);
+      setError(JSON.parse(err.message));
     }
 
     setDisabled(false);
@@ -69,164 +73,165 @@ export default function LicenseCreate() {
   };
 
   const form = () => (
-      <form className="passback" onSubmit={onSubmit}>
-        <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
-          NEW LICENSE ORDER
-        </div>
-        Available Balance : {user.balance}
-        <div className="formarea">
-          <br />
-          <div>
-            <span>
-              <label htmlFor="company">
-                Select Company :&nbsp;&nbsp;&nbsp;{' '}
-              </label>
-            </span>
-            <select
-              id="company"
-              onChange={(event) => {
-                setcompany(event.target.value);
-              }}
-              value={company}
-              required
-            >
-              <option value={0}>Select Company</option>
-              {companylist.map((val) => (
-                  <option key={val.id} value={val.id}>
-                    {val.display_name}
-                  </option>
-                ))}
-            </select>
-          </div>
-          <br />
-          <div>
-            <span>
-              <label htmlFor="lictype">License Type: &nbsp;</label>
-            </span>
-            <select
-              id="id1"
-              onChange={(event) => {
-                setLicenseType(event.target.value);
-              }}
-              value={licenseType}
-              required
-            >
-              <option value={0}>Select License Type</option>
-              <option value={'ptt'}>PTT User</option>
-              <option value={'dispatcher'}>Dispatcher</option>
-              <option value={'control'}>Control Station</option>
-            </select>
-          </div>
-          <br />
-          <div>
-            <span>
-              <label htmlFor="username">License Renewal: &nbsp;</label>
-            </span>
-            <select
-              id="id3"
-              onChange={(e) => {
-                getAgentUnitPrice(e.target.value);
-              }}
-              value={renewalType}
-              required
-            >
-              <option value={0}>Select License Renewal Type</option>
-              <option value={'monthly'}>Monthly</option>
-              <option value={'quarterly'}>Quarterly</option>
-              <option value={'half_yearly'}>Half Yearly</option>
-              <option value={'yearly'}>Yearly</option>
-              <option value={'one_time'}>One-Time</option>
-            </select>
-          </div>
-          <br />
-          <div>
-            <span>
-              <label htmlFor="confirm">Quantity : &nbsp;</label>
-            </span>
-            <input
-              type="number"
-              id="confirm"
-              onChange={(event) => {
-                setquantity(event.target.value);
-              }}
-              value={quantity}
-              disabled={inputDisabled}
-              required
-            />
-          </div>
-          <br />
-          Unit Price : {price} &nbsp; &nbsp; Total Price : {quantity * price}
-        </div>
+    <form className="passback" onSubmit={onSubmit}>
+      <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
+        NEW LICENSE ORDER
+      </div>
+      Available Balance : {user.balance}
+      <div className="formarea">
+        <br />
         <div>
-          <label>Features : </label>&nbsp;
-          <br />
-          <input
-            type="checkbox"
-            id="feature"
-            name="feature1"
-            onChange={(e) => {
-              setFeature(e.target.checked, 'grp_call');
+          <span>
+            <label htmlFor="company">Select Company :&nbsp;&nbsp;&nbsp; </label>
+          </span>
+          <select
+            id="company"
+            onChange={(event) => {
+              setcompany(event.target.value);
             }}
-            disabled={inputDisabled}
-          />
-          <label htmlFor="feature1"> Group Call</label>&nbsp;&nbsp;
-          <input
-            type="checkbox"
-            id="feature"
-            name="feature2"
-            onChange={(e) => {
-              setFeature(e.target.checked, 'priv_call');
+            value={company}
+            required
+          >
+            <option value={0}>Select Company</option>
+            {companylist.map((val) => (
+              <option key={val.id} value={val.id}>
+                {val.display_name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="text-danger fw-500">{error?.company}</div>
+        <br />
+        <div>
+          <span>
+            <label htmlFor="lictype">License Type: &nbsp;</label>
+          </span>
+          <select
+            id="id1"
+            onChange={(event) => {
+              setLicenseType(event.target.value);
+              setDisableRenewal(false);
             }}
-            disabled={inputDisabled}
-          />
-          <label htmlFor="feature2"> Private Call</label>&nbsp;&nbsp;
-          <input
-            type="checkbox"
-            id="feature"
-            name="feature3"
-            onChange={(e) => {
-              setFeature(e.target.checked, 'enc');
-            }}
-            disabled={inputDisabled}
-          />
-          <label htmlFor="feature3"> Encryption </label>&nbsp;&nbsp;
-          <input
-            type="checkbox"
-            id="feature"
-            name="feature3"
-            onChange={(e) => {
-              setFeature(e.target.checked, 'live_gps');
-            }}
-            disabled={inputDisabled}
-          />
-          <label htmlFor="feature3"> Live GPS </label>&nbsp;&nbsp;
-          <input
-            type="checkbox"
-            id="feature"
-            name="feature3"
-            onChange={(e) => {
-              setFeature(e.target.checked, 'geo_fence');
-            }}
-            disabled={inputDisabled}
-          />
-          <label htmlFor="feature3"> Geo-Fence </label>&nbsp;&nbsp;
-          <input
-            type="checkbox"
-            id="feature"
-            name="feature3"
-            onChange={(e) => {
-              setFeature(e.target.checked, 'chat');
-            }}
-            disabled={inputDisabled}
-          />
-          <label htmlFor="feature3"> Chat </label>&nbsp;&nbsp;
+            value={licenseType}
+            required
+          >
+            <option value={0}>Select License Type</option>
+            <option value={'ptt'}>PTT User</option>
+            <option value={'dispatcher'}>Dispatcher</option>
+            <option value={'control'}>Control Station</option>
+          </select>
         </div>
         <br />
-        <button type="submit" disabled={disabled}>
-          Purchase
-        </button>
-      </form>
-    );
+        <div>
+          <span>
+            <label htmlFor="username">License Renewal: &nbsp;</label>
+          </span>
+          <select
+            id="id3"
+            onChange={(e) => {
+              getAgentUnitPrice(e.target.value);
+            }}
+            value={renewalType}
+            disabled={disableRenewal}
+            required
+          >
+            <option value={0}>Select License Renewal Type</option>
+            <option value={'monthly'}>Monthly</option>
+            <option value={'quarterly'}>Quarterly</option>
+            <option value={'half_yearly'}>Half Yearly</option>
+            <option value={'yearly'}>Yearly</option>
+            <option value={'one_time'}>One-Time</option>
+          </select>
+        </div>
+        <br />
+        <div>
+          <span>
+            <label htmlFor="confirm">Quantity : &nbsp;</label>
+          </span>
+          <input
+            type="number"
+            id="confirm"
+            onChange={(event) => {
+              setquantity(event.target.value);
+            }}
+            value={quantity}
+            disabled={inputDisabled}
+            required
+          />
+        </div>
+        <br />
+        Unit Price : {price} &nbsp; &nbsp; Total Price : {quantity * price}
+      </div>
+      <div>
+        <label>Features : </label>&nbsp;
+        <br />
+        <input
+          type="checkbox"
+          id="feature"
+          name="feature1"
+          onChange={(e) => {
+            setFeature(e.target.checked, 'grp_call');
+          }}
+          disabled={inputDisabled}
+        />
+        <label htmlFor="feature1"> Group Call</label>&nbsp;&nbsp;
+        <input
+          type="checkbox"
+          id="feature"
+          name="feature2"
+          onChange={(e) => {
+            setFeature(e.target.checked, 'priv_call');
+          }}
+          disabled={inputDisabled}
+        />
+        <label htmlFor="feature2"> Private Call</label>&nbsp;&nbsp;
+        <input
+          type="checkbox"
+          id="feature"
+          name="feature3"
+          onChange={(e) => {
+            setFeature(e.target.checked, 'enc');
+          }}
+          disabled={inputDisabled}
+        />
+        <label htmlFor="feature3"> Encryption </label>&nbsp;&nbsp;
+        <input
+          type="checkbox"
+          id="feature"
+          name="feature3"
+          onChange={(e) => {
+            setFeature(e.target.checked, 'live_gps');
+          }}
+          disabled={inputDisabled}
+        />
+        <label htmlFor="feature3"> Live GPS </label>&nbsp;&nbsp;
+        <input
+          type="checkbox"
+          id="feature"
+          name="feature3"
+          onChange={(e) => {
+            setFeature(e.target.checked, 'geo_fence');
+          }}
+          disabled={inputDisabled}
+        />
+        <label htmlFor="feature3"> Geo-Fence </label>&nbsp;&nbsp;
+        <input
+          type="checkbox"
+          id="feature"
+          name="feature3"
+          onChange={(e) => {
+            setFeature(e.target.checked, 'chat');
+          }}
+          disabled={inputDisabled}
+        />
+        <label htmlFor="feature3"> Chat </label>&nbsp;&nbsp;
+      </div>
+      <br />
+      <button type="submit" disabled={disabled}>
+        Purchase
+      </button>
+    </form>
+  );
 
   if (loading) {
     return (

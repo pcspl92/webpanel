@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import * as yup from 'yup';
 import '../css/companyView.css';
 import axios from '../utils/axios';
 
@@ -9,28 +10,47 @@ const CompanyView = () => {
   const [compaccname, setcomaccname] = useState('');
   const [updatedlist, setupdatedlist] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/company/agent-panel');
       setTableData(data);
-      setupdatedlist(data);
       setLoading(false);
     })();
   }, []);
 
-  const filter = () => {
-    setupdatedlist(
-      tableData.filter(
-        (val) =>
-          (companyName.length &&
-            val.company_name
-              .toLowerCase()
-              .includes(companyName.toLowerCase())) ||
-          (compaccname.length &&
-            val.account_name.toLowerCase().includes(compaccname.toLowerCase()))
-      )
-    );
+  const validateForm = async (data) => {
+    const schema = yup.object().shape({
+      companyName: yup.string().required('Company Name is required'),
+      compaccname: yup.string().required('Company Account Name is required'),
+    });
+    await schema.validate(data, { abortEarly: false });
+  };
+
+  const filter = async () => {
+    try {
+      await validateForm({ companyName, compaccname });
+      setupdatedlist(
+        tableData.filter(
+          (val) =>
+            (companyName.length &&
+              val.company_name
+                .toLowerCase()
+                .includes(companyName.toLowerCase())) ||
+            (compaccname.length &&
+              val.account_name
+                .toLowerCase()
+                .includes(compaccname.toLowerCase()))
+        )
+      );
+    } catch (error) {
+      const validateErrors = error.inner.reduce(
+        (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+        {}
+      );
+      setErrors(validateErrors);
+    }
   };
 
   const reset = () => {
@@ -65,7 +85,7 @@ const CompanyView = () => {
             required
           />
         </div>
-        <br />
+        <div className="text-danger fw-500">{errors?.companyName}</div>
         <br />
         <div>
           <span>
@@ -81,6 +101,7 @@ const CompanyView = () => {
             required
           />
         </div>
+        <div className="text-danger fw-500">{errors?.compaccname}</div>
       </div>
       <div className="mt-3">
         <button
