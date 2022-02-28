@@ -1,7 +1,9 @@
+import '../css/companyView.css';
+
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import * as yup from 'yup';
-import '../css/companyView.css';
+
 import axios from '../utils/axios';
 
 const CompanyView = () => {
