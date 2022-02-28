@@ -40,7 +40,7 @@ function UserCreate() {
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get('/user/company-panel/user-panel');
+      const { data } = await axios.get('/user/company-panel/user-create');
       setorderlist(data.users);
       setDepartmentList(data.departments);
       setLoading(false);
@@ -102,6 +102,7 @@ function UserCreate() {
     setContactlist('');
     setTalkgroup('');
     setConfirmPassword('');
+    setSelectedTG([]);
     selectedTGIds.current.clear();
   };
 
@@ -384,6 +385,8 @@ function UserCreate() {
     setContactlist('');
     setTalkgroup('');
     setConfirmPassword('');
+    setSelectedTG([]);
+    setSelectedCS([]);
     selectedTGIds.current.clear();
     selectedCSIds.current.clear();
   };
@@ -608,12 +611,12 @@ function UserCreate() {
   const controlSubmit = async () => {
     const data = {
       ip_address: remoteIDadd,
-      port: remotePortadd,
+      port: Number(remotePortadd),
       display_name: displayName,
       device_id: deviceID,
       rec_port: formData.receivingPort,
       contact_no: contactNum,
-      cs_type_id: controlStationType,
+      cs_type_id: Number(controlStationType),
       dept_id: Number(department),
       order_id: Number(order),
     };
@@ -743,7 +746,7 @@ function UserCreate() {
     setDisabled(false);
   };
 
-  const selectType = (type) => {
+  const onSelectType = (type) => {
     setUpdOrderList([]);
     if (type !== '0') {
       const orderIds = orderlist.filter((data) => data.license_type === type);
@@ -755,7 +758,7 @@ function UserCreate() {
   const getFormData = async (orderId) => {
     setFormLoading(true);
     if (orderId !== '0') {
-      const { data } = await axios.get(`/user/${updateType}/${orderId}`);
+      const { data } = await axios.get(`/user/create/${updateType}/${orderId}`);
       setFormData(data);
     }
     setorder(orderId);
@@ -776,7 +779,7 @@ function UserCreate() {
           <select
             id="id1"
             onChange={(e) => {
-              selectType(e.target.value);
+              onSelectType(e.target.value);
             }}
             value={updateType}
             required
@@ -857,7 +860,10 @@ function UserCreate() {
           </select>
         </div>
       </div>
-      <button disabled={disabled}> SAVE </button>
+      <button disabled={disabled} type="submit">
+        {' '}
+        SAVE{' '}
+      </button>
     </form>
   );
 
