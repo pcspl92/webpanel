@@ -140,16 +140,16 @@ router.put(
       req.body.status,
       req.body.agent_id
     );
-    if (req.body.status === 'paused') {
-      const result = await getDepartments(req.params.id);
+    const result = await getDepartments(req.params.id);
+    if (result.length) {
       const deptIds = result.reduce((acc, sub) => [...acc, sub.id], []);
-      await Promise.all(changeStatusForAllUsers('paused', deptIds));
+      if (req.body.status === 'paused')
+        await Promise.all(changeStatusForAllUsers('paused', deptIds));
+
+      if (company[0].status === 'paused' && req.body.status === 'active')
+        await Promise.all(changeStatusForAllUsers('active', deptIds));
     }
-    if (company[0].status === 'paused' && req.body.status === 'active') {
-      const result = await getDepartments(req.params.id);
-      const deptIds = result.reduce((acc, sub) => [...acc, sub.id], []);
-      await Promise.all(changeStatusForAllUsers('active', deptIds));
-    }
+
     await createAgentActivityLog('Company Modify', req.user.id);
     return res.status(200).send('updated');
   }

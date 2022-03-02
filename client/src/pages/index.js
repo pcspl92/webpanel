@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function Index() {
   return (
-    <div className="loader">
+    <div className="form-login">
       <div>
         <h3>Welcome to Pulse Agent and Company Management Console</h3>
         <div className="login-buttons">

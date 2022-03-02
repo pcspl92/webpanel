@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as yup from 'yup';
 import '../css/AddAgent.css';
-// import axios from '../utils/axios';
+import axios from '../utils/axios';
 
 const AddAgent = () => {
   const [username, setusername] = useState('');
@@ -33,28 +33,28 @@ const AddAgent = () => {
   const [onetimecsap, setonetimecsap] = useState(0);
   const [disabled, setDisabled] = useState(false);
 
-  // const reset = () => {
-  //   setusername('');
-  //   setpassword('');
-  // setConfirmPassword('');
-  //   setsubagentname('');
-  //   setcontact('');
-  //   setmonthlyppt(0);
-  //   setquarterlyppt(0);
-  //   sethalfylyppt(0);
-  //   setyearlyppt(0);
-  //   setonetimeppt(0);
-  //   setmonthlydap(0);
-  //   setquarterlydap(0);
-  //   sethalfylydap(0);
-  //   setyearlydap(0);
-  //   setonetimedap(0);
-  //   setmonthlycsap(0);
-  //   setquarterlycsap(0);
-  //   sethalfylycsap(0);
-  //   setyearlycsap(0);
-  //   setonetimecsap(0);
-  // };
+  const reset = () => {
+    setusername('');
+    setpassword('');
+    setConfirmPassword('');
+    setsubagentname('');
+    setcontact('');
+    setmonthlyppt(0);
+    setquarterlyppt(0);
+    sethalfylyppt(0);
+    setyearlyppt(0);
+    setonetimeppt(0);
+    setmonthlydap(0);
+    setquarterlydap(0);
+    sethalfylydap(0);
+    setyearlydap(0);
+    setonetimedap(0);
+    setmonthlycsap(0);
+    setquarterlycsap(0);
+    sethalfylycsap(0);
+    setyearlycsap(0);
+    setonetimecsap(0);
+  };
 
   const schema = yup.object().shape({
     username: yup
@@ -126,8 +126,8 @@ const AddAgent = () => {
 
     try {
       await validate(data);
-      // await axios.post('/subagent/', data);
-      // reset();
+      await axios.post('/subagent/', data);
+      reset();
     } catch (error) {
       if (error.inner.length) {
         const validateErrors = error.inner.reduce(

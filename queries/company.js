@@ -16,7 +16,7 @@ const getCompanies = (agentIds) => {
 };
 
 const getCompanyViewData = (agentIds) => {
-  const sql = `SELECT c.username AS account_name, c.display_name AS company_name, 
+  const sql = `SELECT c.id, c.username AS account_name, c.display_name AS company_name, 
                c.timestamp, c.contact_number, a.display_name AS agent_name
                FROM companies c
                JOIN agents a ON c.agent_id = a.id

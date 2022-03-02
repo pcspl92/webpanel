@@ -1,5 +1,3 @@
-/* eslint-disable import/no-named-as-default-member */
-/* eslint-disable import/no-named-as-default */
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import '../css/index.css';
@@ -43,7 +41,7 @@ import CompanyViewLogin from '../pages/companyPersonalCentreLogRec';
 import CompanyUserView from '../pages/companyUserView';
 import CompanyOrderList from '../pages/companyOrderLIst';
 import CompanyOrderTrans from '../pages/companyOrdertrans';
-import DepartmentCreate from   '../pages/departmentCreate';
+import DepartmentCreate from '../pages/departmentCreate';
 import DepartmentModify from '../pages/departmentModify';
 import TalkGroupCreate from '../pages/talkgroupCreate';
 import TalkGroupModify from '../pages/talkgroupModify';
@@ -76,7 +74,7 @@ export default function App() {
                       <AgentPrivateRoute component={<AgentDashboard />} />
                     }
                   />
-                    <Route path="company-management">
+                  <Route path="company-management">
                     <Route
                       path="create-new-company"
                       element={
@@ -140,33 +138,25 @@ export default function App() {
                     <Route path="recharge" element={<RechargeAgent />} />
                     <Route path="modify" element={<ModifyAgent />} />
                   </Route>
-                
 
                   <Route path="personal-center">
                     <Route
                       path="change-password"
                       element={
-                        <AgentPrivateRoute
-                          component={<ChangePassword />}
-                        />
+                        <AgentPrivateRoute component={<ChangePassword />} />
                       }
                     />
                     <Route
                       path="activity"
                       element={
-                        <AgentPrivateRoute
-                          component={<ViewActivity />}
-                        />
+                        <AgentPrivateRoute component={<ViewActivity />} />
                       }
                     />
                     <Route
                       path="loginrecord"
-                      element={
-                        <AgentPrivateRoute component={<ViewLogin />} />
-                      }
+                      element={<AgentPrivateRoute component={<ViewLogin />} />}
                     />
                   </Route>
-                
                 </Route>
 
                 <Route path="company">
@@ -180,33 +170,32 @@ export default function App() {
                       <CompanyPrivateRoute component={<CompanyDashboard />} />
                     }
                   />
-                    <Route path="user-management" >
-                 
+                  <Route path="user-management">
                     <Route
-                    path="create-new-user"
-                    element={
-                      <CompanyPrivateRoute component={<UserCreate />} />
-                    }
-                  />
-                   <Route
-                    path="bulk-create"
-                    element={
-                      <CompanyPrivateRoute component={<BulkUserCreate />} />
-                    }
-                  />
-                  <Route
-                    path="view-user-list"
-                    element={
-                      <CompanyPrivateRoute component={<CompanyUserView />} />
-                    }
-                  />
-               
-                   <Route
-                    path="modify-user"
-                    element={
-                      <CompanyPrivateRoute component={<UserModify />} />
-                    }
-                  />
+                      path="create-new-user"
+                      element={
+                        <CompanyPrivateRoute component={<UserCreate />} />
+                      }
+                    />
+                    <Route
+                      path="bulk-create"
+                      element={
+                        <CompanyPrivateRoute component={<BulkUserCreate />} />
+                      }
+                    />
+                    <Route
+                      path="view-user-list"
+                      element={
+                        <CompanyPrivateRoute component={<CompanyUserView />} />
+                      }
+                    />
+
+                    <Route
+                      path="modify-user"
+                      element={
+                        <CompanyPrivateRoute component={<UserModify />} />
+                      }
+                    />
                   </Route>
                   <Route path="contact-list">
                     <Route
