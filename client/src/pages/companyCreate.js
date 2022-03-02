@@ -40,11 +40,11 @@ const CompanyCreate = () => {
       .min(10, 'Company name must be 10-90 characters long')
       .max(90, 'Company name must be 10-90 characters long'),
     contact_number: yup
-      .number()
-      .typeError('Contact Number must be number')
-      .min(10, 'Contact number must be 10 characters long')
-      .max(10, 'Contact number must be 10 characters long')
-      .required('This filed is required'),
+    .string()
+    .required()
+    .matches(/^[0-9]+$/, "Must be only digits")
+    .min(10, 'Must be exactly 10 digits')
+    .max(10, 'Must be exactly 10 digits')
   });
 
   const validate = async (data) => {
