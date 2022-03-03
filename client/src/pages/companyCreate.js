@@ -100,11 +100,11 @@ const CompanyCreate = () => {
   };
 
   const form = () => (
-    <form className="passback" onSubmit={onSubmit}>
+    <form className="CCpassback" onSubmit={onSubmit}>
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
         CREATE NEW COMPANY
       </div>
-      <div className="formarea">
+      <div className="CCformarea">
         <div>
           <span>
             <label htmlFor="username">Account Username: &nbsp;</label>
@@ -222,7 +222,7 @@ const CompanyCreate = () => {
   );
   if (loading) {
     return (
-      <div className="passback">
+      <div className="CCpassback">
         <div className="spinner-border text-primary" role="status"></div>
       </div>
     );

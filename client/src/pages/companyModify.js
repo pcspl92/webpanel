@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import generator from 'generate-password-browser';
 import * as yup from 'yup';
-
 import { useAuth } from '../hooks/useAuth';
 import '../css/companyModify.css';
 import axios from '../utils/axios';
@@ -135,13 +134,13 @@ const CompanyModify = () => {
   };
 
   const form = () => (
-    <form className="modifyback" onSubmit={onSubmit}>
+    <form className="CMmodifyback" onSubmit={onSubmit}>
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
         MODIFY COMPANY
       </div>
       <br />
       <br />
-      <div className="modifyform">
+      <div className="CMmodifyform">
         <div>
           <span>
             <label htmlFor="company">Select Company :&nbsp;&nbsp;&nbsp; </label>
@@ -181,7 +180,7 @@ const CompanyModify = () => {
           </span>
           <span>
             <span
-              className={active ? 'activeclass' : 'inactiveclass'}
+              className={active ? 'CMactiveclass' : 'CMinactiveclass'}
               style={{
                 borderTopLeftRadius: '10%',
                 borderBottomLeftRadius: '10%',
@@ -193,7 +192,7 @@ const CompanyModify = () => {
               Active
             </span>
             <span
-              className={!active ? 'activeclass' : 'inactiveclass'}
+              className={!active ? 'CMactiveclass' : 'CMinactiveclass'}
               style={{
                 borderTopRightRadius: '10%',
                 borderBottomRightRadius: '10%',
@@ -206,11 +205,11 @@ const CompanyModify = () => {
             </span>
           </span>
         </div>
-        <div className="mt-3 me-5">
-          <span>Password : &nbsp;&nbsp;&nbsp;</span>
+        <div className="mt-3">
+          <span>Password : &nbsp; </span>
           <button
             type="button"
-            style={{ width: '8.5vw' }}
+            style={{ width: '13vw' }}
             onClick={() => {
               setGenerated(true);
               generatePassword();
@@ -287,7 +286,7 @@ const CompanyModify = () => {
 
   if (loading) {
     return (
-      <div className="modifyback">
+      <div className="CMmodifyback">
         <div className="spinner-border text-primary" role="status"></div>
       </div>
     );

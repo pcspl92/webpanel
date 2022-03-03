@@ -17,11 +17,3 @@
 .tableheading {
   background-color: #8cb3d9;
 }
-td,
-th {
-  border: 1px solid black;
-  text-align: left;
-  padding: 6px;
-}
-table {
-}

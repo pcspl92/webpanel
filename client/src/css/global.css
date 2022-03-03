@@ -108,3 +108,19 @@ a {
   width: 160px;
   text-align: center;
 }
+td,
+th {
+  border: 1px solid black;
+  text-align: left;
+  padding: 6px;
+  border-collapse: collapse;
+}
+table {
+  border-collapse: collapse;
+}
+input {
+  width: 13vw;
+}
+select {
+  width: 13vw;
+}

@@ -118,11 +118,11 @@ const ModifyAgent = () => {
             </span>
           </span>
         </div>
-        <div className="mt-3 me-5">
-          <span>Password : &nbsp;&nbsp;&nbsp;</span>
+        <div className="mt-3">
+          <span>Password : &nbsp;&nbsp;</span>
           <button
             type="button"
-            style={{ width: '8.5vw' }}
+            style={{ width: '13vw' }}
             onClick={() => {
               setGenerated(true);
               generatePassword();
@@ -141,7 +141,6 @@ const ModifyAgent = () => {
           <input
             type="text"
             id="id5"
-            style={{ width: '12vw' }}
             onChange={(event) => {
               setagentnewname(event.target.value);
             }}
@@ -155,7 +154,6 @@ const ModifyAgent = () => {
           <input
             type="text"
             id="id5"
-            style={{ width: '12vw' }}
             onChange={(event) => {
               setcontact(event.target.value);
             }}

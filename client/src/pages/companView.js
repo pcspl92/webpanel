@@ -70,13 +70,13 @@ const CompanyView = () => {
   };
 
   const table = () => (
-    <div className="viewback">
+    <div className="CVviewback">
       <div style={{ fontWeight: 'bolder', fontSize: '4vh', marginTop: '3vh' }}>
         VIEW COMPANIES
       </div>
 
       <br />
-      <div className="filter">
+      <div className="CVfilter">
         <div>
           <span>
             <label htmlFor="id1">Company Name :</label>
@@ -91,7 +91,7 @@ const CompanyView = () => {
             required
           />
         </div>
-        <div className="text-danger fw-500">{errors?.companyName}</div>
+        <div className="CVtext-danger fw-500">{errors?.companyName}</div>
         <br />
         <div>
           <span>
@@ -128,7 +128,7 @@ const CompanyView = () => {
         </button>
       </div>
       <table className="mt-3">
-        <tr className="tableheading">
+        <tr className="CVtableheading">
           <th>S. No</th>
           <th>Company Name</th>
           <th>Account Name</th>
@@ -152,7 +152,7 @@ const CompanyView = () => {
 
   if (loading) {
     return (
-      <div className="modifyback">
+      <div className="CVviewback">
         <div className="spinner-border text-primary" role="status"></div>
       </div>
     );
