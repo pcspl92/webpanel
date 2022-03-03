@@ -23,7 +23,7 @@ const ViewAgent = () => {
   const validateForm = async (data) => {
     const schema = yup.object().shape({
       agentname: yup.string().required('Sub-Agent  Name is required'),
-      agentaaccname: yup.string().required('Sub-Agent Account Name is required'),
+      agentaccname: yup.string().required('Sub-Agent Account Name is required'),
     });
     await schema.validate(data, { abortEarly: false });
   };
@@ -101,7 +101,7 @@ const ViewAgent = () => {
         </div>
         <br />
 
-        <div className="text-danger fw-500">{errors?.agentaccame}</div>
+        <div className="text-danger fw-500">{errors?.agentaccname}</div>
 
       </div>
       <div className="mt-3">
