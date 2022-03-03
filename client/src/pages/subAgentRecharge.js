@@ -9,6 +9,8 @@ const RechargeAgent = () => {
   const [agentlist, setagentlist] = useState([]);
   const [recharge, setrecharge] = useState(0);
   const [disabled, setDisabled] = useState(false);
+  const [error, setError] = useState(false);
+
   const subBalance = useRef(0);
   const { user } = useAuth();
 
@@ -31,15 +33,15 @@ const RechargeAgent = () => {
     const data = {
       amount: recharge,
     };
-
-    try {
+if(!error.length)
+    {try {
       await axios.put(`/subagent/${agentid}/recharge`, data);
       reset();
       setDisabled(false);
     } catch (err) {
       console.log(err.response.data);
     }
-  };
+  }};
 
   if (!agentlist.length) return <div>Loading...</div>;
 
@@ -86,7 +88,16 @@ const RechargeAgent = () => {
             type="text"
             id="id1"
             onChange={(event) => {
+              if(event.target.value>user.balance)
+           {   setError("The recharge amount cannot be greater than the available balance")
+           setrecharge(event.target.value);
+  
+          } 
+           else
+              {
               setrecharge(event.target.value);
+               setError("");  
+            }
             }}
             value={recharge}
             required
@@ -102,6 +113,10 @@ const RechargeAgent = () => {
       <button className="p-1" type="submit" disabled={disabled}>
         Recharge
       </button>
+      <br/>
+      <div className="text-danger fw-500">{error}</div>
+
+
     </form>
   );
 };
