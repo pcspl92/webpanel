@@ -252,6 +252,8 @@ const AddAgent = () => {
           <div className="subformelements">One Time License</div>
         </div>
         <br />
+        <br />
+
         <div
           style={{
             display: 'flex',
@@ -265,7 +267,7 @@ const AddAgent = () => {
               marginLeft: '6.8vw',
             }}
           >
-            <span style={{ fontSize: '2vh' }}>PTT User Price : &nbsp;</span>
+            <span style={{ fontSize: '2vh' }}>&nbsp;PTT User Price : &nbsp;</span>
             <input
               type="text"
               className="subformelements"
