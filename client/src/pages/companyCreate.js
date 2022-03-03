@@ -11,7 +11,7 @@ const CompanyCreate = () => {
 
   const [compname, setcompname] = useState('');
   const [contnum, setcontnum] = useState('');
-  const [subagent, setSubagent] = useState();
+  const [subagent, setSubagent] = useState('0');
   const [sagentlist, setsagentlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [disabled, setDisabled] = useState(false);
@@ -40,11 +40,11 @@ const CompanyCreate = () => {
       .min(10, 'Company name must be 10-90 characters long')
       .max(90, 'Company name must be 10-90 characters long'),
     contact_number: yup
-    .string()
-    .required()
-    .matches(/^[0-9]+$/, "Must be only digits")
-    .min(10, 'Must be exactly 10 digits')
-    .max(10, 'Must be exactly 10 digits')
+      .string()
+      .required()
+      .matches(/^[0-9]+$/, 'Must be only digits')
+      .min(10, 'Must be exactly 10 digits')
+      .max(10, 'Must be exactly 10 digits'),
   });
 
   const validate = async (data) => {
@@ -65,6 +65,7 @@ const CompanyCreate = () => {
     setPassword('');
     setcompname('');
     setcontnum('');
+    setconfirmPassword('');
     setSubagent(0);
   };
 
@@ -119,7 +120,7 @@ const CompanyCreate = () => {
             required
           />
         </div>
-        <br/>
+        <br />
 
         <div className="text-danger fw-600">{errors?.username}</div>
 
@@ -128,11 +129,17 @@ const CompanyCreate = () => {
           <span>
             <label htmlFor="password"> Password : &nbsp;</label>
           </span>
-          <input type="password" id="password"   onChange={(event) => {
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(event) => {
               setPassword(event.target.value);
-            }} required />
+            }}
+            required
+          />
         </div>
-        <br/>
+        <br />
 
         <div className="text-danger fw-600">{errors?.password}</div>
 
@@ -151,7 +158,7 @@ const CompanyCreate = () => {
             required
           />
         </div>
-        <br/>
+        <br />
 
         <div className="text-danger fw-600">{errors?.confirm_password}</div>
 
@@ -170,7 +177,7 @@ const CompanyCreate = () => {
             required
           />
         </div>
-        <br/>
+        <br />
 
         <div className="text-danger fw-600">{errors?.display_name}</div>
 
@@ -180,7 +187,7 @@ const CompanyCreate = () => {
             <label htmlFor="contact">Contact Number : &nbsp;</label>
           </span>
           <input
-            type="text"
+            type="number"
             id="contact"
             onChange={(event) => {
               setcontnum(event.target.value);
@@ -189,7 +196,7 @@ const CompanyCreate = () => {
             required
           />
         </div>
-        <br/>
+        <br />
         <div className="text-danger fw-600">{errors?.contact_number}</div>
 
         <br />
@@ -203,8 +210,9 @@ const CompanyCreate = () => {
               setSubagent(event.target.value);
             }}
             value={subagent}
-            required>
-                            <option value=""  disabled hidden selected>Select a Sub Agent</option>
+            required
+          >
+            <option value="0">Select a Sub Agent</option>
 
             {sagentlist.map((val) => (
               <option key={val.id} value={val.id}>

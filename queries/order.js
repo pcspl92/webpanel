@@ -81,7 +81,9 @@ const createTransactionLog = (
   orderId
 ) => {
   const sql = `INSERT INTO transactions (details, trnc_amount, balance_left, type, agent_id, order_id) 
-               VALUES ('${details}', ${amount}, ${balance}, '${type}', ${agentId}, ${orderId});`;
+               VALUES ('${details}', ${amount}, ${balance}, '${type}', ${agentId}, ${
+    orderId || null
+  });`;
   return query(sql);
 };
 
