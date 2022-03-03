@@ -47,11 +47,15 @@ const CompanyView = () => {
         )
       );
     } catch (error) {
-      const validateErrors = error.inner.reduce(
-        (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
-        {}
-      );
-      setErrors(validateErrors);
+      if (error.inner.length) {
+        const validateErrors = error.inner.reduce(
+          (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+          {}
+        );
+        setErrors(validateErrors);
+      } else {
+        console.log(error.response.data);
+      }
     }
   };
 

@@ -2,7 +2,7 @@ import '../css/licenseView.css';
 
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
-
+import * as yup from 'yup';
 import axios from '../utils/axios';
 
 export default function LicenseView() {
@@ -13,7 +13,8 @@ export default function LicenseView() {
   const [expdate, setexpdate] = useState('');
   const [loading, setLoading] = useState(true);
   const [updatedlist, setupdatedlist] = useState([]);
-
+  const [errors, setErrors] = useState({});
+  
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/order/agent-panel');
@@ -23,22 +24,37 @@ export default function LicenseView() {
     })();
   }, []);
 
-  const filter = () => {
-    setupdatedlist(
-      tableData.filter(
-        (val) =>
-          (companyName.length &&
-            val.company_name
-              .toLowerCase()
-              .includes(companyName.toLowerCase())) ||
-          (agentName.length &&
-            val.agent_name.toLowerCase().includes(agentName.toLowerCase())) ||
-          (expdate.length && moment(val.expiry_date).isAfter(expdate)) ||
-          (orderId.length && val.order_id === Number(orderId))
-      )
-    );
+  const validateForm = async (data) => {
+    const schema = yup.object().shape({
+      orderId: yup.string().required('Order ID is required'),
+    });
+    await schema.validate(data, { abortEarly: false });
   };
-
+  const filter = async () => {
+    try {
+      await validateForm({ orderId});
+      setupdatedlist(
+        tableData.filter(
+          (val) =>
+            (companyName.length &&
+              val.company_name
+                .toLowerCase()
+                .includes(companyName.toLowerCase())) ||
+            (agentName.length &&
+              val.agent_name.toLowerCase().includes(agentName.toLowerCase())) ||
+            (expdate.length && moment(val.expiry_date).isAfter(expdate)) ||
+            (orderId.length && val.order_id === Number(orderId))
+        )
+      );
+    } catch (error) {
+      const validateErrors = error.inner.reduce(
+        (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+        {}
+      );
+      setErrors(validateErrors);
+    }
+  };
+ 
   const unfilter = () => {
     setupdatedlist(tableData);
   };
@@ -65,6 +81,8 @@ export default function LicenseView() {
           />
         </div>
         <br />
+        <div className="text-danger fw-500">{errors?.orderId}</div>
+<br/>
         <div>
           <span>
             <label htmlFor="id1">Company Name :</label>
@@ -162,6 +180,8 @@ export default function LicenseView() {
           </tr>
         ))}
       </table>
+      {updatedlist.length===0?        <div className="text-danger fw-500">No Matching Records Exist </div>
+:<div></div>}
     </div>
   );
 
