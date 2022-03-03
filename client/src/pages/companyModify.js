@@ -39,7 +39,12 @@ const CompanyModify = () => {
     const schema = yup.object().shape({
       password: yup.string().required('Password is required'),
       display_name: yup.string().required('Company name is requried'),
-      contact_number: yup.string().required('Contact Number is required'),
+      contact_number: yup
+      .string()  
+      .required()
+      .matches(/^[0-9]+$/, "Must be only digits")
+      .min(10, 'Must be exactly 10 digits')
+      .max(10, 'Must be exactly 10 digits'),
       agent_id: yup.number().min(1, 'Select a sub-agent'),
       company_id: yup.number().min(1, 'Select a company'),
     });

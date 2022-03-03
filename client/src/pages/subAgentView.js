@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/ViewAgent.css';
+import * as yup from 'yup';
 import axios from '../utils/axios';
 
 const ViewAgent = () => {
@@ -8,26 +9,44 @@ const ViewAgent = () => {
   const [agentlist, setagentlist] = useState([]);
   const [updatedlist, setupdatedlist] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState({});
+
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/subagent/');
       setagentlist(data);
-      setupdatedlist(data);
       setLoading(false);
     })();
   }, []);
 
-  const filter = () => {
-    setupdatedlist(
-      agentlist.filter((val) => (
-          (agentname.length &&
-            val.agent_name.toLowerCase().includes(agentname.toLowerCase())) ||
-          (agentaccname.length &&
-            val.account_name.toLowerCase().includes(agentaccname.toLowerCase()))
-        ))
-    );
+  const validateForm = async (data) => {
+    const schema = yup.object().shape({
+      agentname: yup.string().required('Sub-Agent  Name is required'),
+      agentaaccname: yup.string().required('Sub-Agent Account Name is required'),
+    });
+    await schema.validate(data, { abortEarly: false });
   };
+  const filter = async () => {
+    try {
+      await validateForm({ agentname, agentaccname });
+      setupdatedlist(
+        agentlist.filter((val) => (
+            (agentname.length &&
+              val.agent_name.toLowerCase().includes(agentname.toLowerCase())) ||
+            (agentaccname.length &&
+              val.account_name.toLowerCase().includes(agentaccname.toLowerCase()))
+          ))
+      );
+    } catch (error) {
+      const validateErrors = error.inner.reduce(
+        (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+        {}
+      );
+      setErrors(validateErrors);
+    }
+  };
+ 
 
   const reset = () => {
     setagentname('');
@@ -39,6 +58,7 @@ const ViewAgent = () => {
     reset();
   };
 
+
   const table = () => (
     <div className="viewback">
       <div style={{ fontWeight: 'bolder', fontSize: '4vh', marginTop: '3vh' }}>
@@ -49,7 +69,7 @@ const ViewAgent = () => {
       <div className="filter">
         <div>
           <span>
-            <label htmlFor="id1">Agent Name :</label>
+            <label htmlFor="id1"> Sub-Agent Name :</label>
           </span>
           <input
             type="text"
@@ -62,10 +82,12 @@ const ViewAgent = () => {
           />
         </div>
         <br />
+        <div className="text-danger fw-500">{errors?.agentname}</div>
+
         <br />
         <div>
           <span>
-            <label htmlFor="id2">Agent Account Name :</label>
+            <label htmlFor="id2"> Sub-Agent Account Name :</label>
           </span>
           <input
             type="text"
@@ -77,6 +99,10 @@ const ViewAgent = () => {
             required
           />
         </div>
+        <br />
+
+        <div className="text-danger fw-500">{errors?.agentaccame}</div>
+
       </div>
       <div className="mt-3">
         <button

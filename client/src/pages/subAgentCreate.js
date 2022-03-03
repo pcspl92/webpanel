@@ -152,7 +152,6 @@ const AddAgent = () => {
 
         height: '90vh',
         width: '79vw',
-        marginLeft: '18vw',
 
         justifyContent: 'center',
         alignItems: 'center',
