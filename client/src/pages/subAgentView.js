@@ -30,6 +30,8 @@ const ViewAgent = () => {
   const filter = async () => {
     try {
       await validateForm({ agentname, agentaccname });
+      setErrors({});
+
       setupdatedlist(
         agentlist.filter((val) => (
             (agentname.length &&

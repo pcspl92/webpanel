@@ -33,6 +33,7 @@ const CompanyView = () => {
   const filter = async () => {
     try {
       await validateForm({ companyName, compaccname });
+      setErrors({});
       setupdatedlist(
         tableData.filter(
           (val) =>

@@ -33,6 +33,7 @@ export default function LicenseView() {
   const filter = async () => {
     try {
       await validateForm({ orderId});
+      setErrors({});
       setupdatedlist(
         tableData.filter(
           (val) =>
