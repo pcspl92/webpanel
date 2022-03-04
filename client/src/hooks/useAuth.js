@@ -46,11 +46,16 @@ export default function Auth({ children }) {
     setUser({ auth: false });
   };
 
+  const setBalance = (balance) => {
+    setUser({ ...user, balance });
+  };
+
   const value = {
     user,
     agentLogin,
     companyLogin,
     logout,
+    setBalance,
   };
 
   if (loading) {

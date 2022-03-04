@@ -159,7 +159,7 @@ export default function LicenseView() {
           <th>Agent Name</th>
         </tr>
         {updatedlist.map((val, index) => (
-          <tr key={val.id}>
+          <tr key={val.order_id}>
             <th>{index + 1}</th>
             <th>{val.order_id}</th>
             <th>{val.company_name}</th>

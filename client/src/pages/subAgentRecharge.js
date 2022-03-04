@@ -3,7 +3,6 @@ import '../css/Recharge.css';
 import axios from '../utils/axios';
 import { useAuth } from '../hooks/useAuth';
 
-
 const RechargeAgent = () => {
   const [agentid, setagentid] = useState('0');
   const [agentlist, setagentlist] = useState([]);
@@ -12,7 +11,7 @@ const RechargeAgent = () => {
   const [error, setError] = useState(false);
 
   const subBalance = useRef(0);
-  const { user } = useAuth();
+  const { user, setBalance } = useAuth();
 
   useEffect(() => {
     (async () => {
@@ -31,17 +30,20 @@ const RechargeAgent = () => {
     setDisabled(true);
 
     const data = {
-      amount: recharge,
+      amount: Number(recharge),
     };
-if(!error.length)
-    {try {
-      await axios.put(`/subagent/${agentid}/recharge`, data);
-      reset();
+    if (!error.length) {
+      try {
+        await axios.put(`/subagent/${agentid}/recharge`, data);
+        setBalance(user.balance - recharge);
+        reset();
+      } catch (err) {
+        console.log(err.response.data);
+      }
+
       setDisabled(false);
-    } catch (err) {
-      console.log(err.response.data);
     }
-  }};
+  };
 
   if (!agentlist.length) return <div>Loading...</div>;
 
@@ -72,10 +74,10 @@ if(!error.length)
           >
             <option val="0">Select a Option </option>
             {agentlist.map((val) => (
-                <option key={val.id} value={val.id}>
-                  {val.display_name}
-                </option>
-              ))}
+              <option key={val.id} value={val.id}>
+                {val.display_name}
+              </option>
+            ))}
           </select>
         </div>
         <br />
@@ -88,16 +90,15 @@ if(!error.length)
             type="text"
             id="id1"
             onChange={(event) => {
-              if(event.target.value>user.balance)
-           {   setError("The recharge amount cannot be greater than the available balance")
-           setrecharge(event.target.value);
-  
-          } 
-           else
-              {
-              setrecharge(event.target.value);
-               setError("");  
-            }
+              if (event.target.value > user.balance) {
+                setError(
+                  'The recharge amount cannot be greater than the available balance'
+                );
+                setrecharge(event.target.value);
+              } else {
+                setrecharge(event.target.value);
+                setError('');
+              }
             }}
             value={recharge}
             required
@@ -113,10 +114,8 @@ if(!error.length)
       <button className="p-1" type="submit" disabled={disabled}>
         Recharge
       </button>
-      <br/>
+      <br />
       <div className="text-danger fw-500">{error}</div>
-
-
     </form>
   );
 };

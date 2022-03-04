@@ -53,6 +53,7 @@ import BulkUserCreate from '../pages/companyUserBulkCreate';
 
 export default function App() {
   const { user } = useAuth();
+
   return (
     <BrowserRouter>
       <div className="mainback">
@@ -133,10 +134,26 @@ export default function App() {
                         <AgentPrivateRoute component={<CreateSubAgent />} />
                       }
                     />
-                    <Route path="view" element={<ViewAgent />} />
-                    <Route path="setprices" element={<SetPrices />} />
-                    <Route path="recharge" element={<RechargeAgent />} />
-                    <Route path="modify" element={<ModifyAgent />} />
+                    <Route
+                      path="view"
+                      element={<AgentPrivateRoute component={<ViewAgent />} />}
+                    />
+                    <Route
+                      path="setprices"
+                      element={<AgentPrivateRoute component={<SetPrices />} />}
+                    />
+                    <Route
+                      path="recharge"
+                      element={
+                        <AgentPrivateRoute component={<RechargeAgent />} />
+                      }
+                    />
+                    <Route
+                      path="modify"
+                      element={
+                        <AgentPrivateRoute component={<ModifyAgent />} />
+                      }
+                    />
                   </Route>
 
                   <Route path="personal-center">

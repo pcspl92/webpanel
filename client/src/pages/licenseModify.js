@@ -21,6 +21,7 @@ export default function LicenseModify() {
   const [period, setPeriod] = useState('0');
   const [transferQuantity, setTransferQuantity] = useState(0);
   const [disableSelect, setDisableSelect] = useState(false);
+  const [disableOrder, setDisableOrder] = useState(true);
   const [featuresGlobal, setFeaturesGlobal] = useState({
     grp_call: false,
     enc: false,
@@ -422,6 +423,12 @@ export default function LicenseModify() {
     setFormLoading(false);
   };
 
+  const setOrder = (value) => {
+    if (value !== '0') setDisableOrder(false);
+    else setDisableOrder(true);
+    setorder(value);
+  };
+
   const form = () => (
     <form className="passback" onSubmit={onSubmit}>
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
@@ -437,7 +444,7 @@ export default function LicenseModify() {
           <select
             id="order"
             onChange={(event) => {
-              setorder(event.target.value);
+              setOrder(event.target.value);
             }}
             disabled={disableSelect}
             value={order}
@@ -462,7 +469,7 @@ export default function LicenseModify() {
             onChange={(e) => {
               getFormData(e.target.value);
             }}
-            disabled={disableSelect}
+            disabled={disableSelect || disableOrder}
             value={updateType}
             required
           >

@@ -33,14 +33,14 @@ router.get('/status', async (req, res) => {
     ) {
       const [{ balance }] = await getAgentBalance(req.user.id);
       return res.status(200).json({
-        ..._.omit(req.user, ['iat', 'permissions']),
+        ..._.omit(req.user, ['iat', 'permissions', 'status']),
         type: req.user.permissions[0],
         balance,
       });
     }
 
     return res.status(200).json({
-      ..._.omit(req.user, ['iat', 'permissions']),
+      ..._.omit(req.user, ['iat', 'permissions', 'status']),
       type: req.user.permissions[0],
     });
   }
