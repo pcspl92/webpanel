@@ -10,7 +10,6 @@ const {
   getDashboardData,
 } = require('../queries/agent');
 const {
-  getDepartmentCount,
   getDashboardData: getDashboardDataCompany,
 } = require('../queries/company');
 
@@ -58,7 +57,6 @@ router.get(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const [{ count }] = await getDepartmentCount(req.user.id);
     const currDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
     const result = await getDashboardDataCompany(req.user.id, currDate);
     const accounts = result.reduce(
@@ -71,7 +69,6 @@ router.get(
 
     const data = {
       data: accounts,
-      total_departments: count,
     };
 
     return res.status(200).json(data);
