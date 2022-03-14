@@ -80,10 +80,7 @@ const CompanyOrderList = () => {
         </tr>
       </table>
       <br />
-      <div>
-        <span>Total Departments :</span>
-        {dashData.total_departments}
-      </div>
+
       <br />
       <table className="mt-3">
         <tr className="tableheading">
@@ -117,7 +114,7 @@ const CompanyOrderList = () => {
               {val.geo_fence === 1 && <>Geo Fence; </>}
               {val.grp_call === 1 && <>Group Call; </>}
               {val.chat === 1 && <>Chat; </>}
-              {val.priv_call ===1 && <>Private Call; </>}
+              {val.priv_call === 1 && <>Private Call; </>}
               {val.live_gps === 1 && <>Live GPS; </>}
             </th>
           </tr>

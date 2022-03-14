@@ -16,10 +16,8 @@ const {
   getCompanyActivityLogs,
   getCompanyViewData,
   findCompanyById,
-  getDepartmentCount,
   deleteCompany,
   relieveCompany,
-  getDepartments,
 } = require('../queries/company');
 const {
   getAgentId,
@@ -140,15 +138,12 @@ router.put(
       req.body.status,
       req.body.agent_id
     );
-    const result = await getDepartments(req.params.id);
-    if (result.length) {
-      const deptIds = result.reduce((acc, sub) => [...acc, sub.id], []);
-      if (req.body.status === 'paused')
-        await Promise.all(changeStatusForAllUsers('paused', deptIds));
 
-      if (company[0].status === 'paused' && req.body.status === 'active')
-        await Promise.all(changeStatusForAllUsers('active', deptIds));
-    }
+    if (req.body.status === 'paused')
+      await Promise.all(changeStatusForAllUsers('paused', req.params.id));
+
+    if (company[0].status === 'paused' && req.body.status === 'active')
+      await Promise.all(changeStatusForAllUsers('active', req.params.id));
 
     await createAgentActivityLog('Company Modify', req.user.id);
     return res.status(200).send('updated');
@@ -192,12 +187,6 @@ router.delete(
       return res
         .status(404)
         .json({ company: 'Company with given id is not registered' });
-
-    const [{ count }] = await getDepartmentCount(req.params.id);
-    if (count)
-      return res.status(400).json({
-        departments: `Company has ${count} departments, delete them first.`,
-      });
 
     await deleteCompany(req.params.id);
     await createAgentActivityLog('Company Delete', req.user.id);

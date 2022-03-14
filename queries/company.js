@@ -24,16 +24,6 @@ const getCompanyViewData = (agentIds) => {
   return query(sql);
 };
 
-const getDepartmentCount = (id) => {
-  const sql = `SELECT COUNT(id) AS count FROM departments WHERE company_id=${id};`;
-  return query(sql);
-};
-
-const getDepartments = (companyId) => {
-  const sql = `SELECT id, display_name FROM departments WHERE company_id=${companyId};`;
-  return query(sql);
-};
-
 const createCompany = ({
   username,
   password,
@@ -116,7 +106,6 @@ module.exports = {
   updateCompanyPassword,
   updateCompany,
   relieveCompany,
-  getDepartmentCount,
   getDashboardData,
   createCompanyAuthLog,
   createCompanyActivityLog,
@@ -125,5 +114,4 @@ module.exports = {
   getCompanies,
   getCompanyViewData,
   deleteCompany,
-  getDepartments,
 };

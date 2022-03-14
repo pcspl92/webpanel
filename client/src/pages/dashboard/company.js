@@ -69,10 +69,6 @@ export default function Dashboard() {
         </tr>
       </table>
       <br />
-      <div>
-        <span>Total Departments :</span>
-        {dashData.total_departments}
-      </div>
     </div>
   );
 

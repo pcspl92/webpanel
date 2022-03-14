@@ -41,8 +41,7 @@ import CompanyViewLogin from '../pages/companyPersonalCentreLogRec';
 import CompanyUserView from '../pages/companyUserView';
 import CompanyOrderList from '../pages/companyOrderLIst';
 import CompanyOrderTrans from '../pages/companyOrdertrans';
-import DepartmentCreate from '../pages/departmentCreate';
-import DepartmentModify from '../pages/departmentModify';
+
 import TalkGroupCreate from '../pages/talkgroupCreate';
 import TalkGroupModify from '../pages/talkgroupModify';
 import ContactListCreate from '../pages/contactListCreate';
@@ -246,20 +245,7 @@ export default function App() {
                       }
                     />
                   </Route>
-                  <Route path="department-management">
-                    <Route
-                      path="new-department"
-                      element={
-                        <CompanyPrivateRoute component={<DepartmentCreate />} />
-                      }
-                    />
-                    <Route
-                      path="modify-department"
-                      element={
-                        <CompanyPrivateRoute component={<DepartmentModify />} />
-                      }
-                    />
-                  </Route>
+
                   <Route path="order-center">
                     <Route
                       path="order-list"
