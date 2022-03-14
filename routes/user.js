@@ -35,10 +35,7 @@ const {
   createBulkDispatcherUsers,
   createBulkControlStationUsers,
 } = require('../queries/user');
-const {
-  createCompanyActivityLog,
-  getDepartments,
-} = require('../queries/company');
+const { createCompanyActivityLog } = require('../queries/company');
 const { getTGs } = require('../queries/talkgroup');
 const { getContactLists } = require('../queries/contactlist');
 const { getFeatures, getLicenseIds, getLicenses } = require('../queries/order');
@@ -75,14 +72,9 @@ router.get(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const result = await getDepartments(req.user.id);
-    const deptIds = result.reduce(
-      (acc, sub) => [...acc, sub.id],
-      [req.user.id]
-    );
     const currDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
 
-    const userData = await viewUsersCompanyPanel(deptIds, currDate);
+    const userData = await viewUsersCompanyPanel(req.user.id, currDate);
     return res.status(200).json(userData);
   }
 );
@@ -97,8 +89,7 @@ router.get(
   companyCheck,
   async (req, res) => {
     const users = await getOrderIdForUsers(req.user.id);
-    const departments = await getDepartments(req.user.id);
-    return res.status(200).json({ users, departments });
+    return res.status(200).json({ users });
   }
 );
 
@@ -111,10 +102,8 @@ router.get(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const departments = await getDepartments(req.user.id);
-    const deptIds = departments.reduce((acc, dept) => [...acc, dept.id], []);
-    const users = await getDataForUserModify(deptIds);
-    return res.status(200).json({ users, departments });
+    const users = await getDataForUserModify(req.user.id);
+    return res.status(200).json({ users });
   }
 );
 
@@ -127,9 +116,7 @@ router.get(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const depts = await getDepartments(req.user.id);
-    const deptIds = depts.reduce((acc, dept) => [...acc, dept.id], []);
-    const users = await getUsers(deptIds, req.params.type);
+    const users = await getUsers(req.user.id, req.params.type);
     return res.status(200).send(users);
   }
 );
@@ -155,13 +142,11 @@ router.get(
     };
 
     const getDisaptcherFormData = async () => {
-      const depts = await getDepartments(req.user.id);
-      const deptIds = depts.reduce((acc, dept) => [...acc, dept.id], []);
       const [tgs, cls, [features], controlStations] = await Promise.all([
         getTGs(req.user.id),
         getContactLists(req.user.id),
         getFeatures(req.params.orderId),
-        getControlStations(deptIds),
+        getControlStations(req.user.id),
       ]);
       return { tgs, cls, features, controlStations };
     };
@@ -215,7 +200,7 @@ router.post(
       req.body.username,
       password,
       req.body.display_name,
-      req.body.dept_id
+      req.user.id
     );
     await updateLicense(licenseId, insertId);
     await Promise.all(
@@ -261,7 +246,7 @@ router.post(
       req.body.username,
       password,
       req.body.display_name,
-      req.body.dept_id
+      req.user.id
     );
     await updateLicense(licenseId, insertId);
     await Promise.all(
@@ -312,8 +297,8 @@ router.post(
         'rec_port',
         'contact_no',
         'cs_type_id',
-        'dept_id',
-      ])
+      ]),
+      req.user.id
     );
     await updateLicense(licenseId, insertId);
     await createCompanyActivityLog('Control Station User Create', req.user.id);
@@ -337,12 +322,7 @@ router.put(
       });
 
     const password = await hashPassword(req.body.password);
-    await updateUser(
-      password,
-      req.body.display_name,
-      req.body.dept_id,
-      req.params.id
-    );
+    await updateUser(password, req.body.display_name, req.params.id);
     await Promise.all(
       updateUserAddData(
         _.pick(req.body.features, [
@@ -381,12 +361,7 @@ router.put(
       });
 
     const password = await hashPassword(req.body.password);
-    await updateUser(
-      password,
-      req.body.display_name,
-      req.body.dept_id,
-      req.params.id
-    );
+    await updateUser(password, req.body.display_name, req.params.id);
     await Promise.all(
       updateUserAddData(
         _.pick(req.body.features, [
@@ -446,7 +421,6 @@ router.put(
         'device_id',
         'contact_no',
         'cs_type_id',
-        'dept_id',
       ]),
       req.params.id
     );
@@ -488,7 +462,7 @@ router.post(
       req.body.username_prefix,
       password,
       req.body.display_name_prefix,
-      req.body.dept_id,
+      req.user.id,
       req.body.tg_ids,
       req.body.def_tg,
       licenseIds,
@@ -541,7 +515,7 @@ router.post(
       req.body.username_prefix,
       password,
       req.body.display_name_prefix,
-      req.body.dept_id,
+      req.user.id,
       req.body.tg_ids,
       req.body.def_tg,
       licenseIds,
@@ -593,7 +567,7 @@ router.post(
       req.body.display_name_prefix,
       req.body.contact_number,
       req.body.cs_type_id,
-      req.body.dept_id,
+      req.user.id,
       req.body.receiving_port
     );
 

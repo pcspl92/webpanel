@@ -12,8 +12,6 @@ function UserCreate() {
   const [remotePortadd, setRemotePortadd] = useState('');
   const [deviceID, setDeviceID] = useState('');
   const [contactNum, setcontactNum] = useState(0);
-  const [department, setDepartment] = useState('');
-  const [departmentList, setDepartmentList] = useState([]);
   const [order, setorder] = useState('0');
   const [orderlist, setorderlist] = useState([]);
   const [contactList, setContactlist] = useState('0');
@@ -42,7 +40,6 @@ function UserCreate() {
     (async () => {
       const { data } = await axios.get('/user/company-panel/user-create');
       setorderlist(data.users);
-      setDepartmentList(data.departments);
       setLoading(false);
     })();
   }, []);
@@ -96,7 +93,6 @@ function UserCreate() {
     setaccountName('');
     setPassword('');
     setcontactNum('');
-    setDepartment('');
     setDisplayName('');
     setFeaturesGlobal('');
     setContactlist('');
@@ -114,7 +110,6 @@ function UserCreate() {
       password,
       display_name: displayName,
       order_id: Number(order),
-      dept_id: Number(department),
       features: featuresGlobal,
       contact_number: contactNum,
       contact_list_id: Number(contactList),
@@ -379,7 +374,6 @@ function UserCreate() {
     setaccountName('');
     setPassword('');
     setcontactNum('');
-    setDepartment('');
     setDisplayName('');
     setFeaturesGlobal('');
     setContactlist('');
@@ -401,7 +395,6 @@ function UserCreate() {
       password,
       display_name: displayName,
       order_id: Number(order),
-      dept_id: Number(department),
       features: featuresGlobal,
       contact_number: contactNum,
       contact_list_id: Number(contactList),
@@ -605,7 +598,6 @@ function UserCreate() {
     setDisplayName('');
     setDeviceID('');
     setcontactNum('');
-    setDepartment('');
   };
 
   const controlSubmit = async () => {
@@ -617,7 +609,6 @@ function UserCreate() {
       rec_port: formData.receivingPort,
       contact_no: contactNum,
       cs_type_id: Number(controlStationType),
-      dept_id: Number(department),
       order_id: Number(order),
     };
 
@@ -839,26 +830,6 @@ function UserCreate() {
           />
         </div>
         <br />
-        <div>
-          <span>
-            <label htmlFor="confirm">Department : &nbsp;</label>
-          </span>
-          <select
-            id="name"
-            onChange={(event) => {
-              setDepartment(event.target.value);
-            }}
-            value={department}
-            required
-          >
-            <option value="0">Select Department</option>
-            {departmentList.map((val) => (
-              <option key={val.id} value={val.id}>
-                {val.display_name}
-              </option>
-            ))}
-          </select>
-        </div>
       </div>
       <button disabled={disabled} type="submit">
         {' '}

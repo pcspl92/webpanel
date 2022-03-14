@@ -25,10 +25,11 @@ a {
 }
 
 .form-login {
-  height: 100%;
-  width: 100%;
-  display: grid;
-  place-items: center;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  margin-left: 7vw;
 }
 
 .fw-500 {

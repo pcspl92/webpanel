@@ -17,10 +17,10 @@ export default function Navbar() {
   function dropdowntalkg() {
     settalkgdrop(!talkgdrop);
   }
-  const [deptdrop, setdeptdrop] = useState(false);
-  function dropdowndept() {
-    setdeptdrop(!deptdrop);
-  }
+  // const [deptdrop, setdeptdrop] = useState(false);
+  // function dropdowndept() {
+  //   setdeptdrop(!deptdrop);
+  // }
   const [orderdrop, setorderdrop] = useState(false);
   function dropdownorder() {
     setorderdrop(!orderdrop);
@@ -148,7 +148,7 @@ export default function Navbar() {
           </NavLink>
         </div>
       )}
-      <div className="headings" onClick={dropdowndept}>
+      {/* <div className="headings" onClick={dropdowndept}>
         + Department Management
       </div>
       {deptdrop && (
@@ -171,7 +171,7 @@ export default function Navbar() {
             &nbsp; Modify Department{' '}
           </NavLink>
         </div>
-      )}
+      )} */}
       <div className="headings" onClick={dropdownorder}>
         + Order Center
       </div>

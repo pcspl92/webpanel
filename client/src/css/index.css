@@ -46,7 +46,10 @@
   padding: 2vh 1.5vw 2vh 1.5vw;
   font-weight: bolder;
   font-size: 1vw;
-  position: fixed;
+  position: absolute;
+  overflow: auto;
+  overflow-x: hidden;
+  flex-wrap: nowrap;
 }
 .headings {
   color: white;

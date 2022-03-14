@@ -13,8 +13,7 @@ function UserModify() {
   const [remotePortadd, setRemotePortadd] = useState('');
   const [deviceID, setDeviceID] = useState('');
   const [contactNum, setcontactNum] = useState(0);
-  const [department, setDepartment] = useState('');
-  const [departmentList, setDepartmentList] = useState([]);
+
   const [user, setUser] = useState('0');
   const [users, setUsers] = useState([]);
   const [contactList, setContactlist] = useState('0');
@@ -41,7 +40,6 @@ function UserModify() {
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/user/company-panel/user-modify');
-      setDepartmentList(data.departments);
       setUsers(data.users);
       setLoading(false);
     })();
@@ -106,7 +104,6 @@ function UserModify() {
   const resetPttForm = () => {
     setPassword('');
     setcontactNum('');
-    setDepartment('');
     setDisplayName('');
     setFeaturesGlobal('');
     setContactlist('');
@@ -121,7 +118,6 @@ function UserModify() {
     const data = {
       password,
       display_name: displayName,
-      dept_id: Number(department),
       features: featuresGlobal,
       contact_number: contactNum,
       contact_list_id: Number(contactList),
@@ -353,7 +349,6 @@ function UserModify() {
   const resetDispatcherForm = () => {
     setPassword('');
     setcontactNum('');
-    setDepartment('');
     setDisplayName('');
     setFeaturesGlobal('');
     setContactlist('');
@@ -372,7 +367,6 @@ function UserModify() {
     const data = {
       password,
       display_name: displayName,
-      dept_id: Number(department),
       features: featuresGlobal,
       contact_number: contactNum,
       contact_list_id: Number(contactList),
@@ -543,7 +537,6 @@ function UserModify() {
     setDisplayName('');
     setDeviceID('');
     setcontactNum('');
-    setDepartment('');
   };
 
   const controlSubmit = async () => {
@@ -554,7 +547,6 @@ function UserModify() {
       device_id: deviceID,
       contact_no: contactNum,
       cs_type_id: Number(controlStationType),
-      dept_id: Number(department),
     };
 
     try {
@@ -777,26 +769,7 @@ function UserModify() {
           />
         </div>
         <br />
-        <div>
-          <span>
-            <label htmlFor="confirm">Department : &nbsp;</label>
-          </span>
-          <select
-            id="name"
-            onChange={(event) => {
-              setDepartment(event.target.value);
-            }}
-            value={department}
-            required
-          >
-            <option value="0">Select Department</option>
-            {departmentList?.map((val) => (
-              <option key={val.id} value={val.id}>
-                {val.display_name}
-              </option>
-            ))}
-          </select>
-        </div>
+
         <br />
       </div>
       <button type="submit" disabled={disabled}>

@@ -23,14 +23,14 @@ const getUsersAgentPanel = (agentIds) => {
   return query(sql);
 };
 
-const getUsers = (deptIds, type) => {
-  const sql = `SELECT id, display_name FROM users WHERE department_id IN (${deptIds}) AND user_type='${type}';`;
+const getUsers = (companyId, type) => {
+  const sql = `SELECT id, display_name FROM users WHERE company_id = ${companyId} AND user_type='${type}';`;
   return query(sql);
 };
 
-const createUser = (type, username, password, displayName, deptId) => {
-  const sql = `INSERT INTO users (user_type, username, password, display_name, department_id) 
-               VALUES ('${type}', '${username}', '${password}', '${displayName}', ${deptId})`;
+const createUser = (type, username, password, displayName, companyId) => {
+  const sql = `INSERT INTO users (user_type, username, password, display_name, company_id) 
+               VALUES ('${type}', '${username}', '${password}', '${displayName}', '${companyId}')`;
   return query(sql);
 };
 
@@ -84,8 +84,8 @@ const mapControlStations = (controlIds, userId) => {
   return query(sql);
 };
 
-const updateUser = (password, displayName, deptId, userId) => {
-  const sql = `UPDATE users SET password='${password}', display_name='${displayName}', department_id=${deptId} WHERE id=${userId};`;
+const updateUser = (password, displayName, userId) => {
+  const sql = `UPDATE users SET password='${password}', display_name='${displayName}',  WHERE id=${userId};`;
   return query(sql);
 };
 
@@ -123,18 +123,20 @@ const getCSUserById = (id) => {
   return query(sql);
 };
 
-const createCSUser = ({
-  ip_address: ipAddress,
-  port,
-  display_name: displayName,
-  device_id: deviceId,
-  rec_port: recPort,
-  contact_no: contactNo,
-  cs_type_id: csTypeId,
-  dept_id: deptId,
-}) => {
-  const sql = `INSERT INTO control_station_user (remote_ip_address, remote_port, display_name, device_id, receiving_port, contact_no, cs_type_id, department_id) VALUES
-               ('${ipAddress}', ${port}, '${displayName}', '${deviceId}', ${recPort}, '${contactNo}', ${csTypeId}, ${deptId});`;
+const createCSUser = (
+  {
+    ip_address: ipAddress,
+    port,
+    display_name: displayName,
+    device_id: deviceId,
+    rec_port: recPort,
+    contact_no: contactNo,
+    cs_type_id: csTypeId,
+  },
+  companyId
+) => {
+  const sql = `INSERT INTO control_station_user (remote_ip_address, remote_port, display_name, device_id, receiving_port, contact_no, cs_type_id,company_id) VALUES
+               ('${ipAddress}', ${port}, '${displayName}', '${deviceId}', ${recPort}, '${contactNo}', ${csTypeId},${companyId});`;
   return query(sql);
 };
 
@@ -151,34 +153,32 @@ const updateCSUser = (
     device_id: deviceId,
     contact_no: contactNo,
     cs_type_id: csTypeId,
-    dept_id: deptId,
   },
   userId
 ) => {
   const sql = `UPDATE control_station_user SET remote_ip_address='${ipAddress}', remote_port=${port}, display_name='${displayName}', 
-               device_id='${deviceId}', cs_type_id=${csTypeId}, contact_no='${contactNo}', department_id=${deptId} 
+               device_id='${deviceId}', cs_type_id=${csTypeId}, contact_no='${contactNo}'
                WHERE id=${userId}`;
   return query(sql);
 };
 
-const viewUsersCompanyPanel = (deptIds, currDate) => {
+const viewUsersCompanyPanel = (companyId, currDate) => {
   const sql = `SELECT u.username AS account_name, u.display_name AS user_display_name, u.user_type AS account_type,
-               uad.timestamp AS creation_date, d.display_name AS department, uad.contact_no AS contact_person,
+               uad.timestamp AS creation_date, uad.contact_no AS contact_person,
                o.license_expiry AS license_renewal, o.id AS order_id, IF(o.license_expiry > '${currDate}', "Normal", "Expired") AS status,
                uf.grp_call, uf.enc, uf.priv_call, uf.live_gps, uf.geo_fence, uf.chat 
                FROM users u
-               JOIN departments d ON u.department_id=d.id
                JOIN users_add_data uad ON uad.user_id=u.id
                JOIN licenses l ON l.user_id=u.id
                JOIN orders o ON l.order_id=o.id
                JOIN user_features uf ON uf.user_id=u.id
-               WHERE u.department_id IN (${deptIds});`;
+               WHERE u.company_id = ${companyId};`;
   return query(sql);
 };
 
-const changeStatusForAllUsers = (status, deptIds) => {
-  const sql1 = `UPDATE users SET status='${status}' WHERE department_id IN (${deptIds});`;
-  const sql2 = `UPDATE control_station_user SET status='${status}' WHERE department_id IN (${deptIds});`;
+const changeStatusForAllUsers = (status, companyId) => {
+  const sql1 = `UPDATE users SET status='${status}' WHERE company_id = ${companyId};`;
+  const sql2 = `UPDATE control_station_user SET status='${status}' WHERE company_id = (${companyId});`;
   return [query(sql1), query(sql2)];
 };
 
@@ -190,8 +190,8 @@ const getOrderIdForUsers = (companyId) => {
   return query(sql);
 };
 
-const getControlStations = (deptIds) => {
-  const sql = `SELECT id, display_name FROM control_station_user WHERE department_id IN (${deptIds});`;
+const getControlStations = (companyId) => {
+  const sql = `SELECT id, display_name FROM control_station_user WHERE company_id = ${companyId};`;
   return query(sql);
 };
 
@@ -213,18 +213,18 @@ const getControlStationTypes = (comapnyId) => {
   return query(sql);
 };
 
-const getDataForUserModify = (deptIds) => {
+const getDataForUserModify = (companyId) => {
   const sql = `SELECT u.id, u.display_name, u.user_type, l.order_id 
               FROM users u
                JOIN licenses l ON l.user_id = u.id
                JOIN (SELECT id, license_type FROM orders) AS o ON l.order_id = o.id
-               WHERE department_id IN (${deptIds}) AND o.license_type = u.user_type
+               WHERE company_id = ${companyId} AND o.license_type = u.user_type
                UNION ALL
                SELECT u.id, u.display_name, 'control' AS user_type, l.order_id
                FROM control_station_user u
                JOIN licenses l ON l.user_id = u.id
                JOIN (SELECT id, license_type FROM orders) AS o ON l.order_id = o.id
-               WHERE department_id IN (${deptIds}) AND o.license_type = 'control';`;
+               WHERE company_id = ${companyId} AND o.license_type = 'control';`;
   return query(sql);
 };
 
@@ -248,7 +248,7 @@ const createBulkPttUsers = (
   usernamePrefix,
   password,
   displayNamePrefix,
-  deptId,
+  companyId,
   tgIds,
   defTg,
   licenseIds,
@@ -270,11 +270,11 @@ const createBulkPttUsers = (
         postfixNumber + index
       }')`;
 
-      return `${acc} INSERT INTO users (user_type, username, password, display_name, department_id) 
+      return `${acc} INSERT INTO users (user_type, username, password, display_name, company_id) 
               VALUES ('ptt', '${val}${postfixNumber + index}', 
              '${password}', 
              '${displayNamePrefix}${postfixNumber + index}', 
-              ${deptId});
+              ${companyId});
 
               INSERT INTO users_add_data (contact_no, contact_list_id, user_id) VALUES
               ('${contactNumber}', ${contactListId}, ${userId});
@@ -297,7 +297,7 @@ const createBulkDispatcherUsers = (
   usernamePrefix,
   password,
   displayNamePrefix,
-  deptId,
+  companyId,
   tgIds,
   defTg,
   licenseIds,
@@ -320,11 +320,11 @@ const createBulkDispatcherUsers = (
         postfixNumber + index
       }')`;
 
-      return `${acc} INSERT INTO users (user_type, username, password, display_name, department_id) 
+      return `${acc} INSERT INTO users (user_type, username, password, display_name, company_id) 
               VALUES ('dispatcher', '${val}${postfixNumber + index}', 
              '${password}', 
              '${displayNamePrefix}${postfixNumber + index}', 
-              ${deptId});
+              ${companyId});
 
               INSERT INTO users_add_data (contact_no, contact_list_id, user_id) VALUES
               ('${contactNumber}', ${contactListId}, ${userId});
@@ -349,17 +349,17 @@ const createBulkControlStationUsers = (
   displayNamePrefix,
   contactNo,
   csTypeId,
-  deptId,
+  companyId,
   receivingPort
 ) => {
   const sql = Array(qty)
     .fill(displayNamePrefix)
     .reduce(
       (acc, val, index) =>
-        `${acc} INSERT INTO control_station_user (display_name, receiving_port, cs_type_id, contact_no, department_id)
+        `${acc} INSERT INTO control_station_user (display_name, receiving_port, cs_type_id, contact_no, company_id)
             VALUES ('${val}${postfixNumber + index}', ${
           receivingPort + index
-        }, ${csTypeId}, '${contactNo}', ${deptId});`,
+        }, ${csTypeId}, '${contactNo}', ${companyId});`,
       ``
     );
 

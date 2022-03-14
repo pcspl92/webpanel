@@ -11,8 +11,6 @@ function BulkUserCreate() {
   const [password, setPassword] = useState('');
   const [controlStationType, setcontrolStationType] = useState('0');
   const [contactNum, setcontactNum] = useState(0);
-  const [department, setDepartment] = useState('');
-  const [departmentList, setDepartmentList] = useState([]);
   const [order, setorder] = useState('0');
   const [orderlist, setorderlist] = useState([]);
   const [contactList, setContactlist] = useState('0');
@@ -44,7 +42,6 @@ function BulkUserCreate() {
       const { data } = await axios.get('/user/company-panel/user-create');
       console.log(data);
       setorderlist(data.users);
-      setDepartmentList(data.departments);
       setLoading(false);
     })();
   }, []);
@@ -98,7 +95,6 @@ function BulkUserCreate() {
     setaccountName('');
     setPassword('');
     setcontactNum('');
-    setDepartment('');
     setDisplayName('');
     setFeaturesGlobal('');
     setContactlist('');
@@ -120,7 +116,6 @@ function BulkUserCreate() {
       password,
       display_name_prefix: displayName,
       order_id: Number(order),
-      dept_id: Number(department),
       features: featuresGlobal,
       contact_number: contactNum,
       contact_list_id: Number(contactList),
@@ -390,7 +385,6 @@ function BulkUserCreate() {
     setaccountName('');
     setPassword('');
     setcontactNum('');
-    setDepartment('');
     setDisplayName('');
     setFeaturesGlobal('');
     setContactlist('');
@@ -416,7 +410,6 @@ function BulkUserCreate() {
       password,
       display_name_prefix: displayName,
       order_id: Number(order),
-      dept_id: Number(department),
       features: featuresGlobal,
       contact_number: contactNum,
       contact_list_id: Number(contactList),
@@ -617,7 +610,6 @@ function BulkUserCreate() {
     setcontrolStationType('0');
     setDisplayName('');
     setcontactNum('');
-    setDepartment('');
     setPostFixNumber(0);
     setQty(0);
   };
@@ -628,7 +620,6 @@ function BulkUserCreate() {
       receiving_port: Number(formData.receivingPort),
       contact_no: contactNum,
       cs_type_id: Number(controlStationType),
-      dept_id: Number(department),
       order_id: Number(order),
       qty: Number(qty),
       postfix_number: Number(postFixNumber),
@@ -807,26 +798,7 @@ function BulkUserCreate() {
           />
         </div>
         <br />
-        <div>
-          <span>
-            <label htmlFor="confirm">Department : &nbsp;</label>
-          </span>
-          <select
-            id="name"
-            onChange={(event) => {
-              setDepartment(event.target.value);
-            }}
-            value={department}
-            required
-          >
-            <option value="0">Select Department</option>
-            {departmentList.map((val) => (
-              <option key={val.id} value={val.id}>
-                {val.display_name}
-              </option>
-            ))}
-          </select>
-        </div>
+
         <br />
         <div>
           <span>

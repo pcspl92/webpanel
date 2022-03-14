@@ -9,7 +9,7 @@ export function AgentPrivateRoute({ component }) {
   const companyAccess = new Set(['company']);
 
   if (!user.auth)
-    return <Navigate to="/agent/" state={{ from: location }} replace={true} />;
+    return <Navigate to="/" state={{ from: location }} replace={true} />;
   if (companyAccess.has(user.type))
     return (
       <Navigate
@@ -27,9 +27,7 @@ export function CompanyPrivateRoute({ component }) {
   const agentAccess = new Set(['agent', 'subagent']);
 
   if (!user.auth)
-    return (
-      <Navigate to="/company/" state={{ from: location }} replace={true} />
-    );
+    return <Navigate to="/" state={{ from: location }} replace={true} />;
   if (agentAccess.has(user.type))
     return (
       <Navigate
