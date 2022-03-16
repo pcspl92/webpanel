@@ -260,7 +260,7 @@ router.post(
       );
     }
     await createAgentActivityLog('Order Create', req.user.id);
-    return res.status(201).send('created');
+    return res.status(201).send({ message: 'License has been created' });
   }
 );
 
@@ -304,7 +304,7 @@ router.put(
     );
     await updateOrderId(licenseIds, orderRes.insertId);
     await createAgentActivityLog('Order Features Modify', req.user.id);
-    return res.status(201).send('updated');
+    return res.status(201).send({ message: 'Order has been updated' });
   }
 );
 
@@ -385,7 +385,7 @@ router.put(
       );
     }
     await createAgentActivityLog('Order Renewal', req.user.id);
-    return res.status(201).send('updated');
+    return res.status(201).send({ message: 'Order has been renewed' });
   }
 );
 
@@ -425,7 +425,7 @@ router.put(
     );
     await updateOrderId(licenseIds, orderRes.insertId, req.params.orderId);
     await createAgentActivityLog('Order Transfer', req.user.id);
-    return res.status(201).send('updated');
+    return res.status(201).send({ message: 'Order Transfer done' });
   }
 );
 

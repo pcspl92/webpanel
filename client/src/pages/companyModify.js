@@ -39,11 +39,11 @@ const CompanyModify = () => {
       password: yup.string().required('Password is required'),
       display_name: yup.string().required('Company name is requried'),
       contact_number: yup
-      .string()  
-      .required()
-      .matches(/^[0-9]+$/, "Must be only digits")
-      .min(10, 'Must be exactly 10 digits')
-      .max(10, 'Must be exactly 10 digits'),
+        .string()
+        .required()
+        .matches(/^[0-9]+$/, 'Must be only digits')
+        .min(10, 'Must be exactly 10 digits')
+        .max(10, 'Must be exactly 10 digits'),
       agent_id: yup.number().min(1, 'Select a sub-agent'),
       company_id: yup.number().min(1, 'Select a company'),
     });
@@ -72,7 +72,10 @@ const CompanyModify = () => {
 
     try {
       await validateForm({ ...data, company_id: Number(company) });
-      await axios.put(`/company/${company}`, data);
+      const response = await axios.put(`/company/${company}`, data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
     } catch (error) {
       if (error.inner.length) {
         const validateErrors = error.inner.reduce(
@@ -231,7 +234,6 @@ const CompanyModify = () => {
           <input
             type="text"
             id="display_name"
-            
             onChange={(event) => {
               setcompnewname(event.target.value);
             }}
@@ -248,7 +250,6 @@ const CompanyModify = () => {
           <input
             type="text"
             id="contact_number"
-        
             onChange={(event) => {
               setcontact(event.target.value);
             }}

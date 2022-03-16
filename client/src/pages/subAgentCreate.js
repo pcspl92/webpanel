@@ -80,11 +80,11 @@ const AddAgent = () => {
       .min(10, 'Sub-Agent name must be 10-90 characters long')
       .max(90, 'Sub-Agent name must be 10-90 characters long'),
     contact_number: yup
-    .string()
-    .required('This field is required')
-    .matches(/^[0-9]+$/, "Must be only digits")
-    .min(10, 'Must be exactly 10 digits')
-    .max(10, 'Must be exactly 10 digits')
+      .string()
+      .required('This field is required')
+      .matches(/^[0-9]+$/, 'Must be only digits')
+      .min(10, 'Must be exactly 10 digits')
+      .max(10, 'Must be exactly 10 digits'),
   });
 
   const validate = async (data) => {
@@ -126,7 +126,10 @@ const AddAgent = () => {
 
     try {
       await validate(data);
-      await axios.post('/subagent/', data);
+      const response = await axios.post('/subagent/', data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       reset();
     } catch (error) {
       if (error.inner.length) {
@@ -267,7 +270,9 @@ const AddAgent = () => {
               marginLeft: '6.8vw',
             }}
           >
-            <span style={{ fontSize: '2vh' }}>&nbsp;PTT User Price : &nbsp;</span>
+            <span style={{ fontSize: '2vh' }}>
+              &nbsp;PTT User Price : &nbsp;
+            </span>
             <input
               type="text"
               className="subformelements"

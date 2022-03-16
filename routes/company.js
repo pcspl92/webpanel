@@ -109,7 +109,7 @@ router.post(
 
     await createCompany(data);
     await createAgentActivityLog('Company Create', req.user.id);
-    return res.status(201).send('created');
+    return res.status(201).send({ message: 'Company has been created' });
   }
 );
 
@@ -146,7 +146,9 @@ router.put(
       await Promise.all(changeStatusForAllUsers('active', req.params.id));
 
     await createAgentActivityLog('Company Modify', req.user.id);
-    return res.status(200).send('updated');
+    return res
+      .status(200)
+      .send({ message: 'Company details have been updated' });
   }
 );
 
@@ -169,7 +171,9 @@ router.put(
 
     await relieveCompany(agentId[0].agent_id, req.params.id);
     await createAgentActivityLog('Company Modify', req.user.id);
-    return res.status(200).send('updated');
+    return res
+      .status(200)
+      .send({ message: 'Company details have been updated' });
   }
 );
 

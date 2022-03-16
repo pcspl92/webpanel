@@ -44,7 +44,7 @@ router.post(
 
     await createTG(req.body.name, req.user.id);
     await createCompanyActivityLog('Talk-Group Create', req.user.id);
-    return res.status(201).send('created');
+    return res.status(201).send({ message: 'Talkgroup has been created' });
   }
 );
 
@@ -71,7 +71,7 @@ router.put(
 
     await updateTG(req.body.name, req.params.id);
     await createCompanyActivityLog('Talk-Group Modify', req.user.id);
-    return res.status(200).send('updated');
+    return res.status(200).send({ message: 'Talkgroup has been updated' });
   }
 );
 

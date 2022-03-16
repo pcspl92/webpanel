@@ -34,7 +34,10 @@ const TalkGroupModify = () => {
     };
 
     try {
-      await axios.put(`/talkgroup/${talkgroup}`, data);
+      const response = await axios.put(`/talkgroup/${talkgroup}`, data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       reset();
     } catch (error) {
       setErr(error.response.data);

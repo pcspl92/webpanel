@@ -21,7 +21,10 @@ const TalkGroupCreate = () => {
     };
 
     try {
-      await axios.post('/talkgroup/', data);
+      const response = await axios.post('/talkgroup/', data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       reset();
     } catch (err) {
       console.log(err.response.data);
@@ -31,36 +34,34 @@ const TalkGroupCreate = () => {
   };
 
   const form = () => (
-      <form className="passback" onSubmit={onSubmit}>
-        <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
-          NEW TALK-GROUP
+    <form className="passback" onSubmit={onSubmit}>
+      <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
+        NEW TALK-GROUP
+      </div>
+      <br />
+      <div className="formarea">
+        <div>
+          <span>
+            <label htmlFor="username">Talk-Group Name: &nbsp;</label>
+          </span>
+          <input
+            type="text"
+            id="username"
+            onChange={(event) => {
+              settgname(event.target.value);
+            }}
+            value={tgname}
+            required
+          />
         </div>
         <br />
-        <div className="formarea">
-          <div>
-            <span>
-              <label htmlFor="username">Talk-Group Name: &nbsp;</label>
-            </span>
-            <input
-              type="text"
-              id="username"
-              onChange={(event) => {
-                settgname(event.target.value);
-              }}
-              value={tgname}
-              required
-            />
-          </div>
-          <br />
-        </div>
-        <br />
-        <button type="submit" disabled={disabled}>
-          Save
-        </button>
-      </form>
-    );
-
-
+      </div>
+      <br />
+      <button type="submit" disabled={disabled}>
+        Save
+      </button>
+    </form>
+  );
 
   return <div>{form()}</div>;
 };

@@ -49,7 +49,7 @@ router.post(
     if (req.body.userIds.length)
       await createUserContactListMaps(insertId, req.body.userIds);
     await createCompanyActivityLog('Contact-List Create', req.user.id);
-    return res.status(201).send('created');
+    return res.status(201).send({ message: 'Contact List has been created' });
   }
 );
 
@@ -79,7 +79,7 @@ router.put(
     if (req.body.userIds.length)
       await createUserContactListMaps(req.params.id, req.body.userIds);
     await createCompanyActivityLog('Contact-List Modify', req.user.id);
-    return res.status(200).send('updated');
+    return res.status(200).send({ message: 'Contact-List has been updated' });
   }
 );
 

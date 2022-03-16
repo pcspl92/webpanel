@@ -34,7 +34,10 @@ const RechargeAgent = () => {
     };
     if (!error.length) {
       try {
-        await axios.put(`/subagent/${agentid}/recharge`, data);
+        const response = await axios.put(`/subagent/${agentid}/recharge`, data);
+        if (response.message) {
+          alert(response.message);
+        }
         setBalance(user.balance - recharge);
         reset();
       } catch (err) {

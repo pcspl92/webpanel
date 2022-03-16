@@ -98,7 +98,7 @@ router.post(
       result.insertId
     );
     await createAgentActivityLog('Subagent Create', req.user.id);
-    return res.status(201).send('created');
+    return res.status(201).send({ message: 'Sub-Agent has been created' });
   }
 );
 
@@ -128,7 +128,7 @@ router.put(
       )
     );
     await createAgentActivityLog('Subagent Modify', req.user.id);
-    return res.status(200).send('updated');
+    return res.status(200).send({ message: 'Sub-Agent has been updated' });
   }
 );
 
@@ -173,7 +173,7 @@ router.put(
       req.user.id
     );
     await createAgentActivityLog('Subagent Recharge', req.user.id);
-    return res.status(200).send('updated');
+    return res.status(200).send({ message: 'Sub-Agent has been recharged' });
   }
 );
 
@@ -213,7 +213,9 @@ router.put(
       )
     );
     await createAgentActivityLog('Subagent Prices Modify', req.user.id);
-    return res.status(200).send('updated');
+    return res
+      .status(200)
+      .send({ message: 'Sub-Agent prices have been modified' });
   }
 );
 

@@ -220,7 +220,7 @@ router.post(
     );
     await mapUserTalkgroup(req.body.tg_ids, req.body.def_tg, insertId);
     await createCompanyActivityLog('PTT User Create', req.user.id);
-    return res.status(201).send('created');
+    return res.status(201).send({ message: 'PTT User has been created' });
   }
 );
 
@@ -268,7 +268,7 @@ router.post(
     if (req.body.control_ids.length)
       await mapControlStations(req.body.control_ids, insertId);
     await createCompanyActivityLog('Dispatcher User Create', req.user.id);
-    return res.status(201).send('created');
+    return res.status(201).send({ message: 'PTT User has been created' });
   }
 );
 
@@ -302,7 +302,9 @@ router.post(
     );
     await updateLicense(licenseId, insertId);
     await createCompanyActivityLog('Control Station User Create', req.user.id);
-    return res.status(201).send('created');
+    return res
+      .status(201)
+      .send({ message: 'Control Station User has been created' });
   }
 );
 
@@ -341,7 +343,7 @@ router.put(
     await deleteUserTalkgroupMaps(req.params.id);
     await mapUserTalkgroup(req.body.tg_ids, req.body.def_tg, req.params.id);
     await createCompanyActivityLog('PTT User Modify', req.user.id);
-    return res.status(200).send('updated');
+    return res.status(200).send({ message: 'PTT User has been  Updated' });
   }
 );
 
@@ -384,7 +386,7 @@ router.put(
       await mapControlStations(req.body.control_ids, req.params.id);
     }
     await createCompanyActivityLog('Dispatcher User Modify', req.user.id);
-    return res.status(200).send('updated');
+    return res.status(200).send({ message: 'Dipatcher User has been created' });
   }
 );
 
@@ -425,7 +427,9 @@ router.put(
       req.params.id
     );
     await createCompanyActivityLog('Control Station User Modify', req.user.id);
-    return res.status(200).send('updated');
+    return res
+      .status(200)
+      .send({ message: 'Control Station User has been updated' });
   }
 );
 
@@ -478,7 +482,7 @@ router.post(
       req.body.contact_list_id
     );
     await createCompanyActivityLog('PTT User Create', req.user.id);
-    return res.status(201).send('created');
+    return res.status(201).send({ message: 'PTT Users have been created' });
   }
 );
 
@@ -532,7 +536,9 @@ router.post(
       req.body.control_ids
     );
     await createCompanyActivityLog('Dispatcher User Create', req.user.id);
-    return res.status(201).send('created');
+    return res
+      .status(201)
+      .send({ message: 'Dispatcher Users have been created' });
   }
 );
 
@@ -572,7 +578,9 @@ router.post(
     );
 
     await createCompanyActivityLog('Control Station User Create', req.user.id);
-    return res.status(201).send('created');
+    return res
+      .status(201)
+      .send({ message: 'Control Station Users have been created' });
   }
 );
 

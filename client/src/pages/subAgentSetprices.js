@@ -80,7 +80,10 @@ const SetPrices = () => {
     };
 
     try {
-      await axios.put(`/subagent/${agentid}/prices`, data);
+      const response = await axios.put(`/subagent/${agentid}/prices`, data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       reset();
     } catch (err) {
       console.log(err.response.data);
@@ -156,7 +159,9 @@ const SetPrices = () => {
               marginLeft: '6.8vw',
             }}
           >
-            <span style={{ fontSize: '2vh' }}>&nbsp;PTT User Price : &nbsp;</span>
+            <span style={{ fontSize: '2vh' }}>
+              &nbsp;PTT User Price : &nbsp;
+            </span>
             <input
               type="text"
               className="subformelements"

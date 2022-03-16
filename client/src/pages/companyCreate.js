@@ -83,7 +83,11 @@ const CompanyCreate = () => {
 
     try {
       await validate(data);
-      await axios.post('/company/', data);
+      const response = await axios.post('/company/', data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
+
       reset();
     } catch (error) {
       if (error.inner.length) {

@@ -118,7 +118,10 @@ function UserCreate() {
     };
 
     try {
-      await axios.post('/user/ptt', data);
+      const response = await axios.post('/user/ptt', data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       resetPttForm();
     } catch (err) {
       console.log(err.response.data);
@@ -403,7 +406,10 @@ function UserCreate() {
     };
 
     try {
-      await axios.post('/user/dispatcher', data);
+      const response = await axios.post('/user/dispatcher', data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       resetDispatcherForm();
     } catch (err) {
       console.log(err.response.data);
@@ -613,7 +619,10 @@ function UserCreate() {
     };
 
     try {
-      await axios.post('/user/control', data);
+      const response = await axios.post('/user/control', data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       resetControlForm();
     } catch (err) {
       console.log(err.response.data);

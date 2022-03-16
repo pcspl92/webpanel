@@ -126,7 +126,10 @@ function UserModify() {
     };
 
     try {
-      await axios.put(`/user/ptt/${user}`, data);
+      const response = await axios.put(`/user/ptt/${user}`, data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       resetPttForm();
     } catch (err) {
       console.log(err.response.data);
@@ -375,7 +378,10 @@ function UserModify() {
     };
 
     try {
-      await axios.put(`/user/dispatcher/${user}`, data);
+      const response = await axios.put(`/user/dispatcher/${user}`, data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       resetDispatcherForm();
     } catch (err) {
       console.log(err.response.data);
@@ -550,7 +556,10 @@ function UserModify() {
     };
 
     try {
-      await axios.put(`/user/control/${user}`, data);
+      const response = await axios.put(`/user/control/${user}`, data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       resetControlForm();
     } catch (err) {
       console.log(err.response.data);

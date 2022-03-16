@@ -53,7 +53,10 @@ export default function LicenseCreate() {
     try {
       if (!data.company_id)
         throw new Error(JSON.stringify({ company: 'Select a company' }));
-      await axios.post('/order/', data);
+      const response = await axios.post('/order/', data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
     } catch (err) {
       setError(JSON.parse(err.message));
     }

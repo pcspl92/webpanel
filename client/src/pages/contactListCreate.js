@@ -44,7 +44,10 @@ export default function ContactListCreate() {
     };
 
     try {
-      await axios.post('/contactlist/', data);
+      const response = await axios.post('/contactlist/', data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       reset();
     } catch (err) {
       console.log(err.response.data);

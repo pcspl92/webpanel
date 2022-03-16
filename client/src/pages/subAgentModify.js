@@ -41,7 +41,10 @@ const ModifyAgent = () => {
     };
 
     try {
-      await axios.put(`/subagent/${agentid}`, data);
+      const response = await axios.put(`/subagent/${agentid}`, data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       reset();
       setDisabled(false);
     } catch (err) {

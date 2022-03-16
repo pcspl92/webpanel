@@ -102,7 +102,10 @@ export default function LicenseModify() {
     const data = { features: featuresGlobal, user_ids: users, all: !showacc };
 
     try {
-      await axios.put(`/order/${order}/features`, data);
+      const response = await axios.put(`/order/${order}/features`, data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       resetUpdateForm();
     } catch (err) {
       console.log(err);
@@ -222,7 +225,10 @@ export default function LicenseModify() {
     };
 
     try {
-      await axios.put(`/order/${order}/renewal`, data);
+      const response = await axios.put(`/order/${order}/renewal`, data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       resetRenewForm();
     } catch (err) {
       console.log(err.response.data);
@@ -334,7 +340,10 @@ export default function LicenseModify() {
     const data = { qty: transferQuantity, company_id: company };
 
     try {
-      await axios.put(`/order/${order}/transfer`, data);
+      const response = await axios.put(`/order/${order}/transfer`, data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       resetTransferForm();
     } catch (err) {
       console.log(err.response.data);

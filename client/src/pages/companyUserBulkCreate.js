@@ -124,7 +124,10 @@ function BulkUserCreate() {
     };
 
     try {
-      await axios.post('/user/bulk/ptt', data);
+      const response = await axios.post('/user/bulk/ptt', data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       resetPttForm();
     } catch (err) {
       console.log(err.response.data);
@@ -418,7 +421,10 @@ function BulkUserCreate() {
     };
 
     try {
-      await axios.post('/user/bulk/dispatcher', data);
+      const response = await axios.post('/user/bulk/dispatcher', data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
       resetDispatcherForm();
     } catch (err) {
       console.log(err.response.data);
@@ -627,7 +633,11 @@ function BulkUserCreate() {
 
     try {
       console.log(data);
-      await axios.post('/user/bulk/control', data);
+      const response = await axios.post('/user/bulk/control', data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
+
       resetControlForm();
     } catch (err) {
       console.log(err.response.data);
