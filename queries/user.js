@@ -13,16 +13,51 @@ const findUserById = (id, type) => {
 
 const getUsersAgentPanel = (agentIds) => {
   const sql = `SELECT o.license_expiry AS license_expiry, o.license_type AS account_type, a.display_name AS agent_name,
-               c.display_name AS company_name, l.id AS license_id, u.username AS account_name, u.display_name AS user_name , a.status AS status
+               c.display_name AS company_name, l.id AS license_id, u.username AS account_name, u.display_name AS user_name  ,a.status AS status
                FROM orders o
                JOIN agents a ON o.agent_id = a.id
                JOIN companies c ON o.company_id = c.id
                JOIN licenses l ON l.order_id = o.id
                JOIN users u ON l.user_id = u.id
-               WHERE o.agent_id IN (${agentIds});`;
+               WHERE o.agent_id IN (${agentIds})
+               UNION
+               SELECT o.license_expiry AS license_expiry, o.license_type AS account_type, a.display_name AS agent_name,
+               c.display_name AS company_name, l.id AS license_id,cu.display_name AS user_name , cu.display_name AS csuser_name  ,a.status AS status
+               FROM orders o
+               JOIN agents a ON o.agent_id = a.id
+               JOIN companies c ON o.company_id = c.id
+               JOIN licenses l ON l.order_id = o.id
+               JOIN control_station_user cu ON   l.control_station_user_id=cu.id
+               WHERE o.agent_id IN (${agentIds})
+               
+               ;`;
   return query(sql);
 };
 
+const viewUsersCompanyPanel = (companyId, currDate) => {
+  const sql = `SELECT u.username AS account_name, u.display_name AS user_display_name, u.user_type AS account_type,
+               uad.timestamp AS creation_date, uad.contact_no AS contact_person,
+               o.license_expiry AS license_renewal, o.id AS order_id,o.renewal AS license_type, IF(o.license_expiry > '${currDate}', "Normal", "Expired") AS status,
+               uf.grp_call, uf.enc, uf.priv_call, uf.live_gps, uf.geo_fence, uf.chat 
+               FROM users u
+               JOIN users_add_data uad ON uad.user_id=u.id
+               JOIN licenses l ON l.user_id=u.id
+               JOIN orders o ON l.order_id=o.id
+               JOIN user_features uf ON uf.user_id=u.id
+               WHERE u.company_id = ${companyId}
+               UNION
+               SELECT u.display_name AS account_name, u.display_name AS user_display_name, l.user_type AS account_type,
+               u.timestamp AS creation_date, u.contact_no AS contact_person,
+               o.license_expiry AS license_renewal, o.id AS order_id,o.renewal AS license_type, IF(o.license_expiry > '${currDate}', "Normal", "Expired") AS status,
+               null AS grp_call, null AS enc, null AS priv_call, null AS live_gps, null AS geo_fence, null AS chat 
+               FROM control_station_user u
+               JOIN users_add_data uad ON uad.user_id=u.id
+               JOIN licenses l ON l.control_station_user_id=u.id
+               JOIN orders o ON l.order_id=o.id
+               WHERE u.company_id = ${companyId}
+               ;`;
+  return query(sql);
+};
 const getUsers = (companyId, type) => {
   const sql = `SELECT id, display_name FROM users WHERE company_id = ${companyId} AND user_type='${type}';`;
   return query(sql);
@@ -35,7 +70,11 @@ const createUser = (type, username, password, displayName, companyId) => {
 };
 
 const updateLicense = (licenseId, userId) => {
-  const sql = `UPDATE licenses SET user_id=${userId} WHERE id=${licenseId};`;
+  const sql = `UPDATE licenses SET user_id=${userId},user_type="ptt/dispatcher" WHERE id=${licenseId};`;
+  return query(sql);
+};
+const CSupdateLicense = (licenseId, userId) => {
+  const sql = `UPDATE licenses SET control_station_user_id=${userId},user_type="control" WHERE id=${licenseId};`;
   return query(sql);
 };
 
@@ -159,20 +198,6 @@ const updateCSUser = (
   const sql = `UPDATE control_station_user SET remote_ip_address='${ipAddress}', remote_port=${port}, display_name='${displayName}', 
                device_id='${deviceId}', cs_type_id=${csTypeId}, contact_no='${contactNo}'
                WHERE id=${userId}`;
-  return query(sql);
-};
-
-const viewUsersCompanyPanel = (companyId, currDate) => {
-  const sql = `SELECT u.username AS account_name, u.display_name AS user_display_name, u.user_type AS account_type,
-               uad.timestamp AS creation_date, uad.contact_no AS contact_person,
-               o.license_expiry AS license_renewal, o.id AS order_id, IF(o.license_expiry > '${currDate}', "Normal", "Expired") AS status,
-               uf.grp_call, uf.enc, uf.priv_call, uf.live_gps, uf.geo_fence, uf.chat 
-               FROM users u
-               JOIN users_add_data uad ON uad.user_id=u.id
-               JOIN licenses l ON l.user_id=u.id
-               JOIN orders o ON l.order_id=o.id
-               JOIN user_features uf ON uf.user_id=u.id
-               WHERE u.company_id = ${companyId};`;
   return query(sql);
 };
 
@@ -396,4 +421,5 @@ module.exports = {
   createBulkPttUsers,
   createBulkDispatcherUsers,
   createBulkControlStationUsers,
+  CSupdateLicense,
 };

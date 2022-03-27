@@ -24,7 +24,7 @@ export default function LicenseCreate() {
   const [inputDisabled, setInputDisabled] = useState(true);
   const [price, setPrice] = useState(0);
   const [disableRenewal, setDisableRenewal] = useState(true);
-  const [error, setError] = useState({});
+  const [error, setError] = useState();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -50,15 +50,14 @@ export default function LicenseCreate() {
       features,
     };
 
-    try {
-      if (!data.company_id)
-        throw new Error(JSON.stringify({ company: 'Select a company' }));
+    if (data.company_id) {
+      setError('');
       const response = await axios.post('/order/', data);
       if (response.data.message) {
         alert(response.data.message);
       }
-    } catch (err) {
-      setError(JSON.parse(err.message));
+    } else {
+      setError('Select a Company');
     }
 
     setDisabled(false);
@@ -103,7 +102,7 @@ export default function LicenseCreate() {
             ))}
           </select>
         </div>
-        <div className="text-danger fw-500">{error?.company}</div>
+        <div className="text-danger fw-500">{error}</div>
         <br />
         <div>
           <span>

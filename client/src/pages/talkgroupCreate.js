@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import axios from '../utils/axios';
 import '../css/talkGroupCreate.css';
 
 const TalkGroupCreate = () => {
   const [tgname, settgname] = useState('');
-
+  const [newid, setnewid] = useState(0);
   const [disabled, setDisabled] = useState(false);
-
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get('talkgroup/gettalkgroupid');
+      console.log(data);
+      setnewid(data.talkgroup_id);
+    })();
+  }, []);
   const reset = () => {
     settgname('');
   };
@@ -55,6 +61,7 @@ const TalkGroupCreate = () => {
           />
         </div>
         <br />
+        Talkgroup ID (auto-generated) : {newid}
       </div>
       <br />
       <button type="submit" disabled={disabled}>

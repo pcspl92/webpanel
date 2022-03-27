@@ -13,6 +13,7 @@ const {
   createUserAddData,
   mapUserTalkgroup,
   updateLicense,
+  CSupdateLicense,
   mapControlStations,
   findUserById,
   updateUser,
@@ -59,6 +60,7 @@ router.get(
     );
 
     const userData = await getUsersAgentPanel(agentIds);
+    console.log(userData);
     return res.status(200).json(userData);
   }
 );
@@ -300,7 +302,7 @@ router.post(
       ]),
       req.user.id
     );
-    await updateLicense(licenseId, insertId);
+    await CSupdateLicense(licenseId, insertId);
     await createCompanyActivityLog('Control Station User Create', req.user.id);
     return res
       .status(201)

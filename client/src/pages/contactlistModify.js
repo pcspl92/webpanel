@@ -12,6 +12,8 @@ export default function ContactListCreate() {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [userlist, setuserlist] = useState([]);
   const [contactlistName, setcontactlistName] = useState('');
+  //  const [clid, setclid] = useState();
+
   const selectedUserIds = useRef(new Set());
 
   useEffect(() => {
@@ -61,7 +63,13 @@ export default function ContactListCreate() {
 
     setDisabled(false);
   };
-
+  const cldelete = async () => {
+    const response = await axios.delete(`/contactlist/${contactList}`);
+    setcontactlistarr(contactlistarr.filter((val) => val.id !== contactList));
+    if (response.data.message) {
+      alert(response.data.message);
+    }
+  };
   const SelectAcc = ({ users }) => (
     <div>
       <span>PTT User Accounts</span>
@@ -69,11 +77,18 @@ export default function ContactListCreate() {
       <div className="comp">
         <div className="accbox">
           {users.map((val) => (
-            <div key={val.id}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              key={val.id}
+            >
               <input
                 type="checkbox"
                 id="subitem"
                 name="selection"
+                style={{ margin: 'none', width: '2vw' }}
                 defaultChecked={selectedUserIds.current.has(val.id)}
                 onClick={() => {
                   selectedUserIds.current.has(val.id)
@@ -142,7 +157,7 @@ export default function ContactListCreate() {
             value={contactList}
             required
           >
-            <option value={0}>Select Talk-Group</option>
+            <option value={0}>Select Contact_List</option>
             {contactlistarr.map((val) => (
               <option key={val.id} value={val.id}>
                 {val.display_name}
@@ -155,7 +170,11 @@ export default function ContactListCreate() {
       </div>
       <br />
       <button type="submit" disabled={disabled}>
-        Save
+        Update
+      </button>
+      <br />
+      <button type="button" onClick={cldelete}>
+        Delete
       </button>
     </form>
   );

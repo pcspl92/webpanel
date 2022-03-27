@@ -11,6 +11,7 @@ const {
   getContactLists,
   createUserContactListMaps,
   deleteUserContactListMaps,
+  CLid,
 } = require('../queries/contactlist');
 const { createCompanyActivityLog } = require('../queries/company');
 
@@ -29,7 +30,17 @@ router.get(
     return res.status(200).json(list);
   }
 );
-
+router.get(
+  '/getclid',
+  isLoggedIn,
+  guard.check('company'),
+  companyCheck,
+  async (req, res) => {
+    const [clid] = await CLid();
+    console.log(clid);
+    return res.status(200).json(clid);
+  }
+);
 // @route   POST api/contactlist/
 // @desc    Contact-List creation route
 // @access  Private(Company)
@@ -99,8 +110,10 @@ router.delete(
         .json({ contactlist: 'No Contact List with given id found.' });
 
     await deleteContactList(req.params.id);
+    await deleteUserContactListMaps(req.params.id);
+
     await createCompanyActivityLog('Contact-List Delete', req.user.id);
-    return res.status(200).send('deleted');
+    return res.status(200).send({ message: 'Contact-List has been Deleted' });
   }
 );
 

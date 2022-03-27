@@ -9,12 +9,15 @@ export default function ContactListCreate() {
   const [contactlistName, setcontactlistName] = useState('');
   const [disabled, setDisabled] = useState(false);
   const [userlist, setuserlist] = useState([]);
+  const [newid, setnewid] = useState();
   const [selectedUsers, setSelectedUsers] = useState([]);
   const selectedUserIds = useRef(new Set());
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/user/ptt');
+      const { data: datatg } = await axios.get('contactlist/getclid');
+      setnewid(datatg.contactlist_id);
       setuserlist(data);
       setLoading(false);
     })();
@@ -63,11 +66,18 @@ export default function ContactListCreate() {
       <div className="comp">
         <div className="accbox">
           {users.map((val) => (
-            <div key={val.id}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              key={val.id}
+            >
               <input
                 type="checkbox"
                 id="subitem"
                 name="selection"
+                style={{ margin: 'none', width: '2vw' }}
                 defaultChecked={selectedUserIds.current.has(val.id)}
                 onClick={() => {
                   selectedUserIds.current.has(val.id)
@@ -125,6 +135,8 @@ export default function ContactListCreate() {
         <br />
         <SelectAcc users={userlist} />
       </div>
+      <br />
+      Contact List ID (auto-generated) : {newid}
       <br />
       <button type="submit" disabled={disabled}>
         Save

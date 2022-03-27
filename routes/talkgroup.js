@@ -8,6 +8,7 @@ const {
   getTGs,
   createTG,
   updateTG,
+  TGid,
 } = require('../queries/talkgroup');
 const { createCompanyActivityLog } = require('../queries/company');
 
@@ -26,10 +27,21 @@ router.get(
     return res.status(200).json(talkgroups);
   }
 );
-
+router.get(
+  '/gettalkgroupid',
+  isLoggedIn,
+  guard.check('company'),
+  companyCheck,
+  async (req, res) => {
+    const [tgid] = await TGid();
+    console.log(tgid);
+    return res.status(200).json(tgid);
+  }
+);
 // @route   POST api/talkgroup/
 // @desc    Talkgroup creation route
 // @access  Private(Company)
+
 router.post(
   '/',
   isLoggedIn,

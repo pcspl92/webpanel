@@ -14,7 +14,10 @@ const getContactLists = (companyId) => {
   const sql = `SELECT id, name AS display_name FROM contact_lists WHERE company_id=${companyId};`;
   return query(sql);
 };
-
+const CLid = () => {
+  const sql = `SELECT (MAX(id)+1 ) AS contactlist_id FROM contact_lists;`;
+  return query(sql);
+};
 const createContactList = (name, companyId) => {
   const sql = `INSERT INTO contact_lists (name, company_id) VALUES ('${name}', ${companyId});`;
   return query(sql);
@@ -53,4 +56,5 @@ module.exports = {
   deleteContactList,
   createUserContactListMaps,
   deleteUserContactListMaps,
+  CLid,
 };

@@ -14,7 +14,10 @@ const getTGs = (companyId) => {
   const sql = `SELECT id, talkgroup_name AS tg_name FROM talkgroups WHERE company_id=${companyId};`;
   return query(sql);
 };
-
+const TGid = () => {
+  const sql = `SELECT (MAX(id)+1 ) AS talkgroup_id FROM talkgroups;`;
+  return query(sql);
+};
 const createTG = (name, companyId) => {
   const sql = `INSERT INTO talkgroups (talkgroup_name, company_id) VALUES ('${name}', ${companyId});`;
   return query(sql);
@@ -31,4 +34,5 @@ module.exports = {
   getTGs,
   createTG,
   updateTG,
+  TGid,
 };

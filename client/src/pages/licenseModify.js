@@ -55,10 +55,17 @@ export default function LicenseModify() {
       <div className="comp">
         <div className="accbox">
           {users.map((val) => (
-            <div key={val.id}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              key={val.id}
+            >
               <input
                 type="checkbox"
                 id="subitem"
+                style={{ margin: 'none', width: '2vw' }}
                 name="selection"
                 defaultChecked={selectedUserIds.current.has(val.id)}
                 onClick={() => {
