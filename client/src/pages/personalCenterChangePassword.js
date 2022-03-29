@@ -14,24 +14,18 @@ const ChangePassword = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
-if(confirmPassword===password)
-{
-    try {
-
-      await axios.put('/auth/password/agent', { password });
+    if (confirmPassword === password) {
+      try {
+        await axios.put('/auth/password/agent', { password });
+        setDisabled(false);
+        setPassword('');
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    } else {
+      seterrorm('Confirm Password and Password should match');
       setDisabled(false);
-      setPassword('');
-    } catch (err) {
-      console.log(err.response.data);
     }
- 
-   }
-  else{
-    seterrorm("Confirm Password and Password should match");
-    setDisabled(false);
-
-  }
-  
   };
 
   return (
@@ -69,9 +63,8 @@ if(confirmPassword===password)
             required
           />
         </div>
-        <br/>
+        <br />
         <div className="text-danger fw-600">{errorm}</div>
-
       </div>
       <br />
       <button type="submit" disabled={disabled}>

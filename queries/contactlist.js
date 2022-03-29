@@ -36,6 +36,10 @@ const deleteUserContactListMaps = (contactListId) => {
   const sql = `DELETE FROM contact_list_user_maps WHERE contact_list_id=${contactListId};`;
   return query(sql);
 };
+const deleteUserAdddata = (contactListId) => {
+  const sql = `UPDATE  users_add_data SET contact_list_id=NULL WHERE contact_list_id=${contactListId};`;
+  return query(sql);
+};
 
 const updateContactList = (id, name) => {
   const sql = `UPDATE contact_lists SET name='${name}' WHERE id=${id};`;
@@ -57,4 +61,5 @@ module.exports = {
   createUserContactListMaps,
   deleteUserContactListMaps,
   CLid,
+  deleteUserAdddata,
 };

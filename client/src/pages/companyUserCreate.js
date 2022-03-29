@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import '../css/licenseModify.css';
+import * as yup from 'yup';
 import '../css/companyUserCreate.css';
 import axios from '../utils/axios';
 
@@ -25,6 +26,8 @@ function UserCreate() {
   const [selectedCS, setSelectedCS] = useState([]);
   const [formLoading, setFormLoading] = useState(false);
   const [formData, setFormData] = useState({});
+  const [errors, setErrors] = useState({});
+
   const [featuresGlobal, setFeaturesGlobal] = useState({
     grp_call: false,
     enc: false,
@@ -35,7 +38,40 @@ function UserCreate() {
   });
   const selectedTGIds = useRef(new Set());
   const selectedCSIds = useRef(new Set());
-
+  const schema = yup.object().shape({
+    username: yup
+      .string()
+      .typeError('Username must be string')
+      .required('This field is required')
+      .min(3, 'Username must be 3-40 characters long')
+      .max(40, 'Username must be 3-40 characters long'),
+    password: yup
+      .string()
+      .typeError('Password must be string')
+      .required('This field is required')
+      .min(8, 'Password must be 8-30 characters long')
+      .max(30, 'Password must be 8-30 characters long'),
+    confirm_password: yup
+      .string()
+      .typeError('Confirm Password must be string')
+      .oneOf([yup.ref('password'), null], 'Passwords must match'),
+    display_name: yup
+      .string()
+      .typeError('Sub-Agent name must be string')
+      .required('This field is required')
+      .min(10, 'Display name must be 10-90 characters long')
+      .max(90, 'Display name must be 10-90 characters long'),
+    contact_number: yup
+      .string()
+      .required('This field is required')
+      .matches(/^[0-9]+$/, 'Must be only digits')
+      .min(10, 'Must be exactly 10 digits')
+      .max(10, 'Must be exactly 10 digits'),
+  });
+  const validate = async (data) => {
+    const formData2 = { ...data, confirm_password: confirmPassword };
+    await schema.validate(formData2, { abortEarly: false });
+  };
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/user/company-panel/user-create');
@@ -111,6 +147,7 @@ function UserCreate() {
 
   const pttSubmit = async () => {
     const tgIds = [];
+
     selectedTGIds.current.forEach((tgId) => tgIds.push(tgId));
     const data = {
       username: accountName,
@@ -125,13 +162,23 @@ function UserCreate() {
     };
 
     try {
+      await validate(data);
       const response = await axios.post('/user/ptt', data);
       if (response.data.message) {
         alert(response.data.message);
       }
       resetPttForm();
-    } catch (err) {
-      console.log(err.response.data);
+      setErrors({});
+    } catch (error) {
+      if (error.inner.length) {
+        const validateErrors = error.inner.reduce(
+          (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+          {}
+        );
+        setErrors(validateErrors);
+      } else {
+        console.log(error.response.data);
+      }
     }
   };
 
@@ -158,6 +205,7 @@ function UserCreate() {
             value={accountName}
             required
           />
+          <div className="text-danger fw-600">{errors?.username}</div>
         </div>
         <br />
         <div>
@@ -173,6 +221,7 @@ function UserCreate() {
             value={password}
             required
           />
+          <div className="text-danger fw-600">{errors?.password}</div>
         </div>
         <br />
         <div>
@@ -188,6 +237,7 @@ function UserCreate() {
             value={confirmPassword}
             required
           />
+          <div className="text-danger fw-600">{errors?.confirm_password}</div>
         </div>
         <br />
         <div>
@@ -203,6 +253,7 @@ function UserCreate() {
             value={displayName}
             required
           />
+          <div className="text-danger fw-600">{errors?.display_name}</div>
         </div>
       </div>
       <br />
@@ -420,13 +471,24 @@ function UserCreate() {
     };
 
     try {
+      await validate(data);
       const response = await axios.post('/user/dispatcher', data);
+
       if (response.data.message) {
         alert(response.data.message);
       }
       resetDispatcherForm();
-    } catch (err) {
-      console.log(err.response.data);
+      setErrors({});
+    } catch (error) {
+      if (error.inner.length) {
+        const validateErrors = error.inner.reduce(
+          (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+          {}
+        );
+        setErrors(validateErrors);
+      } else {
+        console.log(error.response.data);
+      }
     }
   };
 
@@ -468,6 +530,7 @@ function UserCreate() {
             value={password}
             required
           />
+          <div className="text-danger fw-600">{errors?.password}</div>
         </div>
         <br />
         <div>
@@ -483,6 +546,7 @@ function UserCreate() {
             value={confirmPassword}
             required
           />
+          <div className="text-danger fw-600">{errors?.confirm_password}</div>
         </div>
         <br />
         <div>
@@ -498,6 +562,7 @@ function UserCreate() {
             value={displayName}
             required
           />
+          <div className="text-danger fw-600">{errors?.display_name}</div>
         </div>
       </div>
       <br />
@@ -631,15 +696,25 @@ function UserCreate() {
       cs_type_id: Number(controlStationType),
       order_id: Number(order),
     };
-
     try {
+      await validate(data);
       const response = await axios.post('/user/control', data);
+
       if (response.data.message) {
         alert(response.data.message);
       }
       resetControlForm();
-    } catch (err) {
-      console.log(err.response.data);
+      setErrors({});
+    } catch (error) {
+      if (error.inner.length) {
+        const validateErrors = error.inner.reduce(
+          (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+          {}
+        );
+        setErrors(validateErrors);
+      } else {
+        console.log(error.response.data);
+      }
     }
   };
 
@@ -851,6 +926,7 @@ function UserCreate() {
             value={contactNum}
             required
           />
+          <div className="text-danger fw-600">{errors?.contact_number}</div>
         </div>
         <br />
       </div>

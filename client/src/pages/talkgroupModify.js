@@ -24,7 +24,13 @@ const TalkGroupModify = () => {
     settgnewname('');
     setTalkgroup('0');
   };
-
+  const deleteTalkgroup = async () => {
+    const response = await axios.delete(`/talkgroup/${talkgroup}`);
+    if (response.data.message) {
+      alert(response.data.message);
+    }
+    reset();
+  };
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
@@ -95,6 +101,15 @@ const TalkGroupModify = () => {
       </div>
       <button className="mt-3" type="submit" disabled={disabled}>
         UPDATE
+      </button>
+      <br />
+      <button
+        className="mt-3"
+        type="button"
+        onClick={deleteTalkgroup}
+        disabled={disabled}
+      >
+        DELETE
       </button>
       <div className="text-danger">{err?.company}</div>
     </form>

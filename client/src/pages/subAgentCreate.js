@@ -127,6 +127,8 @@ const AddAgent = () => {
     try {
       await validate(data);
       const response = await axios.post('/subagent/', data);
+      setErrors({});
+
       if (response.data.message) {
         alert(response.data.message);
       }

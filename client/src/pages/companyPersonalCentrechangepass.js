@@ -6,17 +6,25 @@ import axios from '../utils/axios';
 const CompanyChangePassword = () => {
   const [password, setPassword] = useState('');
   const [disabled, setDisabled] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [errorm, seterrorm] = useState('');
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
 
-    try {
-      await axios.put('/auth/password/company', { password });
+    if (confirmPassword === password) {
+      try {
+        await axios.put('/auth/password/company', { password });
+        setDisabled(false);
+        setPassword('');
+        setConfirmPassword('');
+      } catch (err) {
+        console.log(err.response.data);
+      }
+    } else {
+      seterrorm('Confirm Password and Password should match');
       setDisabled(false);
-      setPassword('');
-    } catch (err) {
-      console.log(err.response.data);
     }
   };
 
@@ -55,6 +63,8 @@ const CompanyChangePassword = () => {
             required
           />
         </div>
+        <br />
+        <div className="text-danger fw-600">{errorm}</div>
       </div>
       <br />
       <button type="submit" disabled={disabled}>

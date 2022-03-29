@@ -12,6 +12,7 @@ const {
   createUserContactListMaps,
   deleteUserContactListMaps,
   CLid,
+  deleteUserAdddata,
 } = require('../queries/contactlist');
 const { createCompanyActivityLog } = require('../queries/company');
 
@@ -108,9 +109,9 @@ router.delete(
       return res
         .status(404)
         .json({ contactlist: 'No Contact List with given id found.' });
-
-    await deleteContactList(req.params.id);
     await deleteUserContactListMaps(req.params.id);
+    await deleteUserAdddata(req.params.id);
+    await deleteContactList(req.params.id);
 
     await createCompanyActivityLog('Contact-List Delete', req.user.id);
     return res.status(200).send({ message: 'Contact-List has been Deleted' });

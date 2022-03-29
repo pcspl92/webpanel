@@ -27,7 +27,14 @@ const updateTG = (name, id) => {
   const sql = `UPDATE talkgroups SET talkgroup_name='${name}' WHERE id=${id};`;
   return query(sql);
 };
-
+const deleteTG = (id) => {
+  const sql = `DELETE FROM talkgroups  WHERE id=${id};`;
+  return query(sql);
+};
+const deleteTGMap = (id) => {
+  const sql = `DELETE FROM user_talkgroup_maps  WHERE talkgroup_id=${id} OR default_tg=${id};`;
+  return query(sql);
+};
 module.exports = {
   findTGByName,
   findTGById,
@@ -35,4 +42,6 @@ module.exports = {
   createTG,
   updateTG,
   TGid,
+  deleteTG,
+  deleteTGMap,
 };
