@@ -19,6 +19,7 @@ const CompanyChangePassword = () => {
         setDisabled(false);
         setPassword('');
         setConfirmPassword('');
+        seterrorm('');
       } catch (err) {
         console.log(err.response.data);
       }
@@ -42,9 +43,9 @@ const CompanyChangePassword = () => {
             type="password"
             id="id1"
             onChange={(event) => {
-              setPassword(event.target.value);
+              setConfirmPassword(event.target.value);
             }}
-            value={password}
+            value={confirmPassword}
             required
           />
         </div>

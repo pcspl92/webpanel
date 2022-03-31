@@ -92,6 +92,9 @@ const TalkGroupModify = () => {
             type="text"
             id="display_name"
             style={{ width: '12vw' }}
+            pattern=".{3,40}"
+            required
+            title="3 to 40 characters"
             onChange={(event) => {
               settgnewname(event.target.value);
             }}

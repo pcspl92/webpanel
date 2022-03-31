@@ -105,7 +105,11 @@ const CompanyOrderList = () => {
             <th>{index + 1}</th>
             <th>{val.id}</th>
             <th>{val.status}</th>
-            <th>{val.account_type}</th>
+            <th>
+              {val.account_type === 'control'
+                ? 'control station'
+                : val.account_type}
+            </th>
             <th>{val.license_type}</th>
             <th>{moment(val.license_renewal_date).format('DD-MM-YYYY')}</th>
             <th>{val.active}</th>

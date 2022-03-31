@@ -59,11 +59,18 @@ function UserModify() {
       <div className="comp">
         <div className="accbox">
           {formData.tgs?.map((val) => (
-            <div key={val.id}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              key={val.id}
+            >
               <input
                 type="checkbox"
                 id="subitem"
                 name="selection"
+                style={{ margin: 'none', width: '2vw' }}
                 defaultChecked={selectedTGIds.current.has(val.id)}
                 onClick={() => {
                   selectedTGIds.current.has(val.id)

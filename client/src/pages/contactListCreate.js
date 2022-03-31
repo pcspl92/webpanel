@@ -125,11 +125,13 @@ export default function ContactListCreate() {
             type="text"
             id="username"
             name="username"
+            pattern=".{3,40}"
+            required
+            title="3 to 40 characters"
             onChange={(event) => {
               setcontactlistName(event.target.value);
             }}
             value={contactlistName}
-            required
           />
         </div>
         <br />

@@ -53,11 +53,13 @@ const TalkGroupCreate = () => {
           <input
             type="text"
             id="username"
+            pattern=".{3,40}"
+            required
+            title="3 to 40 characters"
             onChange={(event) => {
               settgname(event.target.value);
             }}
             value={tgname}
-            required
           />
         </div>
         <br />

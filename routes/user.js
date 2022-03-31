@@ -270,7 +270,9 @@ router.post(
     if (req.body.control_ids.length)
       await mapControlStations(req.body.control_ids, insertId);
     await createCompanyActivityLog('Dispatcher User Create', req.user.id);
-    return res.status(201).send({ message: 'PTT User has been created' });
+    return res
+      .status(201)
+      .send({ message: 'Dispatcher User has been created' });
   }
 );
 
