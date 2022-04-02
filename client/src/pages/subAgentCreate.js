@@ -61,12 +61,14 @@ const AddAgent = () => {
       .string()
       .typeError('Username must be string')
       .required('This field is required')
+      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid username')
       .min(3, 'Username must be 3-40 characters long')
       .max(40, 'Username must be 3-40 characters long'),
     password: yup
       .string()
       .typeError('Password must be string')
       .required('This field is required')
+      .matches(/.*\S.*/, 'Password cannot contain whitespace')
       .min(8, 'Password must be 8-30 characters long')
       .max(30, 'Password must be 8-30 characters long'),
     confirm_password: yup
@@ -77,6 +79,8 @@ const AddAgent = () => {
       .string()
       .typeError('Sub-Agent name must be string')
       .required('This field is required')
+      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid Sub-Agent name')
+
       .min(10, 'Sub-Agent name must be 10-90 characters long')
       .max(90, 'Sub-Agent name must be 10-90 characters long'),
     contact_number: yup

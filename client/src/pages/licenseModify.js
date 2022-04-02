@@ -138,7 +138,7 @@ export default function LicenseModify() {
               setShow(!showacc, users);
             }}
           />
-          <label htmlFor="selection"> All Acocunts </label>
+          <label htmlFor="selection"> All Accounts </label>
         </div>
         {showacc && <SelectAcc users={users} />}
         <div>

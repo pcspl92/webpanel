@@ -26,7 +26,20 @@ export default function LicenseCreate() {
   const [disableRenewal, setDisableRenewal] = useState(true);
   const [error, setError] = useState();
   const { user } = useAuth();
-
+  const reset = () => {
+    setFeatures({
+      grp_call: false,
+      enc: false,
+      priv_call: false,
+      live_gps: false,
+      geo_fence: false,
+      chat: false,
+    });
+    setcompany(0);
+    setLicenseType('');
+    setquantity(0);
+    setRenewalType('');
+  };
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/company/');
@@ -56,6 +69,7 @@ export default function LicenseCreate() {
       if (response.data.message) {
         alert(response.data.message);
       }
+      reset();
     } else {
       setError('Select a Company');
     }

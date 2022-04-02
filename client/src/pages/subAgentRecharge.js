@@ -92,6 +92,8 @@ const RechargeAgent = () => {
           <input
             type="text"
             id="id1"
+            pattern="[0-9]+"
+            title="Recharge Amount can only be numeric"
             onChange={(event) => {
               if (event.target.value > user.balance) {
                 setError(
