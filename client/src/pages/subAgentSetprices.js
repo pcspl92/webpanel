@@ -93,7 +93,7 @@ const SetPrices = () => {
   };
 
   return (
-    <form className="setpricesback" onSubmit={onSubmit}>
+    <form className="passback" onSubmit={onSubmit}>
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
         SET PRICES FOR SUB-AGENTS
       </div>
@@ -128,172 +128,189 @@ const SetPrices = () => {
       </div>
       <br />
       <br />
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            marginLeft: '14vw',
-            position: 'absolute',
-          }}
-        >
-          <div className="subformelements">Monthly License</div>
-          <div className="subformelements">Quarterly License</div>
-          <div className="subformelements">Half Yearly License</div>
-          <div className="subformelements">Yearly License</div>
-          <div className="subformelements">One Time License</div>
-        </div>
-        <br />
+      <div className="grid-container">
+        <div className="subformelements2"></div>
 
-        <br />
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              marginLeft: '6.8vw',
-            }}
-          >
-            <span style={{ fontSize: '2vh' }}>
-              &nbsp;PTT User Price : &nbsp;
-            </span>
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                setmonthlyppt(event.target.value);
-              }}
-            />
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                setquarterlyppt(event.target.value);
-              }}
-            />
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                sethalfylyppt(event.target.value);
-              }}
-            />
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                setyearlyppt(event.target.value);
-              }}
-            />
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                setonetimeppt(event.target.value);
-              }}
-            />
-          </div>
-          <br />
+        <div className="subformelements2">Monthly License</div>
+        <div className="subformelements2">Quarterly License</div>
+        <div className="subformelements2">Half Yearly License</div>
+        <div className="subformelements2">Yearly License</div>
+        <div className="subformelements2">One Time License</div>
 
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              marginLeft: '2.2vw',
-            }}
-          >
-            <span style={{ fontSize: '2vh', marginLeft: '0.3vw' }}>
-              Dispatcher Account Price : &nbsp;
-            </span>
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                setmonthlydap(event.target.value);
-              }}
-            />
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                setquarterlydap(event.target.value);
-              }}
-            />
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                sethalfylydap(event.target.value);
-              }}
-            />
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                setyearlydap(event.target.value);
-              }}
-            />
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                setonetimedap(event.target.value);
-              }}
-            />
-          </div>
-          <br />
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              marginLeft: '0.4vw',
-            }}
-          >
-            <span style={{ fontSize: '2vh', marginLeft: '0.3vw' }}>
-              Control Station Account Price : &nbsp;
-            </span>
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                setmonthlycsap(event.target.value);
-              }}
-            />
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                setquarterlycsap(event.target.value);
-              }}
-            />
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                sethalfylycsap(event.target.value);
-              }}
-            />
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                setyearlycsap(event.target.value);
-              }}
-            />
-            <input
-              type="text"
-              className="subformelements"
-              onChange={(event) => {
-                setonetimecsap(event.target.value);
-              }}
-            />
-          </div>
+        <div style={{ fontSize: '2vh' }}>&nbsp;PTT User Price : &nbsp;</div>
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            setmonthlyppt(event.target.value);
+          }}
+          value={monthlyptt}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
+
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            setquarterlyppt(event.target.value);
+          }}
+          value={quarterlyptt}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            sethalfylyppt(event.target.value);
+          }}
+          value={halfylyptt}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            setyearlyppt(event.target.value);
+          }}
+          value={yearlyptt}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            setonetimeppt(event.target.value);
+          }}
+          value={onetimeptt}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
+
+        <div style={{ fontSize: '2vh', marginLeft: '0.3vw' }}>
+          Dispatcher Account Price : &nbsp;
         </div>
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            setmonthlydap(event.target.value);
+          }}
+          value={monthlydap}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            setquarterlydap(event.target.value);
+          }}
+          value={quarterlydap}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            sethalfylydap(event.target.value);
+          }}
+          value={halfylydap}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            setyearlydap(event.target.value);
+          }}
+          value={yearlydap}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            setonetimedap(event.target.value);
+          }}
+          value={onetimedap}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
+        <div style={{ fontSize: '2vh', marginLeft: '0.3vw' }}>
+          Control Station Account Price : &nbsp;
+        </div>
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            setmonthlycsap(event.target.value);
+          }}
+          value={monthlycsap}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            setquarterlycsap(event.target.value);
+          }}
+          value={quarterlycsap}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            sethalfylycsap(event.target.value);
+          }}
+          value={halfylycsap}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            setyearlycsap(event.target.value);
+          }}
+          value={yearlycsap}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
+        <input
+          type="text"
+          className="subformelements2"
+          onChange={(event) => {
+            setonetimecsap(event.target.value);
+          }}
+          value={onetimecsap}
+          pattern="[0-9]+"
+          title="Please only enter numberical values"
+          required
+        />
       </div>
       <br />
       <button style={{ width: '15vw' }} type="submit" disabled={disabled}>

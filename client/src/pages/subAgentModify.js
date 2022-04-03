@@ -64,7 +64,7 @@ const ModifyAgent = () => {
   };
 
   return (
-    <form className="modifyback" onSubmit={onSubmit}>
+    <form className="passback" onSubmit={onSubmit}>
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
         MODIFY SUB-AGENT
       </div>

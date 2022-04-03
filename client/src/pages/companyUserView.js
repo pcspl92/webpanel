@@ -221,6 +221,11 @@ const CompanyUserView = () => {
           </tr>
         ))}
       </table>
+      {userupdlist.length === 0 ? (
+        <div className="text-danger fw-500">No Matching Records Exist </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 };

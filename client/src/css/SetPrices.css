@@ -8,3 +8,22 @@
   padding: 1vw;
   overflow-x: hidden;
 }
+.passback {
+  display: flex;
+  flex-direction: column;
+  width: 82vw;
+  height: 90vh;
+  justify-content: start;
+  overflow-x: hidden;
+  padding: 2vw;
+  align-items: center;
+
+  overflow: auto;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto;
+  gap: 2vw;
+  padding: 1.5vw;
+  font-size: 1vw;
+}

@@ -113,6 +113,11 @@ const ViewLogin = () => {
           </tr>
         ))}
       </table>
+      {updatedloglist.length === 0 ? (
+        <div className="text-danger fw-500">No Matching Records Exist </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 

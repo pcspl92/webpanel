@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import * as yup from 'yup';
 import '../css/departmentModify.css';
 import axios from '../utils/axios';
 
@@ -24,6 +24,19 @@ const TalkGroupModify = () => {
     settgnewname('');
     setTalkgroup('0');
   };
+  const schema = yup.object().shape({
+    name: yup
+      .string()
+      .typeError('Talk-Group name must be string')
+      .required('This field is required')
+      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid Talk-Group name')
+      .min(3, 'Username must be 3-40 characters long')
+      .max(40, 'Username must be 3-40 characters long'),
+  });
+  const validate = async (name) => {
+    const formData2 = { name };
+    await schema.validate(formData2, { abortEarly: false });
+  };
   const deleteTalkgroup = async () => {
     const response = await axios.delete(`/talkgroup/${talkgroup}`);
     if (response.data.message) {
@@ -40,6 +53,8 @@ const TalkGroupModify = () => {
     };
 
     try {
+      await validate(data);
+
       const response = await axios.put(`/talkgroup/${talkgroup}`, data);
       if (response.data.message) {
         alert(response.data.message);
@@ -73,7 +88,7 @@ const TalkGroupModify = () => {
             value={talkgroup}
             required
           >
-            <option value={0}>Select Talk-Group</option>
+            <option value="">Select Talk-Group</option>
             {tglist.map((val) => (
               <option key={val.id} value={val.id}>
                 {val.tg_name}

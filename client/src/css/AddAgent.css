@@ -1,6 +1,24 @@
-.subformelements {
+.subformelements2 {
   width: 8vw;
-  margin-right: 2vw;
   font-style: italic;
   font-size: 2vh;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto;
+  gap: 2vw;
+  padding: 1.5vw;
+  font-size: 1vw;
+}
+.passback {
+  display: flex;
+  flex-direction: column;
+  width: 82vw;
+  height: 90vh;
+  justify-content: start;
+  overflow-x: hidden;
+  padding: 2vw;
+  align-items: center;
+
+  overflow: auto;
 }
