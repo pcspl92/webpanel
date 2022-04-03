@@ -90,7 +90,7 @@ const RechargeAgent = () => {
             <label htmlFor="id1">Recharge Amount :</label>
           </span>
           <input
-            type="text"
+            type="number"
             id="id1"
             pattern="[0-9]+"
             title="Recharge Amount can only be numeric"

@@ -10,6 +10,7 @@ const CompanyView = () => {
   const [tableData, setTableData] = useState([]);
   const [companyName, setcompanyname] = useState('');
   const [compaccname, setcomaccname] = useState('');
+  const [counter,setCounter]=useState(0)
   const [updatedlist, setupdatedlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
@@ -34,20 +35,12 @@ const CompanyView = () => {
     try {
       await validateForm({ companyName, compaccname });
       setErrors({});
-      setupdatedlist(
-        tableData.filter(
-          (val) =>
-            (companyName.length &&
-              val.company_name
-                .toLowerCase()
-                .includes(companyName.toLowerCase())) ||
-            (compaccname.length &&
-              val.account_name
-                .toLowerCase()
-                .includes(compaccname.toLowerCase()))
-        )
-      );
-    } catch (error) {
+      const {data}=await axios.get(`/company/agent-panel?comName=${companyName}&accName=${compaccname}`)
+      console.log(data)
+      setupdatedlist(data)
+      setCounter(1)
+    }
+    catch (error) {
       if (error.inner.length) {
         const validateErrors = error.inner.reduce(
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
@@ -58,7 +51,9 @@ const CompanyView = () => {
         console.log(error.response.data);
       }
     }
+    // console.log("GEGGE",updatedlist)
   };
+
 
   const reset = () => {
     setcompanyname('');
@@ -109,6 +104,7 @@ const CompanyView = () => {
           />
         </div>
         <div className="text-danger fw-500">{errors?.compaccname}</div>
+        <div className="text-danger fw-500">{updatedlist.length===0 && counter===1?"No record found in database":""}</div>
       </div>
       <div className="mt-3">
         <button

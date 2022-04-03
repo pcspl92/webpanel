@@ -81,8 +81,8 @@ const AddAgent = () => {
       .required('This field is required')
       .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid Sub-Agent name')
 
-      .min(10, 'Sub-Agent name must be 10-90 characters long')
-      .max(90, 'Sub-Agent name must be 10-90 characters long'),
+      .min(3, 'Sub-Agent name must be 3-5 characters long')
+      .max(5, 'Sub-Agent name must be 3-5 characters long'),
     contact_number: yup
       .string()
       .required('This field is required')
