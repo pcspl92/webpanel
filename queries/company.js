@@ -23,6 +23,14 @@ const getCompanyViewData = (agentIds) => {
                WHERE c.agent_id IN (${agentIds});`;
   return query(sql);
 };
+const getCompanyViewDataSearch = (agentIds,comName,accName) => {
+  const sql = `SELECT c.id, c.username AS account_name, c.display_name AS company_name, 
+               c.timestamp, c.contact_number, a.display_name AS agent_name
+               FROM companies c
+               JOIN agents a ON c.agent_id = a.id
+               WHERE c.agent_id IN (${agentIds}) AND c.display_name LIKE "%${comName}%" AND c.username LIKE "%${accName}%"`;
+  return query(sql);
+};
 
 const createCompany = ({
   username,
@@ -114,4 +122,5 @@ module.exports = {
   getCompanies,
   getCompanyViewData,
   deleteCompany,
+  getCompanyViewDataSearch
 };

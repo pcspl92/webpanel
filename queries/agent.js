@@ -144,7 +144,7 @@ const getAgentAuthLogs = (id) => {
 
 const getAgentActivityLogs = (id) => {
   const sql = `SELECT aal.activity_desc, aal.id, aal.timestamp, a.display_name AS agent_name FROM agent_activity_logs aal 
-               JOIN agents a ON aal.agent_id = a.id WHERE aal.agent_id=${id};`;
+               JOIN agents a ON aal.agent_id = a.id WHERE aal.agent_id=${id} ORDER BY aal.timestamp DESC`;
   return query(sql);
 };
 
