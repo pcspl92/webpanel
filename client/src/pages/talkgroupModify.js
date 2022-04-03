@@ -68,7 +68,7 @@ const TalkGroupModify = () => {
   };
 
   const form = () => (
-    <form className="modifyback" onSubmit={onSubmit}>
+    <form className="passback" onSubmit={onSubmit}>
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
         MODIFY TALK-GROUP
       </div>
@@ -106,7 +106,6 @@ const TalkGroupModify = () => {
           <input
             type="text"
             id="display_name"
-            style={{ width: '12vw' }}
             pattern=".{3,40}"
             required
             title="3 to 40 characters"
