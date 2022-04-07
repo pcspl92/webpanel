@@ -198,7 +198,7 @@ router.put(
   async (req, res) => {
     const password = await hashPassword(req.body.password);
     await updateCompanyPassword(password, req.user.id);
-    return res.status(200).send('updated');
+    return res.status(200).send('Password Updated');
   }
 );
 
