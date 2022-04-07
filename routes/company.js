@@ -15,6 +15,7 @@ const {
   updateCompany,
   getCompanyActivityLogs,
   getCompanyViewData,
+  getCompanyViewDataSearch,
   findCompanyById,
   deleteCompany,
   relieveCompany,
@@ -58,14 +59,27 @@ router.get(
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
   async (req, res) => {
-    let subagents = [req.user.id];
-    if (req.user.permissions[0] === 'agent') {
-      const result = await getSubAgents(req.user.id);
-      subagents = result.reduce((acc, sub) => [...acc, sub.id], [req.user.id]);
+    if(req.query.comName && req.query.accName ){
+      console.log("Hey")
+      const {comName,accName}=req.query;
+      let subagents = [req.user.id];
+      if (req.user.permissions[0] === 'agent') {
+        const result = await getSubAgents(req.user.id);
+        subagents = result.reduce((acc, sub) => [...acc, sub.id], [req.user.id]);
+      }
+      const companies=await getCompanyViewDataSearch(subagents,comName,accName)
+      return res.status(200).json(companies);
     }
+    else{
+      let subagents = [req.user.id];
+      if (req.user.permissions[0] === 'agent') {
+        const result = await getSubAgents(req.user.id);
+        subagents = result.reduce((acc, sub) => [...acc, sub.id], [req.user.id]);
+      }
 
-    const companies = await getCompanyViewData(subagents);
-    return res.status(200).json(companies);
+      const companies = await getCompanyViewData(subagents);
+      return res.status(200).json(companies);
+      }
   }
 );
 
