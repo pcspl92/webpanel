@@ -15,7 +15,10 @@ const CompanyChangePassword = () => {
 
     if (confirmPassword === password) {
       try {
-        await axios.put('/auth/password/company', { password });
+        // console.log(password)
+        const {data}=await axios.put('/auth/password/company', { password });
+        // console.log(data)
+        alert(data)
         setDisabled(false);
         setPassword('');
         setConfirmPassword('');
@@ -43,9 +46,9 @@ const CompanyChangePassword = () => {
             type="password"
             id="id1"
             onChange={(event) => {
-              setConfirmPassword(event.target.value);
+              setPassword(event.target.value);
             }}
-            value={confirmPassword}
+            value={password}
             required
           />
         </div>
@@ -59,8 +62,9 @@ const CompanyChangePassword = () => {
             type="password"
             id="id2"
             onChange={(event) => {
-              setPassword(event.target.value);
+              setConfirmPassword(event.target.value);
             }}
+            value={confirmPassword}
             required
           />
         </div>

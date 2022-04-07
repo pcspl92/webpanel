@@ -19,6 +19,7 @@ const ChangePassword = () => {
         await axios.put('/auth/password/agent', { password });
         setDisabled(false);
         setPassword('');
+        setconfirmPassword('')
       } catch (err) {
         console.log(err.response.data);
       }
@@ -61,6 +62,7 @@ const ChangePassword = () => {
               setconfirmPassword(event.target.value);
             }}
             required
+            value={confirmPassword}
           />
         </div>
         <br />

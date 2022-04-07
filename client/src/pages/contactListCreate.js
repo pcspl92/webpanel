@@ -37,9 +37,11 @@ export default function ContactListCreate() {
       .min(3, 'Username must be 3-40 characters long')
       .max(40, 'Username must be 3-40 characters long'),
   });
-  const validate = async (name) => {
-    const formData2 = { name };
-    await schema.validate(formData2, { abortEarly: false });
+  const validate = async (name2) => {
+    console.log(name2)
+    const {name} = { name2 };
+    console.log(name)
+    await schema.validate(name2, { abortEarly: false });
   };
   function onSelect(users) {
     const selected = [];
