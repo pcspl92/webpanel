@@ -1,6 +1,7 @@
 import '../css/contactlistModify.css';
 
 import React, { useEffect, useState, useRef } from 'react';
+import * as yup from 'yup';
 
 import axios from '../utils/axios';
 
@@ -31,6 +32,15 @@ export default function ContactListCreate() {
   const reset = () => {
     setContactList('');
   };
+  const schema = yup.object().shape({
+    name: yup
+      .string()
+      .typeError('Contactlist name must be string')
+      .required('This field is required')
+      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid Contactlist name')
+      .min(3, 'Username must be 3-40 characters long')
+      .max(40, 'Username must be 3-40 characters long'),
+  });
 
   function onSelect(users) {
     const selected = [];
@@ -39,7 +49,10 @@ export default function ContactListCreate() {
     });
     setSelectedUsers(selected);
   }
-
+  const validate = async (name) => {
+    const formData2 = { name };
+    await schema.validate(formData2, { abortEarly: false });
+  };
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
@@ -52,6 +65,7 @@ export default function ContactListCreate() {
     };
 
     try {
+      await validate(data);
       const response = await axios.put(`/contactlist/${contactList}`, data);
       if (response.data.message) {
         alert(response.data.message);
@@ -159,7 +173,7 @@ export default function ContactListCreate() {
             value={contactList}
             required
           >
-            <option value={0}>Select Contact_List</option>
+            <option value="">Select Contact_List</option>
             {contactlistarr.map((val) => (
               <option key={val.id} value={val.id}>
                 {val.display_name}

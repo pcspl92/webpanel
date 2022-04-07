@@ -1,7 +1,7 @@
 import '../css/contactlistModify.css';
 
 import React, { useEffect, useState, useRef } from 'react';
-
+import * as yup from 'yup';
 import axios from '../utils/axios';
 
 export default function ContactListCreate() {
@@ -11,6 +11,8 @@ export default function ContactListCreate() {
   const [userlist, setuserlist] = useState([]);
   const [newid, setnewid] = useState();
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [errors, setErrors] = useState({});
+
   const selectedUserIds = useRef(new Set());
 
   useEffect(() => {
@@ -26,7 +28,19 @@ export default function ContactListCreate() {
   const reset = () => {
     setcontactlistName('');
   };
-
+  const schema = yup.object().shape({
+    name: yup
+      .string()
+      .typeError('Contactlist name must be string')
+      .required('This field is required')
+      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid Contactlist name')
+      .min(3, 'Username must be 3-40 characters long')
+      .max(40, 'Username must be 3-40 characters long'),
+  });
+  const validate = async (name) => {
+    const formData2 = { name };
+    await schema.validate(formData2, { abortEarly: false });
+  };
   function onSelect(users) {
     const selected = [];
     selectedUserIds.current.forEach((id) => {
@@ -47,13 +61,23 @@ export default function ContactListCreate() {
     };
 
     try {
+      await validate(data);
+
       const response = await axios.post('/contactlist/', data);
       if (response.data.message) {
         alert(response.data.message);
       }
       reset();
-    } catch (err) {
-      console.log(err.response.data);
+    } catch (error) {
+      if (error.inner.length) {
+        const validateErrors = error.inner.reduce(
+          (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+          {}
+        );
+        setErrors(validateErrors);
+      } else {
+        console.log(error.response.data);
+      }
     }
 
     setDisabled(false);
@@ -135,6 +159,8 @@ export default function ContactListCreate() {
           />
         </div>
         <br />
+        <div className="text-danger fw-600">{errors?.name}</div>
+
         <SelectAcc users={userlist} />
       </div>
       <br />

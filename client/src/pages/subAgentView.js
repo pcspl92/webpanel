@@ -11,7 +11,6 @@ const ViewAgent = () => {
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
 
-
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/subagent/');
@@ -33,12 +32,15 @@ const ViewAgent = () => {
       setErrors({});
 
       setupdatedlist(
-        agentlist.filter((val) => (
+        agentlist.filter(
+          (val) =>
             (agentname.length &&
               val.agent_name.toLowerCase().includes(agentname.toLowerCase())) ||
             (agentaccname.length &&
-              val.account_name.toLowerCase().includes(agentaccname.toLowerCase()))
-          ))
+              val.account_name
+                .toLowerCase()
+                .includes(agentaccname.toLowerCase()))
+        )
       );
     } catch (error) {
       const validateErrors = error.inner.reduce(
@@ -48,7 +50,6 @@ const ViewAgent = () => {
       setErrors(validateErrors);
     }
   };
- 
 
   const reset = () => {
     setagentname('');
@@ -59,7 +60,6 @@ const ViewAgent = () => {
     setupdatedlist(agentlist);
     reset();
   };
-
 
   const table = () => (
     <div className="viewback">
@@ -104,7 +104,6 @@ const ViewAgent = () => {
         <br />
 
         <div className="text-danger fw-500">{errors?.agentaccname}</div>
-
       </div>
       <div className="mt-3">
         <button
@@ -134,21 +133,21 @@ const ViewAgent = () => {
           <th>Total Accounts Available</th>
         </tr>
         {updatedlist.map((val, index) => (
-        
-        <tr key={val.id}>
+          <tr key={val.id}>
             <th>{index + 1}</th>
             <th>{val.agent_name}</th>
             <th>{val.account_name}</th>
             <th>{val.orders}</th>
             <th>{val.active}</th>
             <th>{val.available}</th>
-           
-            
           </tr>
-          
-          
         ))}
       </table>
+      {updatedlist.length === 0 ? (
+        <div className="text-danger fw-500">No Matching Records Exist </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 

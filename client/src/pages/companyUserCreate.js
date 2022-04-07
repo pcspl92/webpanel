@@ -43,6 +43,7 @@ function UserCreate() {
       .string()
       .typeError('Username must be string')
       .required('This field is required')
+      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid username')
       .min(3, 'Username must be 3-40 characters long')
       .max(40, 'Username must be 3-40 characters long'),
     password: yup

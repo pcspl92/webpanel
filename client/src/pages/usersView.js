@@ -21,21 +21,23 @@ const ViewUsers = () => {
     })();
   }, []);
 
-  const companyFilter = () => userlist.filter((rec) =>
+  const companyFilter = () =>
+    userlist.filter((rec) =>
       rec.company_name.toLowerCase().includes(companyName.toLowerCase())
     );
 
-  const accountFilter = () => userlist.filter((rec) =>
+  const accountFilter = () =>
+    userlist.filter((rec) =>
       rec.account_name.toLowerCase().includes(accountName.toLowerCase())
     );
 
-  const userFilter = () => userlist.filter((rec) =>
+  const userFilter = () =>
+    userlist.filter((rec) =>
       rec.user_name.toLowerCase().includes(userName.toLowerCase())
     );
 
-  const expiryFilter = () => userlist.filter((rec) =>
-      moment(rec.license_expiry).isAfter(expiryDate)
-    );
+  const expiryFilter = () =>
+    userlist.filter((rec) => moment(rec.license_expiry).isAfter(expiryDate));
 
   const filter = () => {
     if (companyName.length) setuserupdlist(companyFilter());
@@ -151,23 +153,26 @@ const ViewUsers = () => {
           <th>License ID</th>
           <th>License Expiry</th>
           <th>Agent Name</th>
-          <th></th>
         </tr>
         {userupdlist.map((val, index) => (
-            <tr key={val.license_id}>
-              <th>{index + 1}</th>
-              <th>{val.user_name}</th>
-              <th>{val.account_name}</th>
-              <th>{val.company_name}</th>
-              <th>{val.account_type}</th>
-              <th>{val.status}</th>
-              <th>{val.license_id}</th>
-              <th>{moment(val.license_expiry).format('DD-MM-YYYY')}</th>
-              <th>{val.agent_name}</th>
-              <th> </th>
-            </tr>
-          ))}
+          <tr key={val.license_id}>
+            <th>{index + 1}</th>
+            <th>{val.user_name}</th>
+            <th>{val.account_name}</th>
+            <th>{val.company_name}</th>
+            <th>{val.account_type}</th>
+            <th>{val.status}</th>
+            <th>{val.license_id}</th>
+            <th>{moment(val.license_expiry).format('DD-MM-YYYY')}</th>
+            <th>{val.agent_name}</th>
+          </tr>
+        ))}
       </table>
+      {userupdlist.length === 0 ? (
+        <div className="text-danger fw-500">No Matching Records Exist </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 
