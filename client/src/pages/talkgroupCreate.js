@@ -8,6 +8,7 @@ const TalkGroupCreate = () => {
   const [newid, setnewid] = useState(0);
   const [disabled, setDisabled] = useState(false);
   const [errors, setErrors] = useState({});
+  const [formErr,showErr]=useState(false)
 
   useEffect(() => {
     (async () => {
@@ -28,9 +29,12 @@ const TalkGroupCreate = () => {
       .min(3, 'Username must be 3-40 characters long')
       .max(40, 'Username must be 3-40 characters long'),
   });
-  const validate = async (name) => {
-    const formData2 = { name };
-    await schema.validate(formData2, { abortEarly: false });
+  const validate = async (name2) => {
+    // console.log(name2)
+    showErr(false)
+    const {name} = name2;
+    console.log(name)
+    await schema.validate(name2,{abortEarly:false});
   };
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -55,6 +59,7 @@ const TalkGroupCreate = () => {
           {}
         );
         setErrors(validateErrors);
+        showErr(true)
       } else {
         console.log(error.response.data);
       }
@@ -77,16 +82,13 @@ const TalkGroupCreate = () => {
           <input
             type="text"
             id="username"
-            pattern=".{3,40}"
-            required
-            title="3 to 40 characters"
             onChange={(event) => {
               settgname(event.target.value);
             }}
             value={tgname}
           />
         </div>
-        <div className="text-danger fw-600">{errors?.name}</div>
+        <div className="text-danger fw-600">{formErr? `${errors.name}`:``}</div>
         <br />
         Talkgroup ID (auto-generated) : {newid}
       </div>
