@@ -35,7 +35,7 @@ const ViewAgent = () => {
         agentlist.filter(
           (val) =>
             (agentname.length &&
-              val.agent_name.toLowerCase().includes(agentname.toLowerCase())) ||
+              val.agent_name.toLowerCase().includes(agentname.toLowerCase())) &&
             (agentaccname.length &&
               val.account_name
                 .toLowerCase()

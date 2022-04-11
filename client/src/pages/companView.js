@@ -40,7 +40,7 @@ const CompanyView = () => {
             (companyName.length &&
               val.company_name
                 .toLowerCase()
-                .includes(companyName.toLowerCase())) ||
+                .includes(companyName.toLowerCase())) &&
             (compaccname.length &&
               val.account_name
                 .toLowerCase()

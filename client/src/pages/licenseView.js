@@ -25,14 +25,17 @@ export default function LicenseView() {
   }, []);
 
   const validateForm = async (data) => {
+    console.log(data)
     const schema = yup.object().shape({
-      orderId: yup.string().required('Order ID is required'),
+      orderId: yup.number().required('Order ID is required').typeError('Must be of type integer'),
+      companyName: yup.string().required('Company name is required'),
+      agentName: yup.string().required('Agent name is required').typeError("Must be of type string"),
     });
     await schema.validate(data, { abortEarly: false });
   };
   const filter = async () => {
     try {
-      await validateForm({ orderId});
+      await validateForm({ orderId,companyName,agentName,expdate});
       setErrors({});
       setupdatedlist(
         tableData.filter(
@@ -98,6 +101,7 @@ export default function LicenseView() {
           />
         </div>
         <br />
+        <div className="text-danger fw-500">{errors?.companyName}</div>
         <div>
           <span>
             <label htmlFor="id2">Agent Name :</label>
@@ -112,6 +116,7 @@ export default function LicenseView() {
           />
         </div>
         <br />
+        <div className="text-danger fw-500">{errors?.agentName}</div>
         <div>
           <span>
             <label htmlFor="id2">License Expiring After :</label>
@@ -125,6 +130,7 @@ export default function LicenseView() {
             required
           />
         </div>
+        {/* <div className="text-danger fw-500">{errors?.expdate}</div> */}
       </div>
       <div className="mt-3">
         <button

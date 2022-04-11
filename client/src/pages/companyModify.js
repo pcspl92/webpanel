@@ -14,7 +14,7 @@ const CompanyModify = () => {
   const [compnewname, setcompnewname] = useState('');
   const [password, setPassword] = useState('');
   const [generated, setGenerated] = useState(false);
-  const [disabled, setDisabled] = useState(false);
+  // const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(true);
   const [subagent, setSubagent] = useState(0);
   const [company, setCompany] = useState(0);
@@ -88,7 +88,7 @@ const CompanyModify = () => {
       }
     }
 
-    setDisabled(false);
+    // setDisabled(false);
   };
 
   const relieveCompany = async () => {
@@ -106,7 +106,7 @@ const CompanyModify = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setDisabled(true);
+    // setDisabled(true);
 
     switch (type) {
       case 'modify':
@@ -279,7 +279,7 @@ const CompanyModify = () => {
         </div>
         <div className="text-danger fw-500">{errors?.agent_id}</div>
       </div>
-      <button className="mt-3" type="submit" disabled={disabled}>
+      <button className="mt-3" type="submit">
         UPDATE
       </button>
     </form>
