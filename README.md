@@ -15,4 +15,5 @@ Version : 0.1.4
 Issues Fixed: #89 , #88 , #66 , #87 , #84, #83
 
 Version : 0.1.4.1
+
 Added eslint config for no console
