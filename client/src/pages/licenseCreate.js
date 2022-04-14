@@ -67,7 +67,8 @@ export default function LicenseCreate() {
       setError('');
       const response = await axios.post('/order/', data);
       if (response.data.message) {
-        alert(response.data.message);
+        alert(response.data.message)
+        window.location.reload()
       }
       reset();
     } else {

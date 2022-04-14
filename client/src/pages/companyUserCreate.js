@@ -17,7 +17,7 @@ function UserCreate() {
   const [orderlist, setorderlist] = useState([]);
   const [contactList, setContactlist] = useState('0');
   const [loading, setLoading] = useState(true);
-  const [disabled, setDisabled] = useState(false);
+  // const [disabled, setDisabled] = useState(false);
   const [talkgroup, setTalkgroup] = useState();
   const [updOrderList, setUpdOrderList] = useState([]);
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -819,7 +819,7 @@ function UserCreate() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    setDisabled(true);
+    // setDisabled(true);
 
     switch (updateType) {
       case 'ptt':
@@ -833,7 +833,7 @@ function UserCreate() {
         break;
       default:
     }
-    setDisabled(false);
+    // setDisabled(false);
   };
 
   const onSelectType = (type) => {
@@ -931,7 +931,7 @@ function UserCreate() {
         </div>
         <br />
       </div>
-      <button disabled={disabled} type="submit">
+      <button  type="submit">
         {' '}
         SAVE{' '}
       </button>

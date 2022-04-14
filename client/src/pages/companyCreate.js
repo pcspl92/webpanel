@@ -49,9 +49,12 @@ const CompanyCreate = () => {
       .matches(/^[0-9]+$/, 'Must be only digits')
       .min(10, 'Must be exactly 10 digits')
       .max(10, 'Must be exactly 10 digits'),
+      // agent:yup.number().required("Agent name is required")
+      subagent_id:yup.number().moreThan(0,"Sub Agent name is required")
   });
 
   const validate = async (data) => {
+    console.log(data)
     const formData = { ...data, confirm_password: confirmPassword };
     await schema.validate(formData, { abortEarly: false });
   };
@@ -229,6 +232,7 @@ const CompanyCreate = () => {
               </option>
             ))}
           </select>
+          <div className="text-danger fw-600">{errors?.subagent_id}</div>
         </div>
       </div>
       <br />

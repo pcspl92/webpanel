@@ -12,8 +12,12 @@ Issues Fixed : #71 , #68
 
 Version : 0.1.4
 
-Issues Fixed: #89 , #88 , #66 , #87 , #84, #83
+Issues Fixed: #89 , #88 , #87 , #84, #83
 
 Version : 0.1.4.1
 
 Added eslint config for no console
+
+Version : 0.1.5.1
+
+Issues: #66 , #1 , #2 , #11 , #15 , #8

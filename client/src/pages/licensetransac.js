@@ -9,6 +9,7 @@ export default function Licensetransac() {
   const [trandetails, settrandetails] = useState([]);
   const [updatedtranDetails, setupdatedtranDetails] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [err,setErr] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -21,12 +22,16 @@ export default function Licensetransac() {
 
   const filterlist = () => {
     if (fromdate.length && todate.length) {
+      setErr(false)
       setupdatedtranDetails(
         trandetails.filter((val) => (
             moment(val.date).isSameOrAfter(fromdate) &&
             moment(val.date).isSameOrBefore(todate)
           ))
       );
+    }
+    else{
+      setErr(true)
     }
   };
 
@@ -76,6 +81,7 @@ export default function Licensetransac() {
             required
           />
         </div>
+        {err?<p style={{color:"red",marginTop:"10px"}}>Please enter a valid date range</p>:""}
       </div>
       <div className="mt-3">
         <button
