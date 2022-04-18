@@ -21,3 +21,7 @@ Added eslint config for no console
 Version : 0.1.5.1
 
 Issues: #66 , #1 , #2 , #11 , #15 , #8
+
+Version: 0.1.6
+
+Issues: #5 , #9 , #33 , #34 , #37 , #108 , #101

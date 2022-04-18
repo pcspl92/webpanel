@@ -92,7 +92,7 @@ const CompanyView = () => {
             required
           />
         </div>
-        <div className="CVtext-danger fw-500">{errors?.companyName}</div>
+        <div className="text-danger fw-500">{errors?.companyName}</div>
         <br />
         <div>
           <span>

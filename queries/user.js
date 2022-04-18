@@ -124,7 +124,7 @@ const mapControlStations = (controlIds, userId) => {
 };
 
 const updateUser = (password, displayName, userId) => {
-  const sql = `UPDATE users SET password='${password}', display_name='${displayName}',  WHERE id=${userId};`;
+  const sql = `UPDATE users SET password='${password}', display_name='${displayName}' WHERE id=${userId}`;
   return query(sql);
 };
 

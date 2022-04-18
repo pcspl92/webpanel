@@ -113,7 +113,8 @@ export default function LicenseModify() {
       if (response.data.message) {
         alert(response.data.message);
       }
-      resetUpdateForm();
+      // resetUpdateForm();
+      window.location.reload()
     } catch (err) {
       console.log(err);
     }

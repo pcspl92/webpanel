@@ -68,6 +68,8 @@ function UserCreate() {
       .matches(/^[0-9]+$/, 'Must be only digits')
       .min(10, 'Must be exactly 10 digits')
       .max(10, 'Must be exactly 10 digits'),
+      order:yup
+      .number().required("Please select the order ID").moreThan(0,"Please select the order ID"),
   });
   const validate = async (data) => {
     const formData2 = { ...data, confirm_password: confirmPassword };
@@ -831,6 +833,9 @@ function UserCreate() {
       case 'control':
         await controlSubmit();
         break;
+      case "0":
+        alert("Please select the user account type")
+        break
       default:
     }
     // setDisabled(false);
@@ -879,6 +884,7 @@ function UserCreate() {
             <option value={'dispatcher'}>Dispatcher Account</option>
             <option value={'control'}>Control Station</option>
           </select>
+          <div className="text-danger fw-600">{errors?.actType}</div>
         </div>
         <br />
         <div>
@@ -900,6 +906,7 @@ function UserCreate() {
               </option>
             ))}
           </select>
+          <div className="text-danger fw-600">{errors?.order}</div>
         </div>
 
         <br />

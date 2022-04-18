@@ -155,7 +155,7 @@ const ModifyAgent = () => {
             <label htmlFor="id5">Contact Number :&nbsp;&nbsp;&nbsp;</label>
           </span>
           <input
-            type="text"
+            type="number"
             id="id5"
             onChange={(event) => {
               setcontact(event.target.value);

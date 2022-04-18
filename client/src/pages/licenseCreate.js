@@ -55,27 +55,33 @@ export default function LicenseCreate() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
-    const data = {
-      license_type: licenseType,
-      renewal: renewalType,
-      qty: Number(quantity),
-      company_id: Number(company),
-      features,
-    };
-
-    if (data.company_id) {
-      setError('');
-      const response = await axios.post('/order/', data);
-      if (response.data.message) {
-        alert(response.data.message)
-        window.location.reload()
-      }
-      reset();
-    } else {
-      setError('Select a Company');
+    if(Number(quantity)===0){
+      alert("Quantity should be greater than or equal to one")
+      setDisabled(false)
     }
-
-    setDisabled(false);
+    else{
+      const data = {
+        license_type: licenseType,
+        renewal: renewalType,
+        qty: Number(quantity),
+        company_id: Number(company),
+        features,
+      };
+  
+      if (data.company_id) {
+        setError('');
+        const response = await axios.post('/order/', data);
+        if (response.data.message) {
+          alert(response.data.message)
+          window.location.reload()
+        }
+        reset();
+      } else {
+        setError('Select a Company');
+      }
+  
+      setDisabled(false);
+    }
   };
 
   const getAgentUnitPrice = async (renewalTypeValue) => {
@@ -141,7 +147,7 @@ export default function LicenseCreate() {
         <br />
         <div>
           <span>
-            <label htmlFor="username">License Renewal: &nbsp;</label>
+            <label htmlFor="username">License Renewal Type: &nbsp;</label>
           </span>
           <select
             id="id3"

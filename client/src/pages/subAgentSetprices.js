@@ -121,25 +121,23 @@ const SetPrices = () => {
       </div>
       <br />
       <div style={{ marginLeft: '40vw' }}>
-        <i>
           (Prices have to be greater than or equal to the Base Price of Parent
           Agent)
-        </i>
       </div>
       <br />
       <br />
       <div className="grid-container">
         <div className="subformelements2"></div>
 
-        <div className="subformelements2">Monthly License</div>
-        <div className="subformelements2">Quarterly License</div>
-        <div className="subformelements2">Half Yearly License</div>
-        <div className="subformelements2">Yearly License</div>
-        <div className="subformelements2">One Time License</div>
+        <div className="">Monthly License</div>
+        <div className="">Quarterly License</div>
+        <div className="">Half Yearly License</div>
+        <div className="">Yearly License</div>
+        <div className="">One Time License</div>
 
         <div style={{ fontSize: '2vh' }}>&nbsp;PTT User Price : &nbsp;</div>
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             setmonthlyppt(event.target.value);
@@ -151,7 +149,7 @@ const SetPrices = () => {
         />
 
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             setquarterlyppt(event.target.value);
@@ -162,7 +160,7 @@ const SetPrices = () => {
           required
         />
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             sethalfylyppt(event.target.value);
@@ -173,7 +171,7 @@ const SetPrices = () => {
           required
         />
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             setyearlyppt(event.target.value);
@@ -184,7 +182,7 @@ const SetPrices = () => {
           required
         />
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             setonetimeppt(event.target.value);
@@ -199,7 +197,7 @@ const SetPrices = () => {
           Dispatcher Account Price : &nbsp;
         </div>
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             setmonthlydap(event.target.value);
@@ -210,7 +208,7 @@ const SetPrices = () => {
           required
         />
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             setquarterlydap(event.target.value);
@@ -221,7 +219,7 @@ const SetPrices = () => {
           required
         />
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             sethalfylydap(event.target.value);
@@ -232,7 +230,7 @@ const SetPrices = () => {
           required
         />
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             setyearlydap(event.target.value);
@@ -243,7 +241,7 @@ const SetPrices = () => {
           required
         />
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             setonetimedap(event.target.value);
@@ -257,7 +255,7 @@ const SetPrices = () => {
           Control Station Account Price : &nbsp;
         </div>
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             setmonthlycsap(event.target.value);
@@ -268,7 +266,7 @@ const SetPrices = () => {
           required
         />
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             setquarterlycsap(event.target.value);
@@ -279,7 +277,7 @@ const SetPrices = () => {
           required
         />
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             sethalfylycsap(event.target.value);
@@ -290,7 +288,7 @@ const SetPrices = () => {
           required
         />
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             setyearlycsap(event.target.value);
@@ -301,7 +299,7 @@ const SetPrices = () => {
           required
         />
         <input
-          type="text"
+          type="number"
           className="subformelements2"
           onChange={(event) => {
             setonetimecsap(event.target.value);
