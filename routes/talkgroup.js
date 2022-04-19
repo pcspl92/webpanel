@@ -50,15 +50,22 @@ router.post(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
+    console.log(req.body)
     const tg = await findTGByName(req.body.name);
-    if (tg.length)
+    console.log(tg.length)
+    if (tg.length>0)
+    {
+      console.log("Bey")
       return res
-        .status(400)
-        .json({ talkgroup: 'Talkgroup with given name already exists' });
-
-    await createTG(req.body.name, req.user.id);
-    await createCompanyActivityLog('Talk-Group Create', req.user.id);
-    return res.status(201).send({ message: 'Talkgroup has been created' });
+        .status(200)
+        .send({ message: 'Talkgroup with given name already exists' });
+    }
+    else{
+      console.log("Bie")
+      await createTG(req.body.name, req.user.id);
+      await createCompanyActivityLog('Talk-Group Create', req.user.id);
+      return res.status(201).send({ message: 'Talkgroup has been created' });
+    }
   }
 );
 

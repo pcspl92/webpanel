@@ -38,11 +38,16 @@ const TalkGroupModify = () => {
     await schema.validate(formData2, { abortEarly: false });
   };
   const deleteTalkgroup = async () => {
-    const response = await axios.delete(`/talkgroup/${talkgroup}`);
-    if (response.data.message) {
-      alert(response.data.message);
+    if(talkgroup==="0"){
+      alert("Please select a talkgroup")
     }
-    reset();
+    else{
+      const response = await axios.delete(`/talkgroup/${talkgroup}`);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
+      reset();
+    }
   };
   const onSubmit = async (e) => {
     e.preventDefault();

@@ -42,6 +42,13 @@ const createOrder = (
   return query(sql);
 };
 
+const companyStatus =async(companyId)=>{
+  const sql= `SELECT * FROM companies WHERE id=${companyId}`;
+  const execute =await query(sql)
+  // console.log(execute[0].status)
+  return execute[0].status;
+}
+
 const createLicense = (orderId, qty) => {
   const sql = Array(qty)
     .fill(`(${orderId})`)
@@ -180,4 +187,5 @@ module.exports = {
   getOrderData,
   getUnitPrices,
   getLicensesForOrder,
+  companyStatus
 };

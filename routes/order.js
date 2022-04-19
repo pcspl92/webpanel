@@ -14,6 +14,7 @@ const {
   updateOrderId,
   getLicenseIds,
   getLicenseCount,
+  companyStatus,
   createTransactionLog,
   getTransactionLogs,
   getCompanyOrderList,
@@ -196,71 +197,81 @@ router.post(
   guard.check([['agent'], ['subagent']]),
   agentSubAgentCheck,
   async (req, res) => {
-    const [{ unitPrice }] = await getAgentUnitPrice(
-      req.user.id,
-      req.body.license_type,
-      req.body.renewal
-    );
-    const [{ balance }] = await getAgentBalance(req.user.id);
-    if (balance < unitPrice * req.body.qty)
-      return res.status(400).json({
-        balance: `You can create atmost ${Math.floor(
-          balance / unitPrice
-        )} licenses.`,
-      });
-
-    const expiryDate = getExpiryDate(req.body.renewal, 1);
-    const featureRes = await createFeatures(
-      _.pick(req.body.features, [
-        'grp_call',
-        'enc',
-        'priv_call',
-        'live_gps',
-        'geo_fence',
-        'chat',
-      ])
-    );
-    const orderRes = await createOrder(
-      req.body.license_type,
-      expiryDate,
-      req.body.company_id,
-      featureRes.insertId,
-      req.body.renewal,
-      req.user.id
-    );
-    await createLicense(orderRes.insertId, req.body.qty);
-
-    let price = unitPrice * req.body.qty;
-    await deductBalance(price, req.user.id);
-    await createTransactionLog(
-      'Order Created',
-      price,
-      balance - price,
-      'DR',
-      req.user.id,
-      orderRes.insertId
-    );
-    if (req.user.permissions.includes('subagent')) {
-      const [{ agentUnitPrice }] = await getAgentUnitPrice(
+    // console.log(req.body)
+    const data = await companyStatus(req.body.company_id)
+    if(data==="active"){
+      const [{ unitPrice }] = await getAgentUnitPrice(
         req.user.id,
         req.body.license_type,
-        req.body.renewal,
-        'subagent'
+        req.body.renewal
       );
-      const result = await getAgentId(req.user.id);
-      price = (unitPrice - agentUnitPrice) * req.body.qty;
-      await addProfit(price, result[0].agent_id);
+      const [{ balance }] = await getAgentBalance(req.user.id);
+      if (balance < unitPrice * req.body.qty)
+        return res.status(400).json({
+          balance: `You can create atmost ${Math.floor(
+            balance / unitPrice
+          )} licenses.`,
+        });
+  
+      const expiryDate = getExpiryDate(req.body.renewal, 1);
+      // console.log("Hello")
+      const featureRes = await createFeatures(
+        _.pick(req.body.features, [
+          'grp_call',
+          'enc',
+          'priv_call',
+          'live_gps',
+          'geo_fence',
+          'chat',
+        ])
+      );
+      const orderRes = await createOrder(
+        req.body.license_type,
+        expiryDate,
+        req.body.company_id,
+        featureRes.insertId,
+        req.body.renewal,
+        req.user.id
+      );
+      console.log(orderRes)
+      await createLicense(orderRes.insertId, req.body.qty);
+  
+      let price = unitPrice * req.body.qty;
+      await deductBalance(price, req.user.id);
       await createTransactionLog(
         'Order Created',
         price,
         balance - price,
-        'CR',
-        result[0].agent_id,
+        'DR',
+        req.user.id,
         orderRes.insertId
       );
+      if (req.user.permissions.includes('subagent')) {
+        const [{ agentUnitPrice }] = await getAgentUnitPrice(
+          req.user.id,
+          req.body.license_type,
+          req.body.renewal,
+          'subagent'
+        );
+        const result = await getAgentId(req.user.id);
+        price = (unitPrice - agentUnitPrice) * req.body.qty;
+        await addProfit(price, result[0].agent_id);
+        await createTransactionLog(
+          'Order Created',
+          price,
+          balance - price,
+          'CR',
+          result[0].agent_id,
+          orderRes.insertId
+        );
+      }
+      await createAgentActivityLog('Order Create', req.user.id);
+      return res.status(201).send({ message: 'License has been created' });
     }
-    await createAgentActivityLog('Order Create', req.user.id);
-    return res.status(201).send({ message: 'License has been created' });
+    else{
+      return res.status(201).send({message:"Selected Company is paused"})
+    }
+    
   }
 );
 

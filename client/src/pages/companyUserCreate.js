@@ -68,8 +68,6 @@ function UserCreate() {
       .matches(/^[0-9]+$/, 'Must be only digits')
       .min(10, 'Must be exactly 10 digits')
       .max(10, 'Must be exactly 10 digits'),
-      order:yup
-      .number().required("Please select the order ID").moreThan(0,"Please select the order ID"),
   });
   const validate = async (data) => {
     const formData2 = { ...data, confirm_password: confirmPassword };
@@ -822,7 +820,9 @@ function UserCreate() {
   const onSubmit = async (e) => {
     e.preventDefault();
     // setDisabled(true);
-
+    if(order==="0"){
+      alert("Please select the order ID")
+    }
     switch (updateType) {
       case 'ptt':
         await pttSubmit();
@@ -906,7 +906,6 @@ function UserCreate() {
               </option>
             ))}
           </select>
-          <div className="text-danger fw-600">{errors?.order}</div>
         </div>
 
         <br />

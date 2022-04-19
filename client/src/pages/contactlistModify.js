@@ -78,10 +78,15 @@ export default function ContactListCreate() {
     setDisabled(false);
   };
   const cldelete = async () => {
-    const response = await axios.delete(`/contactlist/${contactList}`);
-    setcontactlistarr(contactlistarr.filter((val) => val.id !== contactList));
-    if (response.data.message) {
-      alert(response.data.message);
+    if(contactList===""){
+      alert("Please select the contact list")
+    }
+    else{
+      const response = await axios.delete(`/contactlist/${contactList}`);
+      setcontactlistarr(contactlistarr.filter((val) => val.id !== contactList));
+      if (response.data.message) {
+        alert(response.data.message);
+      }
     }
   };
   const SelectAcc = ({ users }) => (

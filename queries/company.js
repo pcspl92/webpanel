@@ -37,6 +37,13 @@ const createCompany = ({
   return query(sql);
 };
 
+const checkAgent =async(agentId)=>{
+  const sql =`SELECT * from agents WHERE id=${agentId}`
+  const execute = await query(sql)
+  // console.log(execute)
+  return execute[0].status
+}
+
 const updateCompanyPassword = (password, companyId) => {
   const sql = `UPDATE companies SET password="${password}" WHERE id=${companyId};`;
   return query(sql);
@@ -114,4 +121,5 @@ module.exports = {
   getCompanies,
   getCompanyViewData,
   deleteCompany,
+  checkAgent
 };

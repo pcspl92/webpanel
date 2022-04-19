@@ -49,6 +49,7 @@ const TalkGroupCreate = () => {
 
       const response = await axios.post('/talkgroup/', data);
       if (response.data.message) {
+        console.log(response.data )
         alert(response.data.message);
       }
       reset();
