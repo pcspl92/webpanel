@@ -97,11 +97,11 @@ export default function LicenseModify() {
     setshowacc(show);
   };
 
-  const resetUpdateForm = () => {
+  /*const resetUpdateForm = () => {
     selectedUserIds.current.clear();
     setSelectedUsers([]);
     setshowacc(true);
-  };
+  };*/
 
   const updateSubmit = async () => {
     const users = [];
@@ -321,6 +321,7 @@ export default function LicenseModify() {
         <br />
         <div>
           Current Expiry Date : {moment(expDate).format('DD-MM-YYYY HH:mm:ss')}{' '}
+
           &nbsp; &nbsp; After Renewal Expiry Date :{calcExpiryDate(expDate)}
         </div>
         <br />

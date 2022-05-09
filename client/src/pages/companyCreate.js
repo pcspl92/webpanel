@@ -54,7 +54,6 @@ const CompanyCreate = () => {
   });
 
   const validate = async (data) => {
-    console.log(data)
     const formData = { ...data, confirm_password: confirmPassword };
     await schema.validate(formData, { abortEarly: false });
   };
@@ -87,11 +86,11 @@ const CompanyCreate = () => {
       contact_number: contnum,
       subagent_id: subagent,
     };
-
+    
     try {
       setErrors({});
       await validate(data);
-      const response = await axios.post('/company/', data);
+      const response = await axios.post('/company/', data); 
       if (response.data.message) {
         alert(response.data.message);
       }

@@ -105,8 +105,8 @@ const CompanyViewLogin = () => {
         {updatedloglist.map((val, index) => (
           <tr key={val.id}>
             <th>{index + 1}</th>
-            <th>{moment(val.timestamp).format('DD-MM-YYYY')}</th>
-            <th>{moment(val.timestamp).format('HH:mm')}</th>
+            <th>{moment(val.timestamp).utc().format('DD-MM-YYYY')}</th>
+            <th>{moment(val.timestamp).utc().format('HH:mm')}</th>
             <th>{val.login_desc}</th>
             <th>{val.ipaddress}</th>
           </tr>

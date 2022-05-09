@@ -70,7 +70,7 @@ router.post(
         .json({ username: 'Sub-Agent with given username already exists' });
 
     const password = await hashPassword(req.body.password);
-
+    
     const result = await createAgent(
       req.body.username,
       password,
@@ -78,6 +78,7 @@ router.post(
       'subagent',
       req.user.id
     );
+    
     await addAgentDetails(req.body.contact_number, result.insertId);
     await addPriceDetails(
       req.body.ptt.monthly,

@@ -97,11 +97,9 @@ router.post(
     const data2 = await checkAgent(req.body.subagent_id)
     if(data2==="active"){
       const company = await findCompanyByUsername(req.body.username);
-      if (company.length)
-        return res
-          .status(400)
-          .json({ username: 'Company with given username already exists' });
-  
+      
+      if (company.display_name!=='') return res.json({ message: 'Company with given username already exists' });
+      console.log(company);
       const password = await hashPassword(req.body.password);
       const data = {
         ..._.pick(req.body, ['username', 'display_name', 'contact_number']),

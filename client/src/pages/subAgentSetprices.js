@@ -78,15 +78,22 @@ const SetPrices = () => {
         one_time: onetimecsap,
       },
     };
-
-    try {
-      const response = await axios.put(`/subagent/${agentid}/prices`, data);
-      if (response.data.message) {
-        alert(response.data.message);
+    if (agentid === 0) {
+      alert("Please select sub-agent");
+    } else {
+      try {
+        if (monthlyptt >= 100 && quarterlyptt >= 150 && halfylyptt >= 200 && yearlyptt >= 250 && onetimeptt >= 400 && monthlydap >= 105 && quarterlydap >= 155 && halfylydap >= 205 && yearlydap >= 255 && onetimedap >= 405 && monthlycsap >= 110 && quarterlycsap > 160 && halfylycsap > 210 && yearlycsap > 260 && onetimecsap >= 410) {
+          const response = await axios.put(`/subagent/${agentid}/prices`, data);
+          if (response.data.message) {
+            alert(response.data.message);
+          }
+          reset();
+        } else {
+          alert("Please enter correct price");
+        }
+      } catch (err) {
+        console.log(err.response.data);
       }
-      reset();
-    } catch (err) {
-      console.log(err.response.data);
     }
 
     setDisabled(false);
@@ -121,8 +128,8 @@ const SetPrices = () => {
       </div>
       <br />
       <div style={{ marginLeft: '40vw' }}>
-          (Prices have to be greater than or equal to the Base Price of Parent
-          Agent)
+        (Prices have to be greater than or equal to the Base Price of Parent
+        Agent)
       </div>
       <br />
       <br />

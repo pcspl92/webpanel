@@ -128,15 +128,21 @@ const AddAgent = () => {
       },
     };
 
+
+    //console.log("created");
     try {
       await validate(data);
-      const response = await axios.post('/subagent/', data);
-      setErrors({});
+      if (monthlyptt >=100 && quarterlyptt >=150 && halfylyptt >=200 && yearlyptt >=250 && onetimeptt >=400 && monthlydap >=105 && quarterlydap >=155 && halfylydap >=205 && yearlydap >=255 && onetimedap >=405 && monthlycsap >=110 && quarterlycsap >160 && halfylycsap >210 && yearlycsap >260 && onetimecsap >=410) {
+        const response = await axios.post('/subagent/', data);
+        setErrors({});
 
-      if (response.data.message) {
-        alert(response.data.message);
+        if (response.data.message) {
+          alert(response.data.message);
+        }
+        reset();
+      } else {
+        alert("Please enter correct price");
       }
-      reset();
     } catch (error) {
       if (error.inner.length) {
         const validateErrors = error.inner.reduce(
@@ -148,6 +154,7 @@ const AddAgent = () => {
         console.log(error.response.data);
       }
     }
+
 
     setDisabled(false);
   };

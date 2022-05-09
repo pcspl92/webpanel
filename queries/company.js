@@ -91,7 +91,7 @@ const createCompanyActivityLog = (desc, companyId) => {
 };
 
 const getCompanyAuthLogs = (id) => {
-  const sql = `SELECT * FROM company_login_logs WHERE company_id=${id} ORDER BY timestamp DESC;`;
+  const sql = `SELECT * FROM company_login_logs WHERE company_id=${id} ORDER BY timestamp ASC;`;
   return query(sql);
 };
 

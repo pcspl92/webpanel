@@ -39,16 +39,19 @@ const ModifyAgent = () => {
       contactNumber,
       status: active ? 'active' : 'paused',
     };
-
-    try {
-      const response = await axios.put(`/subagent/${agentid}`, data);
-      if (response.data.message) {
-        alert(response.data.message);
+    if (contactNumber === '' && agentnewname === '') {
+      alert("Please fill all the fields");
+    } else {
+      try {
+        const response = await axios.put(`/subagent/${agentid}`, data);
+        if (response.data.message) {
+          alert(response.data.message);
+        }
+        reset();
+        setDisabled(false);
+      } catch (err) {
+        console.log(err.response.data);
       }
-      reset();
-      setDisabled(false);
-    } catch (err) {
-      console.log(err.response.data);
     }
   };
 
