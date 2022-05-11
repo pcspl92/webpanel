@@ -97,9 +97,9 @@ router.post(
     const data2 = await checkAgent(req.body.subagent_id)
     if(data2==="active"){
       const company = await findCompanyByUsername(req.body.username);
-      
-      if (company.display_name!=='') return res.json({ message: 'Company with given username already exists' });
       console.log(company);
+       
+       if (company.length===0){
       const password = await hashPassword(req.body.password);
       const data = {
         ..._.pick(req.body, ['username', 'display_name', 'contact_number']),
@@ -112,6 +112,9 @@ router.post(
       await createCompany(data);
       await createAgentActivityLog('Company Create', req.user.id);
       return res.status(201).send({ message: 'Company has been created' });
+    }else{
+      return res.json({ message: 'Company with given username already exists' });
+    }
     }
     else{
       return res.status(201).send({ message: 'Selected Sub-Agent is inactive' });

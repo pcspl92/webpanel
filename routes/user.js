@@ -157,7 +157,7 @@ router.get(
       const receivingPortBase = 8080;
       const [[{ receivingPort }], csTypes] = await Promise.all([
         getReceivingPort(receivingPortBase, req.params.formType),
-        getControlStationTypes(req.user.id),
+        getControlStationTypes(1),
       ]);
       return { receivingPort, csTypes };
     };
@@ -184,7 +184,7 @@ router.get(
 // @desc    PTT user creation route
 // @access  Private(Company)
 router.post(
-  '/ptt',
+'/ptt',
   isLoggedIn,
   guard.check('company'),
   companyCheck,
@@ -194,8 +194,9 @@ router.post(
       return res
         .status(400)
         .json({ user: 'User with given username is already registered.' });
-
-    const [{ id: licenseId }] = await getLicenseIds(req.body.order_id, 1);
+  
+    const [{ id: licenseId }] = await getLicenseIds(req.body.order_id, 2);
+    console.log(licenseId);
     const password = await hashPassword(req.body.password);
     const { insertId } = await createUser(
       'ptt',
@@ -220,7 +221,8 @@ router.post(
         insertId
       )
     );
-    await mapUserTalkgroup(req.body.tg_ids, req.body.def_tg, insertId);
+    if (req.body.tg_ids.length) await mapUserTalkgroup(req.body.tg_ids, req.body.def_tg, insertId);
+
     await createCompanyActivityLog('PTT User Create', req.user.id);
     return res.status(201).send({ message: 'PTT User has been created' });
   }
@@ -235,6 +237,7 @@ router.post(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
+
     const user = await findUserByUsername(req.body.username);
     if (user.length)
       return res
@@ -266,7 +269,8 @@ router.post(
         insertId
       )
     );
-    await mapUserTalkgroup(req.body.tg_ids, req.body.def_tg, insertId);
+    if (req.body.tg_ids.length)
+      await mapUserTalkgroup(req.body.tg_ids, req.body.def_tg, insertId);
     if (req.body.control_ids.length)
       await mapControlStations(req.body.control_ids, insertId);
     await createCompanyActivityLog('Dispatcher User Create', req.user.id);

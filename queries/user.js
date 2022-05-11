@@ -91,7 +91,13 @@ const createUserAddData = (
   contactListId,
   userId
 ) => {
-  const sql1 = `INSERT INTO users_add_data (contact_no, contact_list_id, user_id) VALUES ('${contactNumber}', ${contactListId}, ${userId});`;
+  let sql1;
+  if(contactListId===0){
+     sql1 = `INSERT INTO users_add_data (contact_no, user_id) VALUES ('${contactNumber}', ${userId});`;
+  }else{
+     sql1 = `INSERT INTO users_add_data (contact_no, contact_list_id, user_id) VALUES ('${contactNumber}', ${contactListId}, ${userId});`;
+  }
+  
   const sql2 = `INSERT INTO user_features (grp_call, enc, priv_call, live_gps, geo_fence, chat, user_id) 
                 VALUES (${grpCall}, ${enc}, ${privCall}, ${liveGps}, ${geoFence}, ${chat}, ${userId});`;
   return [query(sql1), query(sql2)];
@@ -112,7 +118,7 @@ const mapUserTalkgroup = (tgIds, defTg, userId) => {
     }, `INSERT INTO user_talkgroup_maps (user_id, talkgroup_id) VALUES`);
 
   return query(sql);
-};
+}; 
 
 const mapControlStations = (controlIds, userId) => {
   const sql = controlIds.reduce((acc, controlId, index) => {

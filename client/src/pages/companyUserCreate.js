@@ -913,7 +913,7 @@ function UserCreate() {
       <br />
       <br />
       {formLoading && updateType !== '0' ? (
-        <div className="spinner-border text-primary" role="status"></div>
+        <div className="spinner-border text-primary" roleControlStationForm="status"></div>
       ) : null}
       {updateType === 'ptt' && order !== '0' && PTTUserForm()}
       {updateType === 'dispatcher' && order !== '0' && DispatcherForm()}
