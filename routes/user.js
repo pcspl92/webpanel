@@ -291,7 +291,7 @@ router.post(
   async (req, res) => {
     const user = await getCSUserByName(req.body.display_name);
     if (user.length)
-      return res(400).json({
+      return res.status(400).json({
         user: 'Control Station with given name alreay exists.',
       });
 

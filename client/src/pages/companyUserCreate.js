@@ -698,14 +698,16 @@ function UserCreate() {
       order_id: Number(order),
     };
     try {
-      await validate(data);
-      const response = await axios.post('/user/control', data);
-
-      if (response.data.message) {
-        alert(response.data.message);
-      }
-      resetControlForm();
-      setErrors({});
+        if(Number(controlStationType)===0){
+          setErrors({ message: "This field is required" });
+        }else{
+        const response = await axios.post('/user/control', data);
+        if (response.data.message) {
+          alert(response.data.message);
+        }
+        resetControlForm();
+        setErrors({});
+        }
     } catch (error) {
       if (error.inner.length) {
         const validateErrors = error.inner.reduce(
@@ -751,6 +753,7 @@ function UserCreate() {
         </div>
         <br />
         <div>
+        {(errors.message)?<div className="text-danger fw-600">{errors.message}</div>:null}
           <span>
             <label htmlFor="confirm">Remote IP Address : &nbsp;</label>
           </span>
@@ -820,7 +823,7 @@ function UserCreate() {
   const onSubmit = async (e) => {
     e.preventDefault();
     // setDisabled(true);
-    if(order==="0"){
+    if (order === "0") {
       alert("Please select the order ID")
     }
     switch (updateType) {
@@ -933,11 +936,11 @@ function UserCreate() {
             value={contactNum}
             required
           />
-          <div className="text-danger fw-600">{errors?.contact_number}</div>
+          
         </div>
         <br />
       </div>
-      <button  type="submit">
+      <button type="submit">
         {' '}
         SAVE{' '}
       </button>

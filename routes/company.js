@@ -97,8 +97,6 @@ router.post(
     const data2 = await checkAgent(req.body.subagent_id)
     if(data2==="active"){
       const company = await findCompanyByUsername(req.body.username);
-      console.log(company);
-       
        if (company.length===0){
       const password = await hashPassword(req.body.password);
       const data = {

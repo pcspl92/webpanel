@@ -31,6 +31,8 @@ export default function ContactListCreate() {
 
   const reset = () => {
     setContactList('');
+    setcontactlistName('');
+    //setSelectedUsers([]);
   };
   const schema = yup.object().shape({
     name: yup
@@ -63,15 +65,15 @@ export default function ContactListCreate() {
       name: contactlistName,
       userIds: users,
     };
-
     try {
-      await validate(data);
+      await validate(data.name);
       const response = await axios.put(`/contactlist/${contactList}`, data);
       if (response.data.message) {
         alert(response.data.message);
       }
       reset();
     } catch (err) {
+      alert(err);
       console.log(err.response.data);
     }
 
@@ -87,6 +89,7 @@ export default function ContactListCreate() {
       if (response.data.message) {
         alert(response.data.message);
       }
+      reset();
     }
   };
   const SelectAcc = ({ users }) => (

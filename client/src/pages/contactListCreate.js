@@ -39,7 +39,7 @@ export default function ContactListCreate() {
   });
   const validate = async (name2) => {
     console.log(name2)
-    const {name} = { name2 };
+    const { name } = { name2 };
     console.log(name)
     await schema.validate(name2, { abortEarly: false });
   };
@@ -61,15 +61,18 @@ export default function ContactListCreate() {
       name: contactlistName,
       userIds: users,
     };
-
     try {
-      await validate(data);
 
-      const response = await axios.post('/contactlist/', data);
-      if (response.data.message) {
-        alert(response.data.message);
+      if (users.length === 0) {
+        alert("Please Select the PTT User.");
+      } else {
+        await validate(data);
+        const response = await axios.post('/contactlist/', data);
+        if (response.data.message) {
+          alert(response.data.message);
+        }
+        reset();
       }
-      reset();
     } catch (error) {
       if (error.inner.length) {
         const validateErrors = error.inner.reduce(
