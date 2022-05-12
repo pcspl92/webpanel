@@ -27,6 +27,7 @@ export default function ContactListCreate() {
 
   const reset = () => {
     setcontactlistName('');
+    setnewid(newid+1);
   };
   const schema = yup.object().shape({
     name: yup

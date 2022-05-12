@@ -12,7 +12,7 @@ function UserModify() {
   const [remoteIDadd, setRemoteIPadd] = useState('');
   const [remotePortadd, setRemotePortadd] = useState('');
   const [deviceID, setDeviceID] = useState('');
-  const [contactNum, setcontactNum] = useState(0);
+  const [contactNum, setcontactNum] = useState('');
 
   const [user, setUser] = useState('0');
   const [users, setUsers] = useState([]);

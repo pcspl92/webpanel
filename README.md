@@ -1,5 +1,3 @@
-# webpanel
-
 Version : 0.1.1
 
 Version : 0.1.2
@@ -38,7 +36,6 @@ Version : 0.1.9
 
 Issues: #5, #13, #85
 
-
 Version : 0.1.10
 
 Issues: #14, #39, #41, #42, #43
@@ -47,3 +44,6 @@ Version : 0.2
 
 Issue 18,142,10,12,13,64,77
 
+Version : 0.2.1
+
+Issue 124, 134, 136, 139, 145, 146

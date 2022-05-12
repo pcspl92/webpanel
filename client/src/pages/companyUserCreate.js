@@ -12,7 +12,7 @@ function UserCreate() {
   const [remoteIDadd, setRemoteIPadd] = useState('');
   const [remotePortadd, setRemotePortadd] = useState('');
   const [deviceID, setDeviceID] = useState('');
-  const [contactNum, setcontactNum] = useState(0);
+  const [contactNum, setcontactNum] = useState('');
   const [order, setorder] = useState('0');
   const [orderlist, setorderlist] = useState([]);
   const [contactList, setContactlist] = useState('0');
@@ -743,7 +743,7 @@ function UserCreate() {
             value={controlStationType}
             required
           >
-            <option value="0">Selct Control Station Type</option>
+            <option value="0">Select Control Station Type</option>
             {formData.csTypes?.map((val) => (
               <option key={val.id} value={val.id}>
                 {val.name}
@@ -841,6 +841,8 @@ function UserCreate() {
         break
       default:
     }
+    setorder('0');
+    setupdateType('0');
     // setDisabled(false);
   };
 
@@ -922,10 +924,10 @@ function UserCreate() {
       {updateType === 'dispatcher' && order !== '0' && DispatcherForm()}
       {updateType === 'control' && order !== '0' && ControlStationForm()}
       <br />
-      <div className="formarea">
+      <div style={{marginLeft:'62px'}} className="formarea">
         <div>
           <span>
-            <label htmlFor="confirm">Contact Number : &nbsp;</label>
+            <label htmlFor="confirm"> Contact Number : &nbsp;</label>
           </span>
           <input
             type="text"

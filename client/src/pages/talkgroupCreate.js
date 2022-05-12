@@ -19,6 +19,7 @@ const TalkGroupCreate = () => {
   }, []);
   const reset = () => {
     settgname('');
+    setnewid(newid+1);
   };
   const schema = yup.object().shape({
     name: yup

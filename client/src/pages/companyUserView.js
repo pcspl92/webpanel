@@ -4,7 +4,7 @@ import '../css/CompanyUserView.css';
 import axios from '../utils/axios';
 
 const CompanyUserView = () => {
-  const [orderID, setorderID] = useState(0);
+  const [orderID, setorderID] = useState('');
   const [accountName, setAccountName] = useState('');
   const [accountType, setAccountType] = useState('');
   const [userDisplayName, setuserDisplayName] = useState('');
