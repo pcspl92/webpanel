@@ -63,6 +63,16 @@ const getUsers = (companyId, type) => {
   return query(sql);
 };
 
+const getContactNumById=(userId)=>{
+  const sql=`SELECT contact_no FROM users_add_data WHERE user_id=${userId};`;
+  return query(sql);
+}
+
+const getContactListByuserId = (userId) => {
+  const sql = `SELECT contact_list_id FROM users_add_data WHERE user_id=${userId};`;
+  return query(sql);
+};
+
 const createUser = (type, username, password, displayName, companyId) => {
   const sql = `INSERT INTO users (user_type, username, password, display_name, company_id) 
                VALUES ('${type}', '${username}', '${password}', '${displayName}', '${companyId}')`;
@@ -147,7 +157,13 @@ const updateUserAddData = (
   contactListId,
   userId
 ) => {
-  const sql1 = `UPDATE users_add_data SET contact_no='${contactNumber}', contact_list_id=${contactListId} WHERE user_id=${userId};`;
+  let sql1;
+  if(contactListId===0){
+    sql1 = `UPDATE users_add_data SET contact_no='${contactNumber}' WHERE user_id=${userId};`
+ }else{
+    sql1 = `UPDATE users_add_data SET contact_no='${contactNumber}', contact_list_id=${contactListId} WHERE user_id=${userId};`
+ }
+  
   const sql2 = `UPDATE user_features SET grp_call=${grpCall}, enc=${enc}, priv_call=${privCall}, live_gps=${liveGps}, geo_fence=${geoFence}, chat=${chat}
                 WHERE user_id=${userId};`;
   return [query(sql1), query(sql2)];
@@ -165,6 +181,11 @@ const deleteDispatcherControlMaps = (userId) => {
 
 const getCSUserById = (id) => {
   const sql = `SELECT id, display_name FROM control_station_user WHERE id=${id};`;
+  return query(sql);
+};
+
+const getCSUserDataById = (id) => {
+  const sql = `SELECT * FROM control_station_user WHERE id=${id};`;
   return query(sql);
 };
 
@@ -217,12 +238,17 @@ const getOrderIdForUsers = (companyId) => {
   const sql = `SELECT l.order_id, o.license_expiry, o.license_type, o.company_id FROM licenses l
                JOIN orders o ON l.order_id = o.id
                GROUP BY order_id 
-               HAVING COUNT(user_id) < COUNT(l.id) AND o.company_id=${companyId};`;
+               HAVING COUNT(user_id) < COUNT(l.id) AND o.company_id='${companyId}';`;
   return query(sql);
 };
 
 const getControlStations = (companyId) => {
   const sql = `SELECT id, display_name FROM control_station_user WHERE company_id = ${companyId};`;
+  return query(sql);
+};
+
+const getControlId = (dispatcherId) => {
+  const sql = `SELECT control_id FROM dispatcher_control_maps WHERE dispatcher_id = ${dispatcherId};`;
   return query(sql);
 };
 
@@ -249,7 +275,7 @@ const getDataForUserModify = (companyId) => {
               FROM users u
                JOIN licenses l ON l.user_id = u.id
                JOIN (SELECT id, license_type FROM orders) AS o ON l.order_id = o.id
-               WHERE company_id = ${companyId} AND o.license_type = u.user_type
+               WHERE company_id = ${companyId} AND o.license_type = u.user_type 
                UNION ALL
                SELECT u.id, u.display_name, 'control' AS user_type, l.order_id
                FROM control_station_user u
@@ -428,4 +454,8 @@ module.exports = {
   createBulkDispatcherUsers,
   createBulkControlStationUsers,
   CSupdateLicense,
+  getContactNumById,
+  getControlId,
+  getContactListByuserId,
+  getCSUserDataById,
 };

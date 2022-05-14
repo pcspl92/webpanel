@@ -112,11 +112,20 @@ function UserModify() {
     setPassword('');
     setcontactNum('');
     setDisplayName('');
-    setFeaturesGlobal('');
+    setFeaturesGlobal({
+      grp_call: false,
+      enc: false,
+      priv_call: false,
+      live_gps: false,
+      geo_fence: false,
+      chat: false,
+    });
     setContactlist('');
     setTalkgroup('');
     setSelectedTG([]);
     selectedTGIds.current.clear();
+    setupdateType('0');
+    setUser('0');
   };
 
   const pttSubmit = async () => {
@@ -137,6 +146,7 @@ function UserModify() {
       if (response.data.message) {
         alert(response.data.message);
       }
+
       resetPttForm();
     } catch (err) {
       console.log(err.response.data);
@@ -229,12 +239,14 @@ function UserModify() {
         <br />
         <label>Features : </label>&nbsp;
         <br />
+      
         {formData.features?.grp_call ? (
           <>
             <input
               type="checkbox"
               id="feature"
               name="feature1"
+              checked={formData.features.grp_call===formData.userFeatures[0].grp_call?"checked":null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'grp_call');
               }}
@@ -248,6 +260,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature2"
+              checked={formData.features.priv_call===formData.userFeatures[0].priv_call?"checked":null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'priv_call');
               }}
@@ -261,6 +274,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
+              checked={formData.features.enc===formData.userFeatures[0].enc?"checked":null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'enc');
               }}
@@ -274,6 +288,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
+              checked={formData.features.live_gps===formData.userFeatures[0].live_gps?"checked":null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'live_gps');
               }}
@@ -287,6 +302,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
+              checked={formData.features.geo_fence===formData.userFeatures[0].geo_fence?"checked":null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'geo_fence');
               }}
@@ -300,6 +316,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
+              checked={formData.features.chat===formData.userFeatures[0].chat?"checked":null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'chat');
               }}
@@ -360,13 +377,22 @@ function UserModify() {
     setPassword('');
     setcontactNum('');
     setDisplayName('');
-    setFeaturesGlobal('');
+    setFeaturesGlobal({
+      grp_call: false,
+      enc: false,
+      priv_call: false,
+      live_gps: false,
+      geo_fence: false,
+      chat: false,
+    });
     setContactlist('');
     setTalkgroup('');
     setSelectedTG([]);
     setSelectedCS([]);
     selectedTGIds.current.clear();
     selectedCSIds.current.clear();
+    setupdateType('0');
+    setUser('0');
   };
 
   const dispatcherSubmit = async () => {
@@ -383,7 +409,7 @@ function UserModify() {
       tg_ids: tgIds,
       control_ids: csIds,
     };
-
+    console.log(featuresGlobal);
     try {
       const response = await axios.put(`/user/dispatcher/${user}`, data);
       if (response.data.message) {
@@ -466,6 +492,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature1"
+              checked={formData.features.grp_call===formData.userFeatures[0].grp_call?"checked":null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'grp_call');
               }}
@@ -479,6 +506,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature2"
+              checked={formData.features.priv_call===formData.userFeatures[0].priv_call?"checked":null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'priv_call');
               }}
@@ -492,6 +520,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
+              checked={formData.features.enc===formData.userFeatures[0].enc?"checked":null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'enc');
               }}
@@ -505,6 +534,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
+              checked={formData.features.live_gps===formData.userFeatures[0].live_gps?"checked":null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'live_gps');
               }}
@@ -518,6 +548,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
+              checked={formData.features.geo_fence===formData.userFeatures[0].geo_fence?"checked":null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'geo_fence');
               }}
@@ -531,6 +562,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
+              checked={formData.features.chat===formData.userFeatures[0].chat?"checked":null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'chat');
               }}
@@ -702,15 +734,51 @@ function UserModify() {
   const getFormData = async (userId) => {
     setFormLoading(true);
     if (userId !== '0') {
-      const { order_id: orderId } = updUsers.filter(
+      const { order_id: orderId,display_name: displayName } = updUsers.filter(
         (updUser) =>
           updUser.id === Number(userId) && updUser.user_type === updateType
       )[0];
-      const { data } = await axios.get(`/user/modify/${updateType}/${orderId}`);
+      
+      const { data } = await axios.get(`/user/modify/${updateType}/${orderId}/${userId}`);
+      setDisplayName(displayName);
       setFormData(data);
+      setcontactNum(data.ctnNum[0].contact_no);
+      if (updateType === 'ptt' || updateType === 'dispatcher') {
+        console.log();
+        const selected = [];
+        data.talgroups_map.forEach((id) => {
+          selected.push(data.tgs.filter((TGid) => TGid.id === id.talkgroup_id)[0]);
+        });
+        setSelectedTG(selected);
+        if(data.userContactList[0].contact_list_id!==null){
+          setContactlist(data.userContactList[0].contact_list_id);
+        }else{
+          setContactlist('');
+        }
+      }
+
+      if (updateType === 'dispatcher') {
+        const cselected = [];
+        data.controlId.forEach((id) => {
+          cselected.push(
+            data.controlStations.filter((usersel) => usersel.id === id.control_id)[0]
+          );
+        });
+        setSelectedCS(cselected);
+      }
+      
+      if (updateType === 'control') {
+        setRemoteIPadd(data.userdata[0].remote_ip_address);
+        setRemotePortadd(data.userdata[0].remote_port);
+        setDeviceID(data.userdata[0].device_id);
+        setcontrolStationType(data.userdata[0].cs_type_id);
+      }
+      
+      console.log(data);
     }
     setUser(userId);
     setFormLoading(false);
+    
   };
 
   const form = () => (
@@ -785,7 +853,7 @@ function UserModify() {
           />
         </div>
         <br />
-
+        
         <br />
       </div>
       <button type="submit" disabled={disabled}>

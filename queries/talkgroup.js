@@ -14,6 +14,12 @@ const getTGs = (companyId) => {
   const sql = `SELECT id, talkgroup_name AS tg_name FROM talkgroups WHERE company_id=${companyId};`;
   return query(sql);
 };
+
+const getTGmap = (userId) => {
+  const sql = `SELECT talkgroup_id FROM user_talkgroup_maps WHERE user_id=${userId};`;
+  return query(sql);
+};
+
 const TGid = () => {
   const sql = `SELECT (MAX(id)+1 ) AS talkgroup_id FROM talkgroups;`;
   return query(sql);
@@ -44,4 +50,5 @@ module.exports = {
   TGid,
   deleteTG,
   deleteTGMap,
+  getTGmap,
 };

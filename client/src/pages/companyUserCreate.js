@@ -38,6 +38,16 @@ function UserCreate() {
   });
   const selectedTGIds = useRef(new Set());
   const selectedCSIds = useRef(new Set());
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get('/user/company-panel/user-create');
+      setorderlist(data.users);
+      setLoading(false);
+     
+    })();
+  }, []);
+
   const schema = yup.object().shape({
     username: yup
       .string()
@@ -70,16 +80,10 @@ function UserCreate() {
       .max(10, 'Must be exactly 10 digits'),
   });
   const validate = async (data) => {
-    const formData2 = { ...data, confirm_password: confirmPassword };
+    const formData2= { ...data, confirm_password: confirmPassword };
     await schema.validate(formData2, { abortEarly: false });
   };
-  useEffect(() => {
-    (async () => {
-      const { data } = await axios.get('/user/company-panel/user-create');
-      setorderlist(data.users);
-      setLoading(false);
-    })();
-  }, []);
+
 
   function onTGSelect() {
     const selected = [];
@@ -858,7 +862,7 @@ function UserCreate() {
   const getFormData = async (orderId) => {
     setFormLoading(true);
     if (orderId !== '0') {
-      const { data } = await axios.get(`/user/create/${updateType}/${orderId}`);
+      const { data } = await axios.get(`/user/create/${updateType}/${orderId}/0`);
       setFormData(data);
     }
     setorder(orderId);
@@ -941,6 +945,7 @@ function UserCreate() {
           
         </div>
         <br />
+        <div className="text-danger fw-600">{errors?.contact_number}</div>
       </div>
       <button type="submit">
         {' '}

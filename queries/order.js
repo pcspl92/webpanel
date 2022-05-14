@@ -45,7 +45,7 @@ const createOrder = (
 const companyStatus =async(companyId)=>{
   const sql= `SELECT * FROM companies WHERE id=${companyId}`;
   const execute =await query(sql)
-  // console.log(execute[0].status)
+   console.log(execute[0].status)
   return execute[0].status;
 }
 
@@ -152,6 +152,11 @@ const getFeatures = (orderId) => {
   return query(sql);
 };
 
+const getFeaturesByUserId = (userId) => {
+  const sql = `SELECT * FROM user_features WHERE user_id=${userId};`;
+  return query(sql);
+};
+
 const getOrderData = (orderId) => {
   const sql = `SELECT license_expiry AS expDate, license_type AS type FROM orders WHERE id=${orderId};`;
   return query(sql);
@@ -187,5 +192,6 @@ module.exports = {
   getOrderData,
   getUnitPrices,
   getLicensesForOrder,
-  companyStatus
+  companyStatus,
+  getFeaturesByUserId,
 };

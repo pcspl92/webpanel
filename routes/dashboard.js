@@ -58,7 +58,9 @@ router.get(
   companyCheck,
   async (req, res) => {
     const currDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
+    console.log(currDate);
     const result = await getDashboardDataCompany(req.user.id, currDate);
+    console.log(result);
     const accounts = result.reduce(
       (acc, val) => ({
         ...acc,
@@ -66,7 +68,7 @@ router.get(
       }),
       {}
     );
-
+    console.log(accounts);
     const data = {
       data: accounts,
     };

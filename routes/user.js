@@ -35,11 +35,15 @@ const {
   createBulkPttUsers,
   createBulkDispatcherUsers,
   createBulkControlStationUsers,
+  getContactNumById,
+  getControlId,
+  getContactListByuserId,
+  getCSUserDataById,
 } = require('../queries/user');
 const { createCompanyActivityLog } = require('../queries/company');
-const { getTGs } = require('../queries/talkgroup');
+const { getTGs,getTGmap } = require('../queries/talkgroup');
 const { getContactLists } = require('../queries/contactlist');
-const { getFeatures, getLicenseIds, getLicenses } = require('../queries/order');
+const { getFeatures, getLicenseIds, getLicenses, getFeaturesByUserId } = require('../queries/order');
 const { hashPassword } = require('../utils/bcrypt');
 
 const router = express.Router();
@@ -60,7 +64,7 @@ router.get(
     );
 
     const userData = await getUsersAgentPanel(agentIds);
-    console.log(userData);
+    //console.log(userData);
     return res.status(200).json(userData);
   }
 );
@@ -123,11 +127,8 @@ router.get(
   }
 );
 
-// @route   GET api/user/:formType/:type/:orderId
-// @desc    User form data fetching route
-// @access  Private(Company)
 router.get(
-  '/:formType/:type/:orderId',
+  '/:formType/:type/:orderId/:id',
   isLoggedIn,
   guard.check('company'),
   companyCheck,
@@ -135,31 +136,42 @@ router.get(
     let data = {};
 
     const getPttFormData = async () => {
-      const [tgs, cls, [features]] = await Promise.all([
+      const [tgs, cls, [features],ctnNum,talgroups_map,userContactList,userFeatures] = await Promise.all([
         getTGs(req.user.id),
         getContactLists(req.user.id),
         getFeatures(req.params.orderId),
+        getContactNumById(req.params.id),
+        getTGmap(req.params.id),
+        getContactListByuserId(req.params.id),
+        getFeaturesByUserId(req.params.id),
       ]);
-      return { tgs, cls, features };
+      return { tgs, cls, features,ctnNum,talgroups_map,userContactList, userFeatures };
     };
 
     const getDisaptcherFormData = async () => {
-      const [tgs, cls, [features], controlStations] = await Promise.all([
+      const [tgs, cls, [features], controlStations,ctnNum,talgroups_map,controlId,userContactList, userFeatures] = await Promise.all([
         getTGs(req.user.id),
         getContactLists(req.user.id),
         getFeatures(req.params.orderId),
         getControlStations(req.user.id),
+        getContactNumById(req.params.id),
+        getTGmap(req.params.id),
+        getControlId(req.params.id),
+        getContactListByuserId(req.params.id),
+        getFeaturesByUserId(req.params.id),
       ]);
-      return { tgs, cls, features, controlStations };
+      return { tgs, cls, features, controlStations,ctnNum,talgroups_map,controlId,userContactList, userFeatures };
     };
 
     const getControlFormData = async () => {
       const receivingPortBase = 8080;
-      const [[{ receivingPort }], csTypes] = await Promise.all([
+      const [[{ receivingPort }], csTypes,ctnNum,userdata] = await Promise.all([
         getReceivingPort(receivingPortBase, req.params.formType),
         getControlStationTypes(1),
+        getContactNumById(req.params.id),
+        getCSUserDataById(req.params.id),
       ]);
-      return { receivingPort, csTypes };
+      return { receivingPort, csTypes, ctnNum, userdata};
     };
 
     switch (req.params.type) {
@@ -175,7 +187,6 @@ router.get(
       default:
         break;
     }
-
     return res.status(200).json(data);
   }
 );
@@ -308,6 +319,7 @@ router.post(
       ]),
       req.user.id
     );
+    await updateLicense(licenseId, insertId);
     await CSupdateLicense(licenseId, insertId);
     await createCompanyActivityLog('Control Station User Create', req.user.id);
     return res
@@ -349,7 +361,7 @@ router.put(
       )
     );
     await deleteUserTalkgroupMaps(req.params.id);
-    await mapUserTalkgroup(req.body.tg_ids, req.body.def_tg, req.params.id);
+    if (req.body.tg_ids.length)  await mapUserTalkgroup(req.body.tg_ids, req.body.def_tg, req.params.id);
     await createCompanyActivityLog('PTT User Modify', req.user.id);
     return res.status(200).send({ message: 'PTT User has been  Updated' });
   }
@@ -388,13 +400,13 @@ router.put(
       )
     );
     await deleteUserTalkgroupMaps(req.params.id);
-    await mapUserTalkgroup(req.body.tg_ids, req.body.def_tg, req.params.id);
+    if (req.body.tg_ids.length)await mapUserTalkgroup(req.body.tg_ids, req.body.def_tg, req.params.id);
     if (req.body.control_ids.length) {
       await deleteDispatcherControlMaps(req.params.id);
       await mapControlStations(req.body.control_ids, req.params.id);
     }
     await createCompanyActivityLog('Dispatcher User Modify', req.user.id);
-    return res.status(200).send({ message: 'Dipatcher User has been created' });
+    return res.status(200).send({ message: 'Dipatcher User has been modified' });
   }
 );
 

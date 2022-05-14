@@ -67,7 +67,7 @@ export default function LicenseCreate() {
         company_id: Number(company),
         features,
       };
-  
+
       if (data.company_id) {
         setError('');
         const response = await axios.post('/order/', data);

@@ -53,7 +53,6 @@ router.get(
       const result = await getSubAgents(req.user.id);
       agents = result.reduce((acc, sub) => [...acc, sub.id], [req.user.id]);
     }
-
     const list = await getOrderList(agents);
     return res.status(200).json(list);
   }
