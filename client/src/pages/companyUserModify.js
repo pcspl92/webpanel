@@ -236,7 +236,9 @@ function UserModify() {
             ))}
           </select>
         </div>
+        </div>
         <br />
+        <div>
         <label>Features : </label>&nbsp;
         <br />
       
@@ -718,6 +720,7 @@ function UserModify() {
         await controlSubmit();
         break;
       default:
+        alert("Please Select User Account type and User");
     }
     setDisabled(false);
   };
@@ -806,6 +809,7 @@ function UserModify() {
             <option value={'control'}>Control Station</option>
           </select>
         </div>
+        <br />
         <div>
           <span>
             <label htmlFor="lictype">Select User: </label>
@@ -838,7 +842,7 @@ function UserModify() {
       {updateType === 'control' && user !== '0' && ControlStationForm()}
       <br />
       <div className="formarea">
-        <div>
+        <div style={{marginLeft:"62px"}}>
           <span>
             <label htmlFor="confirm">Contact Number : &nbsp;</label>
           </span>

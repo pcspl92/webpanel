@@ -5,7 +5,7 @@ import axios from '../utils/axios';
 
 const TalkGroupModify = () => {
   const [tglist, settgtlist] = useState([]);
-  const [tgnewname, settgnewname] = useState('');
+  const [tgnewname, setTgnewname] = useState('');
 
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -21,7 +21,7 @@ const TalkGroupModify = () => {
   }, []);
 
   const reset = () => {
-    settgnewname('');
+    setTgnewname('');
     setTalkgroup('0');
   };
   const schema = yup.object().shape({
@@ -56,9 +56,8 @@ const TalkGroupModify = () => {
     const data = {
       name: tgnewname,
     };
-
     try {
-      await validate(data);
+      await validate(data.name);
 
       const response = await axios.put(`/talkgroup/${talkgroup}`, data);
       if (response.data.message) {
@@ -66,6 +65,7 @@ const TalkGroupModify = () => {
       }
       reset();
     } catch (error) {
+      console.log(error);
       setErr(error.response.data);
     }
 
@@ -115,7 +115,7 @@ const TalkGroupModify = () => {
             required
             title="3 to 40 characters"
             onChange={(event) => {
-              settgnewname(event.target.value);
+              setTgnewname(event.target.value);
             }}
             value={tgnewname}
           />

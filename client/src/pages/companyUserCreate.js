@@ -175,6 +175,7 @@ function UserCreate() {
       resetPttForm();
       setErrors({});
     } catch (error) {
+      console.log(error);
       if (error.inner.length) {
         const validateErrors = error.inner.reduce(
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
@@ -306,7 +307,9 @@ function UserCreate() {
             ))}
           </select>
         </div>
+        </div>
         <br />
+        <div>
         <label>Features : </label>&nbsp;
         <br />
         {formData.features?.grp_call ? (

@@ -10,6 +10,7 @@ const {
   updateCompanyPassword,
   createCompanyAuthLog,
   getCompanyAuthLogs,
+  findCompanyById,
 } = require('../queries/company');
 const {
   findAgent,
@@ -19,6 +20,7 @@ const {
   getAgentAuthLogs,
 } = require('../queries/agent');
 const { agentSubAgentCheck, companyCheck, isLoggedIn } = require('../guard');
+const { LogError } = require('concurrently');
 
 const router = express.Router();
 
@@ -197,6 +199,12 @@ router.put(
   companyCheck,
   async (req, res) => {
     const password = await hashPassword(req.body.password);
+
+     const company = await findCompanyById(req.user.id);
+ 
+    if ((await comparePassword(req.body.password, company[0].password)))
+    return res.send("Please enter new password");
+    
     await updateCompanyPassword(password, req.user.id);
     return res.status(200).send('Password Updated');
   }

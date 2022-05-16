@@ -1,7 +1,7 @@
 const query = require('../utils/queryTemplate');
 
 const findCompanyById = (id) => {
-  const sql = `SELECT id, status FROM companies WHERE id=${id};`;
+  const sql = `SELECT id, status,password FROM companies WHERE id=${id};`;
   return query(sql);
 };
 

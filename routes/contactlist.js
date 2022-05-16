@@ -54,8 +54,7 @@ router.post(
     const list = await getContactListByName(req.body.name);
     if (list.length)
       return res
-        .status(400)
-        .json({ contactList: 'Contact List with given name already exists.' });
+        .send({ message: 'Contact List with given name already exists.' });
     const { insertId } = await createContactList(req.body.name, req.user.id);
     if (req.body.userIds.length)
       await createUserContactListMaps(insertId, req.body.userIds);
@@ -84,16 +83,16 @@ router.put(
       return res
         .status(404)
         .json({ contactlist: 'Contact List with given name already exists.' });
-
-    await updateContactList(req.params.id, req.body.name);
-    await deleteUserContactListMaps(req.params.id);
-    if (req.body.userIds.length){
+     
+    if (req.body.userIds.length === 0) {
+      return res.send({ message: "Please Select the PTT User" });
+    } else {
+      await updateContactList(req.params.id, req.body.name);
+      await deleteUserContactListMaps(req.params.id);
       await createUserContactListMaps(req.params.id, req.body.userIds);
-    }else{
-      res.send({message:"Please Select the PTT User"});
+      await createCompanyActivityLog('Contact-List Modify', req.user.id);
+      return res.status(200).send({ message: 'Contact-List has been updated' });
     }
-    await createCompanyActivityLog('Contact-List Modify', req.user.id);
-    return res.status(200).send({ message: 'Contact-List has been updated' });
   }
 );
 

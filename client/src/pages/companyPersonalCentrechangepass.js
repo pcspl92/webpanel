@@ -12,7 +12,7 @@ const CompanyChangePassword = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
-
+    
     if (confirmPassword === password) {
       try {
         // console.log(password)

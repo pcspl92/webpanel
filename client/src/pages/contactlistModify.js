@@ -23,8 +23,6 @@ export default function ContactListCreate() {
       const { data: contactlists } = await axios.get('/contactlist/');
       setuserlist(users);
       setcontactlistarr(contactlists);
-      console.log(users);
-      console.log(contactlists);
       setLoading(false);
     })();
   }, []);
@@ -32,7 +30,7 @@ export default function ContactListCreate() {
   const reset = () => {
     setContactList('');
     setcontactlistName('');
-    //setSelectedUsers([]);
+    setSelectedUsers([]);
   };
   const schema = yup.object().shape({
     name: yup
@@ -58,9 +56,9 @@ export default function ContactListCreate() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
-
+  
     const users = [];
-    selectedUserIds.current.forEach((id) => users.push(id));
+    selectedUsers.forEach((value) => users.push(value.id));
     const data = {
       name: contactlistName,
       userIds: users,
@@ -71,9 +69,16 @@ export default function ContactListCreate() {
       if (response.data.message) {
         alert(response.data.message);
       }
-      reset();
+      if (response.data.message==='Contact-List has been updated') {
+        reset();
+      }
+      const { data: contactlists } = await axios.get('/contactlist/');
+      setcontactlistarr(contactlists);
+      
     } catch (err) {
       alert(err);
+      reset();
+      setDisabled(false);
       console.log(err.response.data);
     }
 
@@ -90,6 +95,8 @@ export default function ContactListCreate() {
         alert(response.data.message);
       }
       reset();
+      const { data: contactlists } = await axios.get('/contactlist/');
+      setcontactlistarr(contactlists);
     }
   };
   const SelectAcc = ({ users }) => (
@@ -111,7 +118,7 @@ export default function ContactListCreate() {
                 id="subitem"
                 name="selection"
                 style={{ margin: 'none', width: '2vw' }}
-                defaultChecked={selectedUserIds.current.has(val.id)}
+                // defaultChecked={selectedUserIds.current.has(val.id)}
                 onClick={() => {
                   selectedUserIds.current.has(val.id)
                     ? selectedUserIds.current.delete(val.id)

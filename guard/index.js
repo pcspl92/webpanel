@@ -24,7 +24,7 @@ const companyCheck = (err, req, res, next) => {
     return res.status(403).send('Company access only');
 
   return next();
-};
+}
 
 const isLoggedIn = (req, res, next) => {
   if (!req.user) return res.status(401).send('Please Login First');

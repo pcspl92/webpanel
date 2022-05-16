@@ -28,6 +28,7 @@ export default function ContactListCreate() {
   const reset = () => {
     setcontactlistName('');
     setnewid(newid+1);
+    setSelectedUsers([]);
   };
   const schema = yup.object().shape({
     name: yup
@@ -40,7 +41,7 @@ export default function ContactListCreate() {
   });
   const validate = async (name2) => {
     console.log(name2)
-    const { name } = { name2 };
+    const  {name } = name2;
     console.log(name)
     await schema.validate(name2, { abortEarly: false });
   };

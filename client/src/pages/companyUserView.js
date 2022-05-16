@@ -17,19 +17,19 @@ const CompanyUserView = () => {
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/user/company-panel');
+      //console.log(data);
       setTableData(data);
       setuserupdlist(data);
       setLoading(false);
     })();
   }, []);
 
-  const accountTypeFilter = () =>
-    tableData.filter((rec) =>
+  const accountTypeFilter = () =>tableData.filter((rec) =>
       rec.account_type.toLowerCase().includes(accountType.toLowerCase())
     );
   const orderIDFilter = () =>
-    tableData.filter((rec) => rec.order_id === orderID);
-
+     tableData.filter((rec) => rec.order_id == orderID );
+  
   const accountFilter = () =>
     tableData.filter((rec) =>
       rec.account_name.toLowerCase().includes(accountName.toLowerCase())
@@ -47,7 +47,7 @@ const CompanyUserView = () => {
 
   const filter = () => {
     if (accountType.length) setuserupdlist(accountTypeFilter());
-    if (orderID.length) setuserupdlist(orderIDFilter());
+    if (orderID) setuserupdlist(orderIDFilter());
     if (accountName.length) setuserupdlist(accountFilter());
     if (userDisplayName.length) setuserupdlist(userFilter());
     if (expiryDate.length) setuserupdlist(expiryFilter());
@@ -65,7 +65,7 @@ const CompanyUserView = () => {
     setuserupdlist(tableData);
     reset();
   };
-  console.log('table-data', tableData);
+  //console.log('table-data', tableData);
 
   if (loading) {
     return (
@@ -73,7 +73,8 @@ const CompanyUserView = () => {
         <div className="spinner-border text-primary" role="status"></div>
       </div>
     );
-  }
+  };
+
   return (
     <div className="viewback2">
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>VIEW USERS</div>
@@ -92,7 +93,7 @@ const CompanyUserView = () => {
             value={accountType}
             required
           >
-            <option value={0}>Select License Type</option>
+            <option value={0}>Select Account  Type</option>
             <option value={'ptt'}>PTT User</option>
             <option value={'dispatcher'}>Dispatcher</option>
             <option value={'control'}>Control Station</option>

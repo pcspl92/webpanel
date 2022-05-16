@@ -51,3 +51,7 @@ Issue 124, 134, 136, 139, 145, 146
 Version : 0.2.1.1
 
 Issues fixed on populating data in modify user option in company panel.
+
+version : 0.2.1.2
+
+Issues: 151, 150, 130, 118, 105, 100, 81, 30, 79, 80, 54, 24
