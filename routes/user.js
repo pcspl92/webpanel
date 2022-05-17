@@ -406,7 +406,7 @@ router.put(
       await mapControlStations(req.body.control_ids, req.params.id);
     }
     await createCompanyActivityLog('Dispatcher User Modify', req.user.id);
-    return res.status(200).send({ message: 'Dipatcher User has been modified' });
+    return res.status(200).send({ message: 'Dipatcher User has been updated' });
   }
 );
 

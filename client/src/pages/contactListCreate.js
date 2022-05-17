@@ -109,7 +109,6 @@ export default function ContactListCreate() {
                 id="subitem"
                 name="selection"
                 style={{ margin: 'none', width: '2vw' }}
-                defaultChecked={selectedUserIds.current.has(val.id)}
                 onClick={() => {
                   selectedUserIds.current.has(val.id)
                     ? selectedUserIds.current.delete(val.id)

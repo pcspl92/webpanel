@@ -54,4 +54,8 @@ Issues fixed on populating data in modify user option in company panel.
 
 version : 0.2.1.2
 
-Issues: 151, 150, 130, 118, 105, 100, 81, 30, 79, 80, 54, 24
+Issues Fixed: 151, 150, 130, 118, 105, 100, 81, 30, 79, 80, 54, 24
+
+version : 0.2.2
+
+Issues Fixed: 160, 161, 154, 162, 129, 166, 

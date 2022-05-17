@@ -51,6 +51,7 @@ export default function ContactListCreate() {
   }
   const validate = async (name) => {
     const formData2 = { name };
+    console.log(formData2);
     await schema.validate(formData2, { abortEarly: false });
   };
   const onSubmit = async (e) => {

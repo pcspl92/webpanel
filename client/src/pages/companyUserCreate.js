@@ -309,7 +309,7 @@ function UserCreate() {
         </div>
         </div>
         <br />
-        <div>
+        <div style={{textAlign:"center"}}>
         <label>Features : </label>&nbsp;
         <br />
         {formData.features?.grp_call ? (
@@ -598,7 +598,7 @@ function UserCreate() {
           ))}
         </select>
       </div>
-      <div>
+      <div style={{textAlign:"center"}}>
         <label>Features : </label>&nbsp;
         <br />
         {formData.features?.grp_call ? (

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../css/personalCenterChangePassword.css';
 
 import axios from '../utils/axios';
+import * as yup from 'yup';
 
 const CompanyChangePassword = () => {
   const [password, setPassword] = useState('');
@@ -9,14 +10,30 @@ const CompanyChangePassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorm, seterrorm] = useState('');
 
+  const schema = yup.object().shape({
+    password: yup
+      .string()
+      .typeError('Password must be string')
+      .required('This field is required')
+      .matches(/^\S+$/, 'Password cannot contain whitespace')
+      .min(8, 'Password must be 8-30 characters long')
+      .max(30, 'Password must be 8-30 characters long'),
+  });
+
+  const validate = async (password) => {
+    const formData2 = { password};
+    console.log(formData2);
+    await schema.validate(formData2, { abortEarly: false });
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
-    
+
     if (confirmPassword === password) {
       try {
-        // console.log(password)
-        const {data}=await axios.put('/auth/password/company', { password });
+        await validate(password);
+        const { data } = await axios.put('/auth/password/company', { password });
         // console.log(data)
         alert(data)
         setDisabled(false);
@@ -24,6 +41,10 @@ const CompanyChangePassword = () => {
         setConfirmPassword('');
         seterrorm('');
       } catch (err) {
+        alert(err)
+        setDisabled(false);
+        setPassword('');
+        setConfirmPassword('');
         console.log(err.response.data);
       }
     } else {

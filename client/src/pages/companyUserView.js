@@ -17,7 +17,7 @@ const CompanyUserView = () => {
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/user/company-panel');
-      //console.log(data);
+      console.log(data);
       setTableData(data);
       setuserupdlist(data);
       setLoading(false);

@@ -68,7 +68,7 @@ const AddAgent = () => {
       .string()
       .typeError('Password must be string')
       .required('This field is required')
-      .matches(/.*\S.*/, 'Password cannot contain whitespace')
+      .matches(/^\S+$/, 'Password cannot contain whitespace')
       .min(8, 'Password must be 8-30 characters long')
       .max(30, 'Password must be 8-30 characters long'),
     confirm_password: yup
