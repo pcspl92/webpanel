@@ -198,7 +198,7 @@ function UserCreate() {
           justifyContent: 'center',
         }}
       >
-        <div>
+        <div className="required-field">
           <span>
             <label htmlFor="confirm">Account Username : &nbsp;</label>
           </span>
@@ -214,7 +214,7 @@ function UserCreate() {
           <div className="text-danger fw-600">{errors?.username}</div>
         </div>
         <br />
-        <div>
+        <div className="required-field">
           <span>
             <label htmlFor="confirm">Password : &nbsp;</label>
           </span>
@@ -230,7 +230,7 @@ function UserCreate() {
           <div className="text-danger fw-600">{errors?.password}</div>
         </div>
         <br />
-        <div>
+        <div className="required-field">
           <span>
             <label htmlFor="confirm">Confirm Password : &nbsp;</label>
           </span>
@@ -246,7 +246,7 @@ function UserCreate() {
           <div className="text-danger fw-600">{errors?.confirm_password}</div>
         </div>
         <br />
-        <div>
+        <div className="required-field">
           <span>
             <label htmlFor="confirm">User Display Name : &nbsp;</label>
           </span>
@@ -267,7 +267,7 @@ function UserCreate() {
       <div>
         <br />
         <div>
-          <span>
+          <span style={{marginLeft:"10px"}}>
             <label htmlFor="lictype">Default Talkgroup: &nbsp;</label>
           </span>
           <select
@@ -510,7 +510,7 @@ function UserCreate() {
           justifyContent: 'center',
         }}
       >
-        <div>
+        <div className="required-field">
           <span>
             <label htmlFor="confirm">Account Username : &nbsp;</label>
           </span>
@@ -525,7 +525,7 @@ function UserCreate() {
           />
         </div>
         <br />
-        <div>
+        <div className="required-field">
           <span>
             <label htmlFor="confirm">Password : &nbsp;</label>
           </span>
@@ -541,7 +541,7 @@ function UserCreate() {
           <div className="text-danger fw-600">{errors?.password}</div>
         </div>
         <br />
-        <div>
+        <div className="required-field">
           <span>
             <label htmlFor="confirm">Confirm Password : &nbsp;</label>
           </span>
@@ -557,7 +557,7 @@ function UserCreate() {
           <div className="text-danger fw-600">{errors?.confirm_password}</div>
         </div>
         <br />
-        <div>
+        <div className="required-field">
           <span>
             <label htmlFor="confirm">User Display Name : &nbsp;</label>
           </span>
@@ -932,7 +932,7 @@ function UserCreate() {
       {updateType === 'control' && order !== '0' && ControlStationForm()}
       <br />
       <div style={{marginLeft:'62px'}} className="formarea">
-        <div>
+      <div className="required-field">
           <span>
             <label htmlFor="confirm"> Contact Number : &nbsp;</label>
           </span>

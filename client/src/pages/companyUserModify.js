@@ -2,7 +2,7 @@ import '../css/licenseModify.css';
 
 import React, { useState, useRef, useEffect } from 'react';
 import generator from 'generate-password-browser';
-
+import * as yup from 'yup';
 import axios from '../utils/axios';
 
 function UserModify() {
@@ -44,6 +44,26 @@ function UserModify() {
       setLoading(false);
     })();
   }, []);
+
+  const schema1 = yup.object().shape({
+    display_name: yup
+    .string()
+    .typeError('Sub-Agent name must be string')
+    .required('This field is required')
+    .matches(/^\S+$/, 'Display name cannot contain whitespace')
+    .min(10, 'Display name must be 10-90 characters long')
+    .max(90, 'Display name must be 10-90 characters long'),
+  contact_number: yup
+    .string()
+    .required('This field is required')
+    .matches(/^[0-9]+$/, 'Must be only digits')
+    .min(10, 'Must be exactly 10 digits')
+    .max(10, 'Must be exactly 10 digits'),
+  });
+
+  const validate = async (data) => {
+    await schema1.validate(data, { abortEarly: false });
+  };
 
   function onTGSelect() {
     const selected = [];
@@ -140,8 +160,12 @@ function UserModify() {
       tg_ids: tgIds,
       def_tg: Number(talkgroup),
     };
-
+    const data1={
+      display_name: displayName,
+      contact_number: contactNum,
+    };
     try {
+      await validate(data1);
       const response = await axios.put(`/user/ptt/${user}`, data);
       if (response.data.message) {
         alert(response.data.message);
@@ -149,6 +173,8 @@ function UserModify() {
 
       resetPttForm();
     } catch (err) {
+      alert(err);
+      setDisabled(false);
       console.log(err.response.data);
     }
   };
@@ -196,7 +222,7 @@ function UserModify() {
       <div>
         <br />
         <div>
-          <span>
+          <span style={{marginLeft:"10px"}}>
             <label htmlFor="lictype">Default Talkgroup: &nbsp;</label>
           </span>
           <select
@@ -418,13 +444,20 @@ function UserModify() {
       control_ids: csIds,
     };
     console.log(featuresGlobal);
+    const data1={
+      display_name: displayName,
+      contact_number: contactNum,
+    };
     try {
+      await validate(data1);
       const response = await axios.put(`/user/dispatcher/${user}`, data);
       if (response.data.message) {
         alert(response.data.message);
       }
       resetDispatcherForm();
     } catch (err) {
+      alert(err);
+      setDisabled(false);
       console.log(err.response.data);
     }
   };

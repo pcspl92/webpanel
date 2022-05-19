@@ -19,14 +19,15 @@ export default function CompanyTransactionView() {
     })();
   }, []);
   const filterlist = () => {
-    if (fromdate.length && todate.length) {
-      setupdatedTableData(
-        tableData.filter(
-          (val) =>
-            moment(val.timestamp).isSameOrAfter(fromdate) &&
-            moment(val.timestamp).isSameOrBefore(todate)
-        )
-      );
+    if(fromdate===undefined ||todate===undefined){
+      alert("Please Select Dates");
+    }else if (fromdate.length && todate.length) {
+      setupdatedTableData(tableData.filter(
+        (val) =>{
+          const date=moment(val.transaction_date).format('YYYY-MM-DD');
+          return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)  
+        }  
+      ));
     }
   };
 
@@ -125,12 +126,9 @@ export default function CompanyTransactionView() {
           </th>
         </tr>
         {updatedTableData.map((val, index) => {
-          // eslint-disable-next-line no-plusplus
-          // eslint-disable-next-line no-param-reassign
-          index += 1;
-          return (
-            <tr key={val.id}>
-              <th>{index}</th>
+          return(
+            <tr key={index}>
+              <th>{index+1}</th>
               <th>{val.id}</th>
               <th>{val.transaction_type}</th>
               <th>{moment(val.transaction_date).format('DD-MM-YYYY')}</th>

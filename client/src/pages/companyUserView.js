@@ -51,6 +51,7 @@ const CompanyUserView = () => {
     if (accountName.length) setuserupdlist(accountFilter());
     if (userDisplayName.length) setuserupdlist(userFilter());
     if (expiryDate.length) setuserupdlist(expiryFilter());
+    if(orderID==='' && accountName==='' && accountType==='' && userDisplayName==='' && expiryDate==='') alert("Please select any fields")
   };
 
   const reset = () => {

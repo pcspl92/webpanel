@@ -53,3 +53,8 @@ button {
   align-items: flex-start;
   flex-direction: column;
 }
+
+.required-field::before {
+  content: "*";
+  color: red;
+}

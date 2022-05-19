@@ -6,8 +6,8 @@ import moment from 'moment';
 import axios from '../utils/axios';
 
 const CompanyViewActivity = () => {
-  const [fromdate, setfromdate] = useState();
-  const [todate, settodate] = useState();
+  const [fromdate, setfromdate] = useState('');
+  const [todate, settodate] = useState('');
   const [companyactlist, setcompanyactlist] = useState([]);
   const [updatedactlist, setupdatedactlist] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,15 +22,18 @@ const CompanyViewActivity = () => {
   }, []);
 
   const filterlist = () => {
-    if (fromdate.length && todate.length) {
+    if(fromdate==='' || todate==='') alert("Please Select Dates");
+    else if (fromdate.length && todate.length && moment(fromdate).isSameOrBefore(todate)) {
       setupdatedactlist(
-        companyactlist.filter((val) => (
-            moment(val.timestamp).isSameOrAfter(fromdate) &&
-            moment(val.timestamp).isSameOrBefore(todate)
-          ))
-      );
+        companyactlist.filter((val) => {
+            const date=moment(val.timestamp).utc().format('YYYY-MM-DD');
+            return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)
+      }));
+    }else if(fromdate.length && todate.length && moment(fromdate).isAfter(todate)){
+      alert('Invalid Date Selection');
     }
   };
+
 
   const reset = () => {
     setfromdate('');
@@ -108,13 +111,11 @@ const CompanyViewActivity = () => {
           <th>User Activity Description</th>
         </tr>
         {updatedactlist.map((val, index) => {
-          // eslint-disable-next-line no-param-reassign
-          index+=1;
           return (
             <tr key={val.id} >
-              <th>{index}</th>
-              <th>{moment(val.timestamp).format('DD-MM-YYYY')}</th>
-              <th>{moment(val.timestamp).format('HH:mm')}</th>
+              <th>{index+1}</th>
+              <th>{moment(val.timestamp).utc().format('DD-MM-YYYY')}</th>
+              <th>{moment(val.timestamp).utc().format('HH:mm')}</th>
               <th>{val.display_name}</th>
               <th>{val.activity_desc}</th>
             </tr>
