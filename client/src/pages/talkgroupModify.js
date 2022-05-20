@@ -18,7 +18,7 @@ const TalkGroupModify = () => {
       settgtlist(data);
       setLoading(false);
     })();
-  }, []);
+  }, [talkgroup]);
 
   const reset = () => {
     setTgnewname('');

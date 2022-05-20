@@ -44,7 +44,7 @@ function UserCreate() {
       const { data } = await axios.get('/user/company-panel/user-create');
       setorderlist(data.users);
       setLoading(false);
-     
+
     })();
   }, []);
 
@@ -80,10 +80,45 @@ function UserCreate() {
       .max(10, 'Must be exactly 10 digits'),
   });
   const validate = async (data) => {
-    const formData2= { ...data, confirm_password: confirmPassword };
+    const formData2 = { ...data, confirm_password: confirmPassword };
     await schema.validate(formData2, { abortEarly: false });
   };
 
+  const schema1 = yup.object().shape({
+    ip_address: yup
+    .string()
+    .typeError('ip_address must be string')
+    .required('This field is required')
+    .matches(/^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$/, 'ip address is not valid'),
+    port: yup
+      .string()
+      .required('This field is required')
+      .matches(/^[0-9]+$/, 'Must be only digits')
+      .min(4, 'Must be exactly 4 digits')
+      .max(4, 'Must be exactly 4 digits'),
+    display_name: yup
+      .string()
+      .typeError('Display_name name must be string')
+      .required('This field is required')
+      .matches(/^\S+$/, 'Display name cannot contain whitespace')
+      .min(10, 'Display name must be 10-90 characters long')
+      .max(90, 'Display name must be 10-90 characters long'),
+      device_id: yup
+      .string()
+      .required('This field is required')
+      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid username')
+      .min(3, 'Device_Id must be greater than 3 characters'),
+      contact_no: yup
+      .string()
+      .required('This field is required')
+      .matches(/^[0-9]+$/, 'Must be only digits')
+      .min(10, 'Must be exactly 10 digits')
+      .max(10, 'Must be exactly 10 digits'),
+  });
+  const validate1 = async (data) => {
+    const formData2 = { ...data, confirm_password: confirmPassword };
+    await schema1.validate(formData2, { abortEarly: false });
+  };
 
   function onTGSelect() {
     const selected = [];
@@ -267,7 +302,7 @@ function UserCreate() {
       <div>
         <br />
         <div>
-          <span style={{marginLeft:"10px"}}>
+          <span style={{ marginLeft: "10px" }}>
             <label htmlFor="lictype">Default Talkgroup: &nbsp;</label>
           </span>
           <select
@@ -307,9 +342,9 @@ function UserCreate() {
             ))}
           </select>
         </div>
-        </div>
-        <br />
-        <div style={{textAlign:"center"}}>
+      </div>
+      <br />
+      <div style={{ textAlign: "center" }}>
         <label>Features : </label>&nbsp;
         <br />
         {formData.features?.grp_call ? (
@@ -598,7 +633,7 @@ function UserCreate() {
           ))}
         </select>
       </div>
-      <div style={{textAlign:"center"}}>
+      <div style={{ textAlign: "center" }}>
         <label>Features : </label>&nbsp;
         <br />
         {formData.features?.grp_call ? (
@@ -704,24 +739,34 @@ function UserCreate() {
       cs_type_id: Number(controlStationType),
       order_id: Number(order),
     };
+    const valData={
+      ip_address: remoteIDadd,
+      port: Number(remotePortadd),
+      display_name: displayName,
+      device_id: deviceID,
+      contact_no: contactNum,
+    };
     try {
-        if(Number(controlStationType)===0){
-          setErrors({ message: "This field is required" });
-        }else{
+      await validate1(valData);
+      if (Number(controlStationType) === 0) {
+        setErrors({ message: "This field is required" });
+      } else {
         const response = await axios.post('/user/control', data);
         if (response.data.message) {
           alert(response.data.message);
         }
         resetControlForm();
         setErrors({});
-        }
+      }
     } catch (error) {
       if (error.inner.length) {
         const validateErrors = error.inner.reduce(
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
           {}
         );
-        setErrors(validateErrors);
+        console.log(validateErrors);
+        alert(error);
+       
       } else {
         console.log(error.response.data);
       }
@@ -739,7 +784,7 @@ function UserCreate() {
         }}
       >
         <br />
-        <div>
+        <div className="required-field">
           <span>
             <label htmlFor="confirm">Control Station Type: &nbsp;</label>
           </span>
@@ -759,8 +804,8 @@ function UserCreate() {
           </select>
         </div>
         <br />
-        <div>
-        {(errors.message)?<div className="text-danger fw-600">{errors.message}</div>:null}
+        <div className="required-field">
+          {(errors.message) ? <div className="text-danger fw-600">{errors.message}</div> : null}
           <span>
             <label htmlFor="confirm">Remote IP Address : &nbsp;</label>
           </span>
@@ -775,7 +820,7 @@ function UserCreate() {
           />
         </div>
         <br />
-        <div>
+        <div className="required-field">
           <span>
             <label htmlFor="confirm">Remote Port Address : &nbsp;</label>
           </span>
@@ -790,7 +835,7 @@ function UserCreate() {
           />
         </div>
         <br />
-        <div>
+        <div className="required-field">
           <span>
             <label htmlFor="confirm">User Display Name : &nbsp;</label>
           </span>
@@ -805,7 +850,7 @@ function UserCreate() {
           />
         </div>
         <br />
-        <div>
+        <div className="required-field">
           <span>
             <label htmlFor="confirm">Device ID : &nbsp;</label>
           </span>
@@ -931,8 +976,8 @@ function UserCreate() {
       {updateType === 'dispatcher' && order !== '0' && DispatcherForm()}
       {updateType === 'control' && order !== '0' && ControlStationForm()}
       <br />
-      <div style={{marginLeft:'62px'}} className="formarea">
-      <div className="required-field">
+      <div style={{ marginLeft: '62px' }} className="formarea">
+        <div className="required-field">
           <span>
             <label htmlFor="confirm"> Contact Number : &nbsp;</label>
           </span>
@@ -945,7 +990,7 @@ function UserCreate() {
             value={contactNum}
             required
           />
-          
+
         </div>
         <br />
         <div className="text-danger fw-600">{errors?.contact_number}</div>

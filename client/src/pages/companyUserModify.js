@@ -53,7 +53,7 @@ function UserModify() {
     .matches(/^\S+$/, 'Display name cannot contain whitespace')
     .min(10, 'Display name must be 10-90 characters long')
     .max(90, 'Display name must be 10-90 characters long'),
-  contact_number: yup
+    contact_number: yup
     .string()
     .required('This field is required')
     .matches(/^[0-9]+$/, 'Must be only digits')

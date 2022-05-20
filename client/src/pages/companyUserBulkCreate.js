@@ -10,7 +10,7 @@ function BulkUserCreate() {
   const [accountName, setaccountName] = useState('');
   const [password, setPassword] = useState('');
   const [controlStationType, setcontrolStationType] = useState('0');
-  const [contactNum, setcontactNum] = useState(0);
+  const [contactNum, setcontactNum] = useState('');
   const [order, setorder] = useState('0');
   const [orderlist, setorderlist] = useState([]);
   const [contactList, setContactlist] = useState('0');
@@ -24,8 +24,8 @@ function BulkUserCreate() {
   const [selectedCS, setSelectedCS] = useState([]);
   const [formLoading, setFormLoading] = useState(false);
   const [formData, setFormData] = useState({});
-  const [postFixNumber, setPostFixNumber] = useState(0);
-  const [qty, setQty] = useState(0);
+  const [postFixNumber, setPostFixNumber] = useState('');
+  const [qty, setQty] = useState('');
   const [featuresGlobal, setFeaturesGlobal] = useState({
     grp_call: false,
     enc: false,
