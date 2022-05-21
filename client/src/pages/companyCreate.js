@@ -21,7 +21,6 @@ const CompanyCreate = () => {
       .string()
       .typeError('Username must be string')
       .required('This field is required')
-      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid username')
       .min(3, 'Username must be 3-40 characters long')
       .max(40, 'Username must be 3-40 characters long'),
     password: yup
@@ -40,7 +39,6 @@ const CompanyCreate = () => {
       .string()
       .typeError('Company name must be string')
       .required('This field is required')
-      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid Company Name')
       .min(10, 'Company name must be 10-90 characters long')
       .max(90, 'Company name must be 10-90 characters long'),
     contact_number: yup
@@ -119,7 +117,7 @@ const CompanyCreate = () => {
       <div className="CCformarea">
         <div>
           <span>
-            <label htmlFor="username">Account Username: &nbsp;</label>
+            <label htmlFor="username">Account Username : &nbsp;</label>
           </span>
           <input
             type="text"

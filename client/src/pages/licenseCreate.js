@@ -127,7 +127,7 @@ export default function LicenseCreate() {
         <br />
         <div>
           <span>
-            <label htmlFor="lictype">License Type: &nbsp;</label>
+            <label htmlFor="lictype">License Type : &nbsp;</label>
           </span>
           <select
             id="id1"
@@ -147,7 +147,7 @@ export default function LicenseCreate() {
         <br />
         <div>
           <span>
-            <label htmlFor="username">License Renewal Type: &nbsp;</label>
+            <label htmlFor="username">License Renewal Type : &nbsp;</label>
           </span>
           <select
             id="id3"

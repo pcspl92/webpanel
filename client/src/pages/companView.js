@@ -80,7 +80,7 @@ const CompanyView = () => {
       <div className="CVfilter">
         <div>
           <span>
-            <label htmlFor="id1">Company Name :</label>
+            <label htmlFor="id1">Company Name : &nbsp;</label>
           </span>
           <input
             type="text"
@@ -96,7 +96,7 @@ const CompanyView = () => {
         <br />
         <div>
           <span>
-            <label htmlFor="id2">Company Account Name :</label>
+            <label htmlFor="id2">Company Account Name : &nbsp;</label>
           </span>
           <input
             type="text"
@@ -135,7 +135,7 @@ const CompanyView = () => {
           <th>Account Name</th>
           <th>Date of Creation</th>
           <th>Contact Number</th>
-          <th>Agent Name</th>
+          <th>Sub-agent Name</th>
         </tr>
         {updatedlist.map((val, index) => (
           <tr key={val.id}>

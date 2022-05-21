@@ -22,10 +22,10 @@ const ViewActivity = () => {
   const filterlist = () => {
     if (fromdate.length && todate.length) {
       setupdatedactlist(
-        agentactlist.filter((val) => (
-            moment(val.timestamp).isSameOrAfter(fromdate) &&
-            moment(val.timestamp).isSameOrBefore(todate)
-          ))
+        agentactlist.filter((val) =>{
+          const date=moment(val.timestamp).utc().format('YYYY-MM-DD');
+           return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)
+        })
       );
     }
   };
@@ -111,8 +111,8 @@ const ViewActivity = () => {
           return (
             <tr key={val.id} >
               <th>{index}</th>
-              <th>{moment(val.timestamp).format('DD-MM-YYYY')}</th>
-              <th>{moment(val.timestamp).format('HH:mm')}</th>
+              <th>{moment(val.timestamp).utc().format('DD-MM-YYYY')}</th>
+              <th>{moment(val.timestamp).utc().format('HH:mm')}</th>
               <th>{val.agent_name}</th>
               <th>{val.activity_desc}</th>
             </tr>

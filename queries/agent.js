@@ -138,7 +138,7 @@ const createAgentActivityLog = (desc, agentId) => {
 };
 
 const getAgentAuthLogs = (id) => {
-  const sql = `SELECT * FROM agent_login_logs WHERE agent_id=${id} ORDER BY timestamp DESC;`;
+  const sql = `SELECT * FROM agent_login_logs WHERE agent_id=${id} ORDER BY timestamp ASC;`;
   return query(sql);
 };
 

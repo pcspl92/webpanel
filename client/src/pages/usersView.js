@@ -66,7 +66,7 @@ const ViewUsers = () => {
       <div className="filter">
         <div>
           <span>
-            <label htmlFor="id1">Company Name: &nbsp;</label>
+            <label htmlFor="id1">Company Name : &nbsp;</label>
           </span>
           <input
             type="text"
@@ -96,7 +96,7 @@ const ViewUsers = () => {
         <br />
         <div>
           <span>
-            <label htmlFor="id1">Account Name: &nbsp;</label>
+            <label htmlFor="id1">Account Name : &nbsp;</label>
           </span>
           <input
             type="text"
@@ -111,7 +111,7 @@ const ViewUsers = () => {
         <br />{' '}
         <div>
           <span>
-            <label htmlFor="id1">License Expiring After: &nbsp;</label>
+            <label htmlFor="id1">License Expiring After : &nbsp;</label>
           </span>
           <input
             type="date"

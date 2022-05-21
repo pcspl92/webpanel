@@ -61,7 +61,6 @@ const AddAgent = () => {
       .string()
       .typeError('Username must be string')
       .required('This field is required')
-      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid username')
       .min(3, 'Username must be 3-40 characters long')
       .max(40, 'Username must be 3-40 characters long'),
     password: yup
@@ -79,8 +78,6 @@ const AddAgent = () => {
       .string()
       .typeError('Sub-Agent name must be string')
       .required('This field is required')
-      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid Sub-Agent name')
-
       .min(3, 'Sub-Agent name must be 3-90 characters long')
       .max(90, 'Sub-Agent name must be 3-90 characters long'),
     contact_number: yup
@@ -172,7 +169,7 @@ const AddAgent = () => {
         }}
       >
         <span>
-          <label htmlFor="id1">Account Username :</label>
+          <label htmlFor="id1">Account Username : &nbsp;</label>
         </span>
         <input
           type="text"
@@ -187,7 +184,7 @@ const AddAgent = () => {
 
         <div className="text-danger fw-600">{errors?.username}</div>
         <span>
-          <label htmlFor="id2">Password :</label>
+          <label htmlFor="id2">Password : &nbsp;</label>
         </span>
         <input
           type="password"
@@ -200,7 +197,7 @@ const AddAgent = () => {
 
         <div className="text-danger fw-600">{errors?.password}</div>
         <span>
-          <label htmlFor="id3">Confirm Password :</label>
+          <label htmlFor="id3">Confirm Password : &nbsp;</label>
         </span>
         <input
           type="password"
@@ -215,7 +212,7 @@ const AddAgent = () => {
 
         <div className="text-danger fw-600">{errors?.confirm_password}</div>
         <span>
-          <label htmlFor="id4">Sub - Agent Name :</label>
+          <label htmlFor="id4">Sub - Agent Name : &nbsp;</label>
         </span>
         <input
           type="text"
@@ -230,7 +227,7 @@ const AddAgent = () => {
 
         <div className="text-danger fw-600">{errors?.display_name}</div>
         <span>
-          <label htmlFor="id5">Contact Number :</label>
+          <label htmlFor="id5">Contact Number : &nbsp;</label>
         </span>
         <input
           type="number"

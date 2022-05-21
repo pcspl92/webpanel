@@ -25,10 +25,10 @@ const ViewLogin = () => {
     if (fromdate.length && todate.length) {
       setupdatedloglist(
         agentloglist.filter(
-          (val) =>
-            moment(val.timestamp).isSameOrAfter(fromdate) &&
-            moment(val.timestamp).isSameOrBefore(todate)
-        )
+          (val) =>{
+            const date=moment(val.timestamp).utc().format('YYYY-MM-DD');
+             return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)
+          })
       );
     }
   };
@@ -106,8 +106,8 @@ const ViewLogin = () => {
         {updatedloglist.map((val, index) => (
           <tr key={val.id}>
             <th>{index + 1}</th>
-            <th>{moment(val.timestamp).format('DD-MM-YYYY')}</th>
-            <th>{moment(val.timestamp).format('HH:mm')}</th>
+            <th>{moment(val.timestamp).utc().format('DD-MM-YYYY')}</th>
+            <th>{moment(val.timestamp).utc().format('HH:mm')}</th>
             <th>{val.login_desc}</th>
             <th>{val.ipaddress}</th>
           </tr>

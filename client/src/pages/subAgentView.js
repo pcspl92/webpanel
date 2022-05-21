@@ -71,7 +71,7 @@ const ViewAgent = () => {
       <div className="filter">
         <div>
           <span>
-            <label htmlFor="id1"> Sub-Agent Name :</label>
+            <label htmlFor="id1"> Sub-Agent Name : &nbsp;</label>
           </span>
           <input
             type="text"
@@ -89,7 +89,7 @@ const ViewAgent = () => {
         <br />
         <div>
           <span>
-            <label htmlFor="id2"> Sub-Agent Account Name :</label>
+            <label htmlFor="id2"> Sub-Agent Account Name : &nbsp;</label>
           </span>
           <input
             type="text"
@@ -126,7 +126,7 @@ const ViewAgent = () => {
       <table className="mt-3">
         <tr className="tableheading">
           <th>S. No</th>
-          <th>Agent Name</th>
+          <th>Sub-agent Name</th>
           <th>Account Name</th>
           <th>Total Orders</th>
           <th>Total Active Orders</th>

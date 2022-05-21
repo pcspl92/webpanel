@@ -19,15 +19,16 @@ export default function CompanyTransactionView() {
     })();
   }, []);
   const filterlist = () => {
-    if(fromdate===undefined ||todate===undefined){
-      alert("Please Select Dates");
-    }else if (fromdate.length && todate.length) {
+    if(fromdate==='' || todate==='') alert("Please Select Dates");
+    else if (fromdate.length && todate.length && moment(fromdate).isSameOrBefore(todate)) {
       setupdatedTableData(tableData.filter(
         (val) =>{
           const date=moment(val.transaction_date).format('YYYY-MM-DD');
           return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)  
         }  
       ));
+    }else if(fromdate.length && todate.length && moment(fromdate).isAfter(todate)){
+      alert('Invalid Date Selection');
     }
   };
 

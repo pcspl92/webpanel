@@ -66,4 +66,8 @@ Issues Fixed: 86, 91, 92, 94, 114, 115, 116, 117, 169,
 
 version : 0.2.4
 
-Issues Fixed: 135, 172, 164, 165
+Issues Fixed: 135, 172, 164, 165, 174
+
+version : 0.2.5
+
+Issues Fixed: 141, 98, 97, 96, 78, 74, 73, 67, 58, 21
