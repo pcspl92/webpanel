@@ -5,8 +5,8 @@ import axios from '../utils/axios';
 export default function CompanyTransactionView() {
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [fromdate, setfromdate] = useState();
-  const [todate, settodate] = useState();
+  const [fromdate, setfromdate] = useState('');
+  const [todate, settodate] = useState('');
   const [updatedTableData, setupdatedTableData] = useState([]);
 
   useEffect(() => {

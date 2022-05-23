@@ -86,10 +86,10 @@ function UserCreate() {
 
   const schema1 = yup.object().shape({
     ip_address: yup
-    .string()
-    .typeError('ip_address must be string')
-    .required('This field is required')
-    .matches(/^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$/, 'ip address is not valid'),
+      .string()
+      .typeError('ip_address must be string')
+      .required('This field is required')
+      .matches(/^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$/, 'ip address is not valid'),
     port: yup
       .string()
       .required('This field is required')
@@ -100,15 +100,16 @@ function UserCreate() {
       .string()
       .typeError('Display_name name must be string')
       .required('This field is required')
+      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid username')
       .matches(/^\S+$/, 'Display name cannot contain whitespace')
       .min(10, 'Display name must be 10-90 characters long')
       .max(90, 'Display name must be 10-90 characters long'),
-      device_id: yup
+    device_id: yup
       .string()
       .required('This field is required')
-      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid username')
-      .min(3, 'Device_Id must be greater than 3 characters'),
-      contact_no: yup
+      .min(3, 'Device_Id must be greater than 3-90 characters')
+      .max(90, 'Device_Id must be greater than 3-90 characters'),
+    contact_no: yup
       .string()
       .required('This field is required')
       .matches(/^[0-9]+$/, 'Must be only digits')
@@ -216,6 +217,7 @@ function UserCreate() {
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
           {}
         );
+        alert(JSON.stringify(validateErrors,null,4));
         setErrors(validateErrors);
       } else {
         console.log(error.response.data);
@@ -528,6 +530,7 @@ function UserCreate() {
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
           {}
         );
+        alert(JSON.stringify(validateErrors,null,4));
         setErrors(validateErrors);
       } else {
         console.log(error.response.data);
@@ -739,7 +742,7 @@ function UserCreate() {
       cs_type_id: Number(controlStationType),
       order_id: Number(order),
     };
-    const valData={
+    const valData = {
       ip_address: remoteIDadd,
       port: Number(remotePortadd),
       display_name: displayName,
@@ -764,9 +767,8 @@ function UserCreate() {
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
           {}
         );
-        console.log(validateErrors);
-        alert(error);
-       
+        alert(JSON.stringify(validateErrors,null,4));
+
       } else {
         console.log(error.response.data);
       }

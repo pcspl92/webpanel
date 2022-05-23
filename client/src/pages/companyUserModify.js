@@ -47,18 +47,19 @@ function UserModify() {
 
   const schema1 = yup.object().shape({
     display_name: yup
-    .string()
-    .typeError('Sub-Agent name must be string')
-    .required('This field is required')
-    .matches(/^\S+$/, 'Display name cannot contain whitespace')
-    .min(10, 'Display name must be 10-90 characters long')
-    .max(90, 'Display name must be 10-90 characters long'),
+      .string()
+      .typeError('Sub-Agent name must be string')
+      .required('This field is required')
+      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid username')
+      .matches(/^\S+$/, 'Display name cannot contain whitespace')
+      .min(10, 'Display name must be 10-90 characters long')
+      .max(90, 'Display name must be 10-90 characters long'),
     contact_number: yup
-    .string()
-    .required('This field is required')
-    .matches(/^[0-9]+$/, 'Must be only digits')
-    .min(10, 'Must be exactly 10 digits')
-    .max(10, 'Must be exactly 10 digits'),
+      .string()
+      .required('This field is required')
+      .matches(/^[0-9]+$/, 'Must be only digits')
+      .min(10, 'Must be exactly 10 digits')
+      .max(10, 'Must be exactly 10 digits'),
   });
 
   const validate = async (data) => {
@@ -160,7 +161,7 @@ function UserModify() {
       tg_ids: tgIds,
       def_tg: Number(talkgroup),
     };
-    const data1={
+    const data1 = {
       display_name: displayName,
       contact_number: contactNum,
     };
@@ -170,13 +171,19 @@ function UserModify() {
       if (response.data.message) {
         alert(response.data.message);
       }
-
       resetPttForm();
-    } catch (err) {
-      alert(err);
-      setDisabled(false);
-      console.log(err.response.data);
-    }
+    } catch (error) {
+      if (error.inner.length) {
+        const validateErrors = error.inner.reduce(
+          (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+          {}
+        );
+        alert(JSON.stringify(validateErrors, null, 4));
+        setDisabled(false);
+      } else {
+        console.log(error.response.data);
+      }
+    };
   };
 
   const PTTUserForm = () => (
@@ -222,7 +229,7 @@ function UserModify() {
       <div>
         <br />
         <div>
-          <span style={{marginLeft:"10px"}}>
+          <span style={{ marginLeft: "10px" }}>
             <label htmlFor="lictype">Default Talkgroup: &nbsp;</label>
           </span>
           <select
@@ -264,7 +271,7 @@ function UserModify() {
         </div>
       </div>
       <br />
-      <div style={{textAlign:"center"}}>
+      <div style={{ textAlign: "center" }}>
         <label>Features : </label>&nbsp;
         <br />
 
@@ -444,7 +451,7 @@ function UserModify() {
       control_ids: csIds,
     };
     console.log(featuresGlobal);
-    const data1={
+    const data1 = {
       display_name: displayName,
       contact_number: contactNum,
     };
@@ -455,10 +462,17 @@ function UserModify() {
         alert(response.data.message);
       }
       resetDispatcherForm();
-    } catch (err) {
-      alert(err);
-      setDisabled(false);
-      console.log(err.response.data);
+    }catch (error) {
+      if (error.inner.length) {
+        const validateErrors = error.inner.reduce(
+          (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+          {}
+        );
+        alert(JSON.stringify(validateErrors,null,4));
+
+      } else {
+        console.log(error.response.data);
+      }
     }
   };
 
@@ -524,7 +538,7 @@ function UserModify() {
           ))}
         </select>
       </div>
-      <div style={{textAlign:"center"}}>
+      <div style={{ textAlign: "center" }}>
         <label>Features : </label>&nbsp;
         <br />
         {formData.features?.grp_call ? (

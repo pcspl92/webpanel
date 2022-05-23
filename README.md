@@ -71,3 +71,7 @@ Issues Fixed: 135, 172, 164, 165, 174
 version : 0.2.5
 
 Issues Fixed: 141, 98, 97, 96, 78, 74, 73, 67, 58, 21
+
+version : 0.2.5.1
+
+Reopen Issues Fixed: 169, 174, 116, 164

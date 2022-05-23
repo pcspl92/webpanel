@@ -7,7 +7,7 @@ import axios from '../utils/axios';
 
 const CompanyViewLogin = () => {
   const [fromdate, setfromdate] = useState('');
-  const [todate, settodate] = useState();
+  const [todate, settodate] = useState('');
   const [companyloglist, setcompanyloglist] = useState([]);
   const [updatedloglist, setupdatedloglist] = useState([]);
   const [loading, setLoading] = useState(true);
