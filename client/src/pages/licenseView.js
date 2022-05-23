@@ -73,7 +73,7 @@ export default function LicenseView() {
       <div className="filter">
         <div>
           <span>
-            <label htmlFor="id1">Order Id :</label>
+            <label htmlFor="id1">Order Id : &nbsp;</label>
           </span>
           <input
             type="text"
@@ -89,7 +89,7 @@ export default function LicenseView() {
 <br/>
         <div>
           <span>
-            <label htmlFor="id1">Company Name :</label>
+            <label htmlFor="id1">Company Name : &nbsp;</label>
           </span>
           <input
             type="text"
@@ -104,7 +104,7 @@ export default function LicenseView() {
         <div className="text-danger fw-500">{errors?.companyName}</div>
         <div>
           <span>
-            <label htmlFor="id2">Agent Name :</label>
+            <label htmlFor="id2">Agent Name : &nbsp;</label>
           </span>
           <input
             type="text"
@@ -119,7 +119,7 @@ export default function LicenseView() {
         <div className="text-danger fw-500">{errors?.agentName}</div>
         <div>
           <span>
-            <label htmlFor="id2">License Expiring After :</label>
+            <label htmlFor="id2">License Expiring After : &nbsp;</label>
           </span>
           <input
             type="date"

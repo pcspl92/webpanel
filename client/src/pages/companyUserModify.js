@@ -43,7 +43,7 @@ function UserModify() {
       setUsers(data.users);
       setLoading(false);
     })();
-  }, []);
+  }, [user]);
 
   const schema1 = yup.object().shape({
     display_name: yup
@@ -52,8 +52,7 @@ function UserModify() {
       .required('This field is required')
       .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid username')
       .matches(/^\S+$/, 'Display name cannot contain whitespace')
-      .min(10, 'Display name must be 10-90 characters long')
-      .max(90, 'Display name must be 10-90 characters long'),
+      .max(90, 'Display name must be less tha 90 characters long'),
     contact_number: yup
       .string()
       .required('This field is required')

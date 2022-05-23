@@ -41,6 +41,7 @@ const ModifyAgent = () => {
     };
     if (contactNumber === '' && agentnewname === '') {
       alert("Please fill all the fields");
+      setDisabled(false);
     } else {
       try {
         const response = await axios.put(`/subagent/${agentid}`, data);
@@ -142,11 +143,11 @@ const ModifyAgent = () => {
         )}
         <div className="mt-3">
           <span>
-            <label htmlFor="id5">Sub Agent Name :&nbsp;&nbsp;&nbsp;</label>
+            <label htmlFor="subagent">Sub Agent Name :&nbsp;&nbsp;&nbsp;</label>
           </span>
           <input
             type="text"
-            id="id5"
+            id="subagent"
             onChange={(event) => {
               setagentnewname(event.target.value);
             }}
@@ -155,11 +156,11 @@ const ModifyAgent = () => {
         </div>
         <div className="mt-3 ">
           <span>
-            <label htmlFor="id5">Contact Number :&nbsp;&nbsp;&nbsp;</label>
+            <label htmlFor="contact_number">Contact Number :&nbsp;&nbsp;&nbsp;</label>
           </span>
           <input
             type="number"
-            id="id5"
+            id="contact_number"
             onChange={(event) => {
               setcontact(event.target.value);
             }}

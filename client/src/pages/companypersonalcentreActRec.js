@@ -64,7 +64,6 @@ const CompanyViewActivity = () => {
               setfromdate(event.target.value);
             }}
             value={fromdate}
-            required
           />
         </div>
         <br />
@@ -80,7 +79,6 @@ const CompanyViewActivity = () => {
               settodate(event.target.value);
             }}
             value={todate}
-            required
           />
         </div>
       </div>

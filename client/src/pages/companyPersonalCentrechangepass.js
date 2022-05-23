@@ -21,7 +21,7 @@ const CompanyChangePassword = () => {
   });
 
   const validate = async (password) => {
-    const formData2 = { password};
+    const formData2 = { password}; 
     console.log(formData2);
     await schema.validate(formData2, { abortEarly: false });
   };

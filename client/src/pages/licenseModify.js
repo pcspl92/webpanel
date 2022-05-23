@@ -271,12 +271,12 @@ export default function LicenseModify() {
           return;
       }
 
-      const newExpDate = moment(date).isAfter('2038-01-19 03:14:07')
-        ? '2038-01-19 03:14:07'
-        : date;
-
+      // const newExpDate = moment(date).isAfter('2038-01-19 03:14:07')
+      //   ? '2038-01-19 03:14:07'
+      //   : date;
+       const newExpDate=date;
       // eslint-disable-next-line consistent-return
-      return moment(`${newExpDate}`).format('DD-MM-YYYY HH:mm:ss');
+      return moment(`${newExpDate}`).utc().format('DD-MM-YYYY HH:mm:ss');
     }
   };
 
@@ -320,7 +320,7 @@ export default function LicenseModify() {
         </div>
         <br />
         <div>
-          Current Expiry Date : {moment(expDate).format('DD-MM-YYYY HH:mm:ss')}{' '}
+          Current Expiry Date : {moment(expDate).utc().format('DD-MM-YYYY HH:mm:ss')}{' '}
 
           &nbsp; &nbsp; After Renewal Expiry Date :{calcExpiryDate(expDate)}
         </div>
