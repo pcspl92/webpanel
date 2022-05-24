@@ -68,7 +68,6 @@ export default function CompanyTransactionView() {
               setfromdate(event.target.value);
             }}
             value={fromdate}
-            required
           />
         </div>
         <br />
@@ -84,7 +83,6 @@ export default function CompanyTransactionView() {
               settodate(event.target.value);
             }}
             value={todate}
-            required
           />
         </div>
       </div>

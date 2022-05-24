@@ -157,7 +157,6 @@ const CompanyUserView = () => {
               setexpiryDate(event.target.value);
             }}
             value={expiryDate}
-            required
           />
         </div>
       </div>

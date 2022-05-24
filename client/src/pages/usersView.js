@@ -120,7 +120,6 @@ const ViewUsers = () => {
               setexpiryDate(event.target.value);
             }}
             value={expiryDate}
-            required
           />
         </div>
       </div>

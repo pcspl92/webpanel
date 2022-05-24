@@ -62,7 +62,6 @@ export default function Licensetransac() {
               setfromdate(event.target.value);
             }}
             value={fromdate}
-            required
           />
         </div>
         <br />
@@ -78,7 +77,6 @@ export default function Licensetransac() {
               settodate(event.target.value);
             }}
             value={todate}
-            required
           />
         </div>
         {err?<p style={{color:"red",marginTop:"10px"}}>Please enter a valid date range</p>:""}

@@ -127,7 +127,6 @@ export default function LicenseView() {
             onChange={(event) => {
               setexpdate(event.target.value);
             }}
-            required
           />
         </div>
         {/* <div className="text-danger fw-500">{errors?.expdate}</div> */}
