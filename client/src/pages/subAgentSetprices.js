@@ -108,7 +108,7 @@ const SetPrices = () => {
       <br />
       <div>
         <span>
-          <label htmlFor="id1">Select Sub-Agent : </label>
+          <label htmlFor="id1">Select Sub-Agent : &nbsp;</label>
         </span>
         <select
           id="id1"

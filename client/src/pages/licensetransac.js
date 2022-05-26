@@ -24,10 +24,10 @@ export default function Licensetransac() {
     if (fromdate.length && todate.length) {
       setErr(false)
       setupdatedtranDetails(
-        trandetails.filter((val) => (
-            moment(val.date).isSameOrAfter(fromdate) &&
-            moment(val.date).isSameOrBefore(todate)
-          ))
+        trandetails.filter((val) =>{ 
+            const dateVal=moment(val.date).utc().format('YYYY-MM-DD');
+            return moment(dateVal).isSameOrAfter(fromdate) && moment(dateVal).isSameOrBefore(todate)
+        })
       );
     }
     else{
@@ -53,7 +53,7 @@ export default function Licensetransac() {
       <div className="filter">
         <div>
           <span>
-            <label htmlFor="id1">From Date: &nbsp;</label>
+            <label htmlFor="id1">From Date : &nbsp;</label>
           </span>
           <input
             type="date"
@@ -111,7 +111,7 @@ export default function Licensetransac() {
         {updatedtranDetails.map((val, index) => (
           <tr key={val.id}>
             <th>{index + 1}</th>
-            <th>{moment(val.date).format('DD-MM-YYYY')}</th>
+            <th>{moment(val.date).utc().format('DD-MM-YYYY')}</th>
             <th>{val.transaction_amount}</th>
             <th>{val.transaction_type}</th>
             <th>{val.balance}</th>

@@ -36,7 +36,7 @@ export default function Dashboard() {
             style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
           >
             {' '}
-            Total PPT User Accounts :{' '}
+            Total PPT User Accounts : {' '}
           </th>
           <th>{dashData.data?.ptt?.total || 0}</th>
           <th>{dashData.data?.ptt?.active || 0}</th>
@@ -48,7 +48,7 @@ export default function Dashboard() {
             style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
           >
             {' '}
-            Total Dispatcher Accounts :{' '}
+            Total Dispatcher Accounts : {' '}
           </th>
           <th>{dashData.data?.dispatcher?.total || 0}</th>
           <th>{dashData.data?.dispatcher?.active || 0}</th>
@@ -60,7 +60,7 @@ export default function Dashboard() {
             style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
           >
             {' '}
-            Total Control Station Accounts :{' '}
+            Total Control Station Accounts : {' '}
           </th>
           <th>{dashData.data?.control?.total || 0}</th>
           <th>{dashData.data?.control?.active || 0}</th>

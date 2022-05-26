@@ -58,12 +58,12 @@ const RechargeAgent = () => {
       </div>
       <br />
       <br />
-      <div>Available Balance :{user.balance}</div>
+      <div>Available Balance : {user.balance}</div>
       <br />
       <div className="d-flex flex-column justify-content-end aligh-items-end">
         <div>
           <span>
-            <label htmlFor="id1">Select Sub-Agent : </label>
+            <label htmlFor="id1">Select Sub-Agent : &nbsp;</label>
           </span>
           <select
             id="id1"
@@ -85,10 +85,10 @@ const RechargeAgent = () => {
           </select>
         </div>
         <br />
-        <div>Sub Agent Current Balance : {subBalance.current}</div> <br />
+        <div>Sub Agent Current Balance : {subBalance.current} </div> <br />
         <div>
           <span>
-            <label htmlFor="id1">Recharge Amount :</label>
+            <label htmlFor="id1">Recharge Amount : &nbsp;</label>
           </span>
           <input
             type="text"
@@ -112,7 +112,7 @@ const RechargeAgent = () => {
         </div>
         <br />
         <div>
-          Sub Agent Current Balance After Recharge:{' '}
+          Sub Agent Current Balance After Recharge :{' '}
           {subBalance.current + Number(recharge)}
         </div>
       </div>

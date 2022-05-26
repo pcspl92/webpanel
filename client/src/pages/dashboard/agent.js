@@ -75,12 +75,12 @@ export default function Dashboard() {
       </table>
       <br />
       <div>
-        <span>Total Sub - Agents :</span>
+        <span>Total Sub - Agents : </span>
         {dashData.total_subagents}
       </div>
       <br />
       <div>
-        <span>Total Companies :</span>
+        <span>Total Companies : </span>
         {dashData.total_companies}
       </div>
       PTT User Online/Offline Chart

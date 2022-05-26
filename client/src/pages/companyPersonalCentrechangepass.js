@@ -58,10 +58,11 @@ const CompanyChangePassword = () => {
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
         CHANGE PASSWORD
       </div>
+      <br/>
       <div className="formarea">
         <div>
           <span>
-            <label htmlFor="id1">New Password: &nbsp;</label>
+            <label htmlFor="id1">New Password : &nbsp;</label>
           </span>
           <input
             type="password"
@@ -73,7 +74,6 @@ const CompanyChangePassword = () => {
             required
           />
         </div>
-        <br />
         <br />
         <div>
           <span>
@@ -92,7 +92,6 @@ const CompanyChangePassword = () => {
         <br />
         <div className="text-danger fw-600">{errorm}</div>
       </div>
-      <br />
       <button type="submit" disabled={disabled}>
         UPDATE
       </button>

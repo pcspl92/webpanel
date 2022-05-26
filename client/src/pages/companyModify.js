@@ -76,6 +76,7 @@ const CompanyModify = () => {
       if (response.data.message) {
         alert(response.data.message);
       }
+      reset();
     } catch (error) {
       if (error.inner.length) {
         const validateErrors = error.inner.reduce(
@@ -121,8 +122,8 @@ const CompanyModify = () => {
       default:
         break;
     }
-
-    reset();
+ //reset();
+    
   };
 
   const generatePassword = () => {

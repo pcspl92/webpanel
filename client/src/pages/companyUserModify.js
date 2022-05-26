@@ -845,7 +845,7 @@ function UserModify() {
         <br />
         <div>
           <span>
-            <label htmlFor="lictype">Select User Account Type: &nbsp;</label>
+            <label htmlFor="lictype">Select User Account Type : &nbsp;</label>
           </span>
           <select
             id="id1"
@@ -864,7 +864,7 @@ function UserModify() {
         <br />
         <div>
           <span>
-            <label htmlFor="lictype">Select User: </label>
+            <label htmlFor="lictype">Select User : &nbsp;</label>
           </span>
           <select
             id="id1"

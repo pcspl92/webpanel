@@ -84,7 +84,7 @@ const CompanyUserView = () => {
       <div className="filter">
         <div>
           <span>
-            <label htmlFor="id1">User Account Type: &nbsp;</label>
+            <label htmlFor="id1">User Account Type : &nbsp;</label>
           </span>
           <select
             id="id1"
@@ -103,7 +103,7 @@ const CompanyUserView = () => {
         <br />
         <div>
           <span>
-            <label htmlFor="id1">Order ID: &nbsp;</label>
+            <label htmlFor="id1">Order ID : &nbsp;</label>
           </span>
           <input
             type="text"
@@ -133,7 +133,7 @@ const CompanyUserView = () => {
         <br />
         <div>
           <span>
-            <label htmlFor="id1">Account Name: &nbsp;</label>
+            <label htmlFor="id1">Account Name : &nbsp;</label>
           </span>
           <input
             type="text"
@@ -148,7 +148,7 @@ const CompanyUserView = () => {
         <br />{' '}
         <div>
           <span>
-            <label htmlFor="id1">License Expiring After: &nbsp;</label>
+            <label htmlFor="id1">License Expiring After : &nbsp;</label>
           </span>
           <input
             type="date"

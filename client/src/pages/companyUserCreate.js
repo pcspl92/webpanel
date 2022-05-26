@@ -305,7 +305,7 @@ function UserCreate() {
         <br />
         <div>
           <span style={{ marginLeft: "10px" }}>
-            <label htmlFor="lictype">Default Talkgroup: &nbsp;</label>
+            <label htmlFor="lictype">Default Talkgroup : &nbsp;</label>
           </span>
           <select
             id="id1"
@@ -326,7 +326,7 @@ function UserCreate() {
         <br />
         <div>
           <span>
-            <label htmlFor="lictype">Assign Contact List: &nbsp;</label>
+            <label htmlFor="lictype">Assign Contact List : &nbsp;</label>
           </span>
           <select
             id="id1"
@@ -618,7 +618,7 @@ function UserCreate() {
       <br />
       <div>
         <span>
-          <label htmlFor="lictype">Assign Contact List: &nbsp;</label>
+          <label htmlFor="lictype">Assign Contact List : &nbsp;</label>
         </span>
         <select
           id="id1"
@@ -788,7 +788,7 @@ function UserCreate() {
         <br />
         <div className="required-field">
           <span>
-            <label htmlFor="confirm">Control Station Type: &nbsp;</label>
+            <label htmlFor="confirm">Control Station Type : &nbsp;</label>
           </span>
           <select
             onChange={(event) => {
@@ -928,7 +928,7 @@ function UserCreate() {
         <br />
         <div>
           <span>
-            <label htmlFor="lictype">Select User Account Type: &nbsp;</label>
+            <label htmlFor="lictype">Select User Account Type : &nbsp;</label>
           </span>
           <select
             id="id1"
@@ -948,7 +948,7 @@ function UserCreate() {
         <br />
         <div>
           <span>
-            <label htmlFor="company">Select Order :&nbsp;&nbsp;&nbsp; </label>
+            <label htmlFor="company">Select Order :&nbsp;&nbsp; </label>
           </span>
           <select
             id="order"

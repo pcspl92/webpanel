@@ -21,7 +21,7 @@ const ModifyAgent = () => {
   }, []);
 
   const reset = () => {
-    setagentid('');
+    setagentid('0');
     setactive(true);
     setcontact('');
     setagentnewname('');
@@ -84,9 +84,10 @@ const ModifyAgent = () => {
             onChange={(event) => {
               setagentid(event.target.value);
             }}
+            value={agentid}
             required
           >
-            <option value="">Select Sub Agent</option>
+            <option value=''>Select Sub Agent</option>
             {agentlist.map((val) => (
               <option key={val.id} value={val.id}>
                 {val.display_name}

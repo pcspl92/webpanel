@@ -127,7 +127,7 @@ export default function LicenseModify() {
   const updateForm = () => {
     const { features, users } = formData;
     const { chat, grpCall, privCall, geoFence, enc, liveGps } = features;
-
+    //console.log(grpCall);
     return (
       <div className="box">
         <div>
@@ -355,6 +355,7 @@ export default function LicenseModify() {
       }
       resetTransferForm();
     } catch (err) {
+      alert(JSON.stringify(err.response.data));
       console.log(err.response.data);
     }
   };
@@ -426,6 +427,7 @@ export default function LicenseModify() {
       if (type === 'update') {
         const { features } = data;
         const { chat, grpCall, privCall, geoFence, enc, liveGps } = features;
+        console.log(features);
         setFeaturesGlobal({
           ...featuresGlobal,
           chat: !!chat,
