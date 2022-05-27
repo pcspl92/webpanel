@@ -9,7 +9,7 @@ export default function Licensetransac() {
   const [trandetails, settrandetails] = useState([]);
   const [updatedtranDetails, setupdatedtranDetails] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [err,setErr] = useState(false)
+  //const [err,setErr] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -21,17 +21,15 @@ export default function Licensetransac() {
   }, []);
 
   const filterlist = () => {
-    if (fromdate.length && todate.length) {
-      setErr(false)
+    if(fromdate==='' || todate==='') alert("Please Select Dates");
+    else if (fromdate.length && todate.length && moment(fromdate).isSameOrBefore(todate)) {
       setupdatedtranDetails(
-        trandetails.filter((val) =>{ 
-            const dateVal=moment(val.date).utc().format('YYYY-MM-DD');
-            return moment(dateVal).isSameOrAfter(fromdate) && moment(dateVal).isSameOrBefore(todate)
-        })
-      );
-    }
-    else{
-      setErr(true)
+        companyloglist.filter((val) => {
+            const date=moment(val.date).utc().format('YYYY-MM-DD');
+            return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)
+      }));
+    }else if(fromdate.length && todate.length && moment(fromdate).isAfter(todate)){
+      alert('Invalid Date Selection');
     }
   };
 
@@ -79,7 +77,7 @@ export default function Licensetransac() {
             value={todate}
           />
         </div>
-        {err?<p style={{color:"red",marginTop:"10px"}}>Please enter a valid date range</p>:""}
+        
       </div>
       <div className="mt-3">
         <button

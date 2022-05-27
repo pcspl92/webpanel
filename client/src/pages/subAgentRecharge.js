@@ -42,6 +42,7 @@ const RechargeAgent = () => {
         setBalance(user.balance - recharge);
         reset();
       } catch (err) {
+        alert(JSON.stringify(err.response.data));
         console.log(err.response.data);
       }
 

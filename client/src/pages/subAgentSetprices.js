@@ -33,7 +33,7 @@ const SetPrices = () => {
   }, []);
 
   const reset = () => {
-    setagentid(0);
+    setagentid('0');
     setmonthlyppt(0);
     setquarterlyppt(0);
     sethalfylyppt(0);
@@ -115,10 +115,10 @@ const SetPrices = () => {
           onChange={(event) => {
             setagentid(event.target.value);
           }}
+          value={agentid}
           required
         >
           <option>Select a Option</option>
-
           {agentlist.map((val) => (
             <option key={val.id} value={val.id}>
               {val.display_name}

@@ -125,8 +125,8 @@ export default function LicenseModify() {
   };
 
   const updateForm = () => {
-    const { features, users } = formData;
-    const { chat, grpCall, privCall, geoFence, enc, liveGps } = features;
+    const { users } = formData;
+    //const { chat, grpCall, privCall, geoFence, enc, liveGps } = features;
     //console.log(grpCall);
     return (
       <div className="box">
@@ -149,7 +149,7 @@ export default function LicenseModify() {
             type="checkbox"
             id="feature"
             name="feature1"
-            defaultChecked={grpCall}
+            //defaultChecked={grpCall}
             onChange={(e) => {
               setFeature(e.target.checked, 'grp_call');
             }}
@@ -159,7 +159,7 @@ export default function LicenseModify() {
             type="checkbox"
             id="feature"
             name="feature2"
-            defaultChecked={privCall}
+            //defaultChecked={privCall}
             onChange={(e) => {
               setFeature(e.target.checked, 'priv_call');
             }}
@@ -169,7 +169,7 @@ export default function LicenseModify() {
             type="checkbox"
             id="feature"
             name="feature3"
-            defaultChecked={enc}
+           // defaultChecked={enc}
             onChange={(e) => {
               setFeature(e.target.checked, 'enc');
             }}
@@ -179,7 +179,7 @@ export default function LicenseModify() {
             type="checkbox"
             id="feature"
             name="feature3"
-            defaultChecked={liveGps}
+            //defaultChecked={liveGps}
             onChange={(e) => {
               setFeature(e.target.checked, 'live_gps');
             }}
@@ -189,7 +189,7 @@ export default function LicenseModify() {
             type="checkbox"
             id="feature"
             name="feature3"
-            defaultChecked={geoFence}
+            //defaultChecked={geoFence}
             onChange={(e) => {
               setFeature(e.target.checked, 'geo_fence');
             }}
@@ -199,7 +199,7 @@ export default function LicenseModify() {
             type="checkbox"
             id="feature"
             name="feature3"
-            defaultChecked={chat}
+            //defaultChecked={chat}
             onChange={(e) => {
               setFeature(e.target.checked, 'chat');
             }}
@@ -427,7 +427,6 @@ export default function LicenseModify() {
       if (type === 'update') {
         const { features } = data;
         const { chat, grpCall, privCall, geoFence, enc, liveGps } = features;
-        console.log(features);
         setFeaturesGlobal({
           ...featuresGlobal,
           chat: !!chat,

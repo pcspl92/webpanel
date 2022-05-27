@@ -16,7 +16,8 @@ const ChangePassword = () => {
     setDisabled(true);
     if (confirmPassword === password) {
       try {
-        await axios.put('/auth/password/agent', { password });
+        const {data}=await axios.put('/auth/password/agent', { password });
+        alert(data);
         setDisabled(false);
         setPassword('');
         setconfirmPassword('')
