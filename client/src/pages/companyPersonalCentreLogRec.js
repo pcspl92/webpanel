@@ -51,7 +51,7 @@ const CompanyViewLogin = () => {
       <div className="filter">
         <div>
           <span>
-            <label htmlFor="id1">From Date: &nbsp;</label>
+            <label htmlFor="id1">From Date : &nbsp;</label>
           </span>
           <input
             type="date"

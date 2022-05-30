@@ -115,7 +115,7 @@ router.post(
     }
     }
     else{
-      return res.status(201).send({ message: 'Selected Sub-Agent is inactive' });
+      return res.status(201).send({ message: 'Selected Sub-Agent is Paused' });
     }
    
   }

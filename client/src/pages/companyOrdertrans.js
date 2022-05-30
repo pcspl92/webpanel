@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import axios from '../utils/axios';
+//import { NULL } from 'mysql/lib/protocol/constants/types';
 
 export default function CompanyTransactionView() {
   const [tableData, setTableData] = useState([]);
@@ -14,7 +15,6 @@ export default function CompanyTransactionView() {
       const { data } = await axios.get('/order/transaction/company-panel');
       setTableData(data);
       setupdatedTableData(data);
-      console.log(data);
       setLoading(false);
     })();
   }, []);
@@ -132,7 +132,7 @@ export default function CompanyTransactionView() {
               <th>{val.transaction_type}</th>
               <th>{moment(val.transaction_date).format('DD-MM-YYYY')}</th>
               <th>{moment(val.transaction_date).format('HH:mm')}</th>
-              <th>{val.account_type}</th>
+              <th>{val.account_type==="control"?'control station':val.account_type}</th>
               <th>{val.license_type}</th>
               <th>{moment(val.license_renewal_date).format('DD-MM-YYYY')}</th>
               <th>{val.active}</th>

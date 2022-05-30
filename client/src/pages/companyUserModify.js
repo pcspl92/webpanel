@@ -229,7 +229,7 @@ function UserModify() {
         <br />
         <div>
           <span style={{ marginLeft: "10px" }}>
-            <label htmlFor="lictype">Default Talkgroup: &nbsp;</label>
+            <label htmlFor="lictype">Default Talkgroup : &nbsp;</label>
           </span>
           <select
             id="id1"
@@ -250,7 +250,7 @@ function UserModify() {
         <br />
         <div>
           <span>
-            <label htmlFor="lictype">Assign Contact List: &nbsp;</label>
+            <label htmlFor="lictype">Assign Contact List : &nbsp;</label>
           </span>
           <select
             id="id1"
@@ -519,7 +519,7 @@ function UserModify() {
       <br />
       <div>
         <span>
-          <label htmlFor="lictype">Assign Contact List: &nbsp;</label>
+          <label htmlFor="lictype">Assign Contact List : &nbsp;</label>
         </span>
         <select
           id="id1"
@@ -537,6 +537,7 @@ function UserModify() {
           ))}
         </select>
       </div>
+      <br/>
       <div style={{ textAlign: "center" }}>
         <label>Features : </label>&nbsp;
         <br />
@@ -672,7 +673,7 @@ function UserModify() {
         <br />
         <div>
           <span>
-            <label htmlFor="confirm">Control Station Type: &nbsp;</label>
+            <label htmlFor="confirm">Control Station Type : &nbsp;</label>
           </span>
           <select
             onChange={(event) => {

@@ -38,7 +38,7 @@ const ChangePassword = () => {
       <div className="formarea">
         <div>
           <span>
-            <label htmlFor="id1">New Password: &nbsp;</label>
+            <label htmlFor="id1">New Password : &nbsp;</label>
           </span>
           <input
             type="password"

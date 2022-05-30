@@ -636,6 +636,7 @@ function UserCreate() {
           ))}
         </select>
       </div>
+      <br/>
       <div style={{ textAlign: "center" }}>
         <label>Features : </label>&nbsp;
         <br />
