@@ -88,6 +88,6 @@ version : 0.2.7
 
 Issues fixed: 121, 148, 183, 179, 176
 
-version : 0.2.8
+version : 0.2.9
 
 Issues fixed: 110, 4, 173, 194, 191, 195, 192
