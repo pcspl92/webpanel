@@ -129,7 +129,7 @@ const AddAgent = () => {
     //console.log("created");
     try {
       await validate(data);
-      if (monthlyptt >=100 && quarterlyptt >=150 && halfylyptt >=200 && yearlyptt >=250 && onetimeptt >=400 && monthlydap >=105 && quarterlydap >=155 && halfylydap >=205 && yearlydap >=255 && onetimedap >=405 && monthlycsap >=110 && quarterlycsap >160 && halfylycsap >210 && yearlycsap >260 && onetimecsap >=410) {
+      if (monthlyptt >= 100 && quarterlyptt >= 150 && halfylyptt >= 200 && yearlyptt >= 250 && onetimeptt >= 400 && monthlydap >= 105 && quarterlydap >= 155 && halfylydap >= 205 && yearlydap >= 255 && onetimedap >= 405 && monthlycsap >= 110 && quarterlycsap > 160 && halfylycsap > 210 && yearlycsap > 260 && onetimecsap >= 410) {
         const response = await axios.post('/subagent/', data);
         setErrors({});
 
@@ -180,9 +180,9 @@ const AddAgent = () => {
           value={username}
         />
         <br />
+        <div className="text-danger fw-600">{errors?.username}</div>
         <br />
 
-        <div className="text-danger fw-600">{errors?.username}</div>
         <span>
           <label htmlFor="id2">Password : &nbsp;</label>
         </span>
@@ -193,9 +193,8 @@ const AddAgent = () => {
           value={password}
         />
         <br />
-        <br />
-
         <div className="text-danger fw-600">{errors?.password}</div>
+        <br />
         <span>
           <label htmlFor="id3">Confirm Password : &nbsp;</label>
         </span>
@@ -208,9 +207,8 @@ const AddAgent = () => {
           value={confirmPassword}
         />
         <br />
-        <br />
-
         <div className="text-danger fw-600">{errors?.confirm_password}</div>
+        <br />
         <span>
           <label htmlFor="id4">Sub - Agent Name : &nbsp;</label>
         </span>
@@ -223,9 +221,8 @@ const AddAgent = () => {
           value={subagentname}
         />
         <br />
-        <br />
-
         <div className="text-danger fw-600">{errors?.display_name}</div>
+        <br />
         <span>
           <label htmlFor="id5">Contact Number : &nbsp;</label>
         </span>
@@ -239,9 +236,9 @@ const AddAgent = () => {
           value={contactnum}
         />
         <br />
-        <br />
 
         <div className="text-danger fw-600">{errors?.contact_number}</div>
+        <br />
       </div>
       <br />
       <div style={{ marginLeft: '40vw' }}>

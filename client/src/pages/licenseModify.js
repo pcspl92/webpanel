@@ -107,8 +107,11 @@ export default function LicenseModify() {
     const users = [];
     selectedUserIds.current.forEach((id) => users.push(id));
     const data = { features: featuresGlobal, user_ids: users, all: !showacc };
-
+    if(data.user_ids.length===0){
+      alert("Please Select Accounts");
+    }else{
     try {
+      console.log(data);
       const response = await axios.put(`/order/${order}/features`, data);
       if (response.data.message) {
         alert(response.data.message);
@@ -118,6 +121,7 @@ export default function LicenseModify() {
     } catch (err) {
       console.log(err);
     }
+  };
   };
 
   const setFeature = (checked, feature) => {
@@ -347,7 +351,9 @@ export default function LicenseModify() {
 
   const transferSubmit = async () => {
     const data = { qty: transferQuantity, company_id: company };
-
+    if(company==='0'){
+      alert("Please Select Company")
+    }else{
     try {
       const response = await axios.put(`/order/${order}/transfer`, data);
       if (response.data.message) {
@@ -358,6 +364,7 @@ export default function LicenseModify() {
       alert(JSON.stringify(err.response.data));
       console.log(err.response.data);
     }
+  };
   };
 
   const transferForm = () => {

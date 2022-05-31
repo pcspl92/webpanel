@@ -102,7 +102,7 @@ const TalkGroupModify = () => {
           </select>
         </div>
 
-        <div className="mt-3">
+        <div className="mt-4">
           <span>
             <label htmlFor="display_name">
               Talkgroup Name :&nbsp;&nbsp;&nbsp;
@@ -121,12 +121,11 @@ const TalkGroupModify = () => {
           />
         </div>
       </div>
-      <button className="mt-3" type="submit" disabled={disabled}>
+      <button className="mt-4" type="submit" disabled={disabled}>
         UPDATE
       </button>
-      <br />
       <button
-        className="mt-3"
+        className="mt-4"
         type="button"
         onClick={deleteTalkgroup}
         disabled={disabled}

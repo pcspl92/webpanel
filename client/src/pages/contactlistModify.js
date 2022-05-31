@@ -160,7 +160,7 @@ export default function ContactListCreate() {
       <div className="formarea">
         <div>
           <span>
-            <label htmlFor="username">Contact list Name: &nbsp;</label>
+            <label htmlFor="username">Contact list Name : &nbsp;</label>
           </span>
           <input
             type="text"
@@ -178,7 +178,7 @@ export default function ContactListCreate() {
         <div>
           <span>
             <label htmlFor="company">
-              Select Contact-List :&nbsp;&nbsp;&nbsp;{' '}
+              Select Contact-List :&nbsp;&nbsp;{' '}
             </label>
           </span>
           <select

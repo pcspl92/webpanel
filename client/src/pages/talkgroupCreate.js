@@ -79,7 +79,7 @@ const TalkGroupCreate = () => {
       <div className="formarea">
         <div>
           <span>
-            <label htmlFor="username">Talk-Group Name: &nbsp;</label>
+            <label htmlFor="username">Talk-Group Name : &nbsp;</label>
           </span>
           <input
             type="text"
