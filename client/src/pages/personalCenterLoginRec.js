@@ -22,14 +22,15 @@ const ViewLogin = () => {
   }, []);
 
   const filterlist = () => {
-    if (fromdate.length && todate.length) {
+    if(fromdate==='' || todate==='') alert("Please Select Dates");
+    else if (fromdate.length && todate.length && moment(fromdate).isSameOrBefore(todate)) {
       setupdatedloglist(
-        agentloglist.filter(
-          (val) =>{
+        agentloglist.filter((val) => {
             const date=moment(val.timestamp).utc().format('YYYY-MM-DD');
-             return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)
-          })
-      );
+            return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)
+      }));
+    }else if(fromdate.length && todate.length && moment(fromdate).isAfter(todate)){
+      alert('Invalid Date Selection');
     }
   };
 

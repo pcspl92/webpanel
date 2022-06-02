@@ -21,7 +21,7 @@ export default function Dashboard() {
     <div className="viewback">
       <br />
       <div>
-        <span>Total Balance :</span>
+        <span>Total Balance :&nbsp;</span>
         {user.balance}
       </div>
       <table className="mt-3">

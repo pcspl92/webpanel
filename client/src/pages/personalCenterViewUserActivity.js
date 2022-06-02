@@ -20,13 +20,15 @@ const ViewActivity = () => {
   }, []);
 
   const filterlist = () => {
-    if (fromdate.length && todate.length) {
+    if(fromdate==='' || todate==='') alert("Please Select Dates");
+    else if (fromdate.length && todate.length && moment(fromdate).isSameOrBefore(todate)) {
       setupdatedactlist(
-        agentactlist.filter((val) =>{
-          const date=moment(val.timestamp).utc().format('YYYY-MM-DD');
-           return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)
-        })
-      );
+        agentactlist.filter((val) => {
+            const date=moment(val.timestamp).utc().format('YYYY-MM-DD');
+            return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)
+      }));
+    }else if(fromdate.length && todate.length && moment(fromdate).isAfter(todate)){
+      alert('Invalid Date Selection');
     }
   };
 

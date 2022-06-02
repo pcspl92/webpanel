@@ -87,14 +87,15 @@ Issues Fixed: 167, 153, 149, 192, 190, 189, 188, 186, 194, 193, 191, 187, 184
 version : 0.2.8
 
 Issues fixed: 121, 148, 183, 179, 176
-<<<<<<< HEAD
 
 version : 0.2.9
 
 Issues fixed: 110, 4, 173, 194, 191, 195, 192
-=======
->>>>>>> fe497fe6c31b0f6e899415d7dd35383886bca3c7
 
 version : 0.2.10
 
 Issue Fixed : 196, 197, 198, 201, 202 
+
+version : 0.3.1
+
+Issue Fixed : 205, 206, 44, 46, 21, 84

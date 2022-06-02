@@ -20,6 +20,7 @@ const CompanyCreate = () => {
     username: yup
       .string()
       .typeError('Username must be string')
+      .matches(/^\S+$/, 'Username cannot contain whitespace')
       .required('This field is required')
       .min(3, 'Username must be 3-40 characters long')
       .max(40, 'Username must be 3-40 characters long'),
@@ -38,6 +39,7 @@ const CompanyCreate = () => {
     display_name: yup
       .string()
       .typeError('Company name must be string')
+      .matches(/^\S+$/, 'Display name cannot contain whitespace')
       .required('This field is required')
       .min(10, 'Company name must be 10-90 characters long')
       .max(90, 'Company name must be 10-90 characters long'),

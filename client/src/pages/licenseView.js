@@ -14,7 +14,7 @@ export default function LicenseView() {
   const [loading, setLoading] = useState(true);
   const [updatedlist, setupdatedlist] = useState([]);
   const [errors, setErrors] = useState({});
-  
+
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/order/agent-panel');
@@ -25,7 +25,6 @@ export default function LicenseView() {
   }, []);
 
   const validateForm = async (data) => {
-    console.log(data)
     const schema = yup.object().shape({
       orderId: yup.number().required('Order ID is required').typeError('Must be of type integer'),
       companyName: yup.string().required('Company name is required'),
@@ -35,21 +34,24 @@ export default function LicenseView() {
   };
   const filter = async () => {
     try {
-      await validateForm({ orderId,companyName,agentName,expdate});
+      await validateForm({ orderId, companyName, agentName, expdate });
       setErrors({});
-      setupdatedlist(
-        tableData.filter(
+      
+        const data=tableData.filter(
           (val) =>
             (companyName.length &&
               val.company_name
                 .toLowerCase()
-                .includes(companyName.toLowerCase())) ||
+                .includes(companyName.toLowerCase())) &&
             (agentName.length &&
-              val.agent_name.toLowerCase().includes(agentName.toLowerCase())) ||
-            (expdate.length && moment(val.expiry_date).isAfter(expdate)) ||
-            (orderId.length && val.order_id === Number(orderId))
-        )
+              val.agent_name.toLowerCase().includes(agentName.toLowerCase())) &&
+            (orderId.length && val.order_id == orderId) &&
+            (expdate.length && moment(val.expiry_date).isAfter(expdate))
+        
       );
+      console.log(data);
+      if(data.length===0)alert("No Result found");
+      setupdatedlist(data);
     } catch (error) {
       const validateErrors = error.inner.reduce(
         (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
@@ -58,7 +60,7 @@ export default function LicenseView() {
       setErrors(validateErrors);
     }
   };
- 
+
   const unfilter = () => {
     setupdatedlist(tableData);
   };
@@ -86,7 +88,7 @@ export default function LicenseView() {
         </div>
         <br />
         <div className="text-danger fw-500">{errors?.orderId}</div>
-<br/>
+        <br />
         <div>
           <span>
             <label htmlFor="id1">Company Name : &nbsp;</label>
@@ -168,7 +170,7 @@ export default function LicenseView() {
             <th>{index + 1}</th>
             <th>{val.order_id}</th>
             <th>{val.company_name}</th>
-            <th>{moment(val.order_date).format('DD-MM-YYYY')}</th>
+            <th>{moment(val.order_date).utc().format('DD-MM-YYYY')}</th>
             <th>{val.license_type}</th>
             <th>{val.renewal_type}</th>
             <th>{val.active}</th>
@@ -181,13 +183,12 @@ export default function LicenseView() {
               {val.geo_fence ? 'Geo Fence, ' : null}
               {val.live_gps ? 'Live GPS' : null}
             </th>
-            <th>{moment(val.expiry_date).format('DD-MM-YYYY')}</th>
+            <th>{moment(val.expiry_date).utc().format('DD-MM-YYYY')}</th>
             <th>{val.agent_name}</th>
           </tr>
         ))}
       </table>
-      {updatedlist.length===0?        <div className="text-danger fw-500">No Matching Records Exist </div>
-:<div></div>}
+      {updatedlist.length === 0 ? <div className="text-danger fw-500">No Matching Records Exist </div> : <div></div>}
     </div>
   );
 
