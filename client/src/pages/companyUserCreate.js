@@ -100,7 +100,6 @@ function UserCreate() {
       .string()
       .typeError('Display_name name must be string')
       .required('This field is required')
-      .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid username')
       .matches(/^\S+$/, 'Display name cannot contain whitespace')
       .min(10, 'Display name must be 10-90 characters long')
       .max(90, 'Display name must be 10-90 characters long'),
@@ -211,7 +210,7 @@ function UserCreate() {
       resetPttForm();
       setErrors({});
     } catch (error) {
-      console.log(error);
+      alert(JSON.stringify(error.response.data));
       if (error.inner.length) {
         const validateErrors = error.inner.reduce(
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
@@ -525,6 +524,7 @@ function UserCreate() {
       resetDispatcherForm();
       setErrors({});
     } catch (error) {
+      alert(JSON.stringify(error.response.data));
       if (error.inner.length) {
         const validateErrors = error.inner.reduce(
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
@@ -763,13 +763,13 @@ function UserCreate() {
         setErrors({});
       }
     } catch (error) {
+      alert(JSON.stringify(error.response.data));
       if (error.inner.length) {
         const validateErrors = error.inner.reduce(
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
           {}
         );
         alert(JSON.stringify(validateErrors,null,4));
-
       } else {
         console.log(error.response.data);
       }
@@ -903,6 +903,7 @@ function UserCreate() {
 
   const onSelectType = (type) => {
     setUpdOrderList([]);
+    resetDispatcherForm();
     if (type !== '0') {
       const orderIds = orderlist.filter((data) => data.license_type === type);
       setUpdOrderList(orderIds);

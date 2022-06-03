@@ -191,11 +191,10 @@ function UserModify() {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-end',
+          alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <br />
         <div>
           <span>
             <label htmlFor="confirm">Password : &nbsp;</label>
@@ -207,7 +206,6 @@ function UserModify() {
         </div>
         <br />
         {password}
-        <br />
         <div>
           <span>
             <label htmlFor="confirm">User Display Name : &nbsp;</label>
@@ -481,11 +479,10 @@ function UserModify() {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-end',
+          alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <br />
         <div>
           <span>
             <label htmlFor="confirm">Password : &nbsp;</label>
@@ -780,6 +777,7 @@ function UserModify() {
 
   const onSelectType = (type) => {
     setUpdUsers([]);
+    resetDispatcherForm();
     if (type !== '0') {
       const updatedUserList = users.filter((val) => val.user_type === type);
       setUpdUsers(updatedUserList);

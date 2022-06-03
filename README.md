@@ -99,3 +99,7 @@ Issue Fixed : 196, 197, 198, 201, 202
 version : 0.3.1
 
 Issue Fixed : 205, 206, 44, 46, 21, 84
+
+version : 0.3.2
+
+Issue Fixed : 209, 210, 211, 213, 215, 212
