@@ -5,6 +5,7 @@ const { companyCheck, isLoggedIn } = require('../guard');
 const {
   getContactListByName,
   getContactListById,
+  getContactListUserData,
   createContactList,
   updateContactList,
   deleteContactList,
@@ -31,6 +32,19 @@ router.get(
     return res.status(200).json(list);
   }
 );
+
+router.get(
+  '/getData/:contactListId',
+  isLoggedIn,
+  guard.check('company'),
+  companyCheck,
+  async (req, res) => {
+    const list = await getContactListUserData(req.params.contactListId);
+    return res.status(200).json(list);
+  }
+);
+
+
 router.get(
   '/getclid',
   isLoggedIn,

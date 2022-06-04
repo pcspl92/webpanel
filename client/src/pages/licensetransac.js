@@ -24,7 +24,7 @@ export default function Licensetransac() {
     if(fromdate==='' || todate==='') alert("Please Select Dates");
     else if (fromdate.length && todate.length && moment(fromdate).isSameOrBefore(todate)) {
       setupdatedtranDetails(
-        companyloglist.filter((val) => {
+        updatedtranDetails.filter((val) => {
             const date=moment(val.date).utc().format('YYYY-MM-DD');
             return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)
       }));

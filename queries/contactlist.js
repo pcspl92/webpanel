@@ -5,6 +5,11 @@ const getContactListByName = (name) => {
   return query(sql);
 };
 
+const getContactListUserData = (contactListId) => {
+  const sql = `SELECT * FROM contact_list_user_maps WHERE contact_list_id=${contactListId};`;
+  return query(sql);
+};
+
 const getContactListById = (id) => {
   const sql = `SELECT * FROM contact_lists WHERE id=${id};`;
   return query(sql);
@@ -55,6 +60,7 @@ module.exports = {
   getContactListByName,
   getContactListById,
   getContactLists,
+  getContactListUserData,
   createContactList,
   updateContactList,
   deleteContactList,

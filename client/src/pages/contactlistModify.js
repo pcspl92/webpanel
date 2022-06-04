@@ -20,6 +20,7 @@ export default function ContactListCreate() {
   useEffect(() => {
     (async () => {
       const { data: users } = await axios.get('/user/ptt');
+      console.log(users);
       const { data: contactlists } = await axios.get('/contactlist/');
       setuserlist(users);
       setcontactlistarr(contactlists);
@@ -100,6 +101,15 @@ export default function ContactListCreate() {
       setcontactlistarr(contactlists);
     }
   };
+
+  const getFormData = async (listNameId) => {
+    if (listNameId !== '0') {
+      const { data } = await axios.get(`/contactlist/getData/${listNameId}`);
+     console.log(data);
+    }
+    setContactList(listNameId);
+  };
+
   const SelectAcc = ({ users }) => (
     <div>
       <span>PTT User Accounts</span>
@@ -184,7 +194,7 @@ export default function ContactListCreate() {
           <select
             id="company"
             onChange={(event) => {
-              setContactList(event.target.value);
+              getFormData(event.target.value);
             }}
             value={contactList}
             required

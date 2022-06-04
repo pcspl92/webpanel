@@ -3,6 +3,7 @@ import '../css/licenseModify.css';
 import * as yup from 'yup';
 import '../css/companyUserCreate.css';
 import axios from '../utils/axios';
+//import IconButton from "@material-ui/core/IconButton";
 
 function UserCreate() {
   const [updateType, setupdateType] = useState('0');
@@ -27,7 +28,7 @@ function UserCreate() {
   const [formLoading, setFormLoading] = useState(false);
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
-
+  
   const [featuresGlobal, setFeaturesGlobal] = useState({
     grp_call: false,
     enc: false,
@@ -177,7 +178,14 @@ function UserCreate() {
     setPassword('');
     setcontactNum('');
     setDisplayName('');
-    setFeaturesGlobal('');
+    setFeaturesGlobal({
+      grp_call: false,
+      enc: false,
+      priv_call: false,
+      live_gps: false,
+      geo_fence: false,
+      chat: false,
+    });
     setContactlist('');
     setTalkgroup('');
     setConfirmPassword('');
@@ -200,7 +208,7 @@ function UserCreate() {
       tg_ids: tgIds,
       def_tg: Number(talkgroup),
     };
-
+    console.log(featuresGlobal);
     try {
       await validate(data);
       const response = await axios.post('/user/ptt', data);
@@ -487,7 +495,14 @@ function UserCreate() {
     setPassword('');
     setcontactNum('');
     setDisplayName('');
-    setFeaturesGlobal('');
+    setFeaturesGlobal({
+      grp_call: false,
+      enc: false,
+      priv_call: false,
+      live_gps: false,
+      geo_fence: false,
+      chat: false,
+    });
     setContactlist('');
     setTalkgroup('');
     setConfirmPassword('');

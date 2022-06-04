@@ -798,7 +798,7 @@ function UserModify() {
       setFormData(data);
       setcontactNum(data.ctnNum[0].contact_no);
       if (updateType === 'ptt' || updateType === 'dispatcher') {
-        console.log();
+        console.log(data);
         const selected = [];
         data.talgroups_map.forEach((id) => {
           selected.push(data.tgs.filter((TGid) => TGid.id === id.talkgroup_id)[0]);

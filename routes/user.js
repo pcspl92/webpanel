@@ -207,7 +207,7 @@ router.post(
         .json({ user: 'User with given username is already registered.' });
   
     const [{ id: licenseId }] = await getLicenseIds(req.body.order_id, 2);
-    console.log(licenseId);
+ 
     const password = await hashPassword(req.body.password);
     const { insertId } = await createUser(
       'ptt',
