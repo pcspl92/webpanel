@@ -121,10 +121,11 @@ const TalkGroupModify = () => {
           />
         </div>
       </div>
-      <button className="mt-4" type="submit" disabled={disabled}>
+      <button style={{fontSize:'2vh'}} className="mt-4" type="submit" disabled={disabled}>
         UPDATE
       </button>
       <button
+      style={{fontSize:'2vh'}}
         className="mt-4"
         type="button"
         onClick={deleteTalkgroup}

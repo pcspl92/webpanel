@@ -20,7 +20,6 @@ export default function ContactListCreate() {
   useEffect(() => {
     (async () => {
       const { data: users } = await axios.get('/user/ptt');
-      console.log(users);
       const { data: contactlists } = await axios.get('/contactlist/');
       setuserlist(users);
       setcontactlistarr(contactlists);
@@ -105,8 +104,13 @@ export default function ContactListCreate() {
   const getFormData = async (listNameId) => {
     if (listNameId !== '0') {
       const { data } = await axios.get(`/contactlist/getData/${listNameId}`);
-     console.log(data);
-    }
+
+    const selected = [];
+    data.forEach((id) => {
+      selected.push(userlist.filter((user) => user.id === id.user_id)[0]);
+    });
+    setSelectedUsers(selected);
+  }
     setContactList(listNameId);
   };
 

@@ -103,3 +103,11 @@ Issue Fixed : 205, 206, 44, 46, 21, 84
 version : 0.3.2
 
 Issue Fixed : 209, 210, 211, 213, 215, 212
+
+version : 0.3.2.1
+
+Issue refixed : 209, 210, 173, 
+
+version : 0.3.3
+
+Issue Fixed : 216, 217, 214, 219, 218, 

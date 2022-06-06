@@ -14,6 +14,7 @@ const ViewAgent = () => {
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/subagent/');
+      console.log(data);
       setagentlist(data);
       setLoading(false);
     })();

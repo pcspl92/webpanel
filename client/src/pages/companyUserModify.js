@@ -797,8 +797,14 @@ function UserModify() {
       setDisplayName(displayName);
       setFormData(data);
       setcontactNum(data.ctnNum[0].contact_no);
+      if(updateType === 'ptt'){
+        data.talgroups_map.forEach((id)=>{
+            if(id.default_tg>0){
+              setTalkgroup(id.talkgroup_id);
+            }
+        });
+      }
       if (updateType === 'ptt' || updateType === 'dispatcher') {
-        console.log(data);
         const selected = [];
         data.talgroups_map.forEach((id) => {
           selected.push(data.tgs.filter((TGid) => TGid.id === id.talkgroup_id)[0]);
@@ -827,8 +833,6 @@ function UserModify() {
         setDeviceID(data.userdata[0].device_id);
         setcontrolStationType(data.userdata[0].cs_type_id);
       }
-
-      console.log(data);
     }
     setUser(userId);
     setFormLoading(false);

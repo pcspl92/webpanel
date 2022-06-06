@@ -14,7 +14,7 @@ const ChangePassword = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
-    if (confirmPassword === password) {
+    
       try {
         const {data}=await axios.put('/auth/password/agent', { password });
         alert(data);
@@ -24,10 +24,6 @@ const ChangePassword = () => {
       } catch (err) {
         console.log(err.response.data);
       }
-    } else {
-      seterrorm('Confirm Password and Password should match');
-      setDisabled(false);
-    }
   };
 
   return (
@@ -60,7 +56,10 @@ const ChangePassword = () => {
             type="password"
             id="id2"
             onChange={(event) => {
-              setconfirmPassword(event.target.value);
+              const cnf=event.target.value;
+              setconfirmPassword(cnf);
+              if(password===cnf) seterrorm('');
+              else seterrorm('Confirm Password and Password should match');
             }}
             required
             value={confirmPassword}

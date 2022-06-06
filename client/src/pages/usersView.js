@@ -15,6 +15,7 @@ const ViewUsers = () => {
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/user/agent-panel');
+      console.log(data);
       setuserlist(data);
       setuserupdlist(data);
       setLoading(false);

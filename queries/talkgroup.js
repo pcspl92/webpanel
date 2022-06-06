@@ -16,7 +16,7 @@ const getTGs = (companyId) => {
 };
 
 const getTGmap = (userId) => {
-  const sql = `SELECT talkgroup_id FROM user_talkgroup_maps WHERE user_id=${userId};`;
+  const sql = `SELECT talkgroup_id, default_tg FROM user_talkgroup_maps WHERE user_id=${userId};`;
   return query(sql);
 };
 
