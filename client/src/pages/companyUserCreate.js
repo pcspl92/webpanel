@@ -28,6 +28,7 @@ function UserCreate() {
   const [formLoading, setFormLoading] = useState(false);
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
+  const [errors1, setErrors1] = useState('');
   
   const [featuresGlobal, setFeaturesGlobal] = useState({
     grp_call: false,
@@ -44,6 +45,7 @@ function UserCreate() {
     (async () => {
       const { data } = await axios.get('/user/company-panel/user-create');
       setorderlist(data.users);
+      console.log(data);
       setLoading(false);
 
     })();
@@ -55,6 +57,7 @@ function UserCreate() {
       .typeError('Username must be string')
       .required('This field is required')
       .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid username')
+      .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
       .min(3, 'Username must be 3-40 characters long')
       .max(40, 'Username must be 3-40 characters long'),
     password: yup
@@ -71,6 +74,7 @@ function UserCreate() {
       .string()
       .typeError('Sub-Agent name must be string')
       .required('This field is required')
+      .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
       .min(10, 'Display name must be 10-90 characters long')
       .max(90, 'Display name must be 10-90 characters long'),
     contact_number: yup
@@ -109,7 +113,7 @@ function UserCreate() {
       .required('This field is required')
       .min(3, 'Device_Id must be greater than 3-90 characters')
       .max(90, 'Device_Id must be greater than 3-90 characters'),
-    contact_no: yup
+      contact_number: yup
       .string()
       .required('This field is required')
       .matches(/^[0-9]+$/, 'Must be only digits')
@@ -218,16 +222,16 @@ function UserCreate() {
       resetPttForm();
       setErrors({});
     } catch (error) {
-      alert(JSON.stringify(error.response.data));
-      if (error.inner.length) {
+      if(error.inner===undefined){
+        alert(JSON.stringify(error.response.data));
+        console.log(error.response.data);
+      }else{
         const validateErrors = error.inner.reduce(
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
           {}
         );
         alert(JSON.stringify(validateErrors,null,4));
         setErrors(validateErrors);
-      } else {
-        console.log(error.response.data);
       }
     }
   };
@@ -539,16 +543,16 @@ function UserCreate() {
       resetDispatcherForm();
       setErrors({});
     } catch (error) {
-      alert(JSON.stringify(error.response.data));
-      if (error.inner.length) {
+      if(error.inner===undefined){
+        alert(JSON.stringify(error.response.data));
+        console.log(error.response.data);
+      }else{
         const validateErrors = error.inner.reduce(
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
           {}
         );
         alert(JSON.stringify(validateErrors,null,4));
         setErrors(validateErrors);
-      } else {
-        console.log(error.response.data);
       }
     }
   };
@@ -576,6 +580,7 @@ function UserCreate() {
             value={accountName}
             required
           />
+          <div className="text-danger fw-600">{errors?.username}</div>
         </div>
         <br />
         <div className="required-field">
@@ -745,6 +750,7 @@ function UserCreate() {
     setDisplayName('');
     setDeviceID('');
     setcontactNum('');
+    setErrors1('');
   };
 
   const controlSubmit = async () => {
@@ -763,30 +769,31 @@ function UserCreate() {
       port: Number(remotePortadd),
       display_name: displayName,
       device_id: deviceID,
-      contact_no: contactNum,
+      contact_number: contactNum,
     };
     try {
-      await validate1(valData);
       if (Number(controlStationType) === 0) {
-        setErrors({ message: "This field is required" });
-      } else {
+        setErrors1("This field is required");
+      } 
+        await validate1(valData);
         const response = await axios.post('/user/control', data);
         if (response.data.message) {
           alert(response.data.message);
         }
         resetControlForm();
         setErrors({});
-      }
+      
     } catch (error) {
-      alert(JSON.stringify(error.response.data));
-      if (error.inner.length) {
+      if(error.inner===undefined){
+        alert(JSON.stringify(error.response.data));
+        console.log(error.response.data);
+      }else{
         const validateErrors = error.inner.reduce(
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
           {}
         );
         alert(JSON.stringify(validateErrors,null,4));
-      } else {
-        console.log(error.response.data);
+        setErrors(validateErrors);
       }
     }
   };
@@ -820,10 +827,10 @@ function UserCreate() {
               </option>
             ))}
           </select>
+         <div className="text-danger fw-600">{errors1}</div>
         </div>
         <br />
         <div className="required-field">
-          {(errors.message) ? <div className="text-danger fw-600">{errors.message}</div> : null}
           <span>
             <label htmlFor="confirm">Remote IP Address : &nbsp;</label>
           </span>
@@ -836,6 +843,7 @@ function UserCreate() {
             value={remoteIDadd}
             required
           />
+          <div className="text-danger fw-600">{errors?.ip_address}</div>
         </div>
         <br />
         <div className="required-field">
@@ -851,6 +859,7 @@ function UserCreate() {
             value={remotePortadd}
             required
           />
+          <div className="text-danger fw-600">{errors?.port}</div>
         </div>
         <br />
         <div className="required-field">
@@ -867,6 +876,7 @@ function UserCreate() {
             required
           />
         </div>
+        <div className="text-danger fw-600">{errors?.display_name}</div>
         <br />
         <div className="required-field">
           <span>
@@ -881,6 +891,7 @@ function UserCreate() {
             value={deviceID}
             required
           />
+          <div className="text-danger fw-600">{errors?.device_id}</div>
         </div>
         <br />
         Receiving Port Address : {formData.receivingPort} (Auto-Generated)
@@ -911,9 +922,9 @@ function UserCreate() {
         break
       default:
     }
-    setorder('0');
-    setupdateType('0');
-    // setDisabled(false);
+    // setorder('0');
+    // setupdateType('0');
+   // setDisabled(false);
   };
 
   const onSelectType = (type) => {
@@ -924,10 +935,14 @@ function UserCreate() {
       setUpdOrderList(orderIds);
     }
     setupdateType(type);
+    setErrors({});
   };
 
   const getFormData = async (orderId) => {
     setFormLoading(true);
+    resetDispatcherForm();
+    resetControlForm();
+    setErrors({});
     if (orderId !== '0') {
       const { data } = await axios.get(`/user/create/${updateType}/${orderId}/0`);
       setFormData(data);
@@ -1011,9 +1026,9 @@ function UserCreate() {
           />
 
         </div>
-        <br />
-        <div className="text-danger fw-600">{errors?.contact_number}</div>
       </div>
+      <div className="text-danger fw-600">{errors?.contact_number}</div>
+      <br />
       <button type="submit">
         {' '}
         SAVE{' '}

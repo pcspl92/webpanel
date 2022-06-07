@@ -20,7 +20,7 @@ const CompanyCreate = () => {
     username: yup
       .string()
       .typeError('Username must be string')
-      .matches(/^\S+$/, 'Username cannot contain whitespace')
+      .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
       .required('This field is required')
       .min(3, 'Username must be 3-40 characters long')
       .max(40, 'Username must be 3-40 characters long'),
@@ -29,7 +29,6 @@ const CompanyCreate = () => {
       .typeError('Password must be string')
       .required('This field is required')
       .matches(/.*\S.*/, 'Password cannot contain whitespace')
-
       .min(8, 'Password must be 8-30 characters long')
       .max(30, 'Password must be 8-30 characters long'),
     confirm_password: yup
@@ -39,7 +38,7 @@ const CompanyCreate = () => {
     display_name: yup
       .string()
       .typeError('Company name must be string')
-      .matches(/^\S+$/, 'Display name cannot contain whitespace')
+      .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
       .required('This field is required')
       .min(10, 'Company name must be 10-90 characters long')
       .max(90, 'Company name must be 10-90 characters long'),
@@ -90,6 +89,7 @@ const CompanyCreate = () => {
     try {
       setErrors({});
       await validate(data);
+      console.log(username.length);
       const response = await axios.post('/company/', data); 
       if (response.data.message) {
         alert(response.data.message);
