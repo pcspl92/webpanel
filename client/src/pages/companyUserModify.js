@@ -915,7 +915,7 @@ function UserModify() {
 
         <br />
       </div>
-      <button type="submit" disabled={disabled}>
+      <button  style={{fontSize:'2vh'}} type="submit" disabled={disabled}>
         {' '}
         UPDATE{' '}
       </button>

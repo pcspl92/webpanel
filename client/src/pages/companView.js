@@ -38,13 +38,9 @@ const CompanyView = () => {
         tableData.filter(
           (val) =>
             (companyName.length &&
-              val.company_name
-                .toLowerCase()
-                .includes(companyName.toLowerCase())) &&
+              (val.company_name.toLowerCase()===(companyName.toLowerCase()))) &&
             (compaccname.length &&
-              val.account_name
-                .toLowerCase()
-                .includes(compaccname.toLowerCase()))
+              (val.account_name.toLowerCase()===(compaccname.toLowerCase())))
         )
       );
     } catch (error) {

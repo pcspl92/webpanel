@@ -92,7 +92,7 @@ const CompanyChangePassword = () => {
         <br />
         <div className="text-danger fw-600">{errorm}</div>
       </div>
-      <button type="submit" disabled={disabled}>
+      <button  style={{fontSize:'2vh'}} type="submit" disabled={disabled}>
         UPDATE
       </button>
     </form>

@@ -60,6 +60,7 @@ const CompanyCreate = () => {
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/subagent/names');
+      console.log(data);
       setsagentlist(data);
       setLoading(false);
     })();
