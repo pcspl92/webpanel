@@ -112,6 +112,7 @@ version : 0.3.3
 
 Issue Fixed : 216, 217, 214, 219, 218, 
 
-version : 0.3.3
+version : 0.3.4
 
 Issue Fixed : 222, 223, 180, 199, 200
+
