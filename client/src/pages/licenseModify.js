@@ -107,21 +107,21 @@ export default function LicenseModify() {
     const users = [];
     selectedUserIds.current.forEach((id) => users.push(id));
     const data = { features: featuresGlobal, user_ids: users, all: !showacc };
-    if(data.user_ids.length===0){
+    if (data.user_ids.length === 0) {
       alert("Please Select Accounts");
-    }else{
-    try {
-      console.log(data);
-      const response = await axios.put(`/order/${order}/features`, data);
-      if (response.data.message) {
-        alert(response.data.message);
+    } else {
+      try {
+        console.log(data);
+        const response = await axios.put(`/order/${order}/features`, data);
+        if (response.data.message) {
+          alert(response.data.message);
+        }
+        // resetUpdateForm();
+        window.location.reload()
+      } catch (err) {
+        console.log(err);
       }
-      // resetUpdateForm();
-      window.location.reload()
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    };
   };
 
   const setFeature = (checked, feature) => {
@@ -173,7 +173,7 @@ export default function LicenseModify() {
             type="checkbox"
             id="feature"
             name="feature3"
-           // defaultChecked={enc}
+            // defaultChecked={enc}
             onChange={(e) => {
               setFeature(e.target.checked, 'enc');
             }}
@@ -278,7 +278,7 @@ export default function LicenseModify() {
       // const newExpDate = moment(date).isAfter('2038-01-19 03:14:07')
       //   ? '2038-01-19 03:14:07'
       //   : date;
-       const newExpDate=date;
+      const newExpDate = date;
       // eslint-disable-next-line consistent-return
       return moment(`${newExpDate}`).utc().format('DD-MM-YYYY HH:mm:ss');
     }
@@ -351,20 +351,22 @@ export default function LicenseModify() {
 
   const transferSubmit = async () => {
     const data = { qty: transferQuantity, company_id: company };
-    if(company==='0'){
+    if (company === '0') {
       alert("Please Select Company")
+    } else if(transferQuantity===0){
+      alert("Enter Transfer account quantity more then zero")
     }else{
-    try {
-      const response = await axios.put(`/order/${order}/transfer`, data);
-      if (response.data.message) {
-        alert(response.data.message);
+      try {
+        const response = await axios.put(`/order/${order}/transfer`, data);
+        if (response.data.message) {
+          alert(response.data.message);
+        }
+        resetTransferForm();
+      } catch (err) {
+        alert(JSON.stringify(err.response.data));
+        console.log(err.response.data);
       }
-      resetTransferForm();
-    } catch (err) {
-      alert(JSON.stringify(err.response.data));
-      console.log(err.response.data);
-    }
-  };
+    };
   };
 
   const transferForm = () => {

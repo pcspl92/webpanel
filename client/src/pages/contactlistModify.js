@@ -77,7 +77,8 @@ export default function ContactListCreate() {
       setcontactlistarr(contactlists);
       
     } catch (err) {
-      alert(err);
+      
+      alert(JSON.stringify(err.response.data));
       reset();
       setDisabled(false);
       console.log(err.response.data);

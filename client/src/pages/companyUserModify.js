@@ -51,7 +51,7 @@ function UserModify() {
       .typeError('Sub-Agent name must be string')
       .required('This field is required')
       .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid username')
-      .matches(/^\S+$/, 'Display name cannot contain whitespace')
+      .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
       .max(90, 'Display name must be less tha 90 characters long'),
     contact_number: yup
       .string()

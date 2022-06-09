@@ -58,7 +58,6 @@ const TalkGroupModify = () => {
     };
     try {
       await validate(data.name);
-
       const response = await axios.put(`/talkgroup/${talkgroup}`, data);
       if (response.data.message) {
         alert(response.data.message);
@@ -66,6 +65,7 @@ const TalkGroupModify = () => {
       reset();
     } catch (error) {
       console.log(error);
+      alert(JSON.stringify(error.response.data));
       setErr(error.response.data);
     }
 
