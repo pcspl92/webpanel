@@ -123,3 +123,7 @@ Issue Fixed : 178, 88, 83, 110, 220,
 version : 0.3.6
 
 Issue Fixed : 224, 225, 226, 227, 228
+
+version : 0.3.6.1
+
+Issue Refixed : 222, 223, 4, 110

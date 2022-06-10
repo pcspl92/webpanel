@@ -26,9 +26,9 @@ const getTotalCompanyCount = (agentIds) => {
 };
 
 const getSubAgentNames = (agentId) => {
-  const sql = `SELECT display_name, a.id, ad.balance FROM agents a
+  const sql = `SELECT display_name, a.id, ad.balance, a.status FROM agents a
                JOIN agents_add_data ad ON a.id = ad.agent_id
-               WHERE a.agent_id=${agentId} AND a.status="active";`;
+               WHERE a.agent_id=${agentId};`;
   return query(sql);
 };
 

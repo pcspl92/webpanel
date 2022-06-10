@@ -64,12 +64,19 @@ const TalkGroupModify = () => {
       }
       reset();
     } catch (error) {
-      console.log(error);
-      alert(JSON.stringify(error.response.data));
-      setErr(error.response.data);
+      if(error.inner===undefined){
+        alert(JSON.stringify(error.response.data));
+        console.log(error.response.data);
+      }else{
+        const validateErrors = error.inner.reduce(
+          (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+          {}
+        );
+        alert(JSON.stringify(validateErrors,null,4));
+        setErr(validateErrors);
+      }
+      setDisabled(false);
     }
-
-    setDisabled(false);
   };
 
   const form = () => (

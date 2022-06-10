@@ -204,10 +204,10 @@ const CompanyUserView = () => {
             <th>{val.account_name}</th>
             <th>{val.user_display_name}</th>
             <th>{val.account_type}</th>
-            <th>{moment(val.creation_date).format('DD-MM-YYYY')}</th>
+            <th>{moment(val.creation_date).utc().format('DD-MM-YYYY')}</th>
             <th>{val.contact_person}</th>
             <th>{val.license_type}</th>
-            <th>{moment(val.license_renewal).format('DD-MM-YYYY')}</th>
+            <th>{moment(val.license_renewal).utc().format('DD-MM-YYYY')}</th>
             <th>{val.status}</th>
             <th>{val.online}</th>
 

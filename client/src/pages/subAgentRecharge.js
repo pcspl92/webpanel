@@ -33,19 +33,21 @@ const RechargeAgent = () => {
       amount: Number(recharge),
     };
     if (!error.length) {
-      try {
-        const response = await axios.put(`/subagent/${agentid}/recharge`, data);
-        if (response.data.message) {
-          alert(response.data.message); 
-          window.location.reload()
+      if (recharge === 0) alert("Please enter Recharge amount");
+      else {
+        try {
+          const response = await axios.put(`/subagent/${agentid}/recharge`, data);
+          if (response.data.message) {
+            alert(response.data.message);
+            window.location.reload()
+          }
+          setBalance(user.balance - recharge);
+          reset();
+        } catch (err) {
+          alert(JSON.stringify(err.response.data));
+          console.log(err.response.data);
         }
-        setBalance(user.balance - recharge);
-        reset();
-      } catch (err) {
-        alert(JSON.stringify(err.response.data));
-        console.log(err.response.data);
       }
-
       setDisabled(false);
     }
   };

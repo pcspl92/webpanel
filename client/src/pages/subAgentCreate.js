@@ -60,7 +60,7 @@ const AddAgent = () => {
     username: yup
       .string()
       .typeError('Username must be string')
-      .matches(/^\S+$/, 'Username cannot contain whitespace')
+      .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
       .required('This field is required')
       .min(3, 'Username must be 3-40 characters long')
       .max(40, 'Username must be 3-40 characters long'),
@@ -78,7 +78,7 @@ const AddAgent = () => {
     display_name: yup
       .string()
       .typeError('Sub-Agent name must be string')
-      .matches(/^\S+$/, 'Display name cannot contain whitespace')
+      .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
       .required('This field is required')
       .min(3, 'Sub-Agent name must be 3-90 characters long')
       .max(90, 'Sub-Agent name must be 3-90 characters long'),

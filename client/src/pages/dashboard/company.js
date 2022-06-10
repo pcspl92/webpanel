@@ -11,6 +11,7 @@ export default function Dashboard() {
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/dashboard/company');
+      console.log(data);
       setDashData(data);
       setLoading(false);
     })();
