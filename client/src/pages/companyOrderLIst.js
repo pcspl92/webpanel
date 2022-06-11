@@ -33,7 +33,7 @@ const CompanyOrderList = () => {
       <table className="mt-3">
         <tr className="tableheading">
           <th
-            style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
+            style={{ backgroundColor: 'white', width: '20vw', border: 'none' }}
           >
             {' '}
           </th>
@@ -44,7 +44,7 @@ const CompanyOrderList = () => {
         </tr>
         <tr>
           <th
-            style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
+            style={{ backgroundColor: 'white', width: '20vw', border: 'none' }}
           >
             {' '}
             Total PPT User Accounts :{' '}
@@ -56,7 +56,7 @@ const CompanyOrderList = () => {
         </tr>
         <tr>
           <th
-            style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
+            style={{ backgroundColor: 'white', width: '20vw', border: 'none' }}
           >
             {' '}
             Total Dispatcher Accounts :{' '}
@@ -68,7 +68,7 @@ const CompanyOrderList = () => {
         </tr>{' '}
         <tr>
           <th
-            style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
+            style={{ backgroundColor: 'white', width: '20vw', border: 'none' }}
           >
             {' '}
             Total Control Station Accounts :{' '}
@@ -88,7 +88,7 @@ const CompanyOrderList = () => {
           <th>Order Id</th>
           <th>Order Status</th>
           <th>Account Type</th>
-          <th>License Tpye</th>
+          <th>License Type</th>
           <th>
             License <br /> Renewal Date
           </th>

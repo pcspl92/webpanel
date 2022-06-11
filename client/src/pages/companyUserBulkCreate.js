@@ -60,11 +60,18 @@ function BulkUserCreate() {
       <div className="comp">
         <div className="accbox">
           {formData.tgs?.map((val) => (
-            <div key={val.id}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              key={val.id}
+            >
               <input
                 type="checkbox"
                 id="subitem"
                 name="selection"
+                style={{ margin: 'none', width: '2vw' }}
                 defaultChecked={selectedTGIds.current.has(val.id)}
                 onClick={() => {
                   selectedTGIds.current.has(val.id)
@@ -208,53 +215,50 @@ function BulkUserCreate() {
       <SelectTalkGroups />
       <div>
         <br />
-        <div
-          className="
-          formarea"
-        >
-          <div>
-            <span>
-              <label htmlFor="lictype">Default Talkgroup: &nbsp;</label>
-            </span>
-            <select
-              id="id1"
-              onChange={(e) => {
-                setTalkgroup(e.target.value);
-              }}
-              value={talkgroup}
-              required
-            >
-              <option value="0">Select Default Talkgroup</option>
-              {selectedTG?.map((val) => (
-                <option key={val.id} value={val.id}>
-                  {val.tg_name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <br />
-          <div>
-            <span>
-              <label htmlFor="lictype">Assign Contact List: &nbsp;</label>
-            </span>
-            <select
-              id="id1"
-              onChange={(e) => {
-                setContactlist(e.target.value);
-              }}
-              value={contactList}
-              required
-            >
-              <option value="0">Select Contact List</option>
-              {formData.cls?.map((val) => (
-                <option key={val.id} value={val.id}>
-                  {val.display_name}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div>
+          <span style={{ marginLeft: "10px" }}>
+            <label htmlFor="lictype">Default Talkgroup: &nbsp;</label>
+          </span>
+          <select
+            id="id1"
+            onChange={(e) => {
+              setTalkgroup(e.target.value);
+            }}
+            value={talkgroup}
+            required
+          >
+            <option value="0">Select Default Talkgroup</option>
+            {selectedTG?.map((val) => (
+              <option key={val.id} value={val.id}>
+                {val.tg_name}
+              </option>
+            ))}
+          </select>
         </div>
         <br />
+        <div>
+          <span>
+            <label htmlFor="lictype">Assign Contact List: &nbsp;</label>
+          </span>
+          <select
+            id="id1"
+            onChange={(e) => {
+              setContactlist(e.target.value);
+            }}
+            value={contactList}
+            required
+          >
+            <option value="0">Select Contact List</option>
+            {formData.cls?.map((val) => (
+              <option key={val.id} value={val.id}>
+                {val.display_name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <br />
+      <div style={{ textAlign: "center" }}>
         <label>Features : </label>&nbsp;
         <br />
         {formData.features?.grp_call ? (
@@ -356,11 +360,18 @@ function BulkUserCreate() {
       <div className="comp">
         <div className="accbox">
           {formData.controlStations?.map((val) => (
-            <div key={val.id}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              key={val.id}
+            >
               <input
                 type="checkbox"
                 id="subitem"
                 name="selection"
+                style={{ margin: 'none', width: '2vw' }}
                 defaultChecked={selectedCSIds.current.has(val.id)}
                 onClick={() => {
                   selectedCSIds.current.has(val.id)
@@ -728,7 +739,8 @@ function BulkUserCreate() {
   const getFormData = async (orderId) => {
     setFormLoading(true);
     if (orderId !== '0') {
-      const { data } = await axios.get(`/user/create/${updateType}/${orderId}`);
+      const { data } = await axios.get(`/user/create/${updateType}/${orderId}/0`);
+      console.log(data);
       setFormData(data);
     }
     setorder(orderId);
@@ -840,7 +852,7 @@ function BulkUserCreate() {
           />
         </div>
       </div>
-      <button type="submit" disabled={disabled} style={{marginTop:"30px"}}>
+      <button type="submit" disabled={disabled} style={{ marginTop: "30px" }}>
         {' '}
         SAVE{' '}
       </button>
