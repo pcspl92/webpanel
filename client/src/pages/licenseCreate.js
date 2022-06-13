@@ -55,7 +55,14 @@ export default function LicenseCreate() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
-    if(Number(quantity)===0){
+    if(Number(company)===0){
+      alert("Please select Company")
+      setDisabled(false)
+    }
+    else if(licenseType===''){
+      alert("Please select License type")
+      setDisabled(false)
+    }else if(Number(quantity)===0){
       alert("Quantity should be greater than or equal to one")
       setDisabled(false)
     }
@@ -67,8 +74,6 @@ export default function LicenseCreate() {
         company_id: Number(company),
         features,
       };
-
-      if (data.company_id) {
         setError('');
         const response = await axios.post('/order/', data);
         if (response.data.message) {
@@ -76,10 +81,6 @@ export default function LicenseCreate() {
           window.location.reload()
         }
         reset();
-      } else {
-        setError('Select a Company');
-      }
-  
       setDisabled(false);
     }
   };

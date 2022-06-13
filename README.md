@@ -128,6 +128,10 @@ version : 0.3.6.1
 
 Issue Refixed : 222, 223, 4, 110
 
-version : 0.3.6
+version : 0.3.7
 
 Issue Fixed : 229, 120, 22, 170, 163, 137
+
+version : 0.3.8
+
+Issue Fixed : 231, 230, 234, 236, 235, 143, 144

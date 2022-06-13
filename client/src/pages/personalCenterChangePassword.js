@@ -14,7 +14,10 @@ const ChangePassword = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
-    
+    if(errorm){
+      alert("Password not Match")
+      setDisabled(false);
+    }else{
       try {
         const {data}=await axios.put('/auth/password/agent', { password });
         alert(data);
@@ -24,6 +27,7 @@ const ChangePassword = () => {
       } catch (err) {
         console.log(err.response.data);
       }
+    }
   };
 
   return (

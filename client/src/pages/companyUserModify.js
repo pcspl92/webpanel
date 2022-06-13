@@ -43,7 +43,7 @@ function UserModify() {
       setUsers(data.users);
       setLoading(false);
     })();
-  }, [user]);
+  },[]);
 
   const schema1 = yup.object().shape({
     display_name: yup
@@ -278,7 +278,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature1"
-              defaultChecked={featuresGlobal.grp_call ? "checked" : null}
+              defaultChecked={formData.userFeatures[0].grp_call ? "checked" : null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'grp_call');
               }}
@@ -292,7 +292,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature2"
-              defaultChecked={ featuresGlobal.priv_call ? "checked" : null}
+              defaultChecked={formData.userFeatures[0].priv_call ? "checked" : null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'priv_call');
               }}
@@ -306,7 +306,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
-              defaultChecked={featuresGlobal.enc ? "checked" : null}
+              defaultChecked={formData.userFeatures[0].enc ? "checked" : null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'enc');
               }}
@@ -320,7 +320,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
-              defaultChecked={featuresGlobal.live_gps ? "checked" : null}
+              defaultChecked={formData.userFeatures[0].live_gps ? "checked" : null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'live_gps');
               }}
@@ -334,7 +334,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
-              defaultChecked={featuresGlobal.geo_fence ? "checked" : null}
+              defaultChecked={formData.userFeatures[0].geo_fence ? "checked" : null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'geo_fence');
               }}
@@ -348,7 +348,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
-              defaultChecked={featuresGlobal.chat ? "checked" : null}
+              defaultChecked={formData.userFeatures[0].chat ? "checked" : null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'chat');
               }}
@@ -544,7 +544,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature1"
-              defaultChecked={featuresGlobal.grp_call ? "checked" : null}
+              defaultChecked={formData.userFeatures[0].grp_call ? "checked" : null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'grp_call');
               }}
@@ -558,7 +558,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature2"
-              defaultChecked={featuresGlobal.priv_call ? "checked" : null}
+              defaultChecked={formData.userFeatures[0].priv_call ? "checked" : null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'priv_call');
               }}
@@ -572,7 +572,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
-              defaultChecked={featuresGlobal.enc ? "checked" : null}
+              defaultChecked={formData.userFeatures[0].enc ? "checked" : null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'enc');
               }}
@@ -586,7 +586,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
-              defaultChecked={featuresGlobal.live_gps ? "checked" : null}
+              defaultChecked={formData.userFeatures[0].live_gps ? "checked" : null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'live_gps');
               }}
@@ -600,7 +600,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
-              defaultChecked={featuresGlobal.geo_fence ? "checked" : null}
+              defaultChecked={formData.userFeatures[0].geo_fence ? "checked" : null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'geo_fence');
               }}
@@ -614,7 +614,7 @@ function UserModify() {
               type="checkbox"
               id="feature"
               name="feature3"
-              defaultChecked={featuresGlobal.chat ? "checked" : null}
+              defaultChecked={formData.userFeatures[0].chat ? "checked" : null}
               onChange={(e) => {
                 setFeature(e.target.checked, 'chat');
               }}
@@ -794,7 +794,7 @@ function UserModify() {
       )[0];
 
       const { data } = await axios.get(`/user/modify/${updateType}/${orderId}/${userId}`);
-      //console.log(data);
+      console.log(data);
       setDisplayName(displayName);
       setFormData(data);
       setcontactNum(data.ctnNum[0].contact_no);
@@ -816,8 +816,6 @@ function UserModify() {
         } else {
           setContactlist('');
         }
-        const x = data.userFeatures[0];
-        setFeaturesGlobal(x);
       }
 
       if (updateType === 'dispatcher') {

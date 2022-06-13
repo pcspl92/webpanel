@@ -432,6 +432,7 @@ export default function LicenseModify() {
     if (order !== 0) {
       setupdateType(type);
       const { data } = await axios.get(`/order/${order}/${type}`);
+      console.log(data);
       setFormData(data);
       if (type === 'update') {
         const { features } = data;

@@ -15,12 +15,14 @@ function UserCreate() {
   const [deviceID, setDeviceID] = useState('');
   const [contactNum, setcontactNum] = useState('');
   const [order, setorder] = useState('0');
+  const [license,setLicense] = useState('0');
   const [orderlist, setorderlist] = useState([]);
   const [contactList, setContactlist] = useState('0');
   const [loading, setLoading] = useState(true);
   // const [disabled, setDisabled] = useState(false);
   const [talkgroup, setTalkgroup] = useState();
   const [updOrderList, setUpdOrderList] = useState([]);
+  const [upLincenseOrderList,setUpLicenseOrderList] = useState([]);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [selectedTG, setSelectedTG] = useState([]);
@@ -195,6 +197,9 @@ function UserCreate() {
     setConfirmPassword('');
     setSelectedTG([]);
     selectedTGIds.current.clear();
+    setupdateType('');
+    setorder(0);
+    setLicense(0);
   };
 
   const pttSubmit = async () => {
@@ -206,6 +211,7 @@ function UserCreate() {
       password,
       display_name: displayName,
       order_id: Number(order),
+      license_id: Number(license),
       features: featuresGlobal,
       contact_number: contactNum,
       contact_list_id: Number(contactList),
@@ -514,6 +520,9 @@ function UserCreate() {
     setSelectedCS([]);
     selectedTGIds.current.clear();
     selectedCSIds.current.clear();
+    setupdateType('');
+    setorder(0);
+    setLicense(0);
   };
 
   const dispatcherSubmit = async () => {
@@ -526,6 +535,7 @@ function UserCreate() {
       password,
       display_name: displayName,
       order_id: Number(order),
+      license_id: Number(license),
       features: featuresGlobal,
       contact_number: contactNum,
       contact_list_id: Number(contactList),
@@ -751,6 +761,9 @@ function UserCreate() {
     setDeviceID('');
     setcontactNum('');
     setErrors1('');
+    setupdateType('');
+    setorder(0);
+    setLicense(0);
   };
 
   const controlSubmit = async () => {
@@ -763,6 +776,7 @@ function UserCreate() {
       contact_no: contactNum,
       cs_type_id: Number(controlStationType),
       order_id: Number(order),
+      license_id: Number(license),
     };
     const valData = {
       ip_address: remoteIDadd,
@@ -930,6 +944,7 @@ function UserCreate() {
   const onSelectType = (type) => {
     setUpdOrderList([]);
     resetDispatcherForm();
+    setLicense('0');
     if (type !== '0') {
       const orderIds = orderlist.filter((data) => data.license_type === type);
       setUpdOrderList(orderIds);
@@ -938,16 +953,28 @@ function UserCreate() {
     setErrors({});
   };
 
-  const getFormData = async (orderId) => {
-    setFormLoading(true);
-    resetDispatcherForm();
-    resetControlForm();
-    setErrors({});
-    if (orderId !== '0') {
-      const { data } = await axios.get(`/user/create/${updateType}/${orderId}/0`);
-      setFormData(data);
+  const onSelectOrder = async(orderId) => {
+    setUpLicenseOrderList([]);
+    //resetDispatcherForm();
+    setLicense('0');
+    if (orderId !== 0) {
+      const {data} = await axios.get(`/user/company-panel/user-create/licenses/${orderId}`);
+      setUpLicenseOrderList(data.licenseId);
     }
     setorder(orderId);
+    setErrors({});
+  };
+
+  const getFormData = async (licenseId) => {
+    setFormLoading(true);
+    //resetDispatcherForm();
+    //resetControlForm();
+    setErrors({});
+    if (licenseId !== '0') {
+      const { data } = await axios.get(`/user/create/${updateType}/${order}/0`);
+      setFormData(data);
+    }
+    setLicense(licenseId);
     setFormLoading(false);
   };
 
@@ -985,7 +1012,7 @@ function UserCreate() {
           <select
             id="order"
             onChange={(e) => {
-              getFormData(e.target.value);
+              onSelectOrder(e.target.value);
             }}
             value={order}
             required
@@ -998,17 +1025,36 @@ function UserCreate() {
             ))}
           </select>
         </div>
-
         <br />
+        <div>
+          <span>
+            <label htmlFor="company">Select License :&nbsp;&nbsp; </label>
+          </span>
+          <select
+            id="order"
+            onChange={(e) => {
+              getFormData(e.target.value);
+            }}
+            value={license}
+            required
+          >
+            <option value={'0'}>Select Licence Id</option>
+            {upLincenseOrderList.map((val) => (
+              <option key={val.id} value={val.id}>
+                {val.id}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <br />
       <br />
       {formLoading && updateType !== '0' ? (
         <div className="spinner-border text-primary" roleControlStationForm="status"></div>
       ) : null}
-      {updateType === 'ptt' && order !== '0' && PTTUserForm()}
-      {updateType === 'dispatcher' && order !== '0' && DispatcherForm()}
-      {updateType === 'control' && order !== '0' && ControlStationForm()}
+      {updateType === 'ptt' && license !== '0' && PTTUserForm()}
+      {updateType === 'dispatcher' && license !== '0' && DispatcherForm()}
+      {updateType === 'control' && license !== '0' && ControlStationForm()}
       <br />
       <div style={{ marginLeft: '62px' }} className="formarea">
         <div className="required-field">

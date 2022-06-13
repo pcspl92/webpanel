@@ -203,10 +203,10 @@ const CompanyUserView = () => {
             <th>{val.order_id}</th>
             <th>{val.account_name}</th>
             <th>{val.user_display_name}</th>
-            <th>{val.account_type}</th>
+            <th>{val.account_type === "control" ? 'Control Station' : (val.account_type).charAt(0).toUpperCase() + (val.account_type).substr(1).toLowerCase()}</th>
             <th>{moment(val.creation_date).utc().format('DD-MM-YYYY')}</th>
             <th>{val.contact_person}</th>
-            <th>{val.license_type}</th>
+            <th>{(val.license_type).toLowerCase().replace(/[^\s_'-]+/g, s => s.charAt(0).toUpperCase() + s.substr(1).toLowerCase())}</th>
             <th>{moment(val.license_renewal).utc().format('DD-MM-YYYY')}</th>
             <th>{val.status}</th>
             <th>{val.online}</th>

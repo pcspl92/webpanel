@@ -22,7 +22,8 @@ const RechargeAgent = () => {
 
   const reset = () => {
     setagentid('');
-    setrecharge('');
+    setrecharge('0');
+    subBalance.current=0;
   };
 
   const onSubmit = async (e) => {
@@ -39,7 +40,7 @@ const RechargeAgent = () => {
           const response = await axios.put(`/subagent/${agentid}/recharge`, data);
           if (response.data.message) {
             alert(response.data.message);
-            window.location.reload()
+            //window.location.reload()
           }
           setBalance(user.balance - recharge);
           reset();
@@ -77,6 +78,7 @@ const RechargeAgent = () => {
                 (agent) => agent.id === Number(event.target.value)
               )[0]?.balance;
             }}
+            value={agentid}
             required
           >
             <option val="0">Select a Option </option>

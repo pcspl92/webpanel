@@ -135,7 +135,6 @@ const SetPrices = () => {
       <br />
       <div className="grid-container">
         <div className="subformelements2"></div>
-
         <div className="">Monthly License</div>
         <div className="">Quarterly License</div>
         <div className="">Half Yearly License</div>

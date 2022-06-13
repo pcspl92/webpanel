@@ -43,7 +43,7 @@ const {
 const { createCompanyActivityLog } = require('../queries/company');
 const { getTGs,getTGmap } = require('../queries/talkgroup');
 const { getContactLists } = require('../queries/contactlist');
-const { getFeatures, getLicenseIds, getLicenses, getFeaturesByUserId } = require('../queries/order');
+const { getFeatures, getLicenseIds, getLicenses, getFeaturesByUserId,getLicenseIdsByOrder } = require('../queries/order');
 const { hashPassword } = require('../utils/bcrypt');
 
 const router = express.Router();
@@ -96,6 +96,17 @@ router.get(
   async (req, res) => {
     const users = await getOrderIdForUsers(req.user.id);
     return res.status(200).json({ users });
+  }
+);
+
+router.get(
+  '/company-panel/user-create/licenses/:orderId',
+  isLoggedIn,
+  guard.check('company'),
+  companyCheck,
+  async (req, res) => {
+    const licenseId = await getLicenseIdsByOrder(req.params.orderId);
+    return res.status(200).json({licenseId});
   }
 );
 
@@ -206,7 +217,7 @@ router.post(
         .status(400)
         .json({ user: 'User with given username is already registered.' });
   
-    const [{ id: licenseId }] = await getLicenseIds(req.body.order_id, 2);
+    //const [{ id: licenseId }] = await getLicenseIds(req.body.order_id, 2);
  
     const password = await hashPassword(req.body.password);
     const { insertId } = await createUser(
@@ -216,7 +227,7 @@ router.post(
       req.body.display_name,
       req.user.id
     );
-    await updateLicense(licenseId, insertId);
+    await updateLicense(req.body.license_id, insertId);
     await Promise.all(
       createUserAddData(
         _.pick(req.body.features, [
@@ -255,7 +266,6 @@ router.post(
         .status(400)
         .json({ user: 'User with given username is already registered.' });
 
-    const [{ id: licenseId }] = await getLicenseIds(req.body.order_id, 1);
     const password = await hashPassword(req.body.password);
     const { insertId } = await createUser(
       'dispatcher',
@@ -264,7 +274,7 @@ router.post(
       req.body.display_name,
       req.user.id
     );
-    await updateLicense(licenseId, insertId);
+    await updateLicense(req.body.license_id, insertId);
     await Promise.all(
       createUserAddData(
         _.pick(req.body.features, [
@@ -306,7 +316,6 @@ router.post(
         user: 'Control Station with given name alreay exists.',
       });
 
-    const [{ id: licenseId }] = await getLicenseIds(req.body.order_id, 1);
     const { insertId } = await createCSUser(
       _.pick(req.body, [
         'ip_address',
@@ -319,8 +328,8 @@ router.post(
       ]),
       req.user.id
     );
-    await updateLicense(licenseId, insertId);
-    await CSupdateLicense(licenseId, insertId);
+    await updateLicense(req.body.license_id, insertId);
+    await CSupdateLicense(req.body.license_id, insertId);
     await createCompanyActivityLog('Control Station User Create', req.user.id);
     return res
       .status(201)

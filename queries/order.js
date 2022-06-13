@@ -74,8 +74,13 @@ const getLicenseIds = (orderId, qty) => {
   return query(sql);
 };
 
+const getLicenseIdsByOrder = (orderId) => {
+  const sql = `SELECT id FROM licenses WHERE order_id = ${orderId} AND user_id IS NULL;`;
+  return query(sql);
+};
+
 const getLicenseCount = (orderId) => {
-  const sql = `SELECT COUNT(id) AS count FROM licenses WHERE order_id=${orderId};`;
+  const sql = `SELECT COUNT(id) AS count FROM licenses WHERE order_id=${orderId} AND user_id>0;`;
   return query(sql);
 };
 
@@ -194,4 +199,5 @@ module.exports = {
   getLicensesForOrder,
   companyStatus,
   getFeaturesByUserId,
+  getLicenseIdsByOrder,
 };
