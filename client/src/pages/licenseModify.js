@@ -399,6 +399,7 @@ export default function LicenseModify() {
             </option>
           ))}
         </select>
+        <br />
         <button type="submit" disabled={disabled}>
           Transfer Accounts
         </button>

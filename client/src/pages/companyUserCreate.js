@@ -51,7 +51,7 @@ function UserCreate() {
       setLoading(false);
 
     })();
-  }, []);
+  }, [updateType]);
 
   const schema = yup.object().shape({
     username: yup
@@ -107,7 +107,7 @@ function UserCreate() {
       .string()
       .typeError('Display_name name must be string')
       .required('This field is required')
-      .matches(/^\S+$/, 'Display name cannot contain whitespace')
+      .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
       .min(10, 'Display name must be 10-90 characters long')
       .max(90, 'Display name must be 10-90 characters long'),
     device_id: yup
@@ -115,7 +115,7 @@ function UserCreate() {
       .required('This field is required')
       .min(3, 'Device_Id must be greater than 3-90 characters')
       .max(90, 'Device_Id must be greater than 3-90 characters'),
-      contact_number: yup
+    contact_number: yup
       .string()
       .required('This field is required')
       .matches(/^[0-9]+$/, 'Must be only digits')
@@ -240,6 +240,7 @@ function UserCreate() {
         setErrors(validateErrors);
       }
     }
+    resetPttForm();
   };
 
   const PTTUserForm = () => (
@@ -565,6 +566,7 @@ function UserCreate() {
         setErrors(validateErrors);
       }
     }
+    resetDispatcherForm();
   };
 
   const DispatcherForm = () => (
@@ -810,6 +812,7 @@ function UserCreate() {
         setErrors(validateErrors);
       }
     }
+    resetControlForm();
   };
 
   const ControlStationForm = () => (

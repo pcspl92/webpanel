@@ -1,8 +1,8 @@
 const query = require('../utils/queryTemplate');
 const { talkgroupMap, controlStationMap } = require('../utils/sqlMaps');
 
-const findUserByUsername = (username) => {
-  const sql = `SELECT id FROM users WHERE username='${username}'`;
+const findUserByUsername = (username,companyId) => {
+  const sql = `SELECT id FROM users WHERE company_id=${companyId} AND username='${username}'`;
   return query(sql);
 };
 

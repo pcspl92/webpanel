@@ -211,7 +211,7 @@ router.post(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const user = await findUserByUsername(req.body.username);
+    const user = await findUserByUsername(req.body.username,req.user.id);
     if (user.length)
       return res
         .status(400)
@@ -260,7 +260,7 @@ router.post(
   companyCheck,
   async (req, res) => {
 
-    const user = await findUserByUsername(req.body.username);
+    const user = await findUserByUsername(req.body.username,req.user.id);
     if (user.length)
       return res
         .status(400)

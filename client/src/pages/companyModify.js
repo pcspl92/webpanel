@@ -59,6 +59,7 @@ const CompanyModify = () => {
     setSubagent(0);
     setCompany(0);
     setType('modify');
+    setErrors('');
   };
 
   const modifyCompany = async () => {
