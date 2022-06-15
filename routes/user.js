@@ -310,10 +310,10 @@ router.post(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const user = await getCSUserByName(req.body.display_name);
+    const user = await getCSUserByName(req.body.display_name,req.user.id);
     if (user.length)
       return res.status(400).json({
-        user: 'Control Station with given name alreay exists.',
+        user: 'Control Station with given name already exists.',
       });
 
     const { insertId } = await createCSUser(

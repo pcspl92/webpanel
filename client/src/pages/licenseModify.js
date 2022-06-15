@@ -235,15 +235,22 @@ export default function LicenseModify() {
       period: number,
       all: !showacc,
     };
-
-    try {
-      const response = await axios.put(`/order/${order}/renewal`, data);
-      if (response.data.message) {
-        alert(response.data.message);
+    if (users.length === 0) {
+      alert("Please select Account");
+    } else if (number === 0) {
+      alert("Please enter renew license for");
+    } else if (period === '0') {
+      alert("Please select Period");
+    } else {
+      try {
+        const response = await axios.put(`/order/${order}/renewal`, data);
+        if (response.data.message) {
+          alert(response.data.message);
+        }
+        resetRenewForm();
+      } catch (err) {
+        console.log(err.response.data);
       }
-      resetRenewForm();
-    } catch (err) {
-      console.log(err.response.data);
     }
   };
 
@@ -353,9 +360,9 @@ export default function LicenseModify() {
     const data = { qty: transferQuantity, company_id: company };
     if (company === '0') {
       alert("Please Select Company")
-    } else if(transferQuantity===0){
+    } else if (transferQuantity === 0) {
       alert("Enter Transfer account quantity more then zero")
-    }else{
+    } else {
       try {
         const response = await axios.put(`/order/${order}/transfer`, data);
         if (response.data.message) {

@@ -206,8 +206,8 @@ const createCSUser = (
   return query(sql);
 };
 
-const getCSUserByName = (displayName) => {
-  const sql = `SELECT id FROM control_station_user WHERE display_name='${displayName}';`;
+const getCSUserByName = (displayName,companyId) => {
+  const sql = `SELECT id FROM control_station_user WHERE display_name='${displayName}' AND company_id=${companyId};`;
   return query(sql);
 };
 

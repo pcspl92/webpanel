@@ -140,3 +140,6 @@ version : 0.3.9
 
 Issue Fixed : 240, 241, 238, 242, 243
 
+version : 0.3.10
+
+Issue Fixed : 244, 245, 247, 254, 251
