@@ -1,7 +1,7 @@
 const query = require('../utils/queryTemplate');
 
-const findTGByName = (tgName) => {
-  const sql = `SELECT id FROM talkgroups WHERE talkgroup_name='${tgName}';`;
+const findTGByName = (tgName,companyId) => {
+  const sql = `SELECT id FROM talkgroups WHERE talkgroup_name='${tgName}' AND company_id=${companyId};`;
   return query(sql);
 };
 

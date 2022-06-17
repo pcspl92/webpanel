@@ -141,7 +141,7 @@ export default function ContactListCreate() {
                     : selectedUserIds.current.add(val.id);
                 }}
               />
-              <label htmlFor="selection">{val.display_name}</label>
+              <label style={{whiteSpace: 'nowrap'}} htmlFor="selection">{val.display_name}</label>
             </div>
           ))}
         </div>

@@ -82,9 +82,9 @@ const CompanyOrderList = () => {
       <br />
 
       <br />
-      <table className="mt-3">
+      <table style={{textAlign:'center'}} className="mt-3">
         <tr className="tableheading">
-          <th>S. No</th>
+          <th style={{width:'4.5vw'}}>S. No</th>
           <th>Order Id</th>
           <th>Order Status</th>
           <th>Account Type</th>

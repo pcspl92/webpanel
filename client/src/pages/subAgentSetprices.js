@@ -127,7 +127,7 @@ const SetPrices = () => {
         </select>
       </div>
       <br />
-      <div style={{ marginLeft: '40vw' }}>
+      <div style={{ marginLeft: '35vw' }}>
         (Prices have to be greater than or equal to the Base Price of Parent
         Agent)
       </div>

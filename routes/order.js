@@ -306,7 +306,7 @@ router.put(
     );
     const orderRes = await createOrder(
       order[0].license_type,
-      moment(`${order[0].license_expiry}`).format('YYYY-MM-DD HH:mm:ss'),
+      moment(`${order[0].license_expiry}`).utc().format('YYYY-MM-DD HH:mm:ss'),
       order[0].company_id,
       featureRes.insertId,
       order[0].renewal,

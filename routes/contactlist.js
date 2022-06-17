@@ -65,7 +65,7 @@ router.post(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const list = await getContactListByName(req.body.name);
+    const list = await getContactListByName(req.body.name,req.user.id);
     if (list.length)
       return res
         .send({ message: 'Contact List with given name already exists.' });

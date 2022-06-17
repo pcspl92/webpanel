@@ -51,7 +51,7 @@ router.post(
   companyCheck,
   async (req, res) => {
     console.log(req.body)
-    const tg = await findTGByName(req.body.name);
+    const tg = await findTGByName(req.body.name,req.user.id);
     console.log(tg.length)
     if (tg.length>0)
     {

@@ -98,7 +98,7 @@ function UserModify() {
                     : selectedTGIds.current.add(val.id);
                 }}
               />
-              <label htmlFor="selection">{val.tg_name}</label>
+              <label style={{whiteSpace: 'nowrap'}} htmlFor="selection">{val.tg_name}</label>
             </div>
           ))}
         </div>
@@ -395,7 +395,7 @@ function UserModify() {
                     : selectedCSIds.current.add(val.id);
                 }}
               />
-              <label htmlFor="selection">{val.display_name}</label>
+              <label style={{whiteSpace: 'nowrap'}} htmlFor="selection">{val.display_name}</label>
             </div>
           ))}
         </div>

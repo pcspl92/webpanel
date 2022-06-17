@@ -7,6 +7,7 @@
 .toppart {
   background-color: #8cb3d9;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   height: 10vh;
@@ -86,8 +87,8 @@
   color: yellow;
 }
 .routearea {
-  height: auto;
-  width: auto;
+  /* height: auto;
+  width: auto; */
   margin-left: 18vw;
   overflow: auto;
   height: 90vh;

@@ -160,7 +160,7 @@ function UserCreate() {
                     : selectedTGIds.current.add(val.id);
                 }}
               />
-              <label htmlFor="selection">{val.tg_name}</label>
+              <label style={{whiteSpace: 'nowrap'}} htmlFor="selection">{val.tg_name}</label>
             </div>
           ))}
         </div>
@@ -485,7 +485,7 @@ function UserCreate() {
                     : selectedCSIds.current.add(val.id);
                 }}
               />
-              <label htmlFor="selection">{val.display_name}</label>
+              <label style={{whiteSpace: 'nowrap'}} htmlFor="selection">{val.display_name}</label>
             </div>
           ))}
         </div>

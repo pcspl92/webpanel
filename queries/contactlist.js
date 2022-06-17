@@ -1,7 +1,7 @@
 const query = require('../utils/queryTemplate');
 
-const getContactListByName = (name) => {
-  const sql = `SELECT id FROM contact_lists WHERE name='${name}';`;
+const getContactListByName = (name,companyId) => {
+  const sql = `SELECT id FROM contact_lists WHERE name='${name}' AND company_id=${companyId};`;
   return query(sql);
 };
 

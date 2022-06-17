@@ -23,7 +23,7 @@ export default function Dashboard() {
       <table className="mt-3">
         <tr className="tableheading">
           <th
-            style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
+            style={{ backgroundColor: 'white', border: 'none' }}
           >
             {' '}
           </th>
@@ -34,7 +34,7 @@ export default function Dashboard() {
         </tr>
         <tr>
           <th
-            style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
+            style={{ backgroundColor: 'white', border: 'none' }}
           >
             {' '}
             Total PPT User Accounts : {' '}
@@ -46,7 +46,7 @@ export default function Dashboard() {
         </tr>
         <tr>
           <th
-            style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
+            style={{ backgroundColor: 'white', border: 'none' }}
           >
             {' '}
             Total Dispatcher Accounts : {' '}
@@ -58,7 +58,7 @@ export default function Dashboard() {
         </tr>{' '}
         <tr>
           <th
-            style={{ backgroundColor: 'white', width: '18vw', border: 'none' }}
+            style={{ backgroundColor: 'white', border: 'none' }}
           >
             {' '}
             Total Control Station Accounts : {' '}

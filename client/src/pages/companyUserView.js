@@ -178,16 +178,13 @@ const CompanyUserView = () => {
           View All
         </button>
       </div>
-      <table className="mt-3">
+      <div style={{maxWidth:'80vw'}}>
+      <table style={{textAlign:'center'}} className="mt-3">
         <tr className="tableheading">
           <th>S. No</th>
           <th>Order ID</th>
           <th>Account Name</th>
-          <th>
-            User Display
-            <br /> Name
-          </th>
-
+          <th>User Display Name</th>
           <th>Account Type</th>
           <th>Creation Date</th>
           <th>Contact Person</th>
@@ -222,6 +219,7 @@ const CompanyUserView = () => {
           </tr>
         ))}
       </table>
+      </div>
       {userupdlist.length === 0 ? (
         <div className="text-danger fw-500">No Matching Records Exist </div>
       ) : (
