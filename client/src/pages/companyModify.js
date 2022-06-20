@@ -26,7 +26,11 @@ const CompanyModify = () => {
     (async () => {
       if (user.type === 'agent') {
         const subagents = await axios.get('/subagent/names');
-        setsagentlist(subagents.data);
+        setsagentlist(
+          subagents.data.filter(
+            (val) =>
+              (val.status==="active"))
+        );
       }
       const companies = await axios.get('/company/');
       setcompanylist(companies.data);

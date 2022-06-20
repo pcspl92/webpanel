@@ -51,7 +51,7 @@ function UserCreate() {
       setLoading(false);
 
     })();
-  }, [updateType]);
+  }, [updateType,order]);
 
   const schema = yup.object().shape({
     username: yup
@@ -200,6 +200,7 @@ function UserCreate() {
     setupdateType('');
     setorder(0);
     setLicense(0);
+    setUpLicenseOrderList([]);
   };
 
   const pttSubmit = async () => {
@@ -240,7 +241,6 @@ function UserCreate() {
         setErrors(validateErrors);
       }
     }
-    resetPttForm();
   };
 
   const PTTUserForm = () => (
@@ -524,6 +524,7 @@ function UserCreate() {
     setupdateType('');
     setorder(0);
     setLicense(0);
+    setUpLicenseOrderList([]);
   };
 
   const dispatcherSubmit = async () => {
@@ -566,7 +567,6 @@ function UserCreate() {
         setErrors(validateErrors);
       }
     }
-    resetDispatcherForm();
   };
 
   const DispatcherForm = () => (
@@ -766,6 +766,7 @@ function UserCreate() {
     setupdateType('');
     setorder(0);
     setLicense(0);
+    setUpLicenseOrderList([]);
   };
 
   const controlSubmit = async () => {
@@ -812,7 +813,6 @@ function UserCreate() {
         setErrors(validateErrors);
       }
     }
-    resetControlForm();
   };
 
   const ControlStationForm = () => (
@@ -958,7 +958,6 @@ function UserCreate() {
 
   const onSelectOrder = async(orderId) => {
     setUpLicenseOrderList([]);
-    //resetDispatcherForm();
     setLicense('0');
     if (orderId !== 0) {
       const {data} = await axios.get(`/user/company-panel/user-create/licenses/${orderId}`);

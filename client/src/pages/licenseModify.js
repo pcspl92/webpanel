@@ -117,7 +117,7 @@ export default function LicenseModify() {
           alert(response.data.message);
         }
         // resetUpdateForm();
-        window.location.reload()
+        window.location.reload();
       } catch (err) {
         console.log(err);
       }
@@ -248,6 +248,7 @@ export default function LicenseModify() {
           alert(response.data.message);
         }
         resetRenewForm();
+        window.location.reload();
       } catch (err) {
         console.log(err.response.data);
       }
@@ -369,6 +370,7 @@ export default function LicenseModify() {
           alert(response.data.message);
         }
         resetTransferForm();
+        window.location.reload();
       } catch (err) {
         alert(JSON.stringify(err.response.data));
         console.log(err.response.data);

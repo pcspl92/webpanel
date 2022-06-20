@@ -50,12 +50,8 @@ router.post(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    console.log(req.body)
     const tg = await findTGByName(req.body.name,req.user.id);
-    console.log(tg.length)
-    if (tg.length>0)
-    {
-      console.log("Bey")
+    if (tg.length>0){
       return res
         .status(200)
         .send({ message: 'Talkgroup with given name already exists' });
