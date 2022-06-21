@@ -107,7 +107,7 @@ const CompanyOrderList = () => {
             <th>{val.status}</th>
             <th>{val.account_type === "control" ? 'Control Station' : (val.account_type).charAt(0).toUpperCase() + (val.account_type).substr(1).toLowerCase()}</th>
             <th>{(val.license_type).toLowerCase().replace(/[^\s_'-]+/g, s => s.charAt(0).toUpperCase() + s.substr(1).toLowerCase())}</th>
-            <th>{moment(val.license_renewal_date).format('DD-MM-YYYY')}</th>
+            <th>{moment(val.license_renewal_date).local().format('DD-MM-YYYY')}</th>
             <th>{val.active}</th>
             <th>{val.available}</th>
             <th>

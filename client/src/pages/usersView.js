@@ -163,7 +163,7 @@ const ViewUsers = () => {
             <th>{val.account_type}</th>
             <th>{val.status}</th>
             <th>{val.license_id}</th>
-            <th>{moment(val.license_expiry).utc().format('DD-MM-YYYY')}</th>
+            <th>{moment(val.license_expiry).local().format('DD-MM-YYYY')}</th>
             <th>{val.agent_name}</th>
           </tr>
         ))}

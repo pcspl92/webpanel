@@ -42,6 +42,11 @@ const addAgentDetails = (contactNumber, agentId) => {
   return query(sql);
 };
 
+const addAgentDetailsWithPrice = (contactNumber, agentId, price) => {
+  const sql = `INSERT INTO agents_add_data (contact_number, agent_id, balance) VALUES ("${contactNumber}", ${agentId}, ${price})`;
+  return query(sql);
+};
+
 const addPriceDetails = (
   pmonthly,
   pquarterly,
@@ -218,4 +223,5 @@ module.exports = {
   createAgentAuthLog,
   createAgentActivityLog,
   getSubAgentBalance,
+  addAgentDetailsWithPrice,
 };

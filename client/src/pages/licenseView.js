@@ -170,7 +170,7 @@ export default function LicenseView() {
             <th>{index + 1}</th>
             <th>{val.order_id}</th>
             <th>{val.company_name}</th>
-            <th>{moment(val.order_date).utc().format('DD-MM-YYYY')}</th>
+            <th>{moment(val.order_date).local().format('DD-MM-YYYY')}</th>
             <th>{val.license_type}</th>
             <th>{val.renewal_type}</th>
             <th>{val.active}</th>
@@ -183,7 +183,7 @@ export default function LicenseView() {
               {val.geo_fence ? 'Geo Fence, ' : null}
               {val.live_gps ? 'Live GPS' : null}
             </th>
-            <th>{moment(val.expiry_date).utc().format('DD-MM-YYYY')}</th>
+            <th>{moment(val.expiry_date).local().format('DD-MM-YYYY')}</th>
             <th>{val.agent_name}</th>
           </tr>
         ))}

@@ -26,7 +26,7 @@ const CompanyViewLogin = () => {
     else if (fromdate.length && todate.length && moment(fromdate).isSameOrBefore(todate)) {
       setupdatedloglist(
         companyloglist.filter((val) => {
-            const date=moment(val.timestamp).utc().format('YYYY-MM-DD');
+            const date=moment(val.timestamp).local().format('YYYY-MM-DD');
             return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)
       }));
     }else if(fromdate.length && todate.length && moment(fromdate).isAfter(todate)){
@@ -106,8 +106,8 @@ const CompanyViewLogin = () => {
           return(
           <tr key={val.id}>
             <th>{index + 1}</th>
-            <th>{moment(val.timestamp).utc().format('DD-MM-YYYY')}</th>
-            <th>{moment(val.timestamp).utc().format('HH:mm')}</th>
+            <th>{moment(val.timestamp).local().format('DD-MM-YYYY')}</th>
+            <th>{moment(val.timestamp).local().format('HH:mm')}</th>
             <th>{val.login_desc}</th>
             <th>{val.ipaddress}</th>
           </tr>

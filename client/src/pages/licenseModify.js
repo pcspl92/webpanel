@@ -288,7 +288,7 @@ export default function LicenseModify() {
       //   : date;
       const newExpDate = date;
       // eslint-disable-next-line consistent-return
-      return moment(`${newExpDate}`).utc().format('DD-MM-YYYY HH:mm:ss');
+      return moment(`${newExpDate}`).local().format('DD-MM-YYYY HH:mm:ss');
     }
   };
 
@@ -332,7 +332,7 @@ export default function LicenseModify() {
         </div>
         <br />
         <div>
-          Current Expiry Date : {moment(expDate).utc().format('DD-MM-YYYY HH:mm:ss')}{' '}
+          Current Expiry Date : {moment(expDate).local().format('DD-MM-YYYY HH:mm:ss')}{' '}
 
           &nbsp; &nbsp; After Renewal Expiry Date :{calcExpiryDate(expDate)}
         </div>
