@@ -148,7 +148,7 @@ export default function ContactListCreate() {
         <button type="button" onClick={() => onSelect(users)}>
           &nbsp;&nbsp; &gt; &gt; &nbsp;&nbsp;
         </button>
-        <div className="accbox">
+        <div className="accbox" style={{whiteSpace: 'nowrap'}}>
           {(selectedUsers.length &&
             selectedUsers.map((val) => (
               <div key={val.id}>{val.display_name}</div>
