@@ -178,7 +178,7 @@ const CompanyUserView = () => {
           View All
         </button>
       </div>
-      <div style={{maxWidth:'80vw'}}>
+      <div style={{maxWidth:'78vw'}}>
       <table style={{textAlign:'center'}} className="mt-3">
         <tr className="tableheading">
           <th>S. No</th>

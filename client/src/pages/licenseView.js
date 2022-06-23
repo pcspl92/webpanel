@@ -88,7 +88,6 @@ export default function LicenseView() {
         </div>
         <br />
         <div className="text-danger fw-500">{errors?.orderId}</div>
-        <br />
         <div>
           <span>
             <label htmlFor="id1">Company Name : &nbsp;</label>
@@ -157,6 +156,7 @@ export default function LicenseView() {
           <th>Order Id</th>
           <th>Company Name</th>
           <th>Order Date</th>
+          <th>Order Time</th>
           <th>License Type</th>
           <th>Renewal Type</th>
           <th>Accounts Active</th>
@@ -171,6 +171,7 @@ export default function LicenseView() {
             <th>{val.order_id}</th>
             <th>{val.company_name}</th>
             <th>{moment(val.order_date).local().format('DD-MM-YYYY')}</th>
+            <th>{moment(val.order_date).local().format('HH:mm')}</th>
             <th>{val.license_type}</th>
             <th>{val.renewal_type}</th>
             <th>{val.active}</th>

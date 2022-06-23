@@ -26,6 +26,7 @@ import { useAuth } from '../../hooks/useAuth';
       await companyLogin(credentials);
       navigate(to, { replace: true });
     } catch (err) {
+      captcha.current.reset()
       setErrors(err.response.data);
     }
   };
@@ -105,7 +106,7 @@ import { useAuth } from '../../hooks/useAuth';
           Login
         </button>
         {Object.keys(errors).length ? (
-          <div className="text-white fw-600">{errors.auth}</div>
+           <div className="fw-600" style={{color:'#AF0606'}}>{errors.auth}</div> && captcha.current.reset()
         ) : null}
       </div>
     </form>

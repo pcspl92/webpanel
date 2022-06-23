@@ -45,9 +45,10 @@ const CompanyModify = () => {
       contact_number: yup
         .string()
         .required()
-        .matches(/^[0-9]+$/, 'Must be only digits')
-        .min(10, 'Must be exactly 10 digits')
-        .max(10, 'Must be exactly 10 digits'),
+        .matches(
+          /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+          "Phone number is not valid"
+        ),
       agent_id: yup.number().min(1, 'Select a sub-agent'),
       company_id: yup.number().min(1, 'Select a company'),
     });
@@ -105,7 +106,8 @@ const CompanyModify = () => {
   const deleteCompany = async () => {
     if (!+company) setErrors({ company_id: 'Select a company' });
     else {
-      await axios.delete(`/company/${company}`);
+      const response = await axios.delete(`/company/${company}`);
+      alert(response.data.message)
       setcompanylist(companylist.filter((com) => com.id !== +company));
     }
   };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../css/Modify.css';
 import generator from 'generate-password-browser';
 import axios from '../utils/axios';
+import * as yup from 'yup';
 
 const ModifyAgent = () => {
   const [agentid, setagentid] = useState('');
@@ -29,6 +30,28 @@ const ModifyAgent = () => {
     setGenerated(false);
   };
 
+  const schema = yup.object().shape({
+    display_name: yup
+      .string()
+      .typeError('Sub-Agent name must be string')
+      .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
+      .required('This field is required')
+      .min(3, 'Sub-Agent name must be 3-90 characters long')
+      .max(90, 'Sub-Agent name must be 3-90 characters long'),
+    contact_number: yup
+      .string()
+      .required('This field is required')
+      .matches(
+        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+        "Phone number is not valid"
+      ),
+  });
+
+  const validate = async (data) => {
+    await schema.validate(data, { abortEarly: false });
+  };
+
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
@@ -36,7 +59,7 @@ const ModifyAgent = () => {
     const data = {
       password,
       display_name: agentnewname,
-      contactNumber,
+      contact_number: contactNumber,
       status: active ? 'active' : 'paused',
     };
     if (contactNumber === '' && agentnewname === '') {
@@ -44,6 +67,7 @@ const ModifyAgent = () => {
       setDisabled(false);
     } else {
       try {
+        await validate(data);
         const response = await axios.put(`/subagent/${agentid}`, data);
         if (response.data.message) {
           alert(response.data.message);
@@ -51,7 +75,8 @@ const ModifyAgent = () => {
         reset();
         setDisabled(false);
       } catch (err) {
-        console.log(err.response.data);
+        console.log(err);
+        setDisabled(false);
       }
     }
   };

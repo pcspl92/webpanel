@@ -77,8 +77,8 @@ function UserCreate() {
       .typeError('Sub-Agent name must be string')
       .required('This field is required')
       .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
-      .min(10, 'Display name must be 10-90 characters long')
-      .max(90, 'Display name must be 10-90 characters long'),
+      .min(3, 'Display name must be 3-25 characters long')
+      .max(25, 'Display name must be 3-25 characters long'),
     contact_number: yup
       .string()
       .required('This field is required')
@@ -108,8 +108,8 @@ function UserCreate() {
       .typeError('Display_name name must be string')
       .required('This field is required')
       .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
-      .min(10, 'Display name must be 10-90 characters long')
-      .max(90, 'Display name must be 10-90 characters long'),
+      .min(3, 'Display name must be 3-25 characters long')
+      .max(25, 'Display name must be 3-25 characters long'),
     device_id: yup
       .string()
       .required('This field is required')

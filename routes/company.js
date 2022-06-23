@@ -202,7 +202,7 @@ router.delete(
 
     await deleteCompany(req.params.id);
     await createAgentActivityLog('Company Delete', req.user.id);
-    return res.status(200).send('deleted');
+    return res.status(200).send({message: 'Company has successfully deleted'});
   }
 );
 

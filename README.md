@@ -160,4 +160,9 @@ version : 0.4.3
 
 Issue Fixed : 261, 262, 263, 264, 266
 
+version : 0.4.4
+
+Issue Fixed : 281, 282, 291, 292, 294, 293
+
+
 

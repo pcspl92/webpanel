@@ -103,21 +103,21 @@ export default function ContactListCreate() {
                 display: 'flex',
                 alignItems: 'center',
               }}
-              key={val.id}
+              key={val.user_id}
             >
               <input
                 type="checkbox"
                 id="subitem"
                 name="selection"
                 style={{ margin: 'none', width: '2vw' }}
-                defaultChecked={selectedUserIds.current.has(val.id)}
+                defaultChecked={selectedUserIds.current.has(val.user_id)}
                 onClick={() => {
-                  selectedUserIds.current.has(val.id)
-                    ? selectedUserIds.current.delete(val.id)
-                    : selectedUserIds.current.add(val.id);
+                  selectedUserIds.current.has(val.user_id)
+                    ? selectedUserIds.current.delete(val.user_id)
+                    : selectedUserIds.current.add(val.user_id);
                 }}
               />
-              <label style={{whiteSpace: 'nowrap'}} htmlFor="selection">{val.display_name}</label>
+              <label style={{whiteSpace: 'nowrap'}} htmlFor="selection">{val.user_display_name}</label>
             </div>
           ))}
         </div>

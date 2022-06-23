@@ -63,6 +63,14 @@ const getUsers = (companyId, type) => {
   return query(sql);
 };
 
+const getUsersForContactList = (companyId, type) => {
+  const sql = `SELECT  u.display_name AS user_display_name, u.id AS user_id, l.id AS license_id
+              FROM users u
+              JOIN licenses l ON l.user_id=u.id
+              WHERE u.company_id = ${companyId} AND u.user_type='${type}';`;
+  return query(sql);
+};
+
 const getContactNumById=(userId)=>{
   const sql=`SELECT contact_no FROM users_add_data WHERE user_id=${userId};`;
   return query(sql);
@@ -458,4 +466,5 @@ module.exports = {
   getControlId,
   getContactListByuserId,
   getCSUserDataById,
+  getUsersForContactList,
 };

@@ -39,6 +39,7 @@ const {
   getControlId,
   getContactListByuserId,
   getCSUserDataById,
+  getUsersForContactList,
 } = require('../queries/user');
 const { createCompanyActivityLog } = require('../queries/company');
 const { getTGs,getTGmap } = require('../queries/talkgroup');
@@ -133,7 +134,7 @@ router.get(
   guard.check('company'),
   companyCheck,
   async (req, res) => {
-    const users = await getUsers(req.user.id, req.params.type);
+    const users = await getUsersForContactList(req.user.id, req.params.type);
     return res.status(200).send(users);
   }
 );
@@ -437,7 +438,7 @@ router.put(
     if (
       req.body.display_name.toLowerCase() !== user[0].display_name.toLowerCase()
     ) {
-      user = await getCSUserByName(req.body.display_name);
+      user = await getCSUserByName(req.body.display_name,req.user.id);
       if (user.length)
         return res(400).json({
           user: 'Control Station with given name alreay exists.',

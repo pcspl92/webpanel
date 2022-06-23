@@ -12,7 +12,7 @@ export default function LicenseCreate() {
   const [company, setcompany] = useState(0);
   const [companylist, setcompanylist] = useState([]);
   const [features, setFeatures] = useState({
-    grp_call: false,
+    grp_call: true,
     enc: false,
     priv_call: false,
     live_gps: false,
@@ -26,20 +26,24 @@ export default function LicenseCreate() {
   const [disableRenewal, setDisableRenewal] = useState(true);
   const [error, setError] = useState();
   const { user } = useAuth();
-  const reset = () => {
+
+  const resetCompany = () => {
     setFeatures({
-      grp_call: false,
+      grp_call: true,
       enc: false,
       priv_call: false,
       live_gps: false,
       geo_fence: false,
       chat: false,
     });
-    setcompany(0);
     setLicenseType('');
     setquantity(0);
     setRenewalType('');
+    setPrice(0);
+    setDisableRenewal(true);
+    setInputDisabled(true);
   };
+
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/company/');
@@ -55,18 +59,18 @@ export default function LicenseCreate() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
-    if(Number(company)===0){
+    if (Number(company) === 0) {
       alert("Please select Company")
       setDisabled(false)
     }
-    else if(licenseType===''){
+    else if (licenseType === '') {
       alert("Please select License type")
       setDisabled(false)
-    }else if(Number(quantity)===0){
+    } else if (Number(quantity) === 0) {
       alert("Quantity should be greater than or equal to one")
       setDisabled(false)
     }
-    else{
+    else {
       const data = {
         license_type: licenseType,
         renewal: renewalType,
@@ -74,13 +78,14 @@ export default function LicenseCreate() {
         company_id: Number(company),
         features,
       };
-        setError('');
-        const response = await axios.post('/order/', data);
-        if (response.data.message) {
-          alert(response.data.message)
-          window.location.reload()
-        }
-        reset();
+      setError('');
+      const response = await axios.post('/order/', data);
+      if (response.data.message) {
+        alert(response.data.message)
+        window.location.reload()
+      }
+      reset();
+      setcompany(0);
       setDisabled(false);
     }
   };
@@ -112,6 +117,7 @@ export default function LicenseCreate() {
             id="company"
             onChange={(event) => {
               setcompany(event.target.value);
+              resetCompany();
             }}
             value={company}
             required
@@ -135,6 +141,18 @@ export default function LicenseCreate() {
             onChange={(event) => {
               setLicenseType(event.target.value);
               setDisableRenewal(false);
+              setquantity(0);
+              setRenewalType('');
+              setPrice(0);
+              setFeatures({
+                grp_call: true,
+                enc: false,
+                priv_call: false,
+                live_gps: false,
+                geo_fence: false,
+                chat: false,
+              });
+              setInputDisabled(true);
             }}
             value={licenseType}
             required
@@ -193,9 +211,7 @@ export default function LicenseCreate() {
           type="checkbox"
           id="feature"
           name="feature1"
-          onChange={(e) => {
-            setFeature(e.target.checked, 'grp_call');
-          }}
+          checked={true}
           disabled={inputDisabled}
         />
         <label htmlFor="feature1"> Group Call</label>&nbsp;&nbsp;
@@ -203,6 +219,7 @@ export default function LicenseCreate() {
           type="checkbox"
           id="feature"
           name="feature2"
+          checked={features.priv_call}
           onChange={(e) => {
             setFeature(e.target.checked, 'priv_call');
           }}
@@ -213,6 +230,7 @@ export default function LicenseCreate() {
           type="checkbox"
           id="feature"
           name="feature3"
+          checked={features.enc}
           onChange={(e) => {
             setFeature(e.target.checked, 'enc');
           }}
@@ -223,6 +241,7 @@ export default function LicenseCreate() {
           type="checkbox"
           id="feature"
           name="feature3"
+          checked={features.live_gps}
           onChange={(e) => {
             setFeature(e.target.checked, 'live_gps');
           }}
@@ -233,6 +252,7 @@ export default function LicenseCreate() {
           type="checkbox"
           id="feature"
           name="feature3"
+          checked={features.geo_fence}
           onChange={(e) => {
             setFeature(e.target.checked, 'geo_fence');
           }}
@@ -243,6 +263,7 @@ export default function LicenseCreate() {
           type="checkbox"
           id="feature"
           name="feature3"
+          checked={features.chat}
           onChange={(e) => {
             setFeature(e.target.checked, 'chat');
           }}

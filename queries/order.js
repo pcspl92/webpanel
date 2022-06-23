@@ -6,13 +6,14 @@ const getOrders = (subAgents, currDate) => {
                f.grp_call, f.enc, f.priv_call, f.live_gps, f.geo_fence, f.chat, 
                COUNT(case when o.license_expiry > '${currDate}' then o.id else null end) - COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS available, 
                COUNT(case when o.license_expiry > '${currDate}' then l.user_id else null end) AS active
-               FROM orders o
+               FROM orders o 
                JOIN agents a ON o.agent_id = a.id
                JOIN features f ON o.feature_id = f.id
                JOIN companies c ON o.company_id = c.id
                JOIN licenses l ON l.order_id = o.id
                WHERE o.agent_id IN (${subAgents})
-               GROUP BY o.id;`;
+               GROUP BY o.id 
+               ORDER BY o.timestamp DESC;`;
   return query(sql);
 };
 
@@ -102,7 +103,7 @@ const createTransactionLog = (
 const getTransactionLogs = (agentId) => {
   const sql = `SELECT id, timestamp AS date, trnc_amount AS transaction_amount, type AS transaction_type,
                balance_left AS balance, details AS transaction_details FROM transactions 
-               WHERE agent_id=${agentId};`;
+               WHERE agent_id=${agentId} ORDER BY timestamp DESC;`;
   return query(sql);
 };
 

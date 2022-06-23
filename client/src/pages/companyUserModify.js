@@ -43,7 +43,7 @@ function UserModify() {
       setUsers(data.users);
       setLoading(false);
     })();
-  },[]);
+  },[user]);
 
   const schema1 = yup.object().shape({
     display_name: yup
@@ -52,7 +52,8 @@ function UserModify() {
       .required('This field is required')
       .matches(/^[a-zA-Z][a-zA-Z ]+$/, 'Invalid username')
       .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
-      .max(90, 'Display name must be less tha 90 characters long'),
+      .min(3, 'Display name must be 3-25 characters long')
+      .max(25, 'Display name must be 3-25 characters long'),
     contact_number: yup
       .string()
       .required('This field is required')
@@ -634,6 +635,8 @@ function UserModify() {
     setDisplayName('');
     setDeviceID('');
     setcontactNum('');
+    setupdateType('0');
+    setUser('0');
   };
 
   const controlSubmit = async () => {
@@ -645,16 +648,29 @@ function UserModify() {
       contact_no: contactNum,
       cs_type_id: Number(controlStationType),
     };
-
+    const data1 = {
+      display_name: displayName,
+      contact_number: contactNum,
+    };
     try {
+      await validate(data1);
       const response = await axios.put(`/user/control/${user}`, data);
       if (response.data.message) {
         alert(response.data.message);
       }
       resetControlForm();
-    } catch (err) {
-      console.log(err.response.data);
-    }
+    } catch (error) {
+      if (error.inner.length) {
+        const validateErrors = error.inner.reduce(
+          (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
+          {}
+        );
+        alert(JSON.stringify(validateErrors, null, 4));
+        setDisabled(false);
+      } else {
+        console.log(error.response.data);
+      }
+    };
   };
 
   const ControlStationForm = () => (

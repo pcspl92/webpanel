@@ -130,6 +130,7 @@ const CompanyView = () => {
           <th>Company Name</th>
           <th>Account Name</th>
           <th>Date of Creation</th>
+          <th>Status</th>
           <th>Contact Number</th>
           <th>Sub-agent Name</th>
         </tr>
@@ -139,6 +140,7 @@ const CompanyView = () => {
             <th>{val.company_name}</th>
             <th>{val.account_name}</th>
             <th>{moment(val.timestamp).local().format('DD-MM-YYYY')}</th>
+            <th>{val.company_status}</th>
             <th>{val.contact_number}</th>
             <th>{val.agent_name}</th>
           </tr>
