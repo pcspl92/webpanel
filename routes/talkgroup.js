@@ -104,7 +104,7 @@ router.put(
         .status(404)
         .json({ talkgroup: 'Talkgroup with given id is not registered.' });
 
-    tg = await findTGByName(req.body.name);
+    tg = await findTGByName(req.body.name,req.user.id);
     if (tg.length)
       return res
         .status(400)

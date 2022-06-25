@@ -75,8 +75,9 @@ const TalkGroupModify = () => {
         alert(JSON.stringify(validateErrors,null,4));
         setErr(validateErrors);
       }
-      setDisabled(false);
+      
     }
+    setDisabled(false);
   };
 
   const form = () => (

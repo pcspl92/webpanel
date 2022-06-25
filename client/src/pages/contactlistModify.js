@@ -45,7 +45,7 @@ export default function ContactListCreate() {
   function onSelect(users) {
     const selected = [];
     selectedUserIds.current.forEach((id) => {
-      selected.push(users.filter((user) => user.id === id)[0]);
+      selected.push(users.filter((user) => user.user_id === id)[0]);
     });
     setSelectedUsers(selected);
   }
@@ -59,7 +59,7 @@ export default function ContactListCreate() {
     setDisabled(true);
   
     const users = [];
-    selectedUsers.forEach((value) => users.push(value.id));
+    selectedUsers.forEach((value) => users.push(value.user_id));
     const data = {
       name: contactlistName,
       userIds: users,
@@ -105,10 +105,9 @@ export default function ContactListCreate() {
   const getFormData = async (listNameId) => {
     if (listNameId !== '0') {
       const { data } = await axios.get(`/contactlist/getData/${listNameId}`);
-
     const selected = [];
     data.forEach((id) => {
-      selected.push(userlist.filter((user) => user.id === id.user_id)[0]);
+      selected.push(userlist.filter((user) => user.user_id === id.user_id)[0]);
     });
     setSelectedUsers(selected);
   }
@@ -151,7 +150,7 @@ export default function ContactListCreate() {
         <div className="accbox" style={{whiteSpace: 'nowrap'}}>
           {(selectedUsers.length &&
             selectedUsers.map((val) => (
-              <div key={val.id}>{val.display_name}</div>
+              <div key={val.user_id}>{val.user_display_name}</div>
             ))) ||
             null}
         </div>

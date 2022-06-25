@@ -48,7 +48,7 @@ export default function ContactListCreate() {
   function onSelect(users) {
     const selected = [];
     selectedUserIds.current.forEach((id) => {
-      selected.push(users.filter((user) => user.id === id)[0]);
+      selected.push(users.filter((user) => user.user_id === id)[0]);
     });
     setSelectedUsers(selected);
   }
@@ -127,7 +127,7 @@ export default function ContactListCreate() {
         <div className="accbox" style={{whiteSpace: 'nowrap'}}>
           {(selectedUsers.length &&
             selectedUsers.map((val) => (
-              <div key={val.id}>{val.display_name}</div>
+              <div key={val.user_id}>{val.user_display_name}</div>
             ))) ||
             null}
         </div>

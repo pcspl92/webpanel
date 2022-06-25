@@ -92,7 +92,7 @@ router.put(
         .status(404)
         .json({ contactlist: 'No Contact List with given id found.' });
 
-    list = await getContactListByName(req.body.name);
+    list = await getContactListByName(req.body.name,req.user.id);
     if (list.length)
       return res
         .status(404)
