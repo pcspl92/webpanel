@@ -14,6 +14,7 @@ export default function Licensetransac() {
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/order/transaction/agent-panel');
+      console.log(data);
       settrandetails(data);
       setupdatedtranDetails(data);
       setLoading(false);
@@ -101,6 +102,7 @@ export default function Licensetransac() {
         <tr className="tableheading">
           <th>S. No</th>
           <th>Transation Date</th>
+          <th>Transation Time</th>
           <th>Transaction Amount</th>
           <th>Transaction Type</th>
           <th>Balance</th>
@@ -110,10 +112,11 @@ export default function Licensetransac() {
           <tr key={val.id}>
             <th>{index + 1}</th>
             <th>{moment(val.date).local().format('DD-MM-YYYY')}</th>
+            <th>{moment(val.date).local().format('HH:mm')}</th>
             <th>{val.transaction_amount}</th>
             <th>{val.transaction_type}</th>
             <th>{val.balance}</th>
-            <th>{val.transaction_details}</th>
+            <th>{val.transaction_details} {val.orderId}</th>
           </tr>
         ))}
       </table>

@@ -24,7 +24,7 @@
   font-size: 2vh;
 }
 
-.CMactiveclass {
+.CMactiveclassActive {
   height: 3vh;
   width: 5.5vw;
   background-color: chartreuse;
@@ -33,15 +33,25 @@
 
   font-weight: bolder;
 }
-.CMinactiveclass {
+.CMactiveclassPause {
   height: 3vh;
   width: 5.5vw;
-  background-color: gray;
+  background-color: rgb(255, 0, 13);
   font-size: 2vh;
   padding: 0.5vw;
 
   font-weight: bolder;
 }
+.CMinactiveclass {
+  height: 3vh;
+  width: 5.5vw;
+  background-color: rgb(255, 254, 255);
+  font-size: 2vh;
+  padding: 0.5vw;
+
+  font-weight: bolder;
+}
+
 .CMactiveclass:hover,
 .CMinactiveclass:hover {
   cursor: pointer;

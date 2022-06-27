@@ -47,7 +47,12 @@ export default function LicenseCreate() {
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/company/');
-      setcompanylist(data);
+      console.log(data);
+      setcompanylist(
+        data.filter(
+          (val) =>
+            (val.status==="active"))
+      );
       setLoading(false);
     })();
   }, []);

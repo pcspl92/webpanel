@@ -8,7 +8,7 @@ import axios from '../utils/axios';
 const CompanyModify = () => {
   const [sagentlist, setsagentlist] = useState([]);
   const [companylist, setcompanylist] = useState([]);
-  const [active, setactive] = useState(true);
+  const [active, setactive] = useState('');
   const [type, setType] = useState('modify');
   const [contactNumber, setcontact] = useState('');
   const [compnewname, setcompnewname] = useState('');
@@ -38,20 +38,28 @@ const CompanyModify = () => {
     })();
   }, []);
 
-  const validateForm = async (data) => {
     const schema = yup.object().shape({
-      password: yup.string().required('Password is required'),
-      display_name: yup.string().required('Company name is requried'),
+     //password: yup.string().required('Password is required'),
+      display_name: yup
+      .string()
+      .typeError('Sub-Agent name must be string')
+      .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
+      .required('This field is required')
+      .min(3, 'Sub-Agent name must be 3-90 characters long')
+      .max(90, 'Sub-Agent name must be 3-90 characters long'),
       contact_number: yup
-        .string()
-        .required()
-        .matches(
-          /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-          "Phone number is not valid"
-        ),
+      .string()
+      .required()
+      .matches(
+        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+        "Contact number is not valid"
+      ),
       agent_id: yup.number().min(1, 'Select a sub-agent'),
       company_id: yup.number().min(1, 'Select a company'),
+      status: yup.string().required('This field is required'),
     });
+
+  const validate = async (data) => {
     await schema.validate(data, { abortEarly: false });
   };
 
@@ -73,11 +81,11 @@ const CompanyModify = () => {
       display_name: compnewname,
       contact_number: contactNumber,
       agent_id: Number(subagent),
-      status: active ? 'active' : 'paused',
+      status: active,
     };
 
     try {
-      await validateForm({ ...data, company_id: Number(company) });
+      await validate({ ...data, company_id: Number(company) });
       const response = await axios.put(`/company/${company}`, data);
       if (response.data.message) {
         alert(response.data.message);
@@ -189,32 +197,33 @@ const CompanyModify = () => {
           <span>
             <label htmlFor="status">Status :&nbsp;&nbsp;&nbsp;</label>
           </span>
-          <span>
+          <span style={{backgroundColor: 'gray'}}>
             <span
-              className={active ? 'CMactiveclass' : 'CMinactiveclass'}
+              className={active==='active' ? 'CMactiveclassActive' : 'CMinactiveclass'}
               style={{
                 borderTopLeftRadius: '10%',
                 borderBottomLeftRadius: '10%',
               }}
               onClick={() => {
-                setactive(!active);
+                setactive('active');
               }}
             >
               Active
             </span>
             <span
-              className={!active ? 'CMactiveclass' : 'CMinactiveclass'}
+              className={active==='paused' ? 'CMactiveclassPause' : 'CMinactiveclass'}
               style={{
                 borderTopRightRadius: '10%',
                 borderBottomRightRadius: '10%',
               }}
               onClick={() => {
-                setactive(!active);
+                setactive('paused');
               }}
             >
               Paused
             </span>
           </span>
+          <div className="text-danger fw-500">{errors?.status}</div>
         </div>
         <div className="mt-3">
           <span>Password : &nbsp; </span>
@@ -251,17 +260,18 @@ const CompanyModify = () => {
         <div className="text-danger fw-500">{errors?.display_name}</div>
         <div className="mt-3 ">
           <span>
-            <label htmlFor="contact_number">
+            <label htmlFor="contact">
               Contact Number :&nbsp;&nbsp;&nbsp;
             </label>
           </span>
           <input
-            type="text"
-            id="contact_number"
+            type="number"
+            id="contact"
             onChange={(event) => {
               setcontact(event.target.value);
             }}
             value={contactNumber}
+            required
           />
         </div>
         <div className="text-danger fw-500">{errors?.contact_number}</div>

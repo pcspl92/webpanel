@@ -11,7 +11,7 @@ const findCompanyByUsername = (username) => {
 };
 
 const getCompanies = (agentIds) => {
-  const sql = `SELECT id, display_name FROM companies WHERE agent_id IN (${agentIds})`;
+  const sql = `SELECT id, display_name, status FROM companies WHERE agent_id IN (${agentIds})`;
   return query(sql);
 };
 

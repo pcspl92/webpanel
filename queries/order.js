@@ -102,7 +102,7 @@ const createTransactionLog = (
 
 const getTransactionLogs = (agentId) => {
   const sql = `SELECT id, timestamp AS date, trnc_amount AS transaction_amount, type AS transaction_type,
-               balance_left AS balance, details AS transaction_details FROM transactions 
+               balance_left AS balance, details AS transaction_details, order_id AS orderId FROM transactions 
                WHERE agent_id=${agentId} ORDER BY timestamp DESC;`;
   return query(sql);
 };

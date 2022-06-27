@@ -439,7 +439,7 @@ export default function LicenseModify() {
   const getFormData = async (type) => {
     setFormLoading(true);
     setDisableSelect(true);
-    if (order !== 0) {
+    if (order !== 0 && type!='0') {
       setupdateType(type);
       const { data } = await axios.get(`/order/${order}/${type}`);
       console.log(data);
