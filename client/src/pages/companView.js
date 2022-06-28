@@ -17,6 +17,7 @@ const CompanyView = () => {
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/company/agent-panel');
+      console.log(data);
       setTableData(data);
       setLoading(false);
     })();
@@ -38,9 +39,9 @@ const CompanyView = () => {
         tableData.filter(
           (val) =>
             (companyName.length &&
-              (val.company_name.toLowerCase()===(companyName.toLowerCase()))) &&
+              (val.company_name.toLowerCase()===(companyName.toLowerCase()).trim())) &&
             (compaccname.length &&
-              (val.account_name.toLowerCase()===(compaccname.toLowerCase())))
+              (val.account_name.toLowerCase()===(compaccname.toLowerCase()).trim()))
         )
       );
     } catch (error) {
@@ -142,7 +143,7 @@ const CompanyView = () => {
             <th>{moment(val.timestamp).local().format('DD-MM-YYYY')}</th>
             <th>{val.company_status}</th>
             <th>{val.contact_number}</th>
-            <th>{val.agent_name}</th>
+            <th>{val.agent_name} ({val.agent_status})</th>
           </tr>
         ))}
       </table>

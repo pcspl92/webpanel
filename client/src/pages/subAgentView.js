@@ -36,9 +36,9 @@ const ViewAgent = () => {
         agentlist.filter(
           (val) =>
             (agentname.length &&
-              val.agent_name.toLowerCase()===(agentname.toLowerCase())) &&
+              val.agent_name.toLowerCase()===(agentname.toLowerCase().trim())) &&
             (agentaccname.length &&
-              val.account_name.toLowerCase()===(agentaccname.toLowerCase()))
+              val.account_name.toLowerCase()===(agentaccname.toLowerCase().trim()))
         )
       );
     } catch (error) {

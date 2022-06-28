@@ -24,17 +24,17 @@ const ViewUsers = () => {
 
   const companyFilter = () =>
     userlist.filter((rec) =>
-      rec.company_name.toLowerCase().includes(companyName.toLowerCase())
+      rec.company_name.toLowerCase().includes(companyName.toLowerCase().trim())
     );
 
   const accountFilter = () =>
     userlist.filter((rec) =>
-      rec.account_name.toLowerCase().includes(accountName.toLowerCase())
+      rec.account_name.toLowerCase().includes(accountName.toLowerCase().trim())
     );
 
   const userFilter = () =>
     userlist.filter((rec) =>
-      rec.user_name.toLowerCase().includes(userName.toLowerCase())
+      rec.user_name.toLowerCase().includes(userName.toLowerCase().trim())
     );
 
   const expiryFilter = () =>

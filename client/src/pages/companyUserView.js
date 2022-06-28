@@ -25,21 +25,21 @@ const CompanyUserView = () => {
   }, []);
 
   const accountTypeFilter = () =>tableData.filter((rec) =>
-      rec.account_type.toLowerCase().includes(accountType.toLowerCase())
+      rec.account_type.toLowerCase().includes(accountType.toLowerCase().trim())
     );
   const orderIDFilter = () =>
      tableData.filter((rec) => rec.order_id == orderID );
   
   const accountFilter = () =>
     tableData.filter((rec) =>
-      rec.account_name.toLowerCase().includes(accountName.toLowerCase())
+      rec.account_name.toLowerCase().includes(accountName.toLowerCase().trim())
     );
 
   const userFilter = () =>
     tableData.filter((rec) =>
       rec.user_display_name
         .toLowerCase()
-        .includes(userDisplayName.toLowerCase())
+        .includes(userDisplayName.toLowerCase().trim())
     );
 
   const expiryFilter = () =>

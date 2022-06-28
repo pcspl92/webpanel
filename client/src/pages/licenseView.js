@@ -42,9 +42,9 @@ export default function LicenseView() {
             (companyName.length &&
               val.company_name
                 .toLowerCase()
-                .includes(companyName.toLowerCase())) &&
+                .includes(companyName.toLowerCase().trim())) &&
             (agentName.length &&
-              val.agent_name.toLowerCase().includes(agentName.toLowerCase())) &&
+              val.agent_name.toLowerCase().includes(agentName.toLowerCase().trim())) &&
             (orderId.length && val.order_id == orderId) &&
             (expdate.length && moment(val.expiry_date).isAfter(expdate))
         

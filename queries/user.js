@@ -260,16 +260,14 @@ const getControlId = (dispatcherId) => {
   return query(sql);
 };
 
-const getReceivingPort = (basePort, formType) => {
+const getReceivingPort = (basePort, formType,id) => {
   let sql;
   if (formType === 'create')
     sql = `SELECT IF(MAX(receiving_port) < ${basePort}, ${basePort}, 
            MAX(receiving_port)+1 ) AS receivingPort FROM control_station_user;`;
   else
     sql = `SELECT receiving_port AS receivingPort FROM control_station_user 
-           WHERE id=(
-             SELECT user_id FROM licenses WHERE order_id=6
-           );`;
+           WHERE id=${id};`;
   return query(sql);
 };
 
@@ -280,7 +278,7 @@ const getControlStationTypes = (comapnyId) => {
 
 const getDataForUserModify = (companyId) => {
   const sql = `SELECT u.id, u.display_name, u.user_type, l.order_id 
-              FROM users u
+               FROM users u
                JOIN licenses l ON l.user_id = u.id
                JOIN (SELECT id, license_type FROM orders) AS o ON l.order_id = o.id
                WHERE company_id = ${companyId} AND o.license_type = u.user_type 

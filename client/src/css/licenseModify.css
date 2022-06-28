@@ -26,7 +26,6 @@ button {
 }
 .box {
   min-width: 60vw;
-  height:auto;
   display: flex;
   flex-direction: column;
   align-items: center;

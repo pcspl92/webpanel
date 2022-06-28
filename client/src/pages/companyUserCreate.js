@@ -15,14 +15,14 @@ function UserCreate() {
   const [deviceID, setDeviceID] = useState('');
   const [contactNum, setcontactNum] = useState('');
   const [order, setorder] = useState('0');
-  const [license,setLicense] = useState('0');
+  const [license, setLicense] = useState('0');
   const [orderlist, setorderlist] = useState([]);
   const [contactList, setContactlist] = useState('0');
   const [loading, setLoading] = useState(true);
   // const [disabled, setDisabled] = useState(false);
   const [talkgroup, setTalkgroup] = useState();
   const [updOrderList, setUpdOrderList] = useState([]);
-  const [upLincenseOrderList,setUpLicenseOrderList] = useState([]);
+  const [upLincenseOrderList, setUpLicenseOrderList] = useState([]);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [selectedTG, setSelectedTG] = useState([]);
@@ -31,7 +31,7 @@ function UserCreate() {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   const [errors1, setErrors1] = useState('');
-  
+
   const [featuresGlobal, setFeaturesGlobal] = useState({
     grp_call: false,
     enc: false,
@@ -51,7 +51,7 @@ function UserCreate() {
       setLoading(false);
 
     })();
-  }, [updateType,order]);
+  }, [updateType, order]);
 
   const schema = yup.object().shape({
     username: yup
@@ -81,10 +81,11 @@ function UserCreate() {
       .max(25, 'Display name must be 3-25 characters long'),
     contact_number: yup
       .string()
-      .required('This field is required')
-      .matches(/^[0-9]+$/, 'Must be only digits')
-      .min(10, 'Must be exactly 10 digits')
-      .max(10, 'Must be exactly 10 digits'),
+      .required()
+      .matches(
+        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+        "Contact number is not valid"
+      ),
   });
   const validate = async (data) => {
     const formData2 = { ...data, confirm_password: confirmPassword };
@@ -117,10 +118,11 @@ function UserCreate() {
       .max(90, 'Device_Id must be greater than 3-90 characters'),
     contact_number: yup
       .string()
-      .required('This field is required')
-      .matches(/^[0-9]+$/, 'Must be only digits')
-      .min(10, 'Must be exactly 10 digits')
-      .max(10, 'Must be exactly 10 digits'),
+      .required()
+      .matches(
+        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+        "Contact number is not valid"
+      ),
   });
   const validate1 = async (data) => {
     const formData2 = { ...data, confirm_password: confirmPassword };
@@ -160,14 +162,14 @@ function UserCreate() {
                     : selectedTGIds.current.add(val.id);
                 }}
               />
-              <label style={{whiteSpace: 'nowrap'}} htmlFor="selection">{val.tg_name}</label>
+              <label style={{ whiteSpace: 'nowrap' }} htmlFor="selection">{val.tg_name}</label>
             </div>
           ))}
         </div>
         <button type="button" onClick={() => onTGSelect()}>
           &nbsp;&nbsp; &gt; &gt; &nbsp;&nbsp;
         </button>
-        <div className="accbox" style={{whiteSpace: 'nowrap'}}>
+        <div className="accbox" style={{ whiteSpace: 'nowrap' }}>
           {selectedTG?.map((val) => <div key={val.id}>{val.tg_name}</div>) ||
             null}
         </div>
@@ -229,15 +231,15 @@ function UserCreate() {
       resetPttForm();
       setErrors({});
     } catch (error) {
-      if(error.inner===undefined){
+      if (error.inner === undefined) {
         alert(JSON.stringify(error.response.data));
         console.log(error.response.data);
-      }else{
+      } else {
         const validateErrors = error.inner.reduce(
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
           {}
         );
-        alert(JSON.stringify(validateErrors,null,4));
+        alert(JSON.stringify(validateErrors, null, 4));
         setErrors(validateErrors);
       }
     }
@@ -485,14 +487,14 @@ function UserCreate() {
                     : selectedCSIds.current.add(val.id);
                 }}
               />
-              <label style={{whiteSpace: 'nowrap'}} htmlFor="selection">{val.display_name}</label>
+              <label style={{ whiteSpace: 'nowrap' }} htmlFor="selection">{val.display_name}</label>
             </div>
           ))}
         </div>
         <button type="button" onClick={() => onCSSelect()}>
           &nbsp;&nbsp; &gt; &gt; &nbsp;&nbsp;
         </button>
-        <div className="accbox" style={{whiteSpace: 'nowrap'}}>
+        <div className="accbox" style={{ whiteSpace: 'nowrap' }}>
           {selectedCS?.map((val) => (
             <div key={val.id}>{val.display_name}</div>
           )) || null}
@@ -555,15 +557,15 @@ function UserCreate() {
       resetDispatcherForm();
       setErrors({});
     } catch (error) {
-      if(error.inner===undefined){
+      if (error.inner === undefined) {
         alert(JSON.stringify(error.response.data));
         console.log(error.response.data);
-      }else{
+      } else {
         const validateErrors = error.inner.reduce(
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
           {}
         );
-        alert(JSON.stringify(validateErrors,null,4));
+        alert(JSON.stringify(validateErrors, null, 4));
         setErrors(validateErrors);
       }
     }
@@ -668,7 +670,7 @@ function UserCreate() {
           ))}
         </select>
       </div>
-      <br/>
+      <br />
       <div style={{ textAlign: "center" }}>
         <label>Features : </label>&nbsp;
         <br />
@@ -791,25 +793,25 @@ function UserCreate() {
     try {
       if (Number(controlStationType) === 0) {
         setErrors1("This field is required");
-      } 
-        await validate1(valData);
-        const response = await axios.post('/user/control', data);
-        if (response.data.message) {
-          alert(response.data.message);
-        }
-        resetControlForm();
-        setErrors({});
-      
+      }
+      await validate1(valData);
+      const response = await axios.post('/user/control', data);
+      if (response.data.message) {
+        alert(response.data.message);
+      }
+      resetControlForm();
+      setErrors({});
+
     } catch (error) {
-      if(error.inner===undefined){
+      if (error.inner === undefined) {
         alert(JSON.stringify(error.response.data));
         console.log(error.response.data);
-      }else{
+      } else {
         const validateErrors = error.inner.reduce(
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
           {}
         );
-        alert(JSON.stringify(validateErrors,null,4));
+        alert(JSON.stringify(validateErrors, null, 4));
         setErrors(validateErrors);
       }
     }
@@ -844,7 +846,7 @@ function UserCreate() {
               </option>
             ))}
           </select>
-         <div className="text-danger fw-600">{errors1}</div>
+          <div className="text-danger fw-600">{errors1}</div>
         </div>
         <br />
         <div className="required-field">
@@ -941,7 +943,7 @@ function UserCreate() {
     }
     // setorder('0');
     // setupdateType('0');
-   // setDisabled(false);
+    // setDisabled(false);
   };
 
   const onSelectType = (type) => {
@@ -956,11 +958,11 @@ function UserCreate() {
     setErrors({});
   };
 
-  const onSelectOrder = async(orderId) => {
+  const onSelectOrder = async (orderId) => {
     setUpLicenseOrderList([]);
     setLicense('0');
     if (orderId !== 0) {
-      const {data} = await axios.get(`/user/company-panel/user-create/licenses/${orderId}`);
+      const { data } = await axios.get(`/user/company-panel/user-create/licenses/${orderId}`);
       setUpLicenseOrderList(data.licenseId);
     }
     setorder(orderId);
@@ -1064,7 +1066,7 @@ function UserCreate() {
             <label htmlFor="confirm"> Contact Number : &nbsp;</label>
           </span>
           <input
-            type="text"
+            type="number"
             id="name"
             onChange={(event) => {
               setcontactNum(event.target.value);

@@ -43,7 +43,7 @@ function UserModify() {
       setUsers(data.users);
       setLoading(false);
     })();
-  },[user]);
+  }, [user]);
 
   const schema1 = yup.object().shape({
     display_name: yup
@@ -56,10 +56,11 @@ function UserModify() {
       .max(25, 'Display name must be 3-25 characters long'),
     contact_number: yup
       .string()
-      .required('This field is required')
-      .matches(/^[0-9]+$/, 'Must be only digits')
-      .min(10, 'Must be exactly 10 digits')
-      .max(10, 'Must be exactly 10 digits'),
+      .required()
+      .matches(
+        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+        "Contact number is not valid"
+      ),
   });
 
   const validate = async (data) => {
@@ -99,7 +100,7 @@ function UserModify() {
                     : selectedTGIds.current.add(val.id);
                 }}
               />
-              <label style={{whiteSpace: 'nowrap'}} htmlFor="selection">{val.tg_name}</label>
+              <label style={{ whiteSpace: 'nowrap' }} htmlFor="selection">{val.tg_name}</label>
             </div>
           ))}
         </div>
@@ -396,7 +397,7 @@ function UserModify() {
                     : selectedCSIds.current.add(val.id);
                 }}
               />
-              <label style={{whiteSpace: 'nowrap'}} htmlFor="selection">{val.display_name}</label>
+              <label style={{ whiteSpace: 'nowrap' }} htmlFor="selection">{val.display_name}</label>
             </div>
           ))}
         </div>
@@ -808,7 +809,7 @@ function UserModify() {
         (updUser) =>
           updUser.id === Number(userId) && updUser.user_type === updateType
       )[0];
-
+      console.log(userId);
       const { data } = await axios.get(`/user/modify/${updateType}/${orderId}/${userId}`);
       console.log(data);
       setDisplayName(displayName);
@@ -919,7 +920,7 @@ function UserModify() {
             <label htmlFor="confirm">Contact Number : &nbsp;</label>
           </span>
           <input
-            type="text"
+            type="number"
             id="name"
             onChange={(event) => {
               setcontactNum(event.target.value);

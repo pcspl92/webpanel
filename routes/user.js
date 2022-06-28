@@ -63,8 +63,8 @@ router.get(
       (acc, sub) => [...acc, sub.id],
       [req.user.id]
     );
-
-    const userData = await getUsersAgentPanel(agentIds);
+//console.log(agentIds);
+    const userData = await getUsersAgentPanel(1);
     //console.log(userData);
     return res.status(200).json(userData);
   }
@@ -80,7 +80,6 @@ router.get(
   companyCheck,
   async (req, res) => {
     const currDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
-
     const userData = await viewUsersCompanyPanel(req.user.id, currDate);
     return res.status(200).json(userData);
   }
@@ -178,7 +177,7 @@ router.get(
     const getControlFormData = async () => {
       const receivingPortBase = 8080;
       const [[{ receivingPort }], csTypes,ctnNum,userdata] = await Promise.all([
-        getReceivingPort(receivingPortBase, req.params.formType),
+        getReceivingPort(receivingPortBase, req.params.formType,req.params.id),
         getControlStationTypes(1),
         getContactNumById(req.params.id),
         getCSUserDataById(req.params.id),
