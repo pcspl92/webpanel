@@ -82,11 +82,11 @@ const AddAgent = () => {
       .required('This field is required')
       .min(3, 'Sub-Agent name must be 3-90 characters long')
       .max(90, 'Sub-Agent name must be 3-90 characters long'),
-    contact_number: yup
+      contact_number: yup
       .string()
-      .required('This field is required')
+      .required()
       .matches(
-        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+        /^(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})/,
         "Contact number is not valid"
       ),
   });
@@ -230,7 +230,7 @@ const AddAgent = () => {
           <label htmlFor="id5">Contact Number : &nbsp;</label>
         </span>
         <input
-          type="number"
+          type="tel"
           id="id5"
           min="0"
           onChange={(event) => {

@@ -42,11 +42,11 @@ const CompanyCreate = () => {
       .required('This field is required')
       .min(10, 'Company name must be 10-90 characters long')
       .max(90, 'Company name must be 10-90 characters long'),
-    contact_number: yup
+      contact_number: yup
       .string()
       .required()
       .matches(
-        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+        /^(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})/,
         "Contact number is not valid"
       ),
       // agent:yup.number().required("Agent name is required")
@@ -204,7 +204,7 @@ const CompanyCreate = () => {
             <label htmlFor="contact">Contact Number : &nbsp;</label>
           </span>
           <input
-            type="number"
+            type="tel"
             id="contact"
             onChange={(event) => {
               setcontnum(event.target.value);

@@ -126,6 +126,7 @@ const ViewAgent = () => {
         <tr className="tableheading">
           <th>S. No</th>
           <th>Sub-agent Name</th>
+          <th>Status</th>
           <th>Account Name</th>
           <th>Total Orders</th>
           <th>Total Active Orders</th>
@@ -135,6 +136,7 @@ const ViewAgent = () => {
           <tr key={val.id}>
             <th>{index + 1}</th>
             <th>{val.agent_name}</th>
+            <th>{val.status}</th>
             <th>{val.account_name}</th>
             <th>{val.orders}</th>
             <th>{val.active}</th>

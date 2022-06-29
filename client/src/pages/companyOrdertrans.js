@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import axios from '../utils/axios';
+import ReactPaginate from "react-paginate";
 //import { NULL } from 'mysql/lib/protocol/constants/types';
 
 export default function CompanyTransactionView() {
@@ -9,6 +10,7 @@ export default function CompanyTransactionView() {
   const [fromdate, setfromdate] = useState('');
   const [todate, settodate] = useState('');
   const [updatedTableData, setupdatedTableData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -18,6 +20,16 @@ export default function CompanyTransactionView() {
       setLoading(false);
     })();
   }, []);
+
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+  }
+  
+  const PER_PAGE = 10;
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = updatedTableData.slice(offset, offset + PER_PAGE);
+  const pageCount = Math.ceil(updatedTableData.length / PER_PAGE);
+
   const filterlist = () => {
     if(fromdate==='' || todate==='') alert("Please Select Dates");
     else if (fromdate.length && todate.length && moment(fromdate).isSameOrBefore(todate)) {
@@ -105,6 +117,7 @@ export default function CompanyTransactionView() {
         </button>
       </div>
       <table className="mt-3">
+      <thead>
         <tr className="tableheading">
           <th>S. No</th>
           <th>Order ID</th>
@@ -124,7 +137,9 @@ export default function CompanyTransactionView() {
             Accounts
           </th>
         </tr>
-        {updatedTableData.map((val, index) => {
+        </thead>
+        <tbody>
+        {currentPageData.map((val, index) => {
           return(
             <tr key={index}>
               <th>{index+1}</th>
@@ -140,7 +155,20 @@ export default function CompanyTransactionView() {
             </tr>
           );
         })}
+        </tbody>
       </table>
+      <br />
+      <ReactPaginate
+        previousLabel={"← Previous"}
+        nextLabel={"Next →"}
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        previousLinkClassName={"pagination__link"}
+        nextLinkClassName={"pagination__link"}
+        disabledClassName={"pagination__link--disabled"}
+        activeClassName={"pagination__link--active"}
+      />
     </div>
   );
 }

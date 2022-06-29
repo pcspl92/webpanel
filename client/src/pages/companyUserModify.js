@@ -58,11 +58,11 @@ function UserModify() {
       .string()
       .required()
       .matches(
-        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+        /^(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})/,
         "Contact number is not valid"
       ),
   });
-
+  
   const validate = async (data) => {
     await schema1.validate(data, { abortEarly: false });
   };
@@ -646,7 +646,7 @@ function UserModify() {
       port: Number(remotePortadd),
       display_name: displayName,
       device_id: deviceID,
-      contact_no: contactNum,
+      contact_number: contactNum,
       cs_type_id: Number(controlStationType),
     };
     const data1 = {
@@ -809,7 +809,6 @@ function UserModify() {
         (updUser) =>
           updUser.id === Number(userId) && updUser.user_type === updateType
       )[0];
-      console.log(userId);
       const { data } = await axios.get(`/user/modify/${updateType}/${orderId}/${userId}`);
       console.log(data);
       setDisplayName(displayName);
@@ -920,7 +919,7 @@ function UserModify() {
             <label htmlFor="confirm">Contact Number : &nbsp;</label>
           </span>
           <input
-            type="number"
+            type="tel"
             id="name"
             onChange={(event) => {
               setcontactNum(event.target.value);

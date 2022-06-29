@@ -2,7 +2,7 @@ import '../css/personalCenterLoginRecord.css';
 
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-
+import ReactPaginate from "react-paginate";
 import axios from '../utils/axios';
 
 const CompanyViewLogin = () => {
@@ -11,6 +11,7 @@ const CompanyViewLogin = () => {
   const [companyloglist, setcompanyloglist] = useState([]);
   const [updatedloglist, setupdatedloglist] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -21,15 +22,24 @@ const CompanyViewLogin = () => {
     })();
   }, []);
 
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+  }
+  
+  const PER_PAGE = 10;
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = updatedloglist.slice(offset, offset + PER_PAGE);
+  const pageCount = Math.ceil(updatedloglist.length / PER_PAGE);
+
   const filterlist = () => {
-    if(fromdate==='' || todate==='') alert("Please Select Dates");
+    if (fromdate === '' || todate === '') alert("Please Select Dates");
     else if (fromdate.length && todate.length && moment(fromdate).isSameOrBefore(todate)) {
       setupdatedloglist(
         companyloglist.filter((val) => {
-            const date=moment(val.timestamp).local().format('YYYY-MM-DD');
-            return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)
-      }));
-    }else if(fromdate.length && todate.length && moment(fromdate).isAfter(todate)){
+          const date = moment(val.timestamp).local().format('YYYY-MM-DD');
+          return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)
+        }));
+    } else if (fromdate.length && todate.length && moment(fromdate).isAfter(todate)) {
       alert('Invalid Date Selection');
     }
   };
@@ -94,26 +104,43 @@ const CompanyViewLogin = () => {
           View All
         </button>
       </div>
-      <table className="mt-3">
-        <tr className="tableheading">
-          <th>S. No</th>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Login Activity Description</th>
-          <th>IP Address</th>
-        </tr>
-        {updatedloglist.map((val, index) => {
-          return(
-          <tr key={val.id}>
-            <th>{index + 1}</th>
-            <th>{moment(val.timestamp).local().format('DD-MM-YYYY')}</th>
-            <th>{moment(val.timestamp).local().format('HH:mm')}</th>
-            <th>{val.login_desc}</th>
-            <th>{val.ipaddress}</th>
+      <table  style={{textAlign:'center'}} className="mt-3">
+        <thead>
+          <tr className="tableheading">
+            <th>S. No</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Login Activity Description</th>
+            <th>IP Address</th>
           </tr>
-        )}
-        )}
+        </thead>
+        <tbody>
+          {currentPageData.map((val, index) => {
+            return (
+              <tr key={val.id}>
+                <th>{index + 1}</th>
+                <th>{moment(val.timestamp).local().format('DD-MM-YYYY')}</th>
+                <th>{moment(val.timestamp).local().format('HH:mm')}</th>
+                <th>{val.login_desc}</th>
+                <th>{val.ipaddress}</th>
+              </tr>
+            )
+          }
+          )}
+        </tbody>
       </table>
+      <br />
+      <ReactPaginate
+        previousLabel={"← Previous"}
+        nextLabel={"Next →"}
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        previousLinkClassName={"pagination__link"}
+        nextLinkClassName={"pagination__link"}
+        disabledClassName={"pagination__link--disabled"}
+        activeClassName={"pagination__link--active"}
+      />
     </div>
   );
 

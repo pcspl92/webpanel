@@ -116,7 +116,7 @@ export default function Licensetransac() {
             <th>{val.transaction_amount}</th>
             <th>{val.transaction_type}</th>
             <th>{val.balance}</th>
-            <th>{val.transaction_details} {val.orderId}</th>
+            <th>{val.orderId>0? val.transaction_details+ " (Order Id: "+val.orderId+")" : val.transaction_details}</th>
           </tr>
         ))}
       </table>

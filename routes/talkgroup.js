@@ -80,7 +80,7 @@ router.delete(
         .status(404)
         .json({ talkgroup: 'Talkgroup with given id is not registered.' });
 
-    tg = await findTGByName(req.body.name);
+    tg = await findTGByName(req.body.name,req.user.id);
     if (tg.length)
       return res
         .status(400)
@@ -89,7 +89,7 @@ router.delete(
     await deleteTGMap(req.params.id);
     await deleteTG(req.params.id);
     await createCompanyActivityLog('Talk-Group Modify', req.user.id);
-    return res.status(200).send({ message: 'Talkgroup has been delete' });
+    return res.status(200).send({ message: 'Talkgroup has been deleted' });
   }
 );
 router.put(

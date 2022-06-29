@@ -380,6 +380,7 @@ export default function LicenseModify() {
 
   const transferForm = () => {
     const { available, companies } = formData;
+    const data=companies.filter((val) =>(val.status==="active"));
 
     return (
       <div className="box">
@@ -402,7 +403,7 @@ export default function LicenseModify() {
           required
         >
           <option value="0">Select Company</option>
-          {companies.map((val) => (
+          {data.map((val) => (
             <option key={val.id} value={val.id}>
               {val.display_name}
             </option>

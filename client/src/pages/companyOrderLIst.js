@@ -3,11 +3,13 @@ import '../css/ViewAgent.css';
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import axios from '../utils/axios';
+import ReactPaginate from "react-paginate";
 
 const CompanyOrderList = () => {
   const [tableData, setTableData] = useState([]);
   const [dashData, setDashData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -19,6 +21,15 @@ const CompanyOrderList = () => {
       console.log(panelData);
     })();
   }, []);
+
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+  }
+  
+  const PER_PAGE = 10;
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = tableData.slice(offset, offset + PER_PAGE);
+  const pageCount = Math.ceil(tableData.length / PER_PAGE);
 
   if (loading) {
     return (
@@ -83,7 +94,8 @@ const CompanyOrderList = () => {
 
       <br />
       <table style={{textAlign:'center'}} className="mt-3">
-        <tr className="tableheading">
+      <thead>
+      <tr className="tableheading">
           <th style={{width:'4.5vw'}}>S. No</th>
           <th>Order Id</th>
           <th>Order Status</th>
@@ -100,7 +112,9 @@ const CompanyOrderList = () => {
           </th>
           <th>Features</th>
         </tr>
-        {tableData.map((val, index) => (
+      </thead>
+        <tbody>
+        {currentPageData.map((val, index) => (
           <tr key={val.id}>
             <th>{index + 1}</th>
             <th>{val.id}</th>
@@ -120,7 +134,20 @@ const CompanyOrderList = () => {
             </th>
           </tr>
         ))}
+        </tbody>  
       </table>
+      <br />
+      <ReactPaginate
+        previousLabel={"← Previous"}
+        nextLabel={"Next →"}
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        previousLinkClassName={"pagination__link"}
+        nextLinkClassName={"pagination__link"}
+        disabledClassName={"pagination__link--disabled"}
+        activeClassName={"pagination__link--active"}
+      />
     </div>
   );
 };

@@ -176,7 +176,7 @@ const addProfit = (profit, subAgentId) => {
 
 const viewSubAgentData = (subAgentIds) => {
   const sql = `SELECT COUNT(o.id) - COUNT(l.user_id) AS available, COUNT(l.user_id) AS active, COUNT(DISTINCT o.id) AS orders,
-               a.username AS account_name, a.display_name AS agent_name
+               a.username AS account_name, a.display_name AS agent_name, a.status as status
                FROM agents a 
                LEFT JOIN orders o ON o.agent_id = a.id
                LEFT JOIN licenses l ON o.id = l.order_id

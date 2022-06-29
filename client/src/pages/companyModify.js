@@ -51,7 +51,7 @@ const CompanyModify = () => {
       .string()
       .required()
       .matches(
-        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+        /^(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})/,
         "Contact number is not valid"
       ),
       agent_id: yup.number().min(1, 'Select a sub-agent'),
@@ -265,7 +265,7 @@ const CompanyModify = () => {
             </label>
           </span>
           <input
-            type="number"
+            type="tel"
             id="contact"
             onChange={(event) => {
               setcontact(event.target.value);

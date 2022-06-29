@@ -79,11 +79,11 @@ function UserCreate() {
       .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
       .min(3, 'Display name must be 3-25 characters long')
       .max(25, 'Display name must be 3-25 characters long'),
-    contact_number: yup
+      contact_number: yup
       .string()
       .required()
       .matches(
-        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+        /^(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})/,
         "Contact number is not valid"
       ),
   });
@@ -116,11 +116,11 @@ function UserCreate() {
       .required('This field is required')
       .min(3, 'Device_Id must be greater than 3-90 characters')
       .max(90, 'Device_Id must be greater than 3-90 characters'),
-    contact_number: yup
+      contact_number: yup
       .string()
       .required()
       .matches(
-        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+        /^(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})/,
         "Contact number is not valid"
       ),
   });
@@ -778,7 +778,7 @@ function UserCreate() {
       display_name: displayName,
       device_id: deviceID,
       rec_port: formData.receivingPort,
-      contact_no: contactNum,
+      contact_number: contactNum,
       cs_type_id: Number(controlStationType),
       order_id: Number(order),
       license_id: Number(license),
@@ -1066,7 +1066,7 @@ function UserCreate() {
             <label htmlFor="confirm"> Contact Number : &nbsp;</label>
           </span>
           <input
-            type="number"
+            type="tel"
             id="name"
             onChange={(event) => {
               setcontactNum(event.target.value);

@@ -40,6 +40,7 @@ const {
   getContactListByuserId,
   getCSUserDataById,
   getUsersForContactList,
+  getContactNumByIdForCSuser,
 } = require('../queries/user');
 const { createCompanyActivityLog } = require('../queries/company');
 const { getTGs,getTGmap } = require('../queries/talkgroup');
@@ -179,7 +180,7 @@ router.get(
       const [[{ receivingPort }], csTypes,ctnNum,userdata] = await Promise.all([
         getReceivingPort(receivingPortBase, req.params.formType,req.params.id),
         getControlStationTypes(1),
-        getContactNumById(req.params.id),
+        getContactNumByIdForCSuser(req.params.id),
         getCSUserDataById(req.params.id),
       ]);
       return { receivingPort, csTypes, ctnNum, userdata};
@@ -323,7 +324,7 @@ router.post(
         'display_name',
         'device_id',
         'rec_port',
-        'contact_no',
+        'contact_number',
         'cs_type_id',
       ]),
       req.user.id
@@ -450,7 +451,7 @@ router.put(
         'port',
         'display_name',
         'device_id',
-        'contact_no',
+        'contact_number',
         'cs_type_id',
       ]),
       req.params.id

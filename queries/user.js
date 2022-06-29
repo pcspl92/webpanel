@@ -76,6 +76,11 @@ const getContactNumById=(userId)=>{
   return query(sql);
 }
 
+const getContactNumByIdForCSuser=(userId)=>{
+  const sql=`SELECT contact_no FROM control_station_user WHERE id=${userId};`;
+  return query(sql);
+}
+
 const getContactListByuserId = (userId) => {
   const sql = `SELECT contact_list_id FROM users_add_data WHERE user_id=${userId};`;
   return query(sql);
@@ -204,13 +209,13 @@ const createCSUser = (
     display_name: displayName,
     device_id: deviceId,
     rec_port: recPort,
-    contact_no: contactNo,
+    contact_number: contact_number,
     cs_type_id: csTypeId,
   },
   companyId
 ) => {
   const sql = `INSERT INTO control_station_user (remote_ip_address, remote_port, display_name, device_id, receiving_port, contact_no, cs_type_id,company_id) VALUES
-               ('${ipAddress}', ${port}, '${displayName}', '${deviceId}', ${recPort}, '${contactNo}', ${csTypeId},${companyId});`;
+               ('${ipAddress}', ${port}, '${displayName}', '${deviceId}', ${recPort}, '${contact_number}', ${csTypeId},${companyId});`;
   return query(sql);
 };
 
@@ -225,13 +230,13 @@ const updateCSUser = (
     port,
     display_name: displayName,
     device_id: deviceId,
-    contact_no: contactNo,
+    contact_number: contact_number,
     cs_type_id: csTypeId,
   },
   userId
 ) => {
   const sql = `UPDATE control_station_user SET remote_ip_address='${ipAddress}', remote_port=${port}, display_name='${displayName}', 
-               device_id='${deviceId}', cs_type_id=${csTypeId}, contact_no='${contactNo}'
+               device_id='${deviceId}', cs_type_id=${csTypeId}, contact_no='${contact_number}'
                WHERE id=${userId}`;
   return query(sql);
 };
@@ -465,4 +470,5 @@ module.exports = {
   getContactListByuserId,
   getCSUserDataById,
   getUsersForContactList,
+  getContactNumByIdForCSuser,
 };
