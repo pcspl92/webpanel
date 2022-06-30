@@ -54,11 +54,11 @@ function UserModify() {
       .matches(/[^\s*].*[^\s*]/g, '* This field cannot contain only blankspaces')
       .min(3, 'Display name must be 3-25 characters long')
       .max(25, 'Display name must be 3-25 characters long'),
-    contact_number: yup
+      contact_number: yup
       .string()
       .required()
       .matches(
-        /^(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))\s*[)]?[-\s\.]?[(]?[0-9]{1,3}[)]?([-\s\.]?[0-9]{3})([-\s\.]?[0-9]{3,4})/,
+        /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/,
         "Contact number is not valid"
       ),
   });
