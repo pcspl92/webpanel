@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../css/personalCenterviewUseract.css';
 import moment from 'moment';
 import axios from '../utils/axios';
+import ReactPaginate from "react-paginate";
 
 const ViewActivity = () => {
   const [fromdate, setfromdate] = useState();
@@ -9,6 +10,7 @@ const ViewActivity = () => {
   const [agentactlist, setagentactlist] = useState([]);
   const [updatedactlist, setupdatedactlist] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -18,6 +20,16 @@ const ViewActivity = () => {
       setLoading(false);
     })();
   }, []);
+
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+  }
+  
+  const PER_PAGE = 10;
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = updatedactlist.slice(offset, offset + PER_PAGE);
+  const pageCount = Math.ceil(updatedactlist.length / PER_PAGE);
+
 
   const filterlist = () => {
     if(fromdate==='' || todate==='') alert("Please Select Dates");
@@ -98,6 +110,7 @@ const ViewActivity = () => {
         </button>
       </div>
       <table className="mt-3">
+      <thead>
         <tr className="tableheading">
           <th>S. No</th>
           <th>Date</th>
@@ -105,7 +118,9 @@ const ViewActivity = () => {
           <th>Agent Name</th>
           <th>User Activity Description</th>
         </tr>
-        {updatedactlist.map((val, index) => {
+        </thead>
+        <tbody>
+        {currentPageData.map((val, index) => {
           // eslint-disable-next-line no-param-reassign
           index+=1;
           return (
@@ -118,7 +133,20 @@ const ViewActivity = () => {
             </tr>
           );
         })}
+        </tbody>
       </table>
+      <br />
+      <ReactPaginate
+        previousLabel={"← Previous"}
+        nextLabel={"Next →"}
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        previousLinkClassName={"pagination__link"}
+        nextLinkClassName={"pagination__link"}
+        disabledClassName={"pagination__link--disabled"}
+        activeClassName={"pagination__link--active"}
+      />
     </div>
   );
 

@@ -102,7 +102,7 @@ const ModifyAgent = () => {
       <div className="modifyform">
         <div>
           <span>
-            <label htmlFor="id1">Select Sub-Agent : </label>
+            <label htmlFor="id1">Select Sub-Agent :&nbsp;&nbsp;&nbsp;</label>
           </span>
           <select
             id="id1"

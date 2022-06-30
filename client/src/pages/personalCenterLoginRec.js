@@ -2,7 +2,7 @@ import '../css/personalCenterLoginRecord.css';
 
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-
+import ReactPaginate from "react-paginate";
 import axios from '../utils/axios';
 
 const ViewLogin = () => {
@@ -11,6 +11,7 @@ const ViewLogin = () => {
   const [agentloglist, setagentloglist] = useState([]);
   const [updatedloglist, setupdatedloglist] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -20,6 +21,15 @@ const ViewLogin = () => {
       setLoading(false);
     })();
   }, []);
+
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+  }
+  
+  const PER_PAGE = 10;
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = updatedloglist.slice(offset, offset + PER_PAGE);
+  const pageCount = Math.ceil(updatedloglist.length / PER_PAGE);
 
   const filterlist = () => {
     if(fromdate==='' || todate==='') alert("Please Select Dates");
@@ -95,6 +105,7 @@ const ViewLogin = () => {
         </button>
       </div>
       <table className="mt-3">
+      <thead>
         <tr className="tableheading">
           <th>S. No</th>
           <th>Date</th>
@@ -102,7 +113,9 @@ const ViewLogin = () => {
           <th>Login Activity Description</th>
           <th>IP Address</th>
         </tr>
-        {updatedloglist.map((val, index) => (
+        </thead>
+        <tbody>
+        {currentPageData.map((val, index) => (
           <tr key={val.id}>
             <th>{index + 1}</th>
             <th>{moment(val.timestamp).local().format('DD-MM-YYYY')}</th>
@@ -111,7 +124,20 @@ const ViewLogin = () => {
             <th>{val.ipaddress}</th>
           </tr>
         ))}
+        </tbody>
       </table>
+      <br />
+      <ReactPaginate
+        previousLabel={"← Previous"}
+        nextLabel={"Next →"}
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        previousLinkClassName={"pagination__link"}
+        nextLinkClassName={"pagination__link"}
+        disabledClassName={"pagination__link--disabled"}
+        activeClassName={"pagination__link--active"}
+      />
       {updatedloglist.length === 0 ? (
         <div className="text-danger fw-500">No Matching Records Exist </div>
       ) : (

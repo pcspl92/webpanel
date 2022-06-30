@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../css/ViewAgent.css';
 import * as yup from 'yup';
 import axios from '../utils/axios';
+import ReactPaginate from "react-paginate";
 
 const ViewAgent = () => {
   const [agentname, setagentname] = useState('');
@@ -10,15 +11,26 @@ const ViewAgent = () => {
   const [updatedlist, setupdatedlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get('/subagent/');
       console.log(data);
       setagentlist(data);
+      setupdatedlist(data);
       setLoading(false);
     })();
   }, []);
+
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+  }
+  
+  const PER_PAGE = 10;
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = updatedlist.slice(offset, offset + PER_PAGE);
+  const pageCount = Math.ceil(updatedlist.length / PER_PAGE);
 
   const validateForm = async (data) => {
     const schema = yup.object().shape({
@@ -123,6 +135,7 @@ const ViewAgent = () => {
         </button>
       </div>
       <table className="mt-3">
+      <thead>
         <tr className="tableheading">
           <th>S. No</th>
           <th>Sub-agent Name</th>
@@ -132,7 +145,9 @@ const ViewAgent = () => {
           <th>Total Active Orders</th>
           <th>Total Accounts Available</th>
         </tr>
-        {updatedlist.map((val, index) => (
+        </thead>
+        <tbody>
+        {currentPageData.map((val, index) => (
           <tr key={val.id}>
             <th>{index + 1}</th>
             <th>{val.agent_name}</th>
@@ -143,7 +158,20 @@ const ViewAgent = () => {
             <th>{val.available}</th>
           </tr>
         ))}
+        </tbody>
       </table>
+      <br />
+      <ReactPaginate
+        previousLabel={"← Previous"}
+        nextLabel={"Next →"}
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        previousLinkClassName={"pagination__link"}
+        nextLinkClassName={"pagination__link"}
+        disabledClassName={"pagination__link--disabled"}
+        activeClassName={"pagination__link--active"}
+      />
       {updatedlist.length === 0 ? (
         <div className="text-danger fw-500">No Matching Records Exist </div>
       ) : (

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import '../css/CompanyUserView.css';
 import axios from '../utils/axios';
+import ReactPaginate from "react-paginate";
 
 const CompanyUserView = () => {
   const [orderID, setorderID] = useState('');
@@ -13,6 +14,7 @@ const CompanyUserView = () => {
   const [loading, setLoading] = useState(true);
   // eslint-disable-next-line no-unused-vars
   const [tableData, setTableData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -23,6 +25,15 @@ const CompanyUserView = () => {
       setLoading(false);
     })();
   }, []);
+
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+  }
+  
+  const PER_PAGE = 10;
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = userupdlist.slice(offset, offset + PER_PAGE);
+  const pageCount = Math.ceil(userupdlist.length / PER_PAGE);
 
   const accountTypeFilter = () =>tableData.filter((rec) =>
       rec.account_type.toLowerCase().includes(accountType.toLowerCase().trim())
@@ -180,6 +191,7 @@ const CompanyUserView = () => {
       </div>
       <div style={{maxWidth:'78vw'}}>
       <table style={{textAlign:'center'}} className="mt-3">
+      <thead>
         <tr className="tableheading">
           <th>S. No</th>
           <th>Order ID</th>
@@ -194,7 +206,9 @@ const CompanyUserView = () => {
           <th>Online</th>
           <th>Features</th>
         </tr>
-        {userupdlist.map((val, index) => (
+        </thead>
+        <tbody>
+        {currentPageData.map((val, index) => (
           <tr key={val.license_id}>
             <th>{index + 1}</th>
             <th>{val.order_id}</th>
@@ -218,8 +232,21 @@ const CompanyUserView = () => {
             </th>
           </tr>
         ))}
+        </tbody>
       </table>
       </div>
+      <br />
+      <ReactPaginate
+        previousLabel={"← Previous"}
+        nextLabel={"Next →"}
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        previousLinkClassName={"pagination__link"}
+        nextLinkClassName={"pagination__link"}
+        disabledClassName={"pagination__link--disabled"}
+        activeClassName={"pagination__link--active"}
+      />
       {userupdlist.length === 0 ? (
         <div className="text-danger fw-500">No Matching Records Exist </div>
       ) : (
