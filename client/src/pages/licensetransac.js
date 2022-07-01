@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../css/licensetransac.css';
 import moment from 'moment';
 import axios from '../utils/axios';
+import ReactPaginate from "react-paginate";
 
 export default function Licensetransac() {
   const [fromdate, setfromdate] = useState('');
@@ -9,6 +10,7 @@ export default function Licensetransac() {
   const [trandetails, settrandetails] = useState([]);
   const [updatedtranDetails, setupdatedtranDetails] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
   //const [err,setErr] = useState(false)
 
   useEffect(() => {
@@ -20,6 +22,15 @@ export default function Licensetransac() {
       setLoading(false);
     })();
   }, []);
+
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+  }
+  
+  const PER_PAGE = 10;
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = updatedtranDetails.slice(offset, offset + PER_PAGE);
+  const pageCount = Math.ceil(updatedtranDetails.length / PER_PAGE);
 
   const filterlist = () => {
     if(fromdate==='' || todate==='') alert("Please Select Dates");
@@ -99,6 +110,7 @@ export default function Licensetransac() {
         </button>
       </div>
       <table className="mt-3">
+      <thead>
         <tr className="tableheading">
           <th>S. No</th>
           <th>Transation Date</th>
@@ -108,9 +120,11 @@ export default function Licensetransac() {
           <th>Balance</th>
           <th>Transaction Details</th>
         </tr>
-        {updatedtranDetails.map((val, index) => (
+        </thead>
+        <tbody>
+        {currentPageData.map((val, index) => (
           <tr key={val.id}>
-            <th>{index + 1}</th>
+            <th>{index + 1 + offset}</th>
             <th>{moment(val.date).local().format('DD-MM-YYYY')}</th>
             <th>{moment(val.date).local().format('HH:mm')}</th>
             <th>{val.transaction_amount}</th>
@@ -119,7 +133,20 @@ export default function Licensetransac() {
             <th>{val.orderId>0? val.transaction_details+ " (Order Id: "+val.orderId+")" : val.transaction_details}</th>
           </tr>
         ))}
+        </tbody>
       </table>
+      <br />
+      <ReactPaginate
+        previousLabel={"← Previous"}
+        nextLabel={"Next →"}
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        previousLinkClassName={"pagination__link"}
+        nextLinkClassName={"pagination__link"}
+        disabledClassName={"pagination__link--disabled"}
+        activeClassName={"pagination__link--active"}
+      />
     </div>
   );
 

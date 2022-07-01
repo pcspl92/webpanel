@@ -352,9 +352,10 @@ router.put(
       return res.status(400).json({
         user: 'Eihter user is not registered with given id or the user is not PTT user.',
       });
-
-    const password = await hashPassword(req.body.password);
+      let password='';
+    if(req.body.password!=='') password= await hashPassword(req.body.password);
     await updateUser(password, req.body.display_name, req.params.id);
+    console.log(req.body.password);
     await Promise.all(
       updateUserAddData(
         _.pick(req.body.features, [
@@ -392,7 +393,8 @@ router.put(
         user: 'Eihter user is not registered with given id or the user is not Dispatcher user.',
       });
 
-    const password = await hashPassword(req.body.password);
+      let password='';
+      if(req.body.password!=='') password= await hashPassword(req.body.password);
     await updateUser(password, req.body.display_name, req.params.id);
     await Promise.all(
       updateUserAddData(

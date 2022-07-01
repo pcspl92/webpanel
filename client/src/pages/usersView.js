@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import '../css/userView.css';
 import axios from '../utils/axios';
+import ReactPaginate from "react-paginate";
 
 const ViewUsers = () => {
   const [companyName, setCompanyName] = useState('');
@@ -11,6 +12,7 @@ const ViewUsers = () => {
   const [userlist, setuserlist] = useState([]);
   const [userupdlist, setuserupdlist] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -21,6 +23,15 @@ const ViewUsers = () => {
       setLoading(false);
     })();
   }, []);
+
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+  }
+  
+  const PER_PAGE = 10;
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = userupdlist.slice(offset, offset + PER_PAGE);
+  const pageCount = Math.ceil(userupdlist.length / PER_PAGE);
 
   const companyFilter = () =>
     userlist.filter((rec) =>
@@ -143,6 +154,7 @@ const ViewUsers = () => {
         </button>
       </div>
       <table className="mt-3">
+      <thead>
         <tr className="tableheading">
           <th>S. No</th>
           <th>User Name</th>
@@ -154,9 +166,11 @@ const ViewUsers = () => {
           <th>License Expiry</th>
           <th>Agent Name</th>
         </tr>
-        {userupdlist.map((val, index) => (
+        </thead>
+        <tbody>
+        {currentPageData.map((val, index) => (
           <tr key={val.license_id}>
-            <th>{index + 1}</th>
+            <th>{index + 1 + offset}</th>
             <th>{val.user_name}</th>
             <th>{val.account_name}</th>
             <th>{val.company_name}</th>
@@ -167,12 +181,25 @@ const ViewUsers = () => {
             <th>{val.agent_name}</th>
           </tr>
         ))}
+        </tbody> 
       </table>
       {userupdlist.length === 0 ? (
         <div className="text-danger fw-500">No Matching Records Exist </div>
       ) : (
         <div></div>
       )}
+      <br />
+      <ReactPaginate
+        previousLabel={"← Previous"}
+        nextLabel={"Next →"}
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        previousLinkClassName={"pagination__link"}
+        nextLinkClassName={"pagination__link"}
+        disabledClassName={"pagination__link--disabled"}
+        activeClassName={"pagination__link--active"}
+      />
     </div>
   );
 

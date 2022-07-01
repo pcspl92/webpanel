@@ -122,7 +122,7 @@ const ViewActivity = () => {
         <tbody>
         {currentPageData.map((val, index) => {
           // eslint-disable-next-line no-param-reassign
-          index+=1;
+          index+=1+offset;
           return (
             <tr key={val.id} >
               <th>{index}</th>

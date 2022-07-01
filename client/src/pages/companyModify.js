@@ -152,6 +152,18 @@ const CompanyModify = () => {
     setPassword(pwd);
   };
 
+  const getFormData = async (companyID) => {
+    if (companyID !== '0') {
+      const { data } = await axios.get(`/company/modify/${companyID}`);
+      console.log(data);
+      setcompnewname(data[0].display_name);
+      setcontact(data[0].contact_number);
+      setactive(data[0].status);
+      setSubagent(data[0].agent_id)
+      }else reset();
+    }
+
+
   const form = () => (
     <form className="CMmodifyback" onSubmit={onSubmit}>
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
@@ -168,6 +180,7 @@ const CompanyModify = () => {
             id="company"
             onChange={(event) => {
               setCompany(event.target.value);
+              getFormData(event.target.value);
             }}
             value={company}
             required
@@ -197,7 +210,7 @@ const CompanyModify = () => {
           <span>
             <label htmlFor="status">Status :&nbsp;&nbsp;&nbsp;</label>
           </span>
-          <span style={{backgroundColor: 'gray'}}>
+          <span>
             <span
               className={active==='active' ? 'CMactiveclassActive' : 'CMinactiveclass'}
               style={{
@@ -241,7 +254,7 @@ const CompanyModify = () => {
         <div className="text-danger fw-500">{errors?.password}</div>
         {generated && (
           <div className="mt-3 me-5">New Generated Password : {password}</div>
-        )}
+        )};
         <div className="mt-3">
           <span>
             <label htmlFor="display_name">

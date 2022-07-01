@@ -16,6 +16,7 @@ const {
   getSubAgentNames,
   createAgentActivityLog,
   getSubAgentBalance,
+  getSubAgentData
 } = require('../queries/agent');
 const { createTransactionLog } = require('../queries/order');
 const { agentCheck, isLoggedIn } = require('../guard');
@@ -50,6 +51,17 @@ router.get(
   agentCheck,
   async (req, res) => {
     const data = await getSubAgentNames(req.user.id);
+    return res.status(200).json(data);
+  }
+);
+
+router.get(
+  '/modify/:id',
+  isLoggedIn,
+  guard.check('agent'),
+  agentCheck,
+  async (req, res) => {
+    const data = await getSubAgentData(req.params.id);
     return res.status(200).json(data);
   }
 );

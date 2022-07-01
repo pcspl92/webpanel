@@ -116,7 +116,7 @@ const CompanyOrderList = () => {
         <tbody>
         {currentPageData.map((val, index) => (
           <tr key={val.id}>
-            <th>{index + 1}</th>
+            <th>{index + 1 + offset}</th>
             <th>{val.id}</th>
             <th>{val.status}</th>
             <th>{val.account_type === "control" ? 'Control Station' : (val.account_type).charAt(0).toUpperCase() + (val.account_type).substr(1).toLowerCase()}</th>

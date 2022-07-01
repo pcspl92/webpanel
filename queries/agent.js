@@ -115,6 +115,12 @@ const getSubAgentBalance = (subAgentId) => {
   return query(sql);
 };
 
+const getSubAgentData = (subAgentId) => {
+  const sql = `SELECT a.display_name, a.status, ad.contact_number FROM agents a
+  JOIN agents_add_data ad ON a.id=ad.agent_id WHERE a.id=${subAgentId};`;
+  return query(sql);
+};
+
 const updateSubAgent = (
   displayName,
   contactNumber,
@@ -224,4 +230,5 @@ module.exports = {
   createAgentActivityLog,
   getSubAgentBalance,
   addAgentDetailsWithPrice,
+  getSubAgentData
 };

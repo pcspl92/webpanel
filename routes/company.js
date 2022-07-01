@@ -19,6 +19,7 @@ const {
   findCompanyById,
   deleteCompany,
   relieveCompany,
+  getCompanyData,
 } = require('../queries/company');
 const {
   getAgentId,
@@ -47,6 +48,22 @@ router.get(
 
     const companies = await getCompanies(subagents);
     return res.status(201).json(companies);
+  }
+);
+
+router.get(
+  '/modify/:id',
+  isLoggedIn,
+  guard.check([['agent'], ['subagent']]),
+  agentSubAgentCheck,
+  async (req, res) => {
+    // let subagents = [req.user.id];
+    // if (req.user.permissions.includes('agent')) {
+    //   const result = await getSubAgents(req.user.id);
+    //   subagents = result.reduce((acc, sub) => [...acc, sub.id], [req.user.id]);
+    // }
+    const companiesData = await getCompanyData(req.params.id);
+    return res.status(201).json(companiesData);
   }
 );
 

@@ -142,7 +142,7 @@ export default function CompanyTransactionView() {
         {currentPageData.map((val, index) => {
           return(
             <tr key={index}>
-              <th>{index+1}</th>
+              <th>{index+1+offset}</th>
               <th>{val.id}</th>
               <th>{val.transaction_type}</th>
               <th>{moment(val.transaction_date).local().format('DD-MM-YYYY')}</th>

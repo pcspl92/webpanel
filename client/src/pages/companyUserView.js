@@ -210,7 +210,7 @@ const CompanyUserView = () => {
         <tbody>
         {currentPageData.map((val, index) => (
           <tr key={val.license_id}>
-            <th>{index + 1}</th>
+            <th>{index + 1 + offset}</th>
             <th>{val.order_id}</th>
             <th>{val.account_name}</th>
             <th>{val.user_display_name}</th>

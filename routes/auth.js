@@ -168,7 +168,7 @@ router.post('/verify-captcha', async (req, res) => {
   const { data } = await axios.post(
     `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.CAPTCHA_SECRET_KEY}&response=${req.body.token}`
   );
-
+  console.log(data);
   if (!data.success)
     return res.status(400).send('Incorrect Captcha Token Used');
   return res.status(200).send('Verified');

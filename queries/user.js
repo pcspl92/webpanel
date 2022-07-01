@@ -55,6 +55,7 @@ const viewUsersCompanyPanel = (companyId, currDate) => {
                JOIN licenses l ON l.control_station_user_id=u.id
                JOIN orders o ON l.order_id=o.id
                WHERE u.company_id = ${companyId}
+               ORDER BY creation_date ASC
                ;`;
   return query(sql);
 };
@@ -153,7 +154,12 @@ const mapControlStations = (controlIds, userId) => {
 };
 
 const updateUser = (password, displayName, userId) => {
-  const sql = `UPDATE users SET password='${password}', display_name='${displayName}' WHERE id=${userId}`;
+  let sql 
+ if(password===''){
+   sql = `UPDATE users SET display_name='${displayName}' WHERE id=${userId}`;
+ }else{
+  sql = `UPDATE users SET password='${password}', display_name='${displayName}' WHERE id=${userId}`;
+ } 
   return query(sql);
 };
 

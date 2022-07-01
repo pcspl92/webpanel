@@ -118,7 +118,7 @@ const CompanyViewLogin = () => {
           {currentPageData.map((val, index) => {
             return (
               <tr key={val.id}>
-                <th>{index + 1}</th>
+                <th>{index + 1 + offset}</th>
                 <th>{moment(val.timestamp).local().format('DD-MM-YYYY')}</th>
                 <th>{moment(val.timestamp).local().format('HH:mm')}</th>
                 <th>{val.login_desc}</th>

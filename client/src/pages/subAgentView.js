@@ -149,7 +149,7 @@ const ViewAgent = () => {
         <tbody>
         {currentPageData.map((val, index) => (
           <tr key={val.id}>
-            <th>{index + 1}</th>
+            <th>{index + 1 + offset}</th>
             <th>{val.agent_name}</th>
             <th>{val.status}</th>
             <th>{val.account_name}</th>

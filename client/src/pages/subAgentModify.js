@@ -7,7 +7,7 @@ import * as yup from 'yup';
 const ModifyAgent = () => {
   const [agentid, setagentid] = useState('');
   const [agentlist, setagentlist] = useState([]);
-  const [active, setactive] = useState(true);
+  const [active, setactive] = useState('');
   const [contactNumber, setcontact] = useState('');
   const [agentnewname, setagentnewname] = useState('');
   const [password, setPassword] = useState('');
@@ -60,7 +60,7 @@ const ModifyAgent = () => {
       password,
       display_name: agentnewname,
       contact_number: contactNumber,
-      status: active ? 'active' : 'paused',
+      status: active 
     };
     if (contactNumber === '' && agentnewname === '') {
       alert("Please fill all the fields");
@@ -92,6 +92,16 @@ const ModifyAgent = () => {
     setPassword(pwd);
   };
 
+  const getFormData = async (agentID) => {
+    if (agentID !== '0') {
+      const { data } = await axios.get(`/subagent/modify/${agentID}`);
+      console.log(data);
+      setagentnewname(data[0].display_name);
+      setcontact(data[0].contact_number);
+      setactive(data[0].status);
+      }else reset();
+    }
+
   return (
     <form className="passback" onSubmit={onSubmit}>
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
@@ -108,6 +118,7 @@ const ModifyAgent = () => {
             id="id1"
             onChange={(event) => {
               setagentid(event.target.value);
+              getFormData(event.target.value);
             }}
             value={agentid}
             required
@@ -122,29 +133,29 @@ const ModifyAgent = () => {
         </div>
         <div className="mt-3 me-5">
           <span>
-            <label htmlFor="id1">Status :&nbsp;&nbsp;&nbsp;</label>
+            <label htmlFor="status">Status :&nbsp;&nbsp;&nbsp;</label>
           </span>
-          <span>
+          <span style={{backgroundColor: 'gray'}}>
             <span
-              className={active ? 'activeclass' : 'inactiveclass'}
+              className={active==='active' ? 'CMactiveclassActive' : 'CMinactiveclass'}
               style={{
                 borderTopLeftRadius: '10%',
                 borderBottomLeftRadius: '10%',
               }}
               onClick={() => {
-                setactive(!active);
+                setactive('active');
               }}
             >
               Active
             </span>
             <span
-              className={!active ? 'activeclass' : 'inactiveclass'}
+              className={active==='paused' ? 'CMactiveclassPause' : 'CMinactiveclass'}
               style={{
                 borderTopRightRadius: '10%',
                 borderBottomRightRadius: '10%',
               }}
               onClick={() => {
-                setactive(!active);
+                setactive('paused');
               }}
             >
               Paused

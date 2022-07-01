@@ -15,6 +15,11 @@ const getCompanies = (agentIds) => {
   return query(sql);
 };
 
+const getCompanyData = (companyId) => {
+  const sql = `SELECT display_name,contact_number,agent_id,status FROM companies WHERE id=(${companyId})`;
+  return query(sql);
+};
+
 const getCompanyViewData = (agentIds) => {
   const sql = `SELECT c.id, c.username AS account_name, c.display_name AS company_name, 
                c.timestamp, c.contact_number, a.display_name AS agent_name, c.status AS company_status, a.status AS agent_status
@@ -121,5 +126,6 @@ module.exports = {
   getCompanies,
   getCompanyViewData,
   deleteCompany,
-  checkAgent
+  checkAgent,
+  getCompanyData
 };
