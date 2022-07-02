@@ -2,13 +2,14 @@ import '../../css/index.css';
 
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-
+//import moment from 'moment';
 import { useAuth } from '../../hooks/useAuth';
 
 export default function Header() {
   const location = useLocation();
   const { logout, user } = useAuth();
-
+  // let now=moment()._d;
+  // console.log(now);
   const restrictedPaths = new Set(['/', '/company/', '/agent/']);
   if (restrictedPaths.has(location.pathname)) return null;
 

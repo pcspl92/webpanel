@@ -213,10 +213,7 @@ const CompanyModify = () => {
           <span>
             <span
               className={active==='active' ? 'CMactiveclassActive' : 'CMinactiveclass'}
-              style={{
-                borderTopLeftRadius: '10%',
-                borderBottomLeftRadius: '10%',
-              }}
+              style={active===''?{backgroundColor:'gray'}:null}
               onClick={() => {
                 setactive('active');
               }}
@@ -225,10 +222,7 @@ const CompanyModify = () => {
             </span>
             <span
               className={active==='paused' ? 'CMactiveclassPause' : 'CMinactiveclass'}
-              style={{
-                borderTopRightRadius: '10%',
-                borderBottomRightRadius: '10%',
-              }}
+              style={active===''?{backgroundColor:'gray'}:null}
               onClick={() => {
                 setactive('paused');
               }}

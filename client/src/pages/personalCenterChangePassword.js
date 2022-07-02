@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
 import '../css/personalCenterChangePassword.css';
-
+import { FaEye } from 'react-icons/fa';
 import axios from '../utils/axios';
 
 const ChangePassword = () => {
   const [password, setPassword] = useState('');
   const [errorm, seterrorm] = useState('');
-
   const [confirmPassword, setconfirmPassword] = useState('');
-
   const [disabled, setDisabled] = useState(false);
+  const [passwordShown1, setPasswordShown1] = useState(false);
+  const [passwordShown2, setPasswordShown2] = useState(false);
+
+  const togglePasswordVisiblity1 = () => {
+    setPasswordShown1(passwordShown1 ? false : true);
+  };
+
+  const togglePasswordVisiblity2 = () => {
+    setPasswordShown2(passwordShown2 ? false : true);
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -35,13 +43,14 @@ const ChangePassword = () => {
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>
         CHANGE PASSWORD
       </div>
+      <br />
       <div className="formarea">
         <div>
           <span>
             <label htmlFor="id1">New Password : &nbsp;</label>
           </span>
           <input
-            type="password"
+            type={passwordShown1 ? "text" : "password"}
             id="id1"
             onChange={(event) => {
               setPassword(event.target.value);
@@ -49,15 +58,15 @@ const ChangePassword = () => {
             value={password}
             required
           />
+          <i onClick={togglePasswordVisiblity1}><FaEye/></i>
         </div>
-        <br />
         <br />
         <div>
           <span>
             <label htmlFor="id2">Confirm Password : &nbsp;</label>
           </span>
           <input
-            type="password"
+            type={passwordShown2 ? "text" : "password"}
             id="id2"
             onChange={(event) => {
               const cnf=event.target.value;
@@ -68,6 +77,7 @@ const ChangePassword = () => {
             required
             value={confirmPassword}
           />
+          <i onClick={togglePasswordVisiblity2}><FaEye/></i>
         </div>
         <br />
         <div className="text-danger fw-600">{errorm}</div>

@@ -2,7 +2,7 @@
 import '../css/companyUserCreate.css';
 
 import React, { useState, useRef, useEffect } from 'react';
-
+import { FaEye } from 'react-icons/fa';
 import axios from '../utils/axios';
 
 function BulkUserCreate() {
@@ -34,6 +34,17 @@ function BulkUserCreate() {
     geo_fence: false,
     chat: false,
   });
+  const [passwordShown1, setPasswordShown1] = useState(false);
+  const [passwordShown2, setPasswordShown2] = useState(false);
+
+  const togglePasswordVisiblity1 = () => {
+    setPasswordShown1(passwordShown1 ? false : true);
+  };
+
+  const togglePasswordVisiblity2 = () => {
+    setPasswordShown2(passwordShown2 ? false : true);
+  };
+
   const selectedTGIds = useRef(new Set());
   const selectedCSIds = useRef(new Set());
 
@@ -171,7 +182,7 @@ function BulkUserCreate() {
             <label htmlFor="confirm">Password : &nbsp;</label>
           </span>
           <input
-            type="password"
+            type={passwordShown1 ? "text" : "password"}
             id="name"
             onChange={(event) => {
               setPassword(event.target.value);
@@ -179,6 +190,7 @@ function BulkUserCreate() {
             value={password}
             required
           />
+          <i onClick={togglePasswordVisiblity1}><FaEye/></i>
         </div>
         <br />
         <div>
@@ -186,7 +198,7 @@ function BulkUserCreate() {
             <label htmlFor="confirm">Confirm Password : &nbsp;</label>
           </span>
           <input
-            type="password"
+            type={passwordShown2 ? "text" : "password"}
             id="name"
             onChange={(event) => {
               setConfirmPassword(event.target.value);
@@ -194,6 +206,7 @@ function BulkUserCreate() {
             value={confirmPassword}
             required
           />
+          <i onClick={togglePasswordVisiblity2}><FaEye/></i>
         </div>
         <br />
         <div>
@@ -472,7 +485,7 @@ function BulkUserCreate() {
             <label htmlFor="confirm">Password : &nbsp;</label>
           </span>
           <input
-            type="password"
+            type={passwordShown1 ? "text" : "password"}
             id="name"
             onChange={(event) => {
               setPassword(event.target.value);
@@ -480,6 +493,7 @@ function BulkUserCreate() {
             value={password}
             required
           />
+          <i style={{position:'absolute'}} onClick={togglePasswordVisiblity1}><FaEye/></i>
         </div>
         <br />
         <div>
@@ -487,7 +501,7 @@ function BulkUserCreate() {
             <label htmlFor="confirm">Confirm Password : &nbsp;</label>
           </span>
           <input
-            type="password"
+            type={passwordShown2 ? "text" : "password"}
             id="name"
             onChange={(event) => {
               setConfirmPassword(event.target.value);
@@ -495,6 +509,7 @@ function BulkUserCreate() {
             value={confirmPassword}
             required
           />
+          <i onClick={togglePasswordVisiblity2}><FaEye/></i>
         </div>
         <br />
         <div>
@@ -728,6 +743,8 @@ function BulkUserCreate() {
   };
 
   const onSelectType = (type) => {
+    setPasswordShown1(false);
+    setPasswordShown2(false);
     setUpdOrderList([]);
     if (type !== '0') {
       const orderIds = orderlist.filter((data) => data.license_type === type);

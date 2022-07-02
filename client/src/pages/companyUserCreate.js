@@ -3,7 +3,7 @@ import '../css/licenseModify.css';
 import * as yup from 'yup';
 import '../css/companyUserCreate.css';
 import axios from '../utils/axios';
-//import IconButton from "@material-ui/core/IconButton";
+import { FaEye } from 'react-icons/fa';
 
 function UserCreate() {
   const [updateType, setupdateType] = useState('0');
@@ -31,6 +31,17 @@ function UserCreate() {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   const [errors1, setErrors1] = useState('');
+  
+  const [passwordShown1, setPasswordShown1] = useState(false);
+  const [passwordShown2, setPasswordShown2] = useState(false);
+
+  const togglePasswordVisiblity1 = () => {
+    setPasswordShown1(passwordShown1 ? false : true);
+  };
+
+  const togglePasswordVisiblity2 = () => {
+    setPasswordShown2(passwordShown2 ? false : true);
+  };
 
   const [featuresGlobal, setFeaturesGlobal] = useState({
     grp_call: false,
@@ -276,7 +287,7 @@ function UserCreate() {
             <label htmlFor="confirm">Password : &nbsp;</label>
           </span>
           <input
-            type="password"
+            type={passwordShown1 ? "text" : "password"}
             id="name"
             onChange={(event) => {
               setPassword(event.target.value);
@@ -284,6 +295,7 @@ function UserCreate() {
             value={password}
             required
           />
+          <i style={{position:'absolute'}} onClick={togglePasswordVisiblity1}><FaEye/></i>
           <div className="text-danger fw-600">{errors?.password}</div>
         </div>
         <br />
@@ -292,7 +304,7 @@ function UserCreate() {
             <label htmlFor="confirm">Confirm Password : &nbsp;</label>
           </span>
           <input
-            type="password"
+            type={passwordShown2 ? "text" : "password"}
             id="name"
             onChange={(event) => {
               setConfirmPassword(event.target.value);
@@ -300,6 +312,7 @@ function UserCreate() {
             value={confirmPassword}
             required
           />
+          <i style={{position:'absolute'}} onClick={togglePasswordVisiblity2}><FaEye/></i>
           <div className="text-danger fw-600">{errors?.confirm_password}</div>
         </div>
         <br />
@@ -527,6 +540,8 @@ function UserCreate() {
     setorder(0);
     setLicense(0);
     setUpLicenseOrderList([]);
+    setPasswordShown1(false);
+    setPasswordShown2(false);
   };
 
   const dispatcherSubmit = async () => {
@@ -602,7 +617,7 @@ function UserCreate() {
             <label htmlFor="confirm">Password : &nbsp;</label>
           </span>
           <input
-            type="password"
+            type={passwordShown1 ? "text" : "password"}
             id="name"
             onChange={(event) => {
               setPassword(event.target.value);
@@ -610,6 +625,7 @@ function UserCreate() {
             value={password}
             required
           />
+          <i onClick={togglePasswordVisiblity1}><FaEye/></i>
           <div className="text-danger fw-600">{errors?.password}</div>
         </div>
         <br />
@@ -618,7 +634,7 @@ function UserCreate() {
             <label htmlFor="confirm">Confirm Password : &nbsp;</label>
           </span>
           <input
-            type="password"
+            type={passwordShown2 ? "text" : "password"}
             id="name"
             onChange={(event) => {
               setConfirmPassword(event.target.value);
@@ -626,6 +642,7 @@ function UserCreate() {
             value={confirmPassword}
             required
           />
+          <i onClick={togglePasswordVisiblity2}><FaEye/></i>
           <div className="text-danger fw-600">{errors?.confirm_password}</div>
         </div>
         <br />

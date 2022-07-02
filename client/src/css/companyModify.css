@@ -30,7 +30,8 @@
   background-color: chartreuse;
   font-size: 2vh;
   padding: 0.5vw;
-
+  border-top-left-radius: 10%;
+  border-bottom-left-radius: 10%;
   font-weight: bolder;
 }
 .CMactiveclassPause {
@@ -39,7 +40,8 @@
   background-color: rgb(255, 0, 13);
   font-size: 2vh;
   padding: 0.5vw;
-
+  border-top-right-radius: 10%;
+  border-bottom-right-radius: 10%;
   font-weight: bolder;
 }
 .CMinactiveclass {
@@ -48,9 +50,9 @@
   background-color: rgb(255, 254, 255);
   font-size: 2vh;
   padding: 0.5vw;
-
   font-weight: bolder;
 }
+
 
 .CMactiveclass:hover,
 .CMinactiveclass:hover {

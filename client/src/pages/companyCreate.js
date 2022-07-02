@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import axios from '../utils/axios';
 import '../css/companyCreate.css';
+import { FaEye } from 'react-icons/fa';
 
 const CompanyCreate = () => {
   const [username, setusername] = useState('');
@@ -15,6 +16,17 @@ const CompanyCreate = () => {
   const [sagentlist, setsagentlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [disabled, setDisabled] = useState(false);
+
+  const [passwordShown1, setPasswordShown1] = useState(false);
+  const [passwordShown2, setPasswordShown2] = useState(false);
+
+  const togglePasswordVisiblity1 = () => {
+    setPasswordShown1(passwordShown1 ? false : true);
+  };
+
+  const togglePasswordVisiblity2 = () => {
+    setPasswordShown2(passwordShown2 ? false : true);
+  };
 
   const schema = yup.object().shape({
     username: yup
@@ -147,7 +159,7 @@ const CompanyCreate = () => {
             <label htmlFor="password"> Password : &nbsp;</label>
           </span>
           <input
-            type="password"
+             type={passwordShown1 ? "text" : "password"}
             id="password"
             value={password}
             onChange={(event) => {
@@ -155,6 +167,7 @@ const CompanyCreate = () => {
             }}
             required
           />
+           <i style={{position:'absolute'}} onClick={togglePasswordVisiblity1}><FaEye/></i>
         </div>
         <br />
 
@@ -166,7 +179,7 @@ const CompanyCreate = () => {
             <label htmlFor="confirm">Confirm Password : &nbsp;</label>
           </span>
           <input
-            type="password"
+             type={passwordShown2 ? "text" : "password"}
             id="confirm"
             onChange={(event) => {
               setconfirmPassword(event.target.value);
@@ -174,6 +187,7 @@ const CompanyCreate = () => {
             value={confirmPassword}
             required
           />
+           <i style={{position:'absolute'}} onClick={togglePasswordVisiblity2}><FaEye/></i>
         </div>
         <br />
 

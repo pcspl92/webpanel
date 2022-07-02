@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import * as yup from 'yup';
 import '../css/AddAgent.css';
 import axios from '../utils/axios';
+import { FaEye } from 'react-icons/fa';
 
 const AddAgent = () => {
   const [username, setusername] = useState('');
@@ -32,6 +33,17 @@ const AddAgent = () => {
   const [yearlycsap, setyearlycsap] = useState(0);
   const [onetimecsap, setonetimecsap] = useState(0);
   const [disabled, setDisabled] = useState(false);
+
+  const [passwordShown1, setPasswordShown1] = useState(false);
+  const [passwordShown2, setPasswordShown2] = useState(false);
+
+  const togglePasswordVisiblity1 = () => {
+    setPasswordShown1(passwordShown1 ? false : true);
+  };
+
+  const togglePasswordVisiblity2 = () => {
+    setPasswordShown2(passwordShown2 ? false : true);
+  };
 
   const reset = () => {
     setusername('');
@@ -190,11 +202,12 @@ const AddAgent = () => {
           <label htmlFor="id2">Password : &nbsp;</label>
         </span>
         <input
-          type="password"
+           type={passwordShown1 ? "text" : "password"}
           id="id2"
           onChange={(e) => setpassword(e.target.value)}
           value={password}
         />
+        <i style={{position:'absolute'}} onClick={togglePasswordVisiblity1}><FaEye/></i>
         <br />
         <div className="text-danger fw-600">{errors?.password}</div>
         <br />
@@ -202,13 +215,14 @@ const AddAgent = () => {
           <label htmlFor="id3">Confirm Password : &nbsp;</label>
         </span>
         <input
-          type="password"
+           type={passwordShown2 ? "text" : "password"}
           id="id3"
           onChange={(event) => {
             setConfirmPassword(event.target.value);
           }}
           value={confirmPassword}
         />
+        <i style={{position:'absolute'}} onClick={togglePasswordVisiblity2}><FaEye/></i>
         <br />
         <div className="text-danger fw-600">{errors?.confirm_password}</div>
         <br />
