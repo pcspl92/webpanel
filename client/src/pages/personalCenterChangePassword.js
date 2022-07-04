@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../css/personalCenterChangePassword.css';
-import { FaEye } from 'react-icons/fa';
+import { FaEye,FaEyeSlash } from 'react-icons/fa';
 import axios from '../utils/axios';
 
 const ChangePassword = () => {
@@ -58,7 +58,7 @@ const ChangePassword = () => {
             value={password}
             required
           />
-          <i onClick={togglePasswordVisiblity1}><FaEye/></i>
+          <i className='field-icon' onClick={togglePasswordVisiblity1}>{passwordShown1===false?<FaEyeSlash/>:<FaEye/>}</i>
         </div>
         <br />
         <div>
@@ -77,7 +77,7 @@ const ChangePassword = () => {
             required
             value={confirmPassword}
           />
-          <i onClick={togglePasswordVisiblity2}><FaEye/></i>
+          <i className='field-icon' onClick={togglePasswordVisiblity2}>{passwordShown2===false?<FaEyeSlash/>:<FaEye/>}</i>
         </div>
         <br />
         <div className="text-danger fw-600">{errorm}</div>

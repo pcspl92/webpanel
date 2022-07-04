@@ -154,3 +154,10 @@ select {
   color: rgb(198, 197, 202);
   border: 1px solid rgb(198, 197, 202);
 }
+
+.field-icon {
+  float: right;
+  margin-left: -25px;
+  position: relative;
+  z-index: 2;
+}

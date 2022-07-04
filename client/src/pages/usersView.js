@@ -8,7 +8,7 @@ const ViewUsers = () => {
   const [companyName, setCompanyName] = useState('');
   const [accountName, setAccountName] = useState('');
   const [userName, setuserName] = useState('');
-  const [expiryDate, setexpiryDate] = useState('');
+  const [expiryDate, setexpiryDate] = useState(moment().format('YYYY-MM-DD'));
   const [userlist, setuserlist] = useState([]);
   const [userupdlist, setuserupdlist] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,29 +33,39 @@ const ViewUsers = () => {
   const currentPageData = userupdlist.slice(offset, offset + PER_PAGE);
   const pageCount = Math.ceil(userupdlist.length / PER_PAGE);
 
-  const companyFilter = () =>
-    userlist.filter((rec) =>
-      rec.company_name.toLowerCase().includes(companyName.toLowerCase().trim())
-    );
+  // const companyFilter = () =>
+  //   userlist.filter((rec) =>
+  //     rec.company_name.toLowerCase().includes(companyName.toLowerCase().trim())
+  //   );
 
-  const accountFilter = () =>
-    userlist.filter((rec) =>
-      rec.account_name.toLowerCase().includes(accountName.toLowerCase().trim())
-    );
+  // const accountFilter = () =>
+  //   userlist.filter((rec) =>
+  //     rec.account_name.toLowerCase().includes(accountName.toLowerCase().trim())
+  //   );
 
-  const userFilter = () =>
-    userlist.filter((rec) =>
-      rec.user_name.toLowerCase().includes(userName.toLowerCase().trim())
-    );
+  // const userFilter = () =>
+  //   userlist.filter((rec) =>
+  //     rec.user_name.toLowerCase().includes(userName.toLowerCase().trim())
+  //   );
 
-  const expiryFilter = () =>
-    userlist.filter((rec) => moment(rec.license_expiry).isAfter(expiryDate));
+  // const expiryFilter = () =>
+  //   userlist.filter((rec) => moment(rec.license_expiry).isAfter(expiryDate));
 
   const filter = () => {
-    if (companyName.length) setuserupdlist(companyFilter());
-    if (accountName.length) setuserupdlist(accountFilter());
-    if (userName.length) setuserupdlist(userFilter());
-    if (expiryDate.length) setuserupdlist(expiryFilter());
+    // if (companyName.length) setuserupdlist(companyFilter());
+    // if (accountName.length) setuserupdlist(accountFilter());
+    // if (userName.length) setuserupdlist(userFilter());
+    // if (expiryDate.length) setuserupdlist(expiryFilter());
+
+    setuserupdlist(
+      userlist.filter(
+        (rec) =>
+          (companyName.length && rec.company_name.toLowerCase().includes(companyName.toLowerCase().trim())) &&
+          (accountName.length && rec.account_name.toLowerCase().includes(accountName.toLowerCase().trim())) &&
+          (userName.length &&  rec.user_name.toLowerCase().includes(userName.toLowerCase().trim())) &&
+          (expiryDate.length && moment(rec.license_expiry).isAfter(expiryDate))
+         )
+      )
   };
 
   const reset = () => {
@@ -75,6 +85,7 @@ const ViewUsers = () => {
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>VIEW USERS</div>
 
       <br />
+      <span>Total Users : &nbsp; {userupdlist.length}</span>
       <div className="filter">
         <div>
           <span>

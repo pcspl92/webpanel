@@ -3,7 +3,7 @@ import '../css/licenseModify.css';
 import * as yup from 'yup';
 import '../css/companyUserCreate.css';
 import axios from '../utils/axios';
-import { FaEye } from 'react-icons/fa';
+import { FaEye,FaEyeSlash } from 'react-icons/fa';
 
 function UserCreate() {
   const [updateType, setupdateType] = useState('0');
@@ -295,7 +295,7 @@ function UserCreate() {
             value={password}
             required
           />
-          <i style={{position:'absolute'}} onClick={togglePasswordVisiblity1}><FaEye/></i>
+          <i className='field-icon' onClick={togglePasswordVisiblity1}>{passwordShown1===false?<FaEyeSlash/>:<FaEye/>}</i>
           <div className="text-danger fw-600">{errors?.password}</div>
         </div>
         <br />
@@ -312,7 +312,7 @@ function UserCreate() {
             value={confirmPassword}
             required
           />
-          <i style={{position:'absolute'}} onClick={togglePasswordVisiblity2}><FaEye/></i>
+          <i className='field-icon' onClick={togglePasswordVisiblity2}>{passwordShown2===false?<FaEyeSlash/>:<FaEye/>}</i>
           <div className="text-danger fw-600">{errors?.confirm_password}</div>
         </div>
         <br />
@@ -625,7 +625,7 @@ function UserCreate() {
             value={password}
             required
           />
-          <i onClick={togglePasswordVisiblity1}><FaEye/></i>
+          <i className='field-icon' onClick={togglePasswordVisiblity1}>{passwordShown1===false?<FaEyeSlash/>:<FaEye/>}</i>
           <div className="text-danger fw-600">{errors?.password}</div>
         </div>
         <br />
@@ -642,7 +642,7 @@ function UserCreate() {
             value={confirmPassword}
             required
           />
-          <i onClick={togglePasswordVisiblity2}><FaEye/></i>
+          <i className='field-icon' onClick={togglePasswordVisiblity2}>{passwordShown2===false?<FaEyeSlash/>:<FaEye/>}</i>
           <div className="text-danger fw-600">{errors?.confirm_password}</div>
         </div>
         <br />

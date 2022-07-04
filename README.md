@@ -196,3 +196,7 @@ version : 0.5.2
 
 Issue Fixed : 333, 204, 208, 277
 
+version : 0.5.2
+
+Issue Fixed : 336, 334, 335, 308, 288
+

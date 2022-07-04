@@ -20,6 +20,7 @@
     "react-recaptcha-google": "^1.1.1",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "react-toastify": "^9.0.5",
     "react-toggle-button": "^2.2.0",
     "recharts": "^2.1.9",
     "web-vitals": "^2.1.4",

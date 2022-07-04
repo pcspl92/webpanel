@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import * as yup from 'yup';
 import '../css/AddAgent.css';
 import axios from '../utils/axios';
-import { FaEye } from 'react-icons/fa';
+import { FaEye,FaEyeSlash } from 'react-icons/fa';
 
 const AddAgent = () => {
   const [username, setusername] = useState('');
@@ -207,7 +207,7 @@ const AddAgent = () => {
           onChange={(e) => setpassword(e.target.value)}
           value={password}
         />
-        <i style={{position:'absolute'}} onClick={togglePasswordVisiblity1}><FaEye/></i>
+        <i className='field-icon' onClick={togglePasswordVisiblity1}>{passwordShown1===false?<FaEyeSlash/>:<FaEye/>}</i>
         <br />
         <div className="text-danger fw-600">{errors?.password}</div>
         <br />
@@ -222,7 +222,7 @@ const AddAgent = () => {
           }}
           value={confirmPassword}
         />
-        <i style={{position:'absolute'}} onClick={togglePasswordVisiblity2}><FaEye/></i>
+        <i className='field-icon' onClick={togglePasswordVisiblity2}>{passwordShown2===false?<FaEyeSlash/>:<FaEye/>}</i>
         <br />
         <div className="text-danger fw-600">{errors?.confirm_password}</div>
         <br />

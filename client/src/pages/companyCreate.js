@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import axios from '../utils/axios';
 import '../css/companyCreate.css';
-import { FaEye } from 'react-icons/fa';
+import { FaEye,FaEyeSlash } from 'react-icons/fa';
 
 const CompanyCreate = () => {
   const [username, setusername] = useState('');
@@ -120,6 +120,7 @@ const CompanyCreate = () => {
           (acc, err) => ({ ...acc, [err.path]: err.errors[0] }),
           {}
         );
+        console.log(validateErrors);
         setErrors(validateErrors);
       } else {
         console.log(error.response.data);
@@ -167,7 +168,7 @@ const CompanyCreate = () => {
             }}
             required
           />
-           <i style={{position:'absolute'}} onClick={togglePasswordVisiblity1}><FaEye/></i>
+           <i className='field-icon' onClick={togglePasswordVisiblity1}>{passwordShown1===false?<FaEyeSlash/>:<FaEye/>}</i>
         </div>
         <br />
 
@@ -187,7 +188,7 @@ const CompanyCreate = () => {
             value={confirmPassword}
             required
           />
-           <i style={{position:'absolute'}} onClick={togglePasswordVisiblity2}><FaEye/></i>
+           <i className='field-icon' onClick={togglePasswordVisiblity2}>{passwordShown2===false?<FaEyeSlash/>:<FaEye/>}</i>
         </div>
         <br />
 

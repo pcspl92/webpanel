@@ -2,7 +2,7 @@
 import '../css/companyUserCreate.css';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { FaEye } from 'react-icons/fa';
+import { FaEye,FaEyeSlash } from 'react-icons/fa';
 import axios from '../utils/axios';
 
 function BulkUserCreate() {
@@ -190,7 +190,7 @@ function BulkUserCreate() {
             value={password}
             required
           />
-          <i onClick={togglePasswordVisiblity1}><FaEye/></i>
+          <i className='field-icon' onClick={togglePasswordVisiblity1}>{passwordShown1===false?<FaEyeSlash/>:<FaEye/>}</i>
         </div>
         <br />
         <div>
@@ -206,7 +206,7 @@ function BulkUserCreate() {
             value={confirmPassword}
             required
           />
-          <i onClick={togglePasswordVisiblity2}><FaEye/></i>
+          <i className='field-icon' onClick={togglePasswordVisiblity2}>{passwordShown2===false?<FaEyeSlash/>:<FaEye/>}</i>
         </div>
         <br />
         <div>
@@ -493,7 +493,7 @@ function BulkUserCreate() {
             value={password}
             required
           />
-          <i style={{position:'absolute'}} onClick={togglePasswordVisiblity1}><FaEye/></i>
+          <i className='field-icon' onClick={togglePasswordVisiblity1}>{passwordShown1===false?<FaEyeSlash/>:<FaEye/>}</i>
         </div>
         <br />
         <div>
@@ -509,7 +509,7 @@ function BulkUserCreate() {
             value={confirmPassword}
             required
           />
-          <i onClick={togglePasswordVisiblity2}><FaEye/></i>
+          <i className='field-icon' onClick={togglePasswordVisiblity2}>{passwordShown2===false?<FaEyeSlash/>:<FaEye/>}</i>
         </div>
         <br />
         <div>
