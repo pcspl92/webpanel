@@ -8,7 +8,7 @@ const ViewUsers = () => {
   const [companyName, setCompanyName] = useState('');
   const [accountName, setAccountName] = useState('');
   const [userName, setuserName] = useState('');
-  const [expiryDate, setexpiryDate] = useState(moment().format('YYYY-MM-DD'));
+  const [expiryDate, setexpiryDate] = useState('');
   const [userlist, setuserlist] = useState([]);
   const [userupdlist, setuserupdlist] = useState([]);
   const [loading, setLoading] = useState(true);
