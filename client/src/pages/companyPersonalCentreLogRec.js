@@ -25,13 +25,14 @@ const CompanyViewLogin = () => {
   function handlePageClick({ selected: selectedPage }) {
     setCurrentPage(selectedPage);
   }
-  
+
   const PER_PAGE = 10;
   const offset = currentPage * PER_PAGE;
   const currentPageData = updatedloglist.slice(offset, offset + PER_PAGE);
   const pageCount = Math.ceil(updatedloglist.length / PER_PAGE);
 
   const filterlist = () => {
+    setCurrentPage(0);
     if (fromdate === '' || todate === '') alert("Please Select Dates");
     else if (fromdate.length && todate.length && moment(fromdate).isSameOrBefore(todate)) {
       setupdatedloglist(
@@ -104,7 +105,7 @@ const CompanyViewLogin = () => {
           View All
         </button>
       </div>
-      <table  style={{textAlign:'center'}} className="mt-3">
+      <table style={{ textAlign: 'center' }} className="mt-3">
         <thead>
           <tr className="tableheading">
             <th>S. No</th>
@@ -135,6 +136,9 @@ const CompanyViewLogin = () => {
         nextLabel={"Next →"}
         pageCount={pageCount}
         onPageChange={handlePageClick}
+        forcePage={
+          currentPage !== undefined ? Math.ceil(currentPage) : 0
+        }
         containerClassName={"pagination"}
         previousLinkClassName={"pagination__link"}
         nextLinkClassName={"pagination__link"}

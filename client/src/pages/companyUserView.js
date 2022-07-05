@@ -57,6 +57,7 @@ const CompanyUserView = () => {
     tableData.filter((rec) => moment(rec.license_renewal).isAfter(expiryDate));
 
   const filter = () => {
+    setCurrentPage(0);
     if (accountType.length) setuserupdlist(accountTypeFilter());
     if (orderID) setuserupdlist(orderIDFilter());
     if (accountName.length) setuserupdlist(accountFilter());
@@ -241,6 +242,9 @@ const CompanyUserView = () => {
         nextLabel={"Next →"}
         pageCount={pageCount}
         onPageChange={handlePageClick}
+        forcePage={
+          currentPage !== undefined ? Math.ceil(currentPage) : 0
+        }
         containerClassName={"pagination"}
         previousLinkClassName={"pagination__link"}
         nextLinkClassName={"pagination__link"}

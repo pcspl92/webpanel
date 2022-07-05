@@ -11,7 +11,7 @@ export default function LicenseView() {
   const [companyName, setcompanyname] = useState('');
   const [agentName, setAgentName] = useState([]);
   const [orderId, setOrderId] = useState([]);
-  const [expdate, setexpdate] = useState('');
+  const [expdate, setexpdate] = useState(moment().format('YYYY-MM-DD'));
   const [loading, setLoading] = useState(true);
   const [updatedlist, setupdatedlist] = useState([]);
   const [errors, setErrors] = useState({});
@@ -139,6 +139,7 @@ export default function LicenseView() {
             onChange={(event) => {
               setexpdate(event.target.value);
             }}
+            value={expdate}
           />
         </div>
         {/* <div className="text-danger fw-500">{errors?.expdate}</div> */}

@@ -31,6 +31,7 @@ export default function CompanyTransactionView() {
   const pageCount = Math.ceil(updatedTableData.length / PER_PAGE);
 
   const filterlist = () => {
+    setCurrentPage(0);
     if(fromdate==='' || todate==='') alert("Please Select Dates");
     else if (fromdate.length && todate.length && moment(fromdate).isSameOrBefore(todate)) {
       setupdatedTableData(tableData.filter(
@@ -163,6 +164,9 @@ export default function CompanyTransactionView() {
         nextLabel={"Next →"}
         pageCount={pageCount}
         onPageChange={handlePageClick}
+        forcePage={
+          currentPage !== undefined ? Math.ceil(currentPage) : 0
+        }
         containerClassName={"pagination"}
         previousLinkClassName={"pagination__link"}
         nextLinkClassName={"pagination__link"}

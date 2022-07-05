@@ -107,7 +107,7 @@ function UserModify() {
         <button type="button" onClick={() => onTGSelect()}>
           &nbsp;&nbsp; &gt; &gt; &nbsp;&nbsp;
         </button>
-        <div className="accbox">
+        <div className="accbox" style={{ whiteSpace: 'nowrap' }}>
           {selectedTG?.map((val) => <div key={val.id}>{val.tg_name}</div>) ||
             null}
         </div>
@@ -404,7 +404,7 @@ function UserModify() {
         <button type="button" onClick={() => onCSSelect()}>
           &nbsp;&nbsp; &gt; &gt; &nbsp;&nbsp;
         </button>
-        <div className="accbox">
+        <div className="accbox" style={{ whiteSpace: 'nowrap' }}>
           {selectedCS?.map((val) => (
             <div key={val.id}>{val.display_name}</div>
           )) || null}
