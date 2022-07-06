@@ -43,7 +43,7 @@ const ViewAgent = () => {
     try {
       await validateForm({ agentname, agentaccname });
       setErrors({});
-
+      setCurrentPage(0);
       setupdatedlist(
         agentlist.filter(
           (val) =>
@@ -166,6 +166,9 @@ const ViewAgent = () => {
         nextLabel={"Next →"}
         pageCount={pageCount}
         onPageChange={handlePageClick}
+        forcePage={
+          currentPage !== undefined ? Math.ceil(currentPage) : 0
+        }
         containerClassName={"pagination"}
         previousLinkClassName={"pagination__link"}
         nextLinkClassName={"pagination__link"}

@@ -106,7 +106,9 @@ export default function LicenseModify() {
   const updateSubmit = async () => {
     const users = [];
     selectedUserIds.current.forEach((id) => users.push(id));
-    const data = { features: featuresGlobal, user_ids: users, all: !showacc };
+    let allusers=false;
+    if(formData.users.length===users.length) allusers=true;
+    const data = { features: featuresGlobal, user_ids: users, all: (!showacc || allusers) };
     if (data.user_ids.length === 0) {
       alert("Please Select Accounts");
     } else {
@@ -256,6 +258,7 @@ export default function LicenseModify() {
   };
 
   const calcExpiryDate = (expDate) => {
+    if(expDate<moment().format())expDate=moment().format();
     let date;
     if (period !== '0') {
       switch (period) {

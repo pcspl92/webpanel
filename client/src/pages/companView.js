@@ -46,6 +46,7 @@ const CompanyView = () => {
     try {
       await validateForm({ companyName, compaccname });
       setErrors({});
+      setCurrentPage(0);
       setupdatedlist(
         tableData.filter(
           (val) =>
@@ -173,6 +174,9 @@ const CompanyView = () => {
         nextLabel={"Next →"}
         pageCount={pageCount}
         onPageChange={handlePageClick}
+        forcePage={
+          currentPage !== undefined ? Math.ceil(currentPage) : 0
+        }
         containerClassName={"pagination"}
         previousLinkClassName={"pagination__link"}
         nextLinkClassName={"pagination__link"}

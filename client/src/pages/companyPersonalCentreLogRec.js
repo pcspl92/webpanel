@@ -1,9 +1,10 @@
 import '../css/personalCenterLoginRecord.css';
-
+import { ToastContainer, toast } from "react-toastify";
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import ReactPaginate from "react-paginate";
 import axios from '../utils/axios';
+import "react-toastify/ReactToastify.min.css";
 
 const CompanyViewLogin = () => {
   const [fromdate, setfromdate] = useState('');
@@ -33,7 +34,7 @@ const CompanyViewLogin = () => {
 
   const filterlist = () => {
     setCurrentPage(0);
-    if (fromdate === '' || todate === '') alert("Please Select Dates");
+    if (fromdate === '' || todate === '') toast("Please Select Dates");
     else if (fromdate.length && todate.length && moment(fromdate).isSameOrBefore(todate)) {
       setupdatedloglist(
         companyloglist.filter((val) => {
@@ -41,7 +42,7 @@ const CompanyViewLogin = () => {
           return moment(date).isSameOrAfter(fromdate) && moment(date).isSameOrBefore(todate)
         }));
     } else if (fromdate.length && todate.length && moment(fromdate).isAfter(todate)) {
-      alert('Invalid Date Selection');
+      toast('Invalid Date Selection');
     }
   };
 
@@ -56,6 +57,7 @@ const CompanyViewLogin = () => {
   };
 
   const table = () => (
+    <>
     <div className="viewback">
       <div style={{ fontWeight: 'bolder', fontSize: '4vh' }}>LOGIN RECORD</div>
       <br />
@@ -146,6 +148,9 @@ const CompanyViewLogin = () => {
         activeClassName={"pagination__link--active"}
       />
     </div>
+    <ToastContainer position='top-center' newestOnTop autoClose='2000'/>
+    </>
+    
   );
 
   if (loading) {

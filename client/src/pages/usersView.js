@@ -56,7 +56,7 @@ const ViewUsers = () => {
     // if (accountName.length) setuserupdlist(accountFilter());
     // if (userName.length) setuserupdlist(userFilter());
     // if (expiryDate.length) setuserupdlist(expiryFilter());
-
+    setCurrentPage(0);
     setuserupdlist(
       userlist.filter(
         (rec) =>
@@ -205,6 +205,9 @@ const ViewUsers = () => {
         nextLabel={"Next →"}
         pageCount={pageCount}
         onPageChange={handlePageClick}
+        forcePage={
+          currentPage !== undefined ? Math.ceil(currentPage) : 0
+        } 
         containerClassName={"pagination"}
         previousLinkClassName={"pagination__link"}
         nextLinkClassName={"pagination__link"}

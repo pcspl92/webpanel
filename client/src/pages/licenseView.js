@@ -47,7 +47,7 @@ export default function LicenseView() {
     try {
       await validateForm({ orderId, companyName, agentName, expdate });
       setErrors({});
-      
+      setCurrentPage(0);
         const data=tableData.filter(
           (val) =>
             (companyName.length &&
@@ -211,6 +211,9 @@ export default function LicenseView() {
         nextLabel={"Next →"}
         pageCount={pageCount}
         onPageChange={handlePageClick}
+        forcePage={
+          currentPage !== undefined ? Math.ceil(currentPage) : 0
+        }
         containerClassName={"pagination"}
         previousLinkClassName={"pagination__link"}
         nextLinkClassName={"pagination__link"}

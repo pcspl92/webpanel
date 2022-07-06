@@ -25,6 +25,7 @@ const {
   getOrderData,
   getUnitPrices,
   getLicensesForOrder,
+  updateOrderByFeatureId,
 } = require('../queries/order');
 const {
   getAgentUnitPrice,
@@ -198,7 +199,7 @@ router.post(
   async (req, res) => {
     // console.log(req.body)
     const data = await companyStatus(req.body.company_id)
-    if(data==="active"){
+    if (data === "active") {
       const [{ unitPrice }] = await getAgentUnitPrice(
         req.user.id,
         req.body.license_type,
@@ -211,7 +212,7 @@ router.post(
             balance / unitPrice
           )} licenses.`,
         });
-  
+
       const expiryDate = getExpiryDate(req.body.renewal, 1);
       // console.log("Hello")
       const featureRes = await createFeatures(
@@ -234,7 +235,7 @@ router.post(
       );
       console.log(orderRes)
       await createLicense(orderRes.insertId, req.body.qty);
-  
+
       let price = unitPrice * req.body.qty;
       await deductBalance(price, req.user.id);
       await createTransactionLog(
@@ -267,10 +268,10 @@ router.post(
       await createAgentActivityLog('Order Create', req.user.id);
       return res.status(201).send({ message: 'License has been created' });
     }
-    else{
-      return res.status(201).send({message:"Selected Company is paused"})
+    else {
+      return res.status(201).send({ message: "Selected Company is paused" })
     }
-    
+
   }
 );
 
@@ -289,11 +290,6 @@ router.put(
         .status(404)
         .json({ order: "Order with given id doesn't exist." });
 
-    const result = await getLicensesForOrder(
-      req.params.orderId,
-      req.body.user_ids
-    );
-    const licenseIds = result.reduce((acc, val) => [...acc, val.id], []);
     const featureRes = await createFeatures(
       _.pick(req.body.features, [
         'grp_call',
@@ -304,6 +300,15 @@ router.put(
         'chat',
       ])
     );
+    if(req.body.all===true){
+      await updateOrderByFeatureId(req.params.orderId,featureRes.insertId);
+    }else{
+    const result = await getLicensesForOrder(
+      req.params.orderId,
+      req.body.user_ids
+    );
+    const licenseIds = result.reduce((acc, val) => [...acc, val.id], []);
+
     const orderRes = await createOrder(
       order[0].license_type,
       moment(`${order[0].license_expiry}`).utc().format('YYYY-MM-DD HH:mm:ss'),
@@ -313,6 +318,7 @@ router.put(
       order[0].agent_id
     );
     await updateOrderId(licenseIds, orderRes.insertId);
+    }
     await createAgentActivityLog('Order Features Modify', req.user.id);
     return res.status(201).send({ message: 'Order has been updated' });
   }

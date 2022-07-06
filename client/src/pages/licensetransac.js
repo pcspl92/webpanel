@@ -33,6 +33,7 @@ export default function Licensetransac() {
   const pageCount = Math.ceil(updatedtranDetails.length / PER_PAGE);
 
   const filterlist = () => {
+    setCurrentPage(0);
     if(fromdate==='' || todate==='') alert("Please Select Dates");
     else if (fromdate.length && todate.length && moment(fromdate).isSameOrBefore(todate)) {
       setupdatedtranDetails(
@@ -141,6 +142,9 @@ export default function Licensetransac() {
         nextLabel={"Next →"}
         pageCount={pageCount}
         onPageChange={handlePageClick}
+        forcePage={
+          currentPage !== undefined ? Math.ceil(currentPage) : 0
+        }
         containerClassName={"pagination"}
         previousLinkClassName={"pagination__link"}
         nextLinkClassName={"pagination__link"}

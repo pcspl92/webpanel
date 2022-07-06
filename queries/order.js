@@ -70,6 +70,11 @@ const updateOrderId = (licenseIds, newOrderId) => {
   return query(sql);
 };
 
+const updateOrderByFeatureId = (id, featureId) => {
+  const sql = `UPDATE orders SET feature_id=${featureId} WHERE id=${id}`;
+  return query(sql);
+};
+
 const getLicenseIds = (orderId, qty) => {
   const sql = `SELECT id FROM licenses WHERE order_id = ${orderId} LIMIT 0, ${qty};`;
   return query(sql);
@@ -201,4 +206,5 @@ module.exports = {
   companyStatus,
   getFeaturesByUserId,
   getLicenseIdsByOrder,
+  updateOrderByFeatureId,
 };

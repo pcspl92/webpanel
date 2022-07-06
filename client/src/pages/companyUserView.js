@@ -35,35 +35,43 @@ const CompanyUserView = () => {
   const currentPageData = userupdlist.slice(offset, offset + PER_PAGE);
   const pageCount = Math.ceil(userupdlist.length / PER_PAGE);
 
-  const accountTypeFilter = () =>tableData.filter((rec) =>
-      rec.account_type.toLowerCase().includes(accountType.toLowerCase().trim())
-    );
-  const orderIDFilter = () =>
-     tableData.filter((rec) => rec.order_id == orderID );
+  // const accountTypeFilter = () =>tableData.filter((rec) =>
+  //     rec.account_type.toLowerCase().includes(accountType.toLowerCase().trim())
+  //   );
+  // const orderIDFilter = () =>
+  //    tableData.filter((rec) => rec.order_id == orderID );
   
-  const accountFilter = () =>
-    tableData.filter((rec) =>
-      rec.account_name.toLowerCase().includes(accountName.toLowerCase().trim())
-    );
+  // const accountFilter = () =>
+  //   tableData.filter((rec) =>
+  //     rec.account_name.toLowerCase().includes(accountName.toLowerCase().trim())
+  //   );
 
-  const userFilter = () =>
-    tableData.filter((rec) =>
-      rec.user_display_name
-        .toLowerCase()
-        .includes(userDisplayName.toLowerCase().trim())
-    );
+  // const userFilter = () =>
+  //   tableData.filter((rec) =>
+  //     rec.user_display_name.toLowerCase().includes(userDisplayName.toLowerCase().trim())
+  //   );
 
-  const expiryFilter = () =>
-    tableData.filter((rec) => moment(rec.license_renewal).isAfter(expiryDate));
+  // const expiryFilter = () =>
+  //   tableData.filter((rec) => moment(rec.license_renewal).isAfter(expiryDate));
 
   const filter = () => {
     setCurrentPage(0);
-    if (accountType.length) setuserupdlist(accountTypeFilter());
-    if (orderID) setuserupdlist(orderIDFilter());
-    if (accountName.length) setuserupdlist(accountFilter());
-    if (userDisplayName.length) setuserupdlist(userFilter());
-    if (expiryDate.length) setuserupdlist(expiryFilter());
+    // if (accountType.length) setuserupdlist(accountTypeFilter());
+    // if (orderID) setuserupdlist(orderIDFilter());
+    // if (accountName.length) setuserupdlist(accountFilter());
+    // if (userDisplayName.length) setuserupdlist(userFilter());
+    // if (expiryDate.length) setuserupdlist(expiryFilter());
     if(orderID==='' && accountName==='' && accountType==='' && userDisplayName==='' && expiryDate==='') alert("Please select any fields")
+    setuserupdlist(
+      tableData.filter(
+        (rec) =>
+          (accountType.length && rec.account_type.toLowerCase().includes(accountType.toLowerCase().trim())) &&
+          (accountName.length && rec.account_name.toLowerCase().includes(accountName.toLowerCase().trim())) &&
+          (userDisplayName.length &&  rec.user_display_name.toLowerCase().includes(userDisplayName.toLowerCase().trim())) &&
+          (orderID && rec.order_id == orderID) &&
+          (expiryDate.length && moment(rec.license_expiry).isAfter(expiryDate))
+         )
+      )
   };
 
   const reset = () => {
